@@ -31,3 +31,10 @@ export function delDocApi(experimentsid, fileid) {
   })
 }
 
+
+export function targetFilesApi() {
+  return request({
+    url: "/api/getFiles",
+    method: "GET",
+  })
+}

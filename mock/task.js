@@ -1,23 +1,6 @@
 import { Random } from "mockjs"
 import moment from "moment";
 export default [{
-  url: "/api/getFiles",
-  method: "GET",
-  response: () => {
-    return {
-      code: 1,
-      "data|8-12": [{
-        "experimentsid":/ATPX\d{4}/,
-		    "filename":"data" + "@increment()",
-		    "filetype":"bdf",
-		    "fileid":"@increment()",
-		    "isoriginal":true,
-		    "fileindex": "@increment()",
-		    "filevolume":0
-      }]
-    }
-  }
-}, {
   url: "/api/getTaskByPage",
   method: "GET",
   response: () => {

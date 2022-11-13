@@ -9,7 +9,21 @@
       <el-input />
     </el-form-item>
     <el-form-item :label="`${$t('task.detail.dataset')}${$t('colon')}`">
-      <el-button type="primary">{{ $t("button.select") }}</el-button>
+      <el-button type="primary" @click="handleSelect">{{ $t("button.select") }}</el-button>
+    </el-form-item>
+    <el-form-item v-if="selectFile.length">
+        <span>
+          {{ $t("label.selected") }}
+          {{ $t("colon") }}
+        </span>
+        <el-tag 
+          class="m-r-4"
+          v-for="file in selectFile" 
+          :key="file.fileid"
+        > 
+          {{ `${file.filename}.${file.filetype}` }}
+          <TheIconImg icon="Check"/>
+        </el-tag>
     </el-form-item>
     <el-form-item :label="`${$t('task.card.step')}${$t('colon')}`">
       <el-button type="primary" @click="addWaveFilterStep">
@@ -48,8 +62,11 @@
         </template>
       </el-step>
     </el-steps>
-
-
+  <TheTargetFile 
+    v-model:visible="visible" 
+    v-model:selectFile="selectFile"
+    :source="source"
+  />
   </TheFormDialog>
 </template>
 <script setup>
@@ -57,6 +74,11 @@ import StepWaveFilterForm from './StepWaveFilterForm.vue';
 import { ref } from "vue";
 import StepAnalysisForm from './StepAnalysisForm.vue';
 import Array from "lodash/array";
+import TheTargetFile from "@/components/TheTargetFile.vue";
+import TheIconImg from "@/components/TheIconImg.vue";
+
+import { useTargetFiles } from "@/compositions/useTargetFiles";
+const { source, visible, selectFile, handleSelect } = useTargetFiles();
 
 const stepList = ref([]);
 
@@ -66,6 +88,7 @@ const addWaveFilterStep = () => {
     name: `wavefilter${stepList.value.length}`
   })
 }
+
 
 const addAnalysisStep = () => {
   stepList.value.push({

@@ -21,7 +21,13 @@
         {{ taskinfo.tasktype }}
       </el-descriptions-item>
       <el-descriptions-item :label="$t('task.detail.dataset')" label-align="center">
-        {{ taskinfo.filename }}
+        <el-tag 
+          class="m-r-8"
+          effect="dark"
+          v-for="file in taskinfo.filename"
+          :key="file">
+          {{ file }}
+        </el-tag>
       </el-descriptions-item>
       <el-descriptions-item :label="$t('task.detail.dataSize')" label-align="center">
         {{ taskinfo.size }}
@@ -70,7 +76,7 @@
         <span>{{ $t("task.card.result") }} 
           <span v-if="displayStep && displayStep.status === 1">{{ ` - Step ${displayStep.executeindex} ${displayStep.operationname} `}}</span>
         </span>
-        <el-button type="primary" link>{{ $t("button.download") }}</el-button>
+        <el-button type="primary" link v-if="displayStep?.operationtype === '数据分析'">{{ $t("button.download") }}</el-button>
       </div>
     </template>
     <div v-if="displayStep && displayStep.status === '1'">
@@ -112,6 +118,7 @@ import {
 import { Loading } from '@element-plus/icons-vue';
 import ChartsLine from '@/components/charts/ChartsLine.vue';
 import { onMounted, ref, watch } from 'vue';
+import { onBeforeRouteUpdate } from "vue-router";
 
 const props = defineProps({
   taskid: String
@@ -140,6 +147,16 @@ const taskinfo = ref({
   description: ""
 })
 
+
+
+onBeforeRouteUpdate((to, from) => {
+      //仅当 id 更改时才获取用户，例如仅 query 或 hash 值已更改
+  if (to.params.taskid !== from.params.taskid) {
+    console.log('to', to.params.taskid)
+    console.log('from', from.params.taskid)
+    getTask(to.params.taskid);
+  }
+})
 const taskSteps = ref([]);
 
 const displayStep = ref();
@@ -148,8 +165,9 @@ onMounted(() => {
   getTask();
 })
 
-const getTask = async () => {
-  const { master, stepList } = await taskDetailApi(props.taskid);
+const getTask = async (id) => {
+  console.log(props.taskid)
+  const { master, stepList } = await taskDetailApi(id ?? props.taskid);
   taskinfo.value = master;
   taskSteps.value = stepList;
   displayStep.value = stepList[0];
@@ -160,6 +178,8 @@ const handleClickStep = (step) => {
 }
 
 watch(displayStep, async () => {
+  console.log('display', displayStep)
+  if(displayStep.value) {
   const { operationtype, operationid } = displayStep.value;
   console.log(operationtype , displayStep)
   if(operationtype === "预处理") {
@@ -173,6 +193,7 @@ watch(displayStep, async () => {
       operationid
     })
 
+  }
   }
 })
 

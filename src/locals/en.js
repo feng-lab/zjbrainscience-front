@@ -17,6 +17,8 @@ export default {
     chartZoom: "Zoom in on Area Data",
     chartZoomBack: "Reset zoom",
     notice: "New Notification",
+    selected: "Selected",
+    targetFile: "Target Data Files"
   },
   confirm: {
     resetform: "Are you sure to reset the form? All fields will be cleared!",
@@ -222,5 +224,10 @@ export default {
   status: {
     success: "Success!",
     fail: "Fail!"
+  },
+  file: {
+    name: "File Name",
+    type: "File Type",
+    experiment: "Association Experiment"
   }
 }

@@ -17,6 +17,8 @@ export default {
     chartZoom: "区域数据放大",
     chartZoomBack: "还原",
     notice: "新通知",
+    selected: "已选择",
+    targetFile: "目标数据文件"
   },
   confirm: {
     resetform: "确定要重置表单吗？所有字段数据将会被清除！",
@@ -228,5 +230,10 @@ export default {
   status: {
     success: "成功！",
     fail: "失败！"
+  },
+  file: {
+    name: "文件名称",
+    type: "文件类型",
+    experiment: "关联实验"
   }
 }

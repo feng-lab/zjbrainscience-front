@@ -36,6 +36,11 @@
         >
           <TheProjectCard
             :title="ex.experimentsid"
+            iconColor="#faad14"
+            :icon="IconExperiment"
+            :contentStyle="{
+              minHeight: '180px'
+            }"
             :buttons="[{
               text: $t('button.detail'),
               icon: 'View',
@@ -47,7 +52,9 @@
                 {{ex.experimentstype }} 
               </el-tag>
             </template>
-            <!--
+            <div class="m-b-8">
+              <div>{{ ex.description }}</div>
+            </div>
             <table>
               <tbody>
                 <TheTr icon="User" iconColor="#52c41a" :label="'Session' + $t('colon')">
@@ -64,30 +71,41 @@
                 </TheTr>
               </tbody>
             </table>
-          -->
-          <div class="info"> 
-            <div class="info-item"> 
-              <div class="info-item-title">
-                <el-icon><User/></el-icon>
-                Session
-              </div>
-              <div class="info-item-content">{{ex.numberofsessions }}</div>
-            </div>
-            <div class="info-item"> 
-              <div class="info-item-title">
-                <el-icon><FolderOpened/></el-icon>
-                Trails
-              </div>
-              <div class="info-item-content">{{ex.numberoftrails}}</div>
-            </div>
-          </div>
-            <div class="m-t-8">
-              <div>{{ ex.description }}</div>
-              <div class="time-range">{{ex.startdate}} - {{ex.enddate}}</div>
-            </div>
           </TheProjectCard>
         </el-col>
       </el-row>
+      <!--
+      <TheList>
+        <TheListItem
+          v-for="ex in exList"
+          :key="ex.experimentsid"
+          :title="ex.experimentsid"
+          :description="ex.description"
+          :actions="[{ text: $t('button.detail'), onClick: () => handleView(ex.experimentsid)}]"
+        >
+          <template #avatar>
+            <el-icon color="#faad14"><IconExperiment/></el-icon>
+          </template>
+          <template #extra>
+            <el-tag :type="statusTag[ex.experimentstype.toLowerCase()]"> 
+              {{ex.experimentstype }} 
+            </el-tag>
+          </template>
+          <TheListItemContent
+            title="Session"
+            :content="ex.numberofsessions"
+          />
+          <TheListItemContent
+            title="Trails"
+            :content="ex.numberoftrails"
+          />
+          <TheListItemContent
+            :title="$t('label.startTime')"
+            :content="ex.startdate"
+          />
+        </TheListItem>
+      </TheList>
+      -->
       <div class="load-more-btn" v-if="loadmore">
           <el-button type="danger" @click="loadEx('more')" :loading="loading">{{$t("button.load")}}{{$t("button.more")}}</el-button>
       </div>
@@ -106,6 +124,8 @@ import { allExByPageApi } from "@/api/experiments";
 import TheProjectCard from "@/components/TheProjectCard.vue";
 import { useI18n } from "vue-i18n";
 import { FolderOpened } from "@element-plus/icons-vue";
+import TheStatistic from "@/components/TheStatistic.vue";
+import TheList, { TheListItem, TheListItemContent } from "@/components/list";
 
 const router = useRouter();
 
@@ -193,14 +213,6 @@ const setSortBy = (byLable) => {
   align-items: center;
   &-item {
     flex: 1;
-    &-title {
-      color: var(--el-text-color-regular);
-    }
-    &-content {
-      margin: 0;
-      font-size: 24px;
-      line-height: 32px;
-    }
   }
 }
 .time-range {

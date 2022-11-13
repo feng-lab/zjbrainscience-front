@@ -2,14 +2,14 @@
   <el-sub-menu v-if="menu?.children?.length">
     <template #title>
       <MenuIcon :meta="menu.meta"/>
-      <span>{{ $t(`menus.${menu.name}`) }}</span>
+      <span class="">{{ $t(`menus.${menu.name}`) }}</span>
     </template>
     <MenuContent v-for="child in menu.children" :key="child.path" :menu="child" :parentPath="menu.path"/>
   </el-sub-menu>
   <el-menu-item :index="index" v-else>
       <MenuIcon :meta="menu.meta"/>
       <template #title>
-        {{ $t(`menus.${menu.name}`) }}
+        <span>{{ $t(`menus.${menu.name}`) }}</span>
       </template>
   </el-menu-item>
 </template>

@@ -3,7 +3,7 @@
     <div class="project-card-header">
       <div class="between-flex">
         <span class="center-flex project-card-header--title">
-          <TheIconImg :icon="icon" :iconColor="iconColor" class="m-r-4"/>
+          <TheIconImg :icon="icon" :iconColor="iconColor" :size="24" class="m-r-4"/>
           <span class="m-r-8"> {{ title }} </span>
           <slot name="titletail"></slot>
         </span>
@@ -13,7 +13,7 @@
         <span>{{ description }}</span>
       </div>
     </div>
-    <div class="project-card-content">
+    <div class="project-card-content" :style="contentStyle">
       <slot/>
     </div>
     <div class="project-card-footer">
@@ -43,8 +43,10 @@ defineProps({
   },
   title: String,
   buttons: Array,
-  description: String
+  description: String,
+  contentStyle: Object
 })
+
 </script>
 <style lang="scss" scoped>
 .project-card {
@@ -61,7 +63,7 @@ defineProps({
     }
   }
   &-content {
-    padding: 0 20px 12px 48px;
+    padding: 0 20px 12px;
     &--desc {
       color: var(--el-text-color-secondary);
     }
