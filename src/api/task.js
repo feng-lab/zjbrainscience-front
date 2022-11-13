@@ -1,11 +1,5 @@
 import request from "@/utils/request";
 
-export function targetFilesApi() {
-  return request({
-    url: "/api/getFiles",
-    method: "GET",
-  })
-}
 
 export function taskByPageApi(params) {
   return request({

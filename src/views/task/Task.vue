@@ -1,10 +1,10 @@
 <template>
   <el-card class="m-b-16">
     <el-row :gutter="12" class="multiple-line-row">
-      <el-col :xs="24" :sm="4" :xl="8">
+      <el-col :xs="24" :sm="4" :md="8">
         <el-button type="primary" icon="Plus" @click="showForm">{{ $t("button.newTask") }}</el-button>
       </el-col>
-      <el-col :xs="24" :sm="12" :xl="4">
+      <el-col :xs="24" :sm="12" :md="4">
         <el-date-picker
           type="date"
           style="width: 100%"
@@ -15,7 +15,7 @@
           :placeholder="$t('task.selectField.time')"
         />
       </el-col>
-      <el-col :xs="24" :sm="12" :xl="4">
+      <el-col :xs="24" :sm="12" :md="4">
         <el-select
           style="width: 100%"
           v-model="taskQuery.tasktype"
@@ -27,11 +27,11 @@
             v-for="(value, key) in taskType"
             :key="key"
             :value="value"
-            :label="$t(`task.step.${key}`)"
+            :label="$t(`task.type.${key}`)"
           />
         </el-select>
       </el-col>
-      <el-col :xs="24" :sm="12" :xl="4">
+      <el-col :xs="24" :sm="12" :md="4">
         <el-select
           style="width: 100%"
           v-model="taskQuery.status"
@@ -47,7 +47,7 @@
           />
         </el-select>
       </el-col>
-      <el-col :xs="24" :sm="8" :xl="4">
+      <el-col :xs="24" :sm="8" :md="4">
         <el-input 
           prefix-icon="Search"
           @change="getTaskList"
@@ -84,11 +84,12 @@
             }]"
           >
             <template #extra> 
-              <div :class="['status-tag', `status-tag--${statusTag[task.status].tag}`]">
+              <el-tag :type="statusTag[task.status].tag">
+                <el-icon class="is-loading" v-if="task.status === '1'"><Loading/></el-icon>
                 {{ $t(`task.status.${task.status}`) }}
-              </div>
+              </el-tag>
             </template>
-            <div style="margin-left: -28px">
+            <div>
               <div class="type-icon">
                 <el-icon v-if="task.tasktype.includes('预处理')" :color="statusTag[task.status].color">
                   <IconFilter/>

@@ -13,7 +13,7 @@
   </el-row>
 </template>
 <script setup>
-import { useUtils } from '@/compositions/utils';
+import { useUtils } from '@/compositions/useUtils';
 
 const props = defineProps({
   code: String,

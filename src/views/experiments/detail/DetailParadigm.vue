@@ -12,43 +12,33 @@
       :class="showDetail ? '': 'list'"
       :body-style="showDetail ? {}: {padding: 0}"
     >
-
-        <ul class="paradigm-list">
-          <li
-            v-for="paradigm in paradigmList"
-            :key="paradigm.id"
-            class="paradigm-list-item"
-          >
-            <div class="paradigm-list-item--meta">
-              <div class="paradigm-list-item--meta--avatar"> 
-                <el-icon color="#faad14"><Histogram/></el-icon>
-              </div>
-              <div class="paradigm-list-item--meta--content" @click="handleEdit(paradigm.id)"> 
-                <h4 class="paradigm-list-item--meta--content--title">
-                  {{$t('paradigm.text')}} - {{ paradigm.id }}
-                </h4>
-                <span class="paradigm-list-item--meta--content--desc">
-                  {{ paradigm.desc }}
-                </span>
-              </div>
-            </div>
-            <div class="paradigm-list-item--content">
-              <div class="paradigm-list-item--content--item" > 
-                <span>创建人</span>
-                <p>wynne</p>
-              </div>
-              <div class="paradigm-list-item--content--item" > 
-                <span>创建时间</span>
-                <p>2022-10-20 15:00:00</p>
-              </div>
-            </div>
-            <div class="paradigm-list-item--actions">
-              <el-button size="small" link type="primary" @click="handleDelete(paradigm.id)">{{$t("button.delete")}}</el-button>
-              <el-divider direction="vertical"/>
-              <el-button size="small" link type="primary" @click="handleEdit(paradigm.id)">{{$t("button.edit")}}</el-button>
-            </div>
-          </li>
-        </ul>
+      <TheList>
+        <TheListItem
+          v-for="paradigm in paradigmList"
+          :key="paradigm.id"
+          :title="`${$t('paradigm.text')} - ${paradigm.id}`"
+          :description="paradigm.desc"
+          :actions="[{
+            text: $t('button.edit'),
+            onClick: () => handleEdit(paradigm.id)
+          }, {
+            text: $t('button.delete'),
+            onClick: () => handleDelete(paradigm.id)
+          }]"
+        >
+          <template #avatar>
+            <el-icon color="#faad14"><Histogram/></el-icon>
+          </template>
+          <TheListItemContent
+            title="创建人"
+            content="wynne"
+          />
+          <TheListItemContent
+            title="创建时间"
+            content="2022-10-20 15:00:00"
+          />
+        </TheListItem>
+      </TheList>
     </el-card>
   </el-scrollbar>
   <FormParadigm 
@@ -64,6 +54,9 @@ import { paradigmsByExApi, delParadigmApi } from "@/api/experiments";
 import { useUtils } from "@/compositions/useUtils";
 import { useI18n } from "vue-i18n";
 import { ElMessage } from "element-plus";
+import TheList from "@/components/list/TheList.vue";
+import TheListItem from "@/components/list/TheListItem.vue";
+import TheListItemContent from "@/components/list/TheListItemContent.vue";
 
 const paradigmList = ref([]);
 
