@@ -3,13 +3,14 @@
 </template>
 
 <script setup>
-import { useCharts } from "@/compositions/useCharts";
 import { BarChart } from "echarts/charts";
+import VChart from "vue-echarts";
 import {
   GridComponent,
 } from "echarts/components";
-import VChart from "vue-echarts";
-import { computed, ref } from "vue";
+
+import { computed } from "vue";
+import { useCharts } from "@/compositions/useCharts";
 
 const props = defineProps({
   title: String,
@@ -22,7 +23,6 @@ const props = defineProps({
 const { initOption } = useCharts(props.title, [BarChart, GridComponent]);
 
 
-console.log('bar props', props)
 const option = computed(() => {
   const dimensionsLen = props?.dataset?.dimensions.length;
   return {

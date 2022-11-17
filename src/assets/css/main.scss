@@ -201,3 +201,8 @@ $dimensions: ('p': 'padding', 'm': 'margin');
 .el-step__description.is-success {
   color: var(--el-text-color-secondary) !important;
 }
+
+/** el-form-item-error **/
+.el-form-item__error {
+  zoom: .86;
+}

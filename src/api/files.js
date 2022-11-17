@@ -20,7 +20,7 @@ export function docByPageApi(experimentsid, docType, offset, limit) {
   })
 }
 
-export function delDocApi(experimentsid, fileid) {
+export function deleteDocApi(experimentsid, fileid) {
   return request({
     url: "/api/deleteDoc",
     method: "DELETE",

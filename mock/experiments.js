@@ -9,6 +9,15 @@ export default [{
     }
   }
 }, {
+  url: "/api/deleteExperiments",
+  method: "DELETE",
+  response: () => {
+    return {
+      code: 1,
+      message: ""
+    }
+  }
+}, {
   url: "/api/getExperimentsByPage",
   method: "get",
   response: ({query}) => {

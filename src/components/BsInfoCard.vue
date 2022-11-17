@@ -3,10 +3,11 @@
     <el-row>
       <el-col :xs="12" :sm="12" :lg="8">
         <div class="icon">
-          <TheIconImg
+          <bs-icon-img
             :icon="icon"
-            :iconColor="iconColor"
-            :imgSrc="imgSrc"
+            :icon-color="iconColor"
+            :img-src="imgSrc"
+            :size="64"
           />
         </div>
       </el-col>
@@ -20,7 +21,7 @@
 
 <script setup>
 
-import TheIconImg from "@/components/TheIconImg.vue";
+import BsIconImg from "@/components/BsIconImg.vue";
 
 defineProps({
   title: String,
@@ -35,9 +36,6 @@ defineProps({
 .icon {
   height: 64px;
   margin: 0 auto;
-  :deep(i) {
-    font-size: 64px;
-  }
 }
 
 .title {

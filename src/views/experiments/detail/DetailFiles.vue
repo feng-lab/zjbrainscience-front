@@ -97,7 +97,7 @@
               </div>
             </div>
           </template>
-          <TheEegDisplay :eegData="eegData"/>
+          <bs-eeg-display :eeg-data="eegData"/>
         </el-card>
         <el-card :header="`视频文件 - ${viewMp4.name}`" v-if="viewMp4">
           <div style="text-align: center;" id="videoPlay">
@@ -139,21 +139,18 @@
   
 </template>
 <script setup>
+import BsEegDisplay from "@/components/BsEegDisplay.vue";
+
 import { ref, inject, nextTick, onMounted, watch, computed } from "vue";
 import jsCookie from "js-cookie";
-
-
-import { ElMessage } from "element-plus";
 import Thumbnail from "@/utils/thumbnail";
-import { useUpload } from "@/compositions/useUpload";
-import { docByPageApi, delDocApi } from "@/api/files";
-import { eegDisplayApi } from "@/api/eeg";
 import jszip from "jszip";
-import { Download } from "@element-plus/icons-vue";
 import { useUtils } from "@/compositions/useUtils";
 import { useI18n } from "vue-i18n";
-
-import TheEegDisplay from "@/components/TheEegDisplay.vue";
+import { useUpload } from "@/compositions/useUpload";
+import { ElMessage } from "element-plus";
+import { docByPageApi, deleteDocApi } from "@/api/files";
+import { eegDisplayApi } from "@/api/eeg";
 
 const eegData = ref();
 

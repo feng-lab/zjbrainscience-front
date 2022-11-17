@@ -1,9 +1,9 @@
 <template>
-  <TheFormDialog
+  <bs-form-dialog
     :title="$t('button.newEx')"
-    :formModel="exForm"
-    :formRules="rules"
-    :doFormSubmit="doFormSubmit"
+    :form-model="exForm"
+    :form-rules="rules"
+    :do-form-submit="doFormSubmit"
   >
     <el-form-item :label="$t('experiments.detail.exName')" prop="experimenttitle">
       <el-input 
@@ -80,12 +80,12 @@
         <el-radio label="0">{{ $t("label.no") }}</el-radio>
       </el-radio-group>
     </el-form-item>
-  </TheFormDialog>
+  </bs-form-dialog>
 </template>
 <script setup>
+import BsFormDialog from "@/components/BsFormDialog.vue";
+
 import { reactive, ref } from "vue";
-import { resetForm } from "@/utils/form";
-import TheFormDialog from "@/components/TheFormDialog.vue";
 import { newExApi } from "@/api/experiments";
 import { useRouter } from "vue-router";
 

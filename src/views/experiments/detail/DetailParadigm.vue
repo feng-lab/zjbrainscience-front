@@ -12,8 +12,8 @@
       :class="showDetail ? '': 'list'"
       :body-style="showDetail ? {}: {padding: 0}"
     >
-      <TheList>
-        <TheListItem
+      <bs-list>
+        <bs-list-item
           v-for="paradigm in paradigmList"
           :key="paradigm.id"
           :title="`${$t('paradigm.text')} - ${paradigm.id}`"
@@ -29,34 +29,33 @@
           <template #avatar>
             <el-icon color="#faad14"><Histogram/></el-icon>
           </template>
-          <TheListItemContent
+          <bs-list-item-content
             title="创建人"
             content="wynne"
           />
-          <TheListItemContent
+          <bs-list-item-content
             title="创建时间"
             content="2022-10-20 15:00:00"
           />
-        </TheListItem>
-      </TheList>
+        </bs-list-item>
+      </bs-list>
     </el-card>
   </el-scrollbar>
-  <FormParadigm 
+  <form-paradigm
     v-model="showParadigm" 
     :paradigm-id="editParadigm"
-    @formclosed="handleClose"
+    @form-closed="handleClose"
   />
 </template>
 <script setup>
-import { inject, onMounted, ref } from "vue";
+import BsList, { BsListItem, BsListItemContent } from "@/components/list";
 import FormParadigm from "../forms/FormParadigm.vue";
-import { paradigmsByExApi, delParadigmApi } from "@/api/experiments";
+
+import { inject, onMounted, ref } from "vue";
+import { paradigmsByExApi, deleteParadigmApi } from "@/api/experiments";
 import { useUtils } from "@/compositions/useUtils";
 import { useI18n } from "vue-i18n";
 import { ElMessage } from "element-plus";
-import TheList from "@/components/list/TheList.vue";
-import TheListItem from "@/components/list/TheListItem.vue";
-import TheListItemContent from "@/components/list/TheListItemContent.vue";
 
 const paradigmList = ref([]);
 
@@ -95,9 +94,9 @@ const handleClose = (reload) => {
 
 const handleDelete = (id) => {
   systemConfirm(
-    i18n.t("paradigm.deleteConfirm"),
+    i18n.t("paradigm.deleteConfirm", { id }),
     async () => {
-      await delParadigmApi(experimentid, id);
+      await deleteParadigmApi(experimentid, id);
       ElMessage.success(`${i18n.t("button.delete")}${i18n.t("status.success")}`);
       loadParadigms();
     }

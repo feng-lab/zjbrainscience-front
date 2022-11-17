@@ -14,7 +14,6 @@ const props=defineProps({
   order: ""
 })
 
-console.log('props', props)
 
 </script>
 

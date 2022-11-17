@@ -2,7 +2,7 @@
   <div class="common-layout">
     <el-container>
       <el-aside :width="asideWidth" class="hidden-sm-and-down aside">
-        <LayoutSiderbar/>
+        <layout-siderbar/>
       </el-aside>
       <el-drawer 
         v-model="showDrawer"
@@ -11,14 +11,14 @@
         :show-close="false"
         :with-header="false"
       >
-        <LayoutSiderbar/>
+        <layout-siderbar/>
       </el-drawer>
       <el-container>
         <el-header class="header" height="64px">
-          <LayoutHeader/>
+          <layout-header/>
         </el-header>
         <el-main class="main">
-          <LayoutContent/>
+          <layout-content/>
         </el-main>
       </el-container>
     </el-container>
@@ -30,8 +30,10 @@
 import LayoutContent from "./LayoutContent.vue";
 import LayoutHeader from "./LayoutHeader.vue";
 import LayoutSiderbar from "./LayoutSiderbar.vue";
+
 import useGlobalStore from "@/stores/global";
 import { storeToRefs } from "pinia";
+
 const globalStore = useGlobalStore();
 const { isCollapse, asideWidth, showDrawer } = storeToRefs(globalStore);
 

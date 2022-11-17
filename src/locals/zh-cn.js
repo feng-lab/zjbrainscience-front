@@ -33,8 +33,14 @@ export default {
   },
   sessionExpire: "您的会话session已过期，请重新登录！",
   valid: {
-    require: "{field}为必填项",
-    newParadigm: "请至少上传一张实验相关图片或填写一条文字记录！"
+    require: "请{action}{field}",
+    checked: "请至少选择一个",
+    newParadigm: "请至少上传一张实验相关图片或填写一条文字记录！",
+    taskstep: "请至少添加一个任务执行流程",
+  },
+  action: {
+    input: "填写",
+    select: "选择"
   },
   button: {
     login: "登录",
@@ -122,11 +128,11 @@ export default {
       paradigm: "实验范式",
       device: "实验设备",
     },
-    deleteConfirm: "确定从当前实验移除该 {target}-{id} 吗？"
+    deleteConfirm: "确定删除实验 （ID： {id}） 吗？"
   },
   paradigm: {
     text: "实验范式",
-    deleteConfirm: "确定要删除这条实验范式吗？",
+    deleteConfirm: "确定删除实验范式 （ID： {id}）吗？",
     formlabel: {
       image: "实验图片",
       description: "文字描述"
@@ -162,6 +168,7 @@ export default {
       dog: "犬",
       pig: "猪"
     },
+    deleteConfirm: "确定从当前实验移除被试 （ID： {id}） 吗？"
   }, 
   device: {
     text: "设备",
@@ -169,10 +176,11 @@ export default {
     name: "设备名称",
     type: "设备类型",
     purpose: "实验用途",
-    index: "序号"
+    index: "序号",
+    deleteConfirm: "确定从当前实验移除设备 （ID： {id}） 吗？"
   },
   task: {
-    deleteConfirm: "确定要删除任务： {name}(ID: {id}) 吗？",
+    deleteConfirm: "确定删除任务： {name}(ID: {id}) 吗？",
     searchField: {
       name: "任务名称"
     },
@@ -208,7 +216,17 @@ export default {
       analysis: "数据分析",
       fa: "预处理/数据分析"
     },
-    delTip: "删除当前步骤"
+    delTip: "删除当前步骤",
+    stepResult: {
+      "0": {
+        title: "执行失败",
+        subTitle: "当前任务执行失败!"
+      },
+      "1" : {
+        title: "正在执行",
+        subTitle: "当前任务正在执行，请稍等！"
+      }
+    },
   },
   search: {
     card: {

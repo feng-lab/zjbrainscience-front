@@ -1,3 +1,4 @@
+import { ElMessage } from "element-plus";
 import { ElMessageBox } from "element-plus";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
@@ -12,7 +13,6 @@ export function useUtils() {
   }
 
   function systemConfirm(message, callback) {
-    //const title = computed(() => i18n.t("term.systemremind"));
     ElMessageBox.confirm(
       message, 
       i18n.t("term.systemremind"),
@@ -26,15 +26,19 @@ export function useUtils() {
     .then(() => {
       callback();
     })
-    .catch(() => {
-      console.log("取消")
+    .catch((err) => {
+      console.log("Error:", err);
     })
+  }
 
-
+  function resetForm(formRef) {
+    if(!formRef) return;
+    formRef.resetFields();
   }
 
   return {
     backToHome,
-    systemConfirm
+    systemConfirm,
+    resetForm
   }
 }

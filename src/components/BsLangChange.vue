@@ -1,7 +1,7 @@
 <template>
   <el-dropdown>
     <el-icon style="font-size: 18px">
-      <IconTranslate/>
+      <bs-icon-translate/>
     </el-icon>
     <template #dropdown>
       <el-dropdown-menu>
@@ -15,10 +15,10 @@
   </el-dropdown>
 </template>
 <script setup>
+import BsIconTranslate from './icons/BsIconTranslate.vue';
 
 import useGlobalStore from '@/stores/global';
 import { storeToRefs } from 'pinia';
-import IconTranslate from './icons/IconTranslate.vue';
 
 const globalStore = useGlobalStore();
 const { locale } = storeToRefs(globalStore);

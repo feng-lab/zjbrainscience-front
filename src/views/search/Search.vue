@@ -51,7 +51,7 @@
   <el-card :header="$t('search.card.result')" class="m-t-16"> 
     待实现
   </el-card>
-  <TheTargetFile 
+  <bs-target-file
     v-model:visible="visible" 
     v-model:selectFile="selectFile"
     :source="source"

@@ -8,7 +8,6 @@ export function useTargetFiles() {
 
     const handleSelect = async () => {
         source.value = await targetFilesApi();
-        visible.value = true;
     }
 
     return {

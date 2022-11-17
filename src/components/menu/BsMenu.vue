@@ -9,13 +9,14 @@
     :collapse-transition="false"
     @select="closeDrawer"
   >
-    <MenuContent v-for="menu in menus" :key="menu.path" :menu="menu"/>
+    <bs-menu-content v-for="menu in menus" :key="menu.path" :menu="menu"/>
   </el-menu>
 </template>
 <script setup>
+import BsMenuContent from './BsMenuContent.vue';
+
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import MenuContent from './MenuContent.vue';
 import useGlobalStore from "@/stores/global";
 import { storeToRefs } from 'pinia';
 

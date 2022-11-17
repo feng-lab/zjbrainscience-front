@@ -39,7 +39,7 @@ export function updateDeviceApi(data) {
   })
 }
 
-export function delDeviceApi({ experimentsid, equipmentid }) {
+export function deleteDeviceApi({ experimentsid, equipmentid }) {
   return request({
     url: "/api/deleteDevice",
     method: "DELETE",

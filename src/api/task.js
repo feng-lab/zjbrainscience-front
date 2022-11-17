@@ -17,7 +17,7 @@ export function newTaskApi(data) {
   })
 }
 
-export function delTask(taskid) {
+export function deleteTaskApi(taskid) {
   return request({
     url: "/api/deleteTask",
     method: "DELETE",

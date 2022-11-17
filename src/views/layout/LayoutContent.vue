@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <RouterView/>
+    <router-view/>
   </div>
 </template>
 <style scoped>

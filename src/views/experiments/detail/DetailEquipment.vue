@@ -1,26 +1,26 @@
 <template>
-  <TheTable
-    :fetch-method="deviceApi"
-    :columns="columns"
-    :button-list="buttonList"
+  <bs-table
     ref="tableRef"
+    :columns="columns"
+    :fetch-method="deviceApi"
+    :button-list="buttonList"
   >
     <template #operation="{ row }">
       <el-button link type="primary" size="small" @click="handleView(row.equipmentid)">{{ $t("button.edit") }}</el-button>
       <el-divider direction="vertical"/>
       <el-button link type="primary" size="small" @click="handleDelete(row.equipmentid)">{{ $t("button.delete") }}</el-button>
     </template>
-  </TheTable>
-  <FormEquipment v-model="showEquipmentForm" v-model:equipmentid="equipmentid"/>
+  </bs-table>
+  <form-equipment v-model="showEquipmentForm" v-model:equipmentid="equipmentid"/>
   
 </template>
 <script setup>
+import BsTable from '@/components/BsTable.vue';
+import FormEquipment from "../forms/FormEquipment.vue";
 
 import { computed, ref } from "vue";
-import TheTable from '@/components/TheTable.vue';
-import FormEquipment from "../forms/FormEquipment.vue";
 import { useI18n } from "vue-i18n";
-import { deviceApi, delDeviceApi } from "@/api/device";
+import { deviceApi, deleteDeviceApi } from "@/api/device";
 import { useUtils } from "@/compositions/useUtils";
 import { ElMessage } from "element-plus";
 
@@ -73,12 +73,11 @@ const handleView = (showId) => {
 
 const handleDelete = (equipmentid) => {
   systemConfirm(
-    i18n.t("experiments.deleteConfirm", {
-      target: i18n.t("device.text"),
+    i18n.t("device.deleteConfirm", {
       id: equipmentid
     }),
     async () => {
-      await delDeviceApi({
+      await deleteDeviceApi({
         experimentsid,
         equipmentid
       });

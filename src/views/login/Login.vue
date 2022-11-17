@@ -2,7 +2,7 @@
   <div class="login-page">
     <div class="login-page--header between-flex">
       <span>ZJLab BS database</span>
-      <TheLangChange/>
+      <bs-lang-change/>
     </div>
     <el-row class="login-page--content" align="middle" :gutter="24">
       <el-col :xs="24" :sm="12" class="login-page--content--img">
@@ -37,16 +37,12 @@
               <el-input
                 type="password"
                 show-password
+                @keyup.enter="submitLogin(loginFormRef)"
                 prefix-icon="Lock"
                 :placeholder="$t('placeholder.input', { info: $t('label.password') })"
                 v-model="loginForm.password"
               />
             </el-form-item>
-            <!--
-            <el-form-item label="">
-              <el-checkbox label="remember">{{$t("label.remember")}}</el-checkbox>
-            </el-form-item>
-            -->
             <el-form-item>
               <el-button type="primary" @click="submitLogin(loginFormRef)">{{$t("button.login")}}</el-button>
               <el-button @click="resetForm(loginFormRef)">{{$t("button.reset")}}</el-button>
@@ -57,25 +53,25 @@
     </el-row>
     <el-row :gutter="24">
       <el-col :xs="24" :sm="8">
-        <TheDescCard
+        <bs-desc-card
           icon="Monitor"
-          iconColor="#52c41a"
+          icon-color="#52c41a"
           :title="$t('loginInfoStorage.title')"
           :desc="$t('loginInfoStorage.desc')"
         />
       </el-col>
       <el-col :xs="24" :sm="8">
-        <TheDescCard
+        <bs-desc-card
           icon="Management"
-          iconColor="#52c41a"
+          icon-color="#52c41a"
           :title="$t('loginInfoManage.title')"
           :desc="$t('loginInfoManage.desc')"
         />
       </el-col>
       <el-col :xs="24" :sm="8">
-        <TheDescCard
+        <bs-desc-card
           icon="DataAnalysis"
-          iconColor="#52c41a"
+          icon-color="#52c41a"
           :title="$t('loginInfoAnalysis.title')"
           :desc="$t('loginInfoAnalysis.desc')"
         />
@@ -84,10 +80,11 @@
   </div>
 </template>
 <script setup>
-import TheDescCard from '@/components/TheDescCard.vue';
-import { computed, reactive, ref } from 'vue';
-import { resetForm } from '@/utils/form';
-import TheLangChange from '../../components/TheLangChange.vue';
+import BsLangChange from '@/components/BsLangChange.vue';
+import BsDescCard from '@/components/BsDescCard.vue';
+
+import { computed, ref } from 'vue';
+import { useUtils } from '@/compositions/useUtils';
 import { useI18n } from 'vue-i18n';
 import useUserStore from "@/stores/user";
 
@@ -97,21 +94,22 @@ const loginForm = ref({
   password: ""
 });
 
+const { resetForm } = useUtils();
+
 const { doLogin } = useUserStore();
 
-const remember = ref(false);
 
 const i18n = useI18n();
 
 const rules = computed(() => ({
   account: [{ 
     required: true, 
-    message: i18n.t("valid.require", {field: i18n.t("label.account")}),
+    message: i18n.t("valid.require", {field: i18n.t("label.account"), action: i18n.t("action.input")}),
     trigger: "blur" 
   }],
   password: [{ 
     required: true, 
-    message: i18n.t("valid.require", {field: i18n.t("label.password")}),
+    message: i18n.t("valid.require", {field: i18n.t("label.password"), action: i18n.t("action.input")}),
     trigger: "blur" 
   }]
 }));

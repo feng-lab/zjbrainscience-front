@@ -2,6 +2,7 @@
   <el-dialog
     :title="title"
     @closed="handleClose(formRef)"
+    :close-on-click-modal="false"
   >
     <el-form
       ref="formRef"
@@ -13,7 +14,8 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="doReset(formRef)">{{ $t("button.reset") }}</el-button>
+        <el-button @click="emits('update:modelValue', false)">{{ $t("button.cancel") }}</el-button>
+        <el-button @click="confirmReset(formRef)">{{ $t("button.reset") }}</el-button>
         <el-button type="primary" @click="doSubmit(formRef)">{{ $t("button.submit") }}</el-button >
       </span>
     </template>
@@ -21,9 +23,8 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { useUtils } from '@/compositions/useUtils';
-import { resetForm } from '@/utils/form';
-import { computed, onUpdated, ref, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps([
@@ -32,14 +33,16 @@ const props = defineProps([
   "doFormReset",
   "formModel",
   "formRules",
-  "onClose"
+  "onClose",
+  "validator"
 ])
 
 const formRef = ref()
 const emits = defineEmits("update:modelValue");
 
-const { systemConfirm } = useUtils();
+const { systemConfirm, resetForm } = useUtils();
 const i18n = useI18n();
+console.log('formRef', formRef)
 
 
 const doSubmit = async (formRef) => {
@@ -48,33 +51,36 @@ const doSubmit = async (formRef) => {
     emits("update:modelValue", false)
     return;
   }
-  await formRef.validate((valid, fields) => {
-    if(valid) {
-      props.doFormSubmit()
-      .then(() => {
-        emits("update:modelValue", false)
-      })
-    } else {
-      console.log("submit error!", fields)
-    }
-  });
+  const promise = [
+    Promise.resolve(formRef.validate()), 
+    Promise.resolve(props.validator())
+  ];
+
+  const [formValid, customValid] = await Promise.all(promise);
+  if(formValid && customValid) {
+    await props.doFormSubmit();
+    emits("update:modelValue", false)
+  }
 }
 
-const doReset = (formRef) => {
+const confirmReset = (formRef) => {
   systemConfirm(
     i18n.t("confirm.resetform"),
-    () => {
-      if(!formRef) return;
-      props.doFormReset() ?? resetForm(formRef);
-    }
+    () => handleReset(formRef)
   )
+}
+
+const handleReset = (formRef) => {
+  props.doFormReset && props.doFormReset();
+  resetForm(formRef);
 }
 
 const handleClose = (formRef) => {
   if(props.onClose) {
     props.onClose();
   }
-  resetForm(formRef);
+  handleReset(formRef);
 }
+
 
 </script>

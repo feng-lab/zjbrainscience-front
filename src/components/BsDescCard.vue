@@ -1,13 +1,18 @@
 <template>
   <div class="display">
     <div class="display--icon">
-      <el-icon :color="iconColor"><component :is="icon"/></el-icon>
+      <bs-icon-img 
+        :icon-color="iconColor" 
+        :icon="icon"
+        :size="36"
+      />
     </div>
     <div class="display--title">{{ title }}</div>
     <div class>{{ desc }}</div>
   </div>
 </template>
 <script setup>
+import BsIconImg from "@/components/BsIconImg.vue";
 defineProps({
   title: String,
   desc: String,
@@ -22,9 +27,6 @@ defineProps({
   background-color: #F2F3F5;
   padding: 24px;
   height: 100%;
-  &--icon {
-    font-size: 36px;
-  }
   &--title {
     font-size: 18px;
     font-weight: 600;
