@@ -5,6 +5,7 @@
 <script setup>
 import VChart from "vue-echarts";
 import "echarts-liquidfill";
+
 import { computed } from "vue";
 
 const props = defineProps({

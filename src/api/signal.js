@@ -1,3 +1,3 @@
 import request from "@/utils/request";
 
-export function uploadSearchFile() {}
+export function uploadSearchFileApi() {}

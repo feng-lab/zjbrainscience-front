@@ -3,12 +3,12 @@
     <el-row :gutter="12" class="multiple-line-row">
       <el-col :xs="24" :sm="16" :xl="20">
         <el-button type="primary" @click="showNewForm" icon="Plus">{{ $t("button.newEx") }}</el-button>
-        <TheSortButton
+        <bs-sort-button
           :text="$t('button.sortByType')"
           :order="listParams.sortBy === 'type' && listParams.sortOrder"
           @click.prevent="setSortBy('type')"
         />
-        <TheSortButton
+        <bs-sort-button
           :text="$t('button.sortByTime')"
           :order="listParams.sortBy === 'starttime' && listParams.sortOrder"
           @click="setSortBy('starttime')"
@@ -34,17 +34,21 @@
           :lg="8"
           :xl="6"
         >
-          <TheProjectCard
+          <bs-project-card
             :title="ex.experimentsid"
-            iconColor="#faad14"
-            :icon="IconExperiment"
-            :contentStyle="{
+            icon-color="#faad14"
+            :icon="BsIconExperiment"
+            :content-style="{
               minHeight: '180px'
             }"
             :buttons="[{
               text: $t('button.detail'),
               icon: 'View',
               onClick: () => handleView(ex.experimentsid)
+            }, {
+              text: $t('button.delete'),
+              icon: 'Delete',
+              onClick: () => handleDelete(ex.experimentsid)
             }]"
           >
             <template #extra> 
@@ -57,77 +61,49 @@
             </div>
             <table>
               <tbody>
-                <TheTr icon="User" iconColor="#52c41a" :label="'Session' + $t('colon')">
+                <bs-tr icon="User" icon-color="#52c41a" :label="'Session' + $t('colon')">
                   {{ ex.numberofsessions }} 
-                </TheTr>
-                <TheTr icon="FolderOpened" iconColor="#52c41a" :label="'Trails' + $t('colon')">
+                </bs-tr>
+                <bs-tr icon="FolderOpened" icon-color="#52c41a" :label="'Trails' + $t('colon')">
                   {{ ex.numberoftrails }} 
-                </TheTr>
-                <TheTr icon="Clock" iconColor="#52c41a" :label="$t('label.startTime') + $t('colon')">
+                </bs-tr>
+                <bs-tr icon="Clock" icon-color="#52c41a" :label="$t('label.startTime') + $t('colon')">
                   {{ ex.startdate }} 
-                </TheTr>
-                <TheTr icon="Clock" iconColor="#52c41a" :label="$t('label.endTime') + $t('colon')">
+                </bs-tr>
+                <bs-tr icon="Clock" icon-color="#52c41a" :label="$t('label.endTime') + $t('colon')">
                   {{ ex.enddate }} 
-                </TheTr>
+                </bs-tr>
               </tbody>
             </table>
-          </TheProjectCard>
+          </bs-project-card>
         </el-col>
       </el-row>
-      <!--
-      <TheList>
-        <TheListItem
-          v-for="ex in exList"
-          :key="ex.experimentsid"
-          :title="ex.experimentsid"
-          :description="ex.description"
-          :actions="[{ text: $t('button.detail'), onClick: () => handleView(ex.experimentsid)}]"
-        >
-          <template #avatar>
-            <el-icon color="#faad14"><IconExperiment/></el-icon>
-          </template>
-          <template #extra>
-            <el-tag :type="statusTag[ex.experimentstype.toLowerCase()]"> 
-              {{ex.experimentstype }} 
-            </el-tag>
-          </template>
-          <TheListItemContent
-            title="Session"
-            :content="ex.numberofsessions"
-          />
-          <TheListItemContent
-            title="Trails"
-            :content="ex.numberoftrails"
-          />
-          <TheListItemContent
-            :title="$t('label.startTime')"
-            :content="ex.startdate"
-          />
-        </TheListItem>
-      </TheList>
-      -->
       <div class="load-more-btn" v-if="loadmore">
-          <el-button type="danger" @click="loadEx('more')" :loading="loading">{{$t("button.load")}}{{$t("button.more")}}</el-button>
+          <el-button type="danger" @click="loadEx('more')" :loading="loading">
+            {{$t("button.load")}}{{$t("button.more")}}
+          </el-button>
       </div>
     </el-scrollbar>
     <ExperimentsForm v-model="showForm"/>
   </el-card>
 </template>
 <script setup>
+import BsIconExperiment from "@/components/icons/BsIconExperiment.vue";
+import BsTr from "@/components/BsTr.vue";
+import ExperimentsForm from "./forms/FormExperiments.vue";
+import BsProjectCard from "@/components/BsProjectCard.vue";
+import { FolderOpened } from "@element-plus/icons-vue";
 
 import { computed, onMounted, ref } from "vue";
-import IconExperiment from "@/components/icons/IconExperiment.vue";
-import TheTr from "@/components/TheTr.vue";
-import ExperimentsForm from "./forms/FormExperiments.vue";
 import { useRouter } from "vue-router";
-import { allExByPageApi } from "@/api/experiments";
-import TheProjectCard from "@/components/TheProjectCard.vue";
+import { allExByPageApi, deleteExApi } from "@/api/experiments";
 import { useI18n } from "vue-i18n";
-import { FolderOpened } from "@element-plus/icons-vue";
-import TheStatistic from "@/components/TheStatistic.vue";
-import TheList, { TheListItem, TheListItemContent } from "@/components/list";
+import { useUtils } from "@/compositions/useUtils";
+import { ElMessage } from "element-plus";
 
 const router = useRouter();
+const i18n = useI18n();
+const { systemConfirm } = useUtils();
 
 const showForm = ref(false);
 const exList = ref([]);
@@ -145,7 +121,6 @@ const statusTag = {
   "neuronspike": "purple",
   "p300": "blue"
 }
-const i18n = useI18n();
 
 const buttons = computed(() => {
   return exid => {
@@ -192,7 +167,13 @@ const handleView = (id) => {
 }
 
 const handleDelete = (id) => {
-  console.log('handle delete experiment: ', id );
+  systemConfirm(
+    i18n.t("experiments.deleteConfirm", { id }), 
+    async () => {
+      await deleteExApi(id);
+      ElMessage.success(`${i18n.t("button.delete")}${i18n.t("status.success")}`);
+      await loadEx();
+  })
 }
 
 const setSortBy = (byLable) => {

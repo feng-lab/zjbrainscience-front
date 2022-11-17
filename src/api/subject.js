@@ -40,7 +40,7 @@ export function updateHumanSubjectApi(data) {
   })
 }
 
-export function delHumanSubjectApi(experimentsid, subjectid) {
+export function deleteHumanSubjectApi(experimentsid, subjectid) {
   return request({
     url: "/api/deleteHumanSubject",
     method: "DELETE",

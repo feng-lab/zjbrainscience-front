@@ -68,10 +68,10 @@
           :lg="6"
           :xl="4"
         >
-          <TheProjectCard
+          <bs-project-card
             :title="task.taskname"
             :description="task.starttime"
-            iconColor="#faad14"
+            icon-color="#faad14"
             icon="SetUp"
             :buttons="[{
               text: $t('button.detail'),
@@ -92,42 +92,38 @@
             <div>
               <div class="type-icon">
                 <el-icon v-if="task.tasktype.includes('预处理')" :color="statusTag[task.status].color">
-                  <IconFilter/>
+                  <bs-icon-filter/>
                 </el-icon>
                 <el-icon v-if="task.tasktype.includes('数据分析')" :color="statusTag[task.status].color">
-                  <IconAnalysis/>
+                  <bs-icon-analysis/>
                 </el-icon>
               </div>
               <div class="text-center m-t-8">
                   {{ task.tasktype }}
               </div>
             </div>
-          </TheProjectCard>
+          </bs-project-card>
         </el-col>
       </el-row>
       <div class="load-more-btn" v-if="loadmore">
           <el-button type="danger" @click="getTaskList('more')" :loading="loading">{{$t("button.load")}}{{$t("button.more")}}</el-button>
       </div>
     </el-scrollbar>
-    <TaskForm v-model="showTaskForm"/>
+    <task-form v-model="showTaskForm" @reload-task="getTaskList"/>
   </el-card>
 </template>
 <script setup>
-import TheTr from '@/components/TheTr.vue';
-import { getImgUrl } from '@/utils/common';
-import { useRouter } from 'vue-router';
-import TheIconImg from '@/components/TheIconImg.vue';
-import { onMounted, ref } from "vue";
+import BsIconFilter from "@/components/icons/BsIconFilter.vue";
+import BsIconAnalysis from "@/components/icons/BsIconAnalysis.vue";
 import TaskForm from './forms/TaskForm.vue';
-import TheProjectCard from '@/components/TheProjectCard.vue';
-import { taskByPageApi, delTask } from '@/api/task';
+import BsProjectCard from '@/components/BsProjectCard.vue';
+
+import { onMounted, ref } from "vue";
+import { useRouter } from 'vue-router';
+import { taskByPageApi, deleteTaskApi } from '@/api/task';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { useUtils } from '@/compositions/useUtils';
-import IconFilter from "@/components/icons/IconFilter.vue";
-import IconAnalysis from "@/components/icons/IconAnalysis.vue";
-import IconHourGlassProcess from "@/components/icons/IconHourGlassProcess.vue";
-import IconTask from "@/components/icons/IconTask.vue";
 
 const router = useRouter();
 console.log('router', router)
@@ -190,7 +186,7 @@ const handleDelete = (id, name) => {
   systemConfirm(
     i18n.t("task.deleteConfirm", { id, name}),
     async () => {
-      await delTask(taskid);
+      await deleteTaskApi(taskid);
       ElMessage.success(`${i18n.t("button.delete")}${i18n.t("status.success")}`);
       getTaskList();
     }

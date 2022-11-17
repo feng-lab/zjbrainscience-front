@@ -1,5 +1,5 @@
 <template>
-  <TheFormDialog
+  <bs-form-dialog
     :title="title"
     :form-model="subjectForm"
     :do-form-submit="handleSubmit"
@@ -110,23 +110,18 @@
         v-model="subjectForm.inputaddress"
       />
     </el-form-item>
-  </TheFormDialog>
+  </bs-form-dialog>
 </template>
 <script setup>
-import { 
-  inject, 
-  ref, 
-  watch, 
-  computed 
-} from "vue";
+import BsFormDialog from "@/components/BsFormDialog.vue";
+
+import { inject, ref, watch, computed } from "vue";
 import { 
   humanSubjectDetailApi, 
   newHumanSubjectApi, 
   updateHumanSubjectApi 
 } from "@/api/subject";
 import { useI18n } from "vue-i18n";
-
-import TheFormDialog from "@/components/TheFormDialog.vue";
 
 const props = defineProps({
   subjectid: [String, Number]

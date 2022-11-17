@@ -2,9 +2,7 @@
   <tr>
     <td class="m-r-8">
       <div class="cell-item">
-        <el-icon :color="iconColor" class="m-r-4">
-          <component :is="icon"/>
-        </el-icon>
+        <bs-icon-img :icon="icon" :icon-color="iconColor" class="m-r-4"/>
         {{ label }}
       </div>
     </td>
@@ -12,6 +10,8 @@
   </tr>
 </template>
 <script setup>
+import BsIconImg from "@/components/BsIconImg.vue";
+
 defineProps({
   label: String,
   icon: String,

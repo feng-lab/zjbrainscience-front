@@ -1,13 +1,13 @@
 <template>
   <el-sub-menu v-if="menu?.children?.length">
     <template #title>
-      <MenuIcon :meta="menu.meta"/>
+      <bs-icon-img v-if="menu?.meta?.icon" :icon="menu.meta.icon"/>
       <span class="">{{ $t(`menus.${menu.name}`) }}</span>
     </template>
-    <MenuContent v-for="child in menu.children" :key="child.path" :menu="child" :parentPath="menu.path"/>
+    <bs-menu-content v-for="child in menu.children" :key="child.path" :menu="child" :parent-path="menu.path"/>
   </el-sub-menu>
   <el-menu-item :index="index" v-else>
-      <MenuIcon :meta="menu.meta"/>
+      <bs-icon-img v-if="menu?.meta?.icon" :icon="menu.meta.icon"/>
       <template #title>
         <span>{{ $t(`menus.${menu.name}`) }}</span>
       </template>
@@ -15,8 +15,10 @@
 </template>
 
 <script setup>
+import BsIconImg from "@/components/BsIconImg.vue";
+
 import { computed } from "vue";
-import MenuIcon from "./MenuIcon.vue";
+
 const props = defineProps({
   menu: Object,
   parentPath: String

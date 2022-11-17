@@ -1,5 +1,5 @@
 <template>
-  <TheFormDialog
+  <bs-form-dialog
     :title="title"
     :do-form-submit="doFormSubmit"
     :do-form-reset="handleReset"
@@ -37,13 +37,14 @@
       </div>
     </el-dialog>
 
-  </TheFormDialog>
+  </bs-form-dialog>
 </template>
 <script setup>
+import BsFormDialog from '@/components/BsFormDialog.vue';
+
 import { computed, inject, ref, toRef } from "vue";
-import TheFormDialog from '@/components/TheFormDialog.vue';
 import { useUpload } from "@/compositions/useUpload";
-import { newParadigmApi, paradigmByIdApi } from "@/api/experiments";
+import { newParadigmApi, paradigmDetailApi } from "@/api/experiments";
 import { ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
 
@@ -51,7 +52,7 @@ const props = defineProps({
   paradigmId: Number
 })
 
-const emits = defineEmits(["formclosed"]);
+const emits = defineEmits(["formClosed"]);
 const loading = ref(false);
 
 const i18n = useI18n();
@@ -102,7 +103,7 @@ const handleOpen = async () => {
   const { paradigmId } = props;
   if(paradigmId) {
     loading.value = true;
-    const res = await paradigmByIdApi(experimentid, paradigmId);
+    const res = await paradigmDetailApi(experimentid, paradigmId);
     loading.value = false;
     files.value = res.imgUrl.map(url => ({ url }))
     paradigmForm.value.desc = res.desc;

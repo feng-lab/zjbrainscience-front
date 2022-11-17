@@ -33,8 +33,14 @@ export default {
   },
   sessionExpire: "Your session has expired, please log in again!",
   valid: {
-    require: "{field} is required",
-    newParadigm: "The image or the description is needed!"
+    require: "Please {action} {field}",
+    checked: "Please select at least one",
+    newParadigm: "Please upload pictures or input the description!",
+    taskstep: "Please add at least one step"
+  },
+  action: {
+    input: "input",
+    select: "select"
   },
   button: {
     login: "Login",
@@ -116,11 +122,11 @@ export default {
       paradigm: "Paradigm",
       device: "Device",
     },
-    deleteConfirm: "Are you sure to delete {target}-{id} from the experiment?"
+    deleteConfirm: "Are you sure to delete the experiment (ID: {id})?"
   },
   paradigm: {
     text: "Paradigm",
-    deleteConfirm: "Are you sure to delete this paradigm?",
+    deleteConfirm: "Are you sure to delete the paradigm (ID: {id})?",
     formlabel: {
       image: "Images",
       description: "Description"
@@ -156,6 +162,7 @@ export default {
       dog: "Puppy",
       pig: "Swine"
     },
+    deleteConfirm: "Are you sure to delete the subject(ID: {id}) from the current experiment?"
   },
   device: {
     text: "Equipment",
@@ -163,7 +170,8 @@ export default {
     name: "Name",
     type: "Type",
     purpose: "Purpose",
-    index: "Index"
+    index: "Index",
+    deleteConfirm: "Are you sure to delete the device(ID: {id}) from the current experiment?"
   },
   task: {
     deleteConfirm: "Are you sure to delete task: {name}(ID:{id})",
@@ -202,7 +210,17 @@ export default {
       analysis: "Analysis",
       fa: "Filter/Analysis"
     },
-    delTip: "Delete the current step"
+    stepResult: {
+      "0": {
+        title: "Execution Failed!",
+        subTitle: "The execution of this step failed!"
+      },
+      "1" : {
+        title: "Executing!",
+        subTitle: "This step has not been completed, please wait for a moment!"
+      }
+    },
+    delTip: "Delete the current step",
   },
   search: {
     card: {

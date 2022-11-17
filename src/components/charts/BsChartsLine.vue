@@ -3,15 +3,16 @@
 </template>
 
 <script setup>
-import { useCharts } from "@/compositions/useCharts";
 import { LineChart } from "echarts/charts";
 import {
   GridComponent,
   DataZoomComponent,
 } from "echarts/components";
 import VChart from "vue-echarts";
-import { computed, ref, watch } from "vue";
+
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useCharts } from "@/compositions/useCharts";
 
 const props = defineProps({
   title: String,
@@ -20,7 +21,7 @@ const props = defineProps({
   stack: String,
   option: Object,
   series: Object,
-  isArea: Boolean,
+  area: Boolean,
 });
 
 const chartRef = ref();
@@ -41,7 +42,7 @@ let series = {
   ...props.series
 }
 
-if(props.isArea) {
+if(props.area) {
   series = { 
     ...series, 
     areaStyle: props?.series?.areaStyle ?? {

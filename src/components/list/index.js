@@ -1,9 +1,9 @@
-import TheList from "./TheList.vue";
-import TheListItem from "./TheListItem.vue";
-import TheListItemContent from "./TheListItemContent.vue";
+import BsList from "./BsList.vue";
+import BsListItem from "./BsListItem.vue";
+import BsListItemContent from "./BsListItemContent.vue";
 
 export {
-    TheListItem,
-    TheListItemContent
+    BsListItem,
+    BsListItemContent
 }
-export default TheList;
+export default BsList;

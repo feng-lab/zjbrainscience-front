@@ -7,22 +7,23 @@
         color: showDrawer? '#606266': '#fff'
     }"
   >
-    <TheLogo
-      imgSrc="/logo.png"
+    <bs-logo
+      img-src="/logo.png"
       :title="isCollapse ? '' : 'Brain Science'"
     />
-    <TheMenu
+    <bs-menu
       :menus="menus"
     />
   </el-scrollbar>
 </template>
 <script setup>
-import TheLogo from "@/components/TheLogo.vue";
-import TheMenu from "@/components/menu/TheMenu.vue";
+import BsLogo from "@/components/BsLogo.vue";
+import BsMenu from "@/components/menu/BsMenu.vue";
+
+import { computed } from "vue";
 import menus from "@/router/menu";
 import useGlobalStore from "@/stores/global";
 import { storeToRefs } from "pinia";
-import { computed } from "vue";
 
 const globalStore = useGlobalStore();
 const { isCollapse, asideWidth, showDrawer } = storeToRefs(globalStore);

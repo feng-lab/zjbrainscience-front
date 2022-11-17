@@ -8,6 +8,16 @@ export function newExApi(data) {
   })
 }
 
+export function deleteExApi(experimentsid) {
+  return request({
+    url: "/api/deleteExperiments",
+    method: "DELETE",
+    data: {
+      experimentsid
+    }
+  })
+}
+
 export function allExByPageApi(params) {
   return request({
     url: "/api/getExperimentsByPage",
@@ -16,7 +26,7 @@ export function allExByPageApi(params) {
   })
 }
 
-export function exByIdApi(experimentsid) {
+export function exDetailApi(experimentsid) {
   return request({
     url: "/api/getExperimentsById",
     method: "GET",
@@ -48,7 +58,7 @@ export function paradigmsByExApi(experimentsid) {
   })
 }
 
-export function paradigmByIdApi(experimentsid, id) {
+export function paradigmDetailApi(experimentsid, id) {
   return request({
     url: "/api/getParadigmById",
     method: "GET",
@@ -59,7 +69,7 @@ export function paradigmByIdApi(experimentsid, id) {
   })
 }
 
-export function delParadigmApi(experimentsid, id) {
+export function deleteParadigmApi(experimentsid, id) {
   return request({
     url: "/api/deleteParadigms",
     method: "DELETE",

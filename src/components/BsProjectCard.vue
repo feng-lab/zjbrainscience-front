@@ -3,7 +3,7 @@
     <div class="project-card-header">
       <div class="between-flex">
         <span class="center-flex project-card-header--title">
-          <TheIconImg :icon="icon" :iconColor="iconColor" :size="24" class="m-r-4"/>
+          <bs-icon-img :icon="icon" :icon-color="iconColor" :size="24" class="m-r-4"/>
           <span class="m-r-8"> {{ title }} </span>
           <slot name="titletail"></slot>
         </span>
@@ -23,14 +23,14 @@
         @click="btn.onClick"
         class="project-card-footer--action center-flex"
       >
-        <TheIconImg :icon="btn.icon"/> 
+        <bs-icon-img :icon="btn.icon"/> 
         <span class="m-l-4">{{ btn.text }}</span>
       </span>
     </div>
   </div>
 </template>
 <script setup> 
-import TheIconImg from "@/components/TheIconImg.vue";
+import BsIconImg from "@/components/BsIconImg.vue";
 
 defineProps({
   icon: {

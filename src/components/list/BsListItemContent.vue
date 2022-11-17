@@ -1,13 +1,14 @@
 <template>
     <div class="the-list-content-item">
         <div class="the-list-content-item--title"> 
-          <TheIconImg :icon="icon" v-if="icon"/>
+          <bs-icon-img :icon="icon" v-if="icon"/>
           {{ title }} 
         </div>
         <div class="the-list-content-item--content"> {{ content }} </div>
     </div>
 </template>
 <script setup>
+import BsIconImg from "@/components/BsIconImg.vue";
 defineProps({
     title: String,
     icon: String,

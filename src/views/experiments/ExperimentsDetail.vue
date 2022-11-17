@@ -7,10 +7,10 @@
       class="m-b-24"
     >
       <template #extra>
-        <TheRouteLink path="/experiments" type="danger">
+        <bs-route-link path="/experiments" type="danger">
           <el-icon><CaretLeft /></el-icon>
           {{ $t("button.back") }}
-        </TheRouteLink>
+        </bs-route-link>
       </template>
       <el-descriptions-item :label="$t('experiments.detail.exId')" align="center">
         {{ experimentid }}
@@ -47,13 +47,14 @@
   
 </template>
 <script setup>
-import { ref, provide, onMounted } from "vue";
 import DetailParadigm from "./detail/DetailParadigm.vue";
 import DetailFiles from "./detail/DetailFiles.vue";
 import DetailSubject from "./detail/DetailSubject.vue";
 import DetailEquipment from "./detail/DetailEquipment.vue";
-import TheRouteLink from "../../components/TheRouteLink.vue";
-import { exByIdApi } from "@/api/experiments";
+import BsRouteLink from "@/components/BsRouteLink.vue";
+
+import { ref, provide, onMounted } from "vue";
+import { exDetailApi } from "@/api/experiments";
 
 const props = defineProps({
   experimentid: String
@@ -68,7 +69,7 @@ provide('filePath', exForm.value.datapath);
 const activeName = ref("paradigm");
 
 onMounted(async () => {
-  exForm.value = await exByIdApi(props.experimentid);
+  exForm.value = await exDetailApi(props.experimentid);
 })
 
 

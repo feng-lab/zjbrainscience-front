@@ -2,7 +2,7 @@
   <div :class="['the-message', 'p-8', { readed: message.status }]"  >
     <el-avatar 
       class="the-message--avatar"
-      :icon="message.status ? IconReaded: IconNotRead"
+      :icon="message.status ? BsIconReaded: BsIconNotRead"
     >
     </el-avatar> 
     <div>
@@ -19,8 +19,8 @@
   </div>
 </template>
 <script setup>
-import IconReaded from "@/components/icons/IconReaded.vue";
-import IconNotRead from "@/components/icons/IconNotRead.vue";
+import BsIconReaded from "@/components/icons/BsIconReaded.vue";
+import BsIconNotRead from "@/components/icons/BsIconNotRead.vue";
 defineProps({
   message: Object
 })

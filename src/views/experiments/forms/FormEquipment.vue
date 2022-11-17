@@ -1,5 +1,5 @@
 <template>
-  <TheFormDialog
+  <bs-form-dialog
     :form-model="equipmentForm"
     :do-form-submit="handleSubmit"
     :on-close="handleClose"
@@ -30,11 +30,12 @@
         v-model="equipmentForm.index"
       />
     </el-form-item>
-  </TheFormDialog>
+  </bs-form-dialog>
 </template>
 <script setup>
+import BsFormDialog from '@/components/BsFormDialog.vue';
+
 import { ref, inject, computed, watch } from "vue";
-import TheFormDialog from '@/components/TheFormDialog.vue';
 import { 
   deviceDetailApi, 
   newDeviceApi, 

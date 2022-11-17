@@ -1,5 +1,5 @@
 <template>
-  <TheTable
+  <bs-table
     ref="tableRef"
     :columns="columns"
     :button-list="buttonList"
@@ -11,17 +11,17 @@
       <el-divider direction="vertical"/>
       <el-button link type="primary" size="small" @click="handleDelete(row.subjectid)">{{ $t("button.delete") }}</el-button>
     </template>
-  </TheTable>
-  <FormSubject v-model="showSubjectForm" v-model:subjectid="viewSubject"/>
+  </bs-table>
+  <form-subject v-model="showSubjectForm" v-model:subjectid="viewSubject"/>
   
 </template>
 <script setup>
-
-import { reactive, ref, computed, inject } from "vue";
-import TheTable from '@/components/TheTable.vue';
+import BsTable from '@/components/BsTable.vue';
 import FormSubject from '../forms/FormSubject.vue';
+
+import { ref, computed, inject } from "vue";
 import { useI18n } from "vue-i18n";
-import { humanSubjectApi, delHumanSubjectApi } from "@/api/subject"
+import { humanSubjectApi, deleteHumanSubjectApi } from "@/api/subject"
 import { useUtils } from "@/compositions/useUtils";
 import { ElMessage } from "element-plus";
 
@@ -73,12 +73,11 @@ const handleView = (subjectid) => {
 
 const handleDelete = (subjectid) => {
   systemConfirm(
-    i18n.t("experiments.deleteConfirm", {
-      target: i18n.t("subject.text"),
+    i18n.t("subject.deleteConfirm", {
       id: subjectid
     }),
     async () => {
-      await delHumanSubjectApi({
+      await deleteHumanSubjectApi({
         experimentsid,
         subjectid
       });

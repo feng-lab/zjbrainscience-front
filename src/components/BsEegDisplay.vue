@@ -1,5 +1,5 @@
 <template>
-  <ChartsLine 
+  <bs-charts-line
     :option="option" 
     :style="style"
     ref="chartRef"
@@ -8,7 +8,8 @@
 </template>
 
 <script setup> 
-import ChartsLine from '@/components/charts/ChartsLine.vue';
+import BsChartsLine from '@/components/charts/BsChartsLine.vue';
+
 import { onMounted, ref, watch } from "vue";
 const props = defineProps({
   eegData: {

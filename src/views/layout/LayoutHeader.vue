@@ -11,7 +11,7 @@
         @click="toggleDrawer"
         class="header-icon hidden-md-and-up"
       >
-        <IconMenu/>
+        <bs-icon-menu/>
       </el-icon>
     </div>
     <div class="header-content--right">
@@ -34,7 +34,7 @@
               </div>
               <el-empty v-if="nodata" class="message-nodata" :image-size="32"/>
               <template v-else>
-                <TheNoticeMsg 
+                <bs-notice-msg
                   v-for="(message, index) in msgList"
                   @click="handleClickMsg(message.id, index, message.status)"
                   :key="message.id"
@@ -43,7 +43,7 @@
               </template>
               <div class="message-button">
                 <el-button link :disabled="nodata" @click="markAll">
-                  <el-icon><IconClear/></el-icon>
+                  <el-icon><bs-icon-clear/></el-icon>
                   {{ $t("button.read") }}
                 </el-button>
                 <el-divider direction="vertical"/>
@@ -59,7 +59,7 @@
         <el-dropdown>
           <span class="avatar">
             <el-icon>
-              <IconAvatar/>
+              <bs-icon-avatar/>
             </el-icon>
             {{ user.name }} 
           </span>
@@ -71,24 +71,23 @@
         </el-dropdown> 
       </div>
       <div class="action">
-        <TheLangChange
-        />
+        <bs-lang-change/>
       </div>
     </div>
   </div>
 </template>
 <script setup>
+import BsIconMenu from "@/components/icons/BsIconMenu.vue";
+import BsLangChange from "@/components/BsLangChange.vue";
+import BsIconAvatar from "@/components/icons/BsIconAvatar.vue";
+import BsIconClear from "@/components/icons/BsIconClear.vue";
+
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import useGlobalStore from "@/stores/global";
 import useUserStore from "@/stores/user";
 import { storeToRefs } from "pinia";
-import IconMenu from "@/components/icons/IconMenu.vue";
-import TheLangChange from "@/components/TheLangChange.vue";
-import IconAvatar from "@/components/icons/IconAvatar.vue";
-import IconClear from "@/components/icons/IconClear.vue";
 import jsCookie from "js-cookie";
-
 import { unReadMsgApi, markMsgApi } from "@/api/common"; 
 
 const router = useRouter();

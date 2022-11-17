@@ -1,38 +1,38 @@
 <template>
   <el-row :gutter="8" class="multiple-line-row">
     <el-col :xs="24" :sm="12" :md="6">
-      <TheInfoCard
+      <bs-info-card
         :title="$t('term.experiment')"
         :info="statistic.experiments"
-        :imgSrc="ExperimentImg"
+        :img-src="ExperimentImg"
       />
     </el-col>
     <el-col :xs="24" :sm="12" :md="6">
-      <TheInfoCard
+      <bs-info-card
         :title="$t('term.file')"
         :info="statistic.files"
-        :imgSrc="FileImg"
+        :img-src="FileImg"
       />
     </el-col>
     <el-col :xs="24" :sm="12" :md="6">
-      <TheInfoCard
+      <bs-info-card
         :title="$t('term.subject')"
         :info="statistic.human"
-        :imgSrc="SickImg"
+        :img-src="SickImg"
       />
     </el-col>
     <el-col :xs="24" :sm="12" :md="6">
-      <TheInfoCard
+      <bs-info-card
         :title="$t('term.task')"
         :info="statistic.taskmaster"
-        :imgSrc="TaskImg"
+        :img-src="TaskImg"
       />
     </el-col>
   </el-row>
   <el-row :gutter="8" class="multiple-line-row">
     <el-col :xs="24" :sm="12" :md="8">
       <el-card shadow="hover" :header="$t('home.charts.dataType')">
-        <ChartsPie 
+        <bs-charts-pie
           :data="dataType" 
           style="height:300px"
           :series="{
@@ -43,17 +43,17 @@
     </el-col>
     <el-col :xs="24" :sm="12" :md="8">
       <el-card shadow="hover" :header="$t('home.charts.subject')">
-        <ChartsBar :dataset="subject" style="height:300px" stack="total"/>
+        <bs-charts-bar :dataset="subject" style="height:300px" stack="total"/>
       </el-card>
     </el-col>
     <el-col :xs="24" :sm="12" :md="8">
       <el-card shadow="hover" :header="$t('home.charts.server')">
-        <charts-liquid :data="server" style="height: 300px"/>
+        <bs-charts-liquid :data="server" style="height: 300px"/>
       </el-card>
     </el-col>
     <el-col :xs="24" :sm="12" :md="8">
       <el-card shadow="hover" :header="$t('home.charts.sick')">
-        <ChartsBar
+        <bs-charts-bar
           style="height: 300px"
           :dataset="sickInfo"
         />
@@ -81,9 +81,9 @@
           </div>
         </template>
 
-        <ChartsLine 
+        <bs-charts-line
           style="height: 300px" 
-          isArea
+          area
           :option="{
             xAxis: {
               type: 'time',
@@ -131,12 +131,13 @@ import ExperimentImg from "@/assets/img/experiment.svg";
 import FileImg from "@/assets/img/file.svg";
 import SickImg from "@/assets/img/sick.svg";
 import TaskImg from "@/assets/img/task.svg";
-import TheInfoCard from '@/components/TheInfoCard.vue';
-import ChartsPie from "@/components/charts/ChartsPie.vue";
+import BsInfoCard from '@/components/BsInfoCard.vue';
+import BsChartsPie from "@/components/charts/BsChartsPie.vue";
+import BsChartsBar from "@/components/charts/BsChartsBar.vue";
+import BsChartsLine from "@/components/charts/BsChartsLine.vue";
+import BsChartsLiquid from "@/components/charts/BsChartsLiquid.vue";
+
 import { onMounted, onUnmounted, ref } from "vue";
-import ChartsBar from "@/components/charts/ChartsBar.vue";
-import ChartsLine from "@/components/charts/ChartsLine.vue";
-import ChartsLiquid from "@/components/charts/ChartsLiquid.vue";
 import { useShortcuts } from "@/compositions/useShortcuts";
 import { 
   statisticApi, 

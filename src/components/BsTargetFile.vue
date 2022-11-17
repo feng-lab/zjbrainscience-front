@@ -1,8 +1,8 @@
 <template>
   <el-dialog 
     v-model="visible" 
-    @closed="handleClose" 
     append-to-body
+    @close="handleClose"
     :title="$t('label.targetFile')"
   >
     <el-scrollbar height="400px">
@@ -18,7 +18,7 @@
     </el-scrollbar>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="handleCancel">{{ $t("button.cancel") }}</el-button>
+        <el-button @click="handleClose">{{ $t("button.cancel") }}</el-button>
         <el-button type="primary" @click="handleSubmit">{{ $t("button.submit") }}</el-button>
       </span>
     </template>
@@ -32,14 +32,12 @@ const props = defineProps({
   selectFile: Array,
 });
 
+
 const emits = defineEmits(["update:selectFile", "update:visible"]);
 
 const tableRef = ref();
 
 const handleClose = () => {
-    tableRef.value.clearSelection();
-}
-const handleCancel = () => {
     emits("update:visible", false);
 }
 
@@ -47,4 +45,15 @@ const handleSubmit = () => {
     emits("update:selectFile", tableRef.value.getSelectionRows());
     emits("update:visible", false);
 }
+
+const clearSelect = () => {
+  console.log('clear select', tableRef)
+  if(tableRef.value) {
+    tableRef.value.clearSelection();
+  }
+}
+
+defineExpose({
+  clearSelect
+})
 </script>

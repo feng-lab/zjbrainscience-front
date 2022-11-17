@@ -3,11 +3,10 @@
     <template #header>
       <div class="between-flex">
         <span>{{ taskinfo.taskname }}</span>
-
-      <TheRouteLink path="/task" type="danger">
-        <el-icon><CaretLeft /></el-icon>
+      <bs-route-link path="/task" type="danger">
+        <el-icon><caret-left/></el-icon>
         {{ $t("button.back") }}
-      </TheRouteLink>
+      </bs-route-link>
       </div>
     </template>
     <el-descriptions 
@@ -52,7 +51,7 @@
         @click="handleClickStep(step)"
         :class="['task-step', {'diplay': step.operationid === displayStep.operationid }]"
         :description="step.operationname"
-        :status="stepInfo[step.status].status"
+        :status="STEP_INFO[step.status].status"
       >
         <template #title> 
           <div class="task-step--title">
@@ -60,9 +59,9 @@
           </div>
         </template>
         <template #icon> 
-          <TheIconImg
-            :icon="stepInfo[step.status].icon"
-            :iconColor="stepInfo[step.status].color"
+          <bs-icon-img
+            :icon="STEP_INFO[step.status].icon"
+            :iconColor="STEP_INFO[step.status].color"
             :size="24"
             :loading="step.status === '2'"
           />
@@ -70,7 +69,7 @@
       </el-step>
     </el-steps>
   </el-card>
-  <el-card>
+  <el-card class="task-result">
     <template #header>
       <div class="between-flex">
         <span>{{ $t("task.card.result") }} 
@@ -79,61 +78,40 @@
         <el-button type="primary" link v-if="displayStep?.operationtype === '数据分析'">{{ $t("button.download") }}</el-button>
       </div>
     </template>
-    <div v-if="displayStep && displayStep.status === '1'">
-      <ChartsLine 
-        style="height: 300px"
-        v-if="displayStep.operationtype === '预处理'" 
-        :data="chartsData"
-        :option="{
-            xAxis: {
-              type: 'time',
-              boundaryGap: false,
-              axisLabel: {
-                formatter: '{yyyy}-{MM}-{dd}'
-              }
-            },
-            yAxis: {
-              type: 'value',
-            },
-          }"
-      />
-      <el-image :src="imgSrc" :preview-src-list="[imgSrc]" v-else style="height: 300px" fit="fill"/>
-    </div>
-    <div v-else> 
-      <el-result
-        icon="warning"
-        title="未有执行结果"
-        sub-title="当前任务未执行完成或执行错误"
-      />
-    </div>
+    <template v-if="displayStep">
+      <task-result-error v-if="displayStep.status === '0'"/>
+      <task-result-success v-if="displayStep.status === '1'" :step="displayStep" :taskid="taskid"/>
+      <task-result-process v-if="displayStep.status === '2'"/>
+    </template>
+    <template v-else> 
+      <el-empty/>
+    </template>
   </el-card>
 </template>
 
 <script setup>
+import { Loading } from '@element-plus/icons-vue';
+import TaskResultSuccess from './results/TaskResultSuccess.vue';
+import TaskResultProcess from './results/TaskResultProcess.vue';
+import TaskResultError from './results/TaskResultError.vue';
+import BsRouteLink from "@/components/BsRouteLink.vue";
+
+import { onMounted, ref } from 'vue';
+import { onBeforeRouteUpdate } from "vue-router";
 import { 
   taskDetailApi,
-  filterResultApi,
-  analysisResultApi
  } from '@/api/task';
-import { Loading } from '@element-plus/icons-vue';
-import ChartsLine from '@/components/charts/ChartsLine.vue';
-import { onMounted, ref, watch } from 'vue';
-import { onBeforeRouteUpdate } from "vue-router";
 
 const props = defineProps({
   taskid: String
 })
 
 
-const stepInfo = {
+const STEP_INFO = {
   "0": {status: "error", color: "var(--el-color-danger)", icon: "CircleClose"},
   "1": {status: "success", color: "var(--el-color-primary)", icon: "CircleCheck"},
   "2": {status: "process", color: "var(--el-color-blue)", icon: "Loading"}
 }
-
-const chartsData = ref();
-const imgSrc = ref();
-
 
 const taskinfo = ref({
   taskid:"", 
@@ -150,10 +128,7 @@ const taskinfo = ref({
 
 
 onBeforeRouteUpdate((to, from) => {
-      //仅当 id 更改时才获取用户，例如仅 query 或 hash 值已更改
   if (to.params.taskid !== from.params.taskid) {
-    console.log('to', to.params.taskid)
-    console.log('from', from.params.taskid)
     getTask(to.params.taskid);
   }
 })
@@ -177,26 +152,6 @@ const handleClickStep = (step) => {
   displayStep.value = step;
 }
 
-watch(displayStep, async () => {
-  console.log('display', displayStep)
-  if(displayStep.value) {
-  const { operationtype, operationid } = displayStep.value;
-  console.log(operationtype , displayStep)
-  if(operationtype === "预处理") {
-    chartsData.value = await filterResultApi({
-      taskid: props.taskid,
-      operationid
-    })
-  } else {
-    imgSrc.value = await analysisResultApi({
-      taskid: props.taskid,
-      operationid
-    })
-
-  }
-  }
-})
-
 
 </script>
 
@@ -207,6 +162,15 @@ watch(displayStep, async () => {
   }
   &--title {
     cursor: pointer;
+  }
+}
+
+.task-result {
+  .el-result {
+    padding: 12px;
+    :deep(.el-result__title) {
+      margin-top: 0;
+    }
   }
 }
 

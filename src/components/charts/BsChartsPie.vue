@@ -3,10 +3,11 @@
 </template>
 
 <script setup>
-import { useCharts } from "@/compositions/useCharts";
 import { PieChart } from "echarts/charts";
 import VChart from "vue-echarts";
-import { ref, computed } from "vue";
+
+import { computed } from "vue";
+import { useCharts } from "@/compositions/useCharts";
 
 const props = defineProps({
   title: String,
@@ -15,7 +16,6 @@ const props = defineProps({
   series: Object,
 });
 
-console.log('props', props);
 const { initOption } = useCharts(props.title, [PieChart])
 
 const seriesCenterV = props.title ? "60%" : "50%";
@@ -37,7 +37,6 @@ const option = computed(() => ({
   ...props.option
 }))
 
-console.log('pie option', option)
 
 </script>
 <style scoped lang="scss">
