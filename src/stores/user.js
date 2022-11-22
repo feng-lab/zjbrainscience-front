@@ -11,19 +11,23 @@ const useUserStore = defineStore("user", () => {
 
   const doLogin = async (userForm) => {
     console.log('router', router)
-    await loginApi(userForm);
-    user.value.name = userForm.account;
-    jsCookie.set("account", user.value.name);
-    const path = router.currentRoute.value.query.from;
-    router.push(path ?? "/")
+    const res = await loginApi(userForm);
+    user.value.name = userForm.username;
+    jsCookie.set("username", user.value.name);
+    jsCookie.set("access_token", res.access_token);
+    jsCookie.set("token_type", res.token_type);
+    const { from="/" }= router.currentRoute.value.query;
+    console.log('path', from)
+    router.push(from);
   }
 
   const doLogout = async () => {
-    const account = user.value.name;
     user.value.name = "";
-    jsCookie.remove("account");
+    await logoutApi();
+    jsCookie.remove("username");
+    jsCookie.remove("access_token");
+    jsCookie.remove("token_type");
     router.push("/login")
-    await logoutApi(account);
   }
 
   return {
