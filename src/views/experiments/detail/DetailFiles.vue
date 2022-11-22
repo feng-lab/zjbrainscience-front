@@ -18,8 +18,10 @@
           :class="[listType]"
         >
           <template #trigger> 
-            <el-button type="primary" @click="handleBatchUpload" icon="Upload">批量上传</el-button>
+            <el-button type="primary" @click="handleBatchUpload" icon="Upload">{{ $t("button.bulkUpload")}}</el-button>
+            <!--
             <el-button type="primary" @click="handleZipUpload" icon="UploadFilled">压缩上传</el-button>
+            -->
           </template>
           <el-radio-group class="right" v-model="docType" @change="handleTypeChange">
             <el-radio-button label="ALL">{{ $t("button.all") }}</el-radio-button>
@@ -69,8 +71,9 @@
       </el-card>
     </el-col>
     <el-col :lg="listType === 'text' ? 16 : 24 " :xs="24">
-      <el-scrollbar height="780px" ref="scrollRef" @scroll="handleScroll">
-        <el-card v-if="viewFile" class="m-b-16">
+      <el-scrollbar height="800px" ref="scrollRef" @scroll="handleScroll">
+        <el-card v-if="viewFile" class="m-b-16" header="EEG文件">
+          <!--
           <template #header> 
             <div class="between-flex"> 
               <div>{{ `数据文件 - ${viewFile.name}` }}</div>
@@ -97,7 +100,13 @@
               </div>
             </div>
           </template>
-          <bs-eeg-display :eeg-data="eegData"/>
+          <bs-eeg-display :eeg-data="eegData" chart-height="700"/>
+          -->
+          <bs-eeg-view
+            :file="viewFile.name"
+            :chart-height="700"
+            multiple
+          />
         </el-card>
         <el-card :header="`视频文件 - ${viewMp4.name}`" v-if="viewMp4">
           <div style="text-align: center;" id="videoPlay">
@@ -140,6 +149,7 @@
 </template>
 <script setup>
 import BsEegDisplay from "@/components/BsEegDisplay.vue";
+import BsEegView from "@/views/eeg/BsEegView.vue";
 
 import { ref, inject, nextTick, onMounted, watch, computed } from "vue";
 import jsCookie from "js-cookie";
@@ -261,9 +271,6 @@ const handleBatchUpload = () => {
   accept.value = "";
 }
 
-const handleScroll = (data) => {
-  console.log('scrolling', data)
-}
 
 const handleChange = (uploadFile, uploadFiles) => {
   if(!accept.value) {

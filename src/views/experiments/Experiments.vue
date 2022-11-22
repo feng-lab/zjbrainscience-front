@@ -2,6 +2,7 @@
   <el-card class="m-b-16">
     <el-row :gutter="12" class="multiple-line-row">
       <el-col :xs="24" :sm="16" :xl="20">
+        <div class="button-line">
         <el-button type="primary" @click="showNewForm" icon="Plus">{{ $t("button.newEx") }}</el-button>
         <bs-sort-button
           :text="$t('button.sortByType')"
@@ -13,6 +14,7 @@
           :order="listParams.sortBy === 'starttime' && listParams.sortOrder"
           @click="setSortBy('starttime')"
         />
+        </div>
       </el-col>
       <el-col :xs="24" :sm="8" :xl="4">
         <el-input 
@@ -24,7 +26,7 @@
     </el-row>
   </el-card>
   <el-card>
-    <el-scrollbar height="780px">
+    <el-scrollbar height="var(--brain-body-scroll-height)">
       <el-row :gutter="16">
         <el-col
           v-for="ex in exList"
@@ -188,6 +190,10 @@ const setSortBy = (byLable) => {
 }
 </script>
 <style scoped lang="scss">
+
+$card-scroll-height: calc(100% - 198px);
+
+
 .info {
   display: flex;
   justify-content: space-around;

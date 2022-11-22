@@ -6,36 +6,36 @@
     :do-form-reset="handleReset"
     :form-rules="rules"
     :validator="validator"
-    @open="handleSelect"
+    @open="loadSource"
     @close="handleClose"
   >
-    <el-form-item :label="`${$t('task.detail.name')}${$t('colon')}`" prop="taskname">
+    <el-form-item :label="$t('task.detail.name') + $t('colon')" prop="taskname">
       <el-input v-model="taskForm.taskname"/>
     </el-form-item>
-    <el-form-item :label="`${$t('task.detail.desc')}${$t('colon')}`" prop="description">
+    <el-form-item :label="$t('task.detail.desc') + $t('colon')" prop="description">
       <el-input v-model="taskForm.description"/>
     </el-form-item>
-    <el-form-item :label="`${$t('task.detail.dataset')}${$t('colon')}`" required>
+    <el-form-item :label="$t('task.detail.dataset') + $t('colon')" required>
       <el-button type="primary" @click="visible=true">{{ $t("button.select") }}</el-button>
-      <span class="el-form-item__error" v-if="validating && !selectFile.length">
+      <span class="el-form-item__error" v-if="validating && !selectFiles.length">
         {{ $t("valid.checked") }}
       </span>
     </el-form-item>
-    <el-form-item v-if="selectFile.length">
+    <el-form-item v-if="selectFiles.length">
         <span>
           {{ $t("label.selected") }}
           {{ $t("colon") }}
         </span>
         <el-tag 
           class="m-r-4"
-          v-for="file in selectFile" 
+          v-for="file in selectFiles" 
           :key="file.fileid"
         > 
           {{ `${file.filename}.${file.filetype}` }}
           <bs-icon-img icon="Check"/>
         </el-tag>
     </el-form-item>
-    <el-form-item :label="`${$t('task.card.step')}${$t('colon')}`" required>
+    <el-form-item :label="$t('task.card.step') + $t('colon')" required>
       <el-button type="primary" @click="addWaveFilterStep">
         <template #icon>
           <img src="@/assets/img/analysis/waveFilter-icon.svg" class="btn-img"/>
@@ -80,8 +80,9 @@
   <bs-target-file
     ref="targetFileRef"
     v-model:visible="visible" 
-    v-model:selectFile="selectFile"
+    v-model:selectFiles="selectFiles"
     :source="source"
+    multiple
   />
   </bs-form-dialog>
 </template>
@@ -98,7 +99,7 @@ import { newTaskApi } from "@/api/task";
 import { useTargetFiles } from "@/compositions/useTargetFiles";
 import { useI18n } from "vue-i18n";
 
-const { source, visible, selectFile, handleSelect } = useTargetFiles();
+const { source, visible, selectFiles, loadSource } = useTargetFiles();
 
 const stepList = ref([]);
 const targetFileRef = ref();
@@ -159,7 +160,7 @@ const deleteStep = (index) => {
 
 const handleSubmit = () => {
     const postParams = taskForm.value;
-    postParams['checkedfile'] = selectFile.value.map(({filename, filetype, fileid}) => ({
+    postParams['checkedfile'] = selectFiles.value.map(({filename, filetype, fileid}) => ({
       filename,
       filetype,
       fileid
@@ -180,7 +181,7 @@ const handleSubmit = () => {
 const validator = async () => {
   validating.value = true;
   // 检查目标文件
-  if(!selectFile.value.length) Promise.reject("No Checked File");
+  if(!selectFiles.value.length) Promise.reject("No Checked File");
   if(!stepList.value.length) Promise.reject("No Task Step");
   for(let i=0; i < stepList.value.length; i++) {
     const step = stepList.value[i];
@@ -196,7 +197,7 @@ const validator = async () => {
 };
 
 const handleReset = () => {
-  selectFile.value = [];
+  selectFiles.value = [];
   stepList.value = [];
   targetFileRef.value.clearSelect();
   validating.value = false;

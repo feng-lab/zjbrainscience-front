@@ -6,6 +6,7 @@
   --el-color-purple: #531dab;
   --brain-header-height: 64px;
   --el-fill-color-light: #fafafa;
+  --brain-body-scroll-height: calc(100vh - 236px);
 }
 
 #app {
@@ -83,7 +84,7 @@ $dimensions: ('p': 'padding', 'm': 'margin');
   display: flex;
   justify-content: space-between;
   align-items: center;
-  @media only screen and (max-width: 374px) {
+  @media only screen and (max-width: 426px) {
     flex-direction: column;
     justify-content: center;
   }
@@ -93,6 +94,21 @@ $dimensions: ('p': 'padding', 'm': 'margin');
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.button-line {
+  display: flex;
+  align-items: center;
+  @media only screen and (max-width: 426px) {
+    flex-direction: column;
+    >* {
+      margin-bottom: 8px;
+      width: 100%;
+    }
+    .el-button + .el-button {
+      margin-left: 0;
+    }
+  }
 }
 
 .badge-icon {
@@ -167,6 +183,18 @@ $dimensions: ('p': 'padding', 'm': 'margin');
 }
 
 /** el-dialog **/
+.el-dialog {
+  @media only screen and (max-width: 1024px) and (min-width: 426px) {
+    width: 75% !important;
+  }
+  @media only screen and (max-width: 426px) {
+    width: 95% !important;
+    .el-dialog__body {
+      padding-left: 0px;
+      padding-right: 8px;
+    }
+  }
+}
 
 .el-dialog__footer {
   border-top: 1px solid var(--el-border-color-lighter);
@@ -205,4 +233,8 @@ $dimensions: ('p': 'padding', 'm': 'margin');
 /** el-form-item-error **/
 .el-form-item__error {
   zoom: .86;
+}
+
+.full-width {
+  width: 100%;
 }

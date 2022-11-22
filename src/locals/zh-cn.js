@@ -7,7 +7,7 @@ export default {
     startTime: "开始时间",
     endTime: "结束时间",
     channel: "通道选择：",
-    window: "长度选择：",
+    window: "时间窗口：",
     yes: "是",
     no: "否",
     female: "女",
@@ -18,7 +18,9 @@ export default {
     chartZoomBack: "还原",
     notice: "新通知",
     selected: "已选择",
-    targetFile: "目标数据文件"
+    targetFile: "目标数据文件",
+    nofile: "没有待搜索的文件，请先选择一个在线EEG文件或者上传本地文件！",
+    currentPage: "当前页："
   },
   confirm: {
     resetform: "确定要重置表单吗？所有字段数据将会被清除！",
@@ -60,7 +62,7 @@ export default {
     newDevice: "新增设备",
     download: "下载",
     upload: "上传文件",
-    online: "在线选择",
+    online: "在线文件",
     search: "开始检索",
     select: "点击选择",
     newFilter: "新增滤波步骤",
@@ -73,7 +75,14 @@ export default {
     ok: "确定",
     cancel: "取消",
     checkall: "全选",
-    load: "加载"
+    load: "加载",
+    prev: "前一页",
+    next: "后一页",
+    bulkUpload: "批量上传",
+    channel: "选择通道",
+    expand: "展开",
+    collapse: "收起",
+    clear: "清除"
   },
   menus: {
     management: "首页",
@@ -232,7 +241,7 @@ export default {
     card: {
       signal: "待检索信号",
       result: "检索结果"
-    }
+    },
   },
   netErrMsg: {
     "404": "该接口不存在",

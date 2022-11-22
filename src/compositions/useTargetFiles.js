@@ -4,9 +4,10 @@ import { targetFilesApi } from "@/api/files";
 export function useTargetFiles() {
     const source = ref([]);
     const visible = ref(false);
-    const selectFile = ref([]);
+    const selectFiles = ref([]);
+    const selectFile = ref();
 
-    const handleSelect = async () => {
+    const loadSource = async () => {
         source.value = await targetFilesApi();
     }
 
@@ -14,7 +15,8 @@ export function useTargetFiles() {
         source,
         visible,
         selectFile,
-        handleSelect
+        selectFiles,
+        loadSource
     }
 
 }

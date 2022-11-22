@@ -1,10 +1,9 @@
 <template>
   <bs-charts-line
     :option="option" 
-    :style="style"
+    :style="{height: `${chartHeight}px`}"
     ref="chartRef"
   />
-
 </template>
 
 <script setup> 
@@ -14,24 +13,43 @@ import { onMounted, ref, watch } from "vue";
 const props = defineProps({
   eegData: {
     type: Object,
+    required: true,
     default: {
       Stimulation: [],
       datasets: []
     }
+  },
+  toolBox: {
+    type: Boolean,
+    default: true
+  },
+  zoom: {
+    type: Boolean,
+    default: true
+  },
+  chartHeight: {
+    type: Number,
+    required: true
   }
 });
+
+console.log('props', props)
 const option = ref();
+/*
 const style= ref({
   height: `${props.eegData.datasets.length * 110}px`,
 })
+*/
 
 const chartRef = ref();
+const gridHeight = ref(100);
 
 watch(
   () => props.eegData,
   () => {
-    style.value = {
-      height: `${props.eegData.datasets.length * 110}px`,
+    const { chartHeight, eegData } = props;
+    if(eegData.datasets.length) {
+      gridHeight.value = parseInt((chartHeight - 40)/eegData.datasets.length);
     }
     getOption();
 
@@ -44,26 +62,33 @@ onMounted(()=> {
 
 const getOption = () => {
   const { Stimulation, datasets } = props.eegData; 
-  console.log('Stimulation', Stimulation)
-  console.log('datasets', )
   const xAxis = [];
   const yAxis = [];
   const grid = [];
   const series = [];
   const xAxisIndexs = [];
-  console.log('simulate', Stimulation)
+  const title = [];
   option.value = {
-
   }
   datasets.forEach((data, index) => {
     xAxisIndexs.push(index);
+    title.push({
+      show: true,
+      text: data.name,
+      left: 0,
+      bottom:  index * gridHeight.value+15,
+      textStyle: {
+        fontWeight: 'normal',
+        fontSize: 11,
+        lineHeight: gridHeight.value
+      }
+    })
     grid.push({
       id: index,
       left: 50,
-      bottom: 20 + index * 100,
+      bottom: index * gridHeight.value+20,
       right: 20,
-      width: "95%",
-      height: 100,
+      height: gridHeight.value,
     });
     xAxis.push({
       id: index,
@@ -83,10 +108,10 @@ const getOption = () => {
       //data: xData.map(x => x * 1000)
     });
     yAxis.push({
+      show: false,
       id: index,
       gridId: index,
       name: data.name,
-      nameLocation: "middle",
       axisLine: {
         show: false
       },
@@ -99,7 +124,6 @@ const getOption = () => {
       splitLine: {
         show: false
       },
-      nameRotate: 90
     });
     series.push({
       name: data.name,
@@ -124,7 +148,11 @@ const getOption = () => {
       }
     })
   });
+  chartRef.value.clearChart();
   option.value = {
+    toolbox: {
+      show: props.toolBox
+    },
     legend: {
       show: false
     },
@@ -141,20 +169,22 @@ const getOption = () => {
         return obj;
       },
       formatter: (params) => {
-        let res = `<div style="font-weight: 900;font-size: 18px">${params[0].axisValue}</div>`;
+        const width = Math.max(parseInt(params.length / 30 * 120), 120);
+        const header = `<div style="font-weight: 900;font-size: 18px; margin-bottom: 8px">${params[0].axisValue}</div>`;
+        let body = "";
         params.forEach(param => {
           const s = param.marker + 
               `<span style="font-weight: 400;margin-left: 2px"> ${param.seriesName}:</span>` + 
-              `<span style="float: right;margin-left: 20px;font-weight: 900"> ${param.value.toFixed(2)} ${datasets[param.seriesIndex].unit}</span>` + 
-              "<br/>"
-          res += `<div style="margin: 20px 0">${s}</div>`
+              `<span style="float: right;margin-left: 20px;font-weight: 900"> ${param.value.toFixed(2)} ${datasets[param.seriesIndex].unit}</span>` 
+          body += `<div style="zoom: .8;margin-right: 16px">${s}</div>`
         })
-        return `<div p>${res}</div>`;
+        return `<div style="width: ${width}px">${header}<div style="display:flex;flex-wrap: wrap">${body}</div></div>`;
       }
     },
     xAxis,
     yAxis,
     grid,
+    title,
     axisPointer: {
       link: [{
         xAxisIndex: 'all'
@@ -165,22 +195,16 @@ const getOption = () => {
           xAxisIndex: xAxisIndexs,
         },
         {
-          show: true,
+          show: props.zoom,
           xAxisIndex: xAxisIndexs,
           type: 'slider',
           bottom: 0,
+          height: 15
     }],
     series
-  }
-  console.log(option, option.value)
+  },
+  console.log('options', option.value)
 }
 
-const getHeight = () => {
-  console.log('eeddisplay')
-  return chartRef.value.getHeight();
-}
 
-defineExpose({
-  getHeight
-});
 </script>

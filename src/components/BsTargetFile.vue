@@ -6,8 +6,13 @@
     :title="$t('label.targetFile')"
   >
     <el-scrollbar height="400px">
-    <el-table :data="source" ref="tableRef">
-      <el-table-column type="selection"></el-table-column>
+    <el-table 
+      :row-style="{cursor: 'pointer'}"
+      :data="source" ref="tableRef"
+      :highlight-current-row="!multiple"
+      @current-change="handleCurrentChange"
+    >
+      <el-table-column type="selection" v-if="multiple"></el-table-column>
       <el-table-column property="filename" :label="$t('file.name')" />
       <el-table-column property="filetype" :label="$t('file.type')" />
       <el-table-column
@@ -29,28 +34,44 @@ import { ref } from "vue";
 const props = defineProps({
   visible: Boolean,
   source: Array,
-  selectFile: Array,
+  selectFiles: Array,
+  selectFile: String,
+  multiple: {
+    type: Boolean,
+    default: false
+  }
 });
 
 
-const emits = defineEmits(["update:selectFile", "update:visible"]);
+
+const emits = defineEmits([
+  "update:selectFiles", 
+  "update:selectFile", 
+  "update:visible",
+]);
 
 const tableRef = ref();
+const currentRow = ref();
 
 const handleClose = () => {
     emits("update:visible", false);
 }
 
 const handleSubmit = () => {
-    emits("update:selectFile", tableRef.value.getSelectionRows());
-    emits("update:visible", false);
+  props.multiple ? 
+    emits("update:selectFiles", tableRef.value.getSelectionRows()) 
+    : emits("update:selectFile", currentRow.value)
+  emits("update:visible", false);
 }
 
 const clearSelect = () => {
-  console.log('clear select', tableRef)
   if(tableRef.value) {
     tableRef.value.clearSelection();
   }
+}
+
+const handleCurrentChange = (val) => {
+  currentRow.value = val;
 }
 
 defineExpose({
