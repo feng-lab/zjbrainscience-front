@@ -16,16 +16,16 @@
             :model="loginForm"
             :rules="rules"
           >
-            <el-form-item prop="account">
+            <el-form-item prop="username">
               <template #label>
                 <span class="hidden-xs-only">
-                  {{ $t("label.account") }} {{ $t("colon") }}
+                  {{ $t("label.username") }} {{ $t("colon") }}
                 </span>
               </template>
               <el-input 
                 prefix-icon="UserFilled"
-                :placeholder="$t('placeholder.input', { info: $t('label.account') })"
-                v-model="loginForm.account"
+                :placeholder="$t('placeholder.input', { info: $t('label.username') })"
+                v-model="loginForm.username"
               />
             </el-form-item>
             <el-form-item prop="password">
@@ -90,7 +90,7 @@ import useUserStore from "@/stores/user";
 
 const loginFormRef = ref();
 const loginForm = ref({
-  account: "",
+  username: "",
   password: ""
 });
 
@@ -102,9 +102,9 @@ const { doLogin } = useUserStore();
 const i18n = useI18n();
 
 const rules = computed(() => ({
-  account: [{ 
+  username: [{ 
     required: true, 
-    message: i18n.t("valid.require", {field: i18n.t("label.account"), action: i18n.t("action.input")}),
+    message: i18n.t("valid.require", {field: i18n.t("label.username"), action: i18n.t("action.input")}),
     trigger: "blur" 
   }],
   password: [{ 

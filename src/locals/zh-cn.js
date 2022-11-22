@@ -1,7 +1,7 @@
 export default {
   colon: "：",
   label: {
-    account: "用户名",
+    username: "用户名",
     password: "密码",
     remember: "记住我",
     startTime: "开始时间",
@@ -243,11 +243,6 @@ export default {
       result: "检索结果"
     },
   },
-  netErrMsg: {
-    "404": "该接口不存在",
-    "502": "服务端异常",
-    default: "网络异常"
-  },
   datepicker: {
     week: "最近一周",
     month: "最近一个月",
@@ -262,5 +257,13 @@ export default {
     name: "文件名称",
     type: "文件类型",
     experiment: "关联实验"
+  },
+  httpErrorMsg: {
+    expire: "会话已过期，请重新登录",
+    paramsErr: "请求参数错误",
+    relogin: "当前操作需要登录",
+    "404": "该接口不存在",
+    "502": "服务端异常",
+    default: "网络异常"
   }
 }

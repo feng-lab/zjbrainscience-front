@@ -4,17 +4,20 @@ export function loginApi(data) {
   return request({
     url: "/api/login",
     method: "POST",
-    data
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    data: {
+      grant_type: "password",
+      ...data
+    }
   });
 }
 
-export function logoutApi(account) {
+export function logoutApi() {
   return request({
     url: "/api/logout",
-    method: "GET",
-    params: {
-      account
-    }
+    method: "POST",
   });
 }
 

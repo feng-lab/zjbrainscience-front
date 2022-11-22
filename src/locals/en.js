@@ -1,7 +1,7 @@
 export default {
   colon: ":",
   label: {
-    account: "Account",
+    username: "Username",
     password: "Password",
     remember: "Remember Me",
     startTime: "Start Time",
@@ -237,11 +237,6 @@ export default {
       result: "Result"
     }
   },
-  netErrMsg: {
-    "404": "Not Found",
-    "502": "The server has something wrong",
-    default: "Network Error"
-  },
   datepicker: {
     week: "Last Week",
     month: "Last Month",
@@ -256,5 +251,13 @@ export default {
     name: "File Name",
     type: "File Type",
     experiment: "Association Experiment"
+  },
+  httpErrorMsg: {
+    expire: "Session expired, please log in again",
+    paramsErr: "Request parameter error",
+    relogin: "This operation need you to log in",
+    "404": "Not Found",
+    "502": "The server has something wrong",
+    default: "Network Error"
   }
 }

@@ -16,6 +16,11 @@ export default ({ command }) => {
     envDir: "./env",
     server: {
       host: "127.0.0.1",
+      proxy: {
+        "/api": {
+          target: "http://10.101.40.4:1919/"
+        }
+      }
     },
     plugins: [
       vue(),
@@ -30,7 +35,7 @@ export default ({ command }) => {
       }),
       viteMockServe({
         mockPath: "mock",
-        localEnabled: true,
+        localEnabled: false,
         watchFiles: true
       })
     ],

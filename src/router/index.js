@@ -4,8 +4,8 @@ import menus from "./menu";
 import jsCookie from "js-cookie";
 
 const hasLogined = () => {
-  const account = jsCookie.get("account");
-  return account;
+  const username = jsCookie.get("username");
+  return username;
 }
 
 const router = createRouter({
