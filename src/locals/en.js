@@ -18,7 +18,9 @@ export default {
     chartZoomBack: "Reset zoom",
     notice: "New Notification",
     selected: "Selected",
-    targetFile: "Target Data Files"
+    targetFile: "Target Data Files",
+    nofile: "No file! please select one from online EEG files or upload new file",
+    currentPage: "Page:"
   },
   confirm: {
     resetform: "Are you sure to reset the form? All fields will be cleared!",
@@ -60,8 +62,8 @@ export default {
     newDevice: "New Device",
     download: "Download",
     upload: "Upload",
-    online: "Online Choose",
-    search: "Go Search",
+    online: "Online Files",
+    search: "Search",
     select: "Click To Select",
     newFilter: "New Filter Step",
     newAnalysis: "New Analysis Step",
@@ -73,7 +75,14 @@ export default {
     ok: "OK",
     cancel: "Cancel",
     checkall: "Check all",
-    load: "Load"
+    load: "Load",
+    prev: "Prev",
+    next: "Next",
+    bulkUpload: "Bulk Upload",
+    channel: "Click to select channel",
+    expand: "Expand",
+    collapse: "Collapse",
+    clear: "Clear"
   },
   menus: {
     management: "Home",

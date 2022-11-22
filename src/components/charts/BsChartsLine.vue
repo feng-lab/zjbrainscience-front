@@ -72,24 +72,27 @@ const option = computed(() => {
     xAxis: {},
     yAxis: {},
     series: series,
-    ...props.option
+    ...props.option,
+    toolbox: {
+      ...initOption.value.toolbox,
+      ...props.option?.toolbox,
+    }
   }
   if(props.dataset) {
     o["dataset"] = props.dataset
   }
   if(props.data) {
-    console.log(o.series)
     o.series.data = props.data
   }
   return o;
 })
 
-const getHeight = () => {
-  return chartRef.value.getHeight();
+const clearChart = () => {
+  return chartRef.value.clear();
 }
 
 defineExpose({
-  getHeight
+  clearChart
 });
 
 

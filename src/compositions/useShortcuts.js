@@ -1,34 +1,33 @@
-import { computed } from "vue";
-import { useI18n } from "vue-i18n";
+import { ref, onMounted } from "vue";
 import moment from "moment";
 
 
 export function useShortcuts() {
-  const i18n = useI18n();
+  const start = ref();
+  const end = ref();
+
   const getDateBefore = (before) => {
-    const end = new Date();
-    const start = new Date();
-    start.setTime(end.getTime() - before);
-    return [
-      moment(start).format("YYYY-MM-DD"), 
-      moment(end).format("YYYY-MM-DD")
-    ]
+    let e = new Date();
+    let s = new Date();
+    s.setTime(e.getTime() - before);
+    start.value = moment(s).format("YYYY-MM-DD"); 
+    end.value = moment(e).format("YYYY-MM-DD");
   }
-  const shortcuts = computed(() => ([{
-    text: i18n.t("datepicker.week"),
-    value: () => getDateBefore(3600 * 1000 * 24 * 7)
-  }, {
-    text: i18n.t("datepicker.month"),
-    value: () => getDateBefore(3600 * 1000 * 24 * 30)
-  }, {
-    text: i18n.t("datepicker.halfofyear"),
-    value: () => getDateBefore(3600 * 1000 * 24 * 180)
-  }, {
-    text: i18n.t("datepicker.year"),
-    value: () => getDateBefore(3600 * 1000 * 24 * 365)
-  }]));
+
+  const getDate = {
+    week: () => getDateBefore(3600 * 1000 * 24 * 7),
+    month: () => getDateBefore(3600 * 1000 * 24 * 30),
+    halfofyear: () => getDateBefore(3600 * 1000 * 24 * 180),
+    year: () => getDateBefore(3600 * 1000 * 24 * 365)
+  };
+
+  onMounted(() => {
+    getDate["week"]();
+  })
 
   return {
-    shortcuts
+    start,
+    end,
+    getDate
   }
 }

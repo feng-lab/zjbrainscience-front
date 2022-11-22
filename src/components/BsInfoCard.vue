@@ -25,7 +25,7 @@ import BsIconImg from "@/components/BsIconImg.vue";
 
 defineProps({
   title: String,
-  info: Number||String,
+  info: [Number, String],
   icon: String,
   iconColor: String,
   imgSrc: String 

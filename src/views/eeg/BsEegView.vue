@@ -1,0 +1,149 @@
+<template>
+  <el-row class="m-b-16" :gutter="16">
+    <el-col :xs="24" :sm="6" class="m-b-8">
+      <bs-field :label="$t('term.file') + $t('colon')"> 
+        <el-tag>
+        {{ file }}
+        </el-tag>
+      </bs-field>
+    </el-col>
+    <el-col :xs="24" :sm="6" class="m-b-8">
+      <el-button 
+        @click="channelSelect=true"
+      >{{ $t("button.channel")}}</el-button>
+    </el-col>
+    <el-col :xs="24" :sm="6" class="m-b-8">
+      <bs-field :label="$t('label.window')">
+        <el-select v-model="query.t" style="width: 100%">
+          <el-option label="1秒" :value="1"/>
+          <el-option label="2秒" :value="2"/>
+          <el-option label="5秒" :value="5"/>
+          <el-option label="10秒" :value="10"/>
+        </el-select>
+      </bs-field>
+    </el-col>
+    <el-col :xs="24" :sm="6" class="m-b-8">
+      <bs-field :label="$t('label.currentPage')">
+        <el-input-number v-model="query.i" :min="1" style="width: 100%"/>
+      </bs-field>
+    </el-col>
+  </el-row>
+  <div v-if="channelSelect" class="channel-select"> 
+    <div class="channel-select-button">
+      <el-button 
+        class="right"
+        size="small" 
+        link type="primary" 
+        @click="channelSelect=false"
+      >
+        {{ $t("button.collapse") }}
+        <el-icon><ArrowUp/></el-icon>
+      </el-button>
+      <el-button 
+        class="right m-r-8"
+        size="small" 
+        link type="primary" 
+        @click="query.channel=[]"
+      >
+        {{ $t("button.clear") }}
+        <el-icon></el-icon>
+      </el-button>
+    </div>
+    <el-checkbox-group v-model="query.channel" v-if="multiple"> 
+      <el-checkbox
+        v-for="ch in CHANNELS"
+        :key="ch"
+        :label="ch"
+      />
+    </el-checkbox-group>
+    <el-radio-group v-model="query.channel" v-else>
+      <el-radio
+        v-for="ch in CHANNELS"
+        :key="ch"
+        :label="ch"
+      />
+    </el-radio-group>
+
+  </div>
+  <bs-eeg-display 
+    :eeg-data="eegData" 
+    v-bind="{
+      chartHeight,
+      toolBox,
+      zoom
+    }"
+  />
+</template>
+
+<script setup>
+import BsEegDisplay from '@/components/BsEegDisplay.vue';
+import BsField from '@/components/BsField.vue';
+
+import { computed, onMounted, ref, watch } from "vue";
+import { eegDisplayApi } from "@/api/eeg";
+import { CHANNELS } from "@/utils/common";
+
+const props = defineProps({
+  file: String,
+  chartHeight: Number,
+  toolBox: {
+    type: Boolean,
+    default: true,
+  },
+  zoom: {
+    type: Boolean,
+    default: true
+  },
+  multiple: {
+    type: Boolean,
+    default: false 
+  }
+})
+
+const eegData  = ref();
+const channelSelect = ref(false);
+
+
+const query = ref({
+  channel: props.multiple ? []: CHANNELS[0] ,
+  i: 1,
+  t: 5
+})
+
+const getEEG = async () => {
+  console.log('eeg', query.value)
+  if(props.file) {
+    const [ p1, c ] = props.file.split(".");
+    if(query) {
+      const { i, t, channel } = query.value;
+      eegData.value = await eegDisplayApi({
+        p1,
+        c,
+        i,
+        t,
+        channel: props.multiple ? channel.join(",") : channel
+      });
+    }
+  }
+}
+watch(() => ({
+  file: props.file,
+  query
+}), getEEG, {
+  immediate: true,
+  deep: true
+})
+
+
+</script>
+<style lang="scss" scoped>
+.channel-select {
+  background: var(--el-fill-color-light);
+  padding: 12px 24px;
+  border-radius: 8px;
+  &-button {
+    overflow: hidden;
+  }
+
+}
+</style>
