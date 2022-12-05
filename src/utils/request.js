@@ -38,10 +38,9 @@ const errorHandle = {
     }
   },
   "400": () => {
-    return {
-      type: "error",
-      msg: i18n.global.t("httpErrorMsg.paramsErr")
-    }
+    ElMessage.error(
+      i18n.global.t("httpErrorMsg.paramsErr")
+    )
   }
 }
 
@@ -62,6 +61,7 @@ request.interceptors.response.use(response => {
   if(url === "/api/login") {
     return Promise.resolve(response.data);
   } else {
+    console.log('response.data', response.data)
     const { code, message, data="" } = response.data;
     if(code === 1) {
       //后端处理失败

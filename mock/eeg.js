@@ -2514,7 +2514,7 @@ export default [{
     }
     if(channel_l.length) {
       result = {
-        code: 1,
+        code: 0,
         data: {
           Stimulation: [250, 500, 1500, 3000],
           datasets: []
@@ -2529,7 +2529,7 @@ export default [{
       }
     } else {
       result = {
-        code: 1,
+        code: 0,
         data: {
           Stimulation: [250, 500, 1500, 3000],
           "datasets|64": [{

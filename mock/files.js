@@ -3,7 +3,7 @@ export default [{
   method: "GET",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       data: ["MP4", "BDF", "EEG"]
     }
   }
@@ -13,7 +13,7 @@ export default [{
   response: ({query}) => {
     const { docType } = query;
     return {
-      code: 1,
+      code: 0,
       data: function() {
         if(docType !== "ALL") {
           return [{
@@ -40,7 +40,7 @@ export default [{
   method: "GET",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       "data|8-12": [{
         "experimentsid":/ATPX\d{4}/,
 		    "filename":"data" + "@increment()",
@@ -57,7 +57,7 @@ export default [{
   method: "DELETE",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       message: ""
     }
   }

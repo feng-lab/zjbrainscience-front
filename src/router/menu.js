@@ -3,32 +3,40 @@ const menus = [{
   name: "management",
   component: () => import("@/views/home/Home.vue"),
   meta: {
-    title: "首页",
     icon: "HomeFilled",
+    //未设置level,即默认最低权限，所有人可见
   }
 }, {
   path: "experiments",
   name: "experiments",
   component: () => import("@/views/experiments/Experiments.vue"),
   meta: {
-    title: "实验数据",
-    icon: "Notebook"
+    icon: "Notebook",
+    level: 10 // 被试以上
   }
 }, {
   path: "task",
   name: "task",
   component: () => import("@/views/task/Task.vue"),
   meta: {
-    title: "任务列表",
-    icon: "List"
+    icon: "List",
+    level: 100 //研究员以上
   }
 }, {
   path: "search",
   name: "search",
   component: () => import("@/views/search/Search.vue"),
   meta: {
-    title: "信号检索",
-    icon: "Aim"
+    icon: "Aim",
+    level: 100 //研究员以上
+  },
+}, {
+  path: "user",
+  name: "user",
+  component: () => import("@/views/user/User.vue"),
+  meta: {
+    icon: "User",
+    level: 1000 //管理员以上
   }
 }]
 

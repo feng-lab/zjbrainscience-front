@@ -3,3 +3,5 @@ export function getImgUrl(url) {
 }
 
 export const CHANNELS = ["Pz","PO5","PO3",  "POz","PO4" , "PO6", "O1" ,"Oz" ,"O2"];
+
+export const ACCESS_LEVEL = [0, 10, 100, 1000];

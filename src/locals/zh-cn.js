@@ -20,7 +20,9 @@ export default {
     selected: "已选择",
     targetFile: "目标数据文件",
     nofile: "没有待搜索的文件，请先选择一个在线EEG文件或者上传本地文件！",
-    currentPage: "当前页："
+    currentPage: "当前页：",
+    operation: "操作",
+    needLogin: "请您先登录！",
   },
   confirm: {
     resetform: "确定要重置表单吗？所有字段数据将会被清除！",
@@ -82,13 +84,16 @@ export default {
     channel: "选择通道",
     expand: "展开",
     collapse: "收起",
-    clear: "清除"
+    clear: "清除",
+    backHome: "返回首页",
+    newUser: "新增用户"
   },
   menus: {
     management: "首页",
     experiments: "实验管理",
     task: "任务管理",
-    search: "信号检索"
+    search: "信号检索",
+    user: "用户管理"
   },
   loginInfoStorage: {
     title: "数据存储",
@@ -152,7 +157,6 @@ export default {
     subject: "被试",
     experiment: "实验",
     task: "任务",
-    operation: "操作",
     systemremind: "系统提示",
   },
   subject: {
@@ -265,5 +269,23 @@ export default {
     "404": "该接口不存在",
     "502": "服务端异常",
     default: "网络异常"
+  },
+  user: {
+    text: "用户",
+    username: "用户名",
+    staffId: "员工号",
+    accessLevel: "用户等级",
+    lastLogin: "上次登录",
+    deleteConfirm: "确定要删除用户 {user} 吗？"
+  },
+  errorPage: {
+    notFound: "抱歉，您当前访问的页面不存在！",
+    noAuth: "抱歉，您没有当前页面的访问权限！"
+  },
+  auth: {
+    "0": "访客",
+    "10": "被试",
+    "100": "研究员",
+    "1000": "管理员"
   }
 }
