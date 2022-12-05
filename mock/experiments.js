@@ -3,7 +3,7 @@ export default [{
   method: "post",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       data: /ATPX\d{4}/, 
       message: ""
     }
@@ -13,7 +13,7 @@ export default [{
   method: "DELETE",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       message: ""
     }
   }
@@ -23,7 +23,7 @@ export default [{
   response: ({query}) => {
     const { search } = query;
     return {
-      code: 1,
+      code: 0,
       "data|5-10": [{
         "experimentsid": /ATPX\d{4}/, 
         "projectid|0-100": 0, 
@@ -39,7 +39,8 @@ export default [{
         "stimulationtype":null, 
         "location":"浙江省杭州市余杭区之江实验室" + "@integer(1,8)" + "号楼",
         "mainoperator": "GXY", 
-        "description": "这里是实验描述 " + "@string('lower', 20, 30)",
+        //"description": "这里是实验描述 " + "@string('lower', 20, 30)",
+        "description": "description the experiment " ,
         "mainoperatorid": "1",
         "assistant1": null, 
         "assistant1id":null,
@@ -61,7 +62,7 @@ export default [{
   response: ({query}) => {
     const { experimentsid } = query;
     return {
-      code: 1,
+      code: 0,
       data: {
         "experimentsid": experimentsid,
         "projectid|0-100": 0, 
@@ -70,13 +71,14 @@ export default [{
         "noninvasiveflag|1": ["0", "1"], 
         "startdate": "2022-01-" + "@datetime('dd HH:mm:ss')", 
         "enddate": "2022-09-" + "@datetime('dd HH:mm:ss')", 
-        "description": experimentsid + "的实验描述" + "@string('lower', 5,8)",
+        //"description": experimentsid + "\'s description" + "@string('lower', 5,8)",
+        "description": "This is a experiment!",
         "durationdays": null, 
         "numberofsubjects|0-500": 1, 
-        "subjectstype": "@pick(['人类', '猕猴', '猪', '犬', '其他'])",
+        "subjectstype": "@pick(['Human', 'Macaque', 'Puppy', 'Swine', 'Other'])",
         "neuronsource":null, 
         "stimulationtype":null, 
-        "location":"浙江省杭州市余杭区之江实验室" + "@integer(1,8)" + "号楼",
+        "location": "Zhe Jiang Lab ", 
         "mainoperator": "GXY", 
         "mainoperatorid": "1",
         "assistant1": null, 
@@ -89,7 +91,9 @@ export default [{
         "numberoftrails|1-100":58, 
         "datapath": "/data/" + experimentsid,
         "shared|1":["1", "0"],
-        "experimenttitle": experimentsid + "的实验标题" + "@string('lower', 5,8)", 
+        //"experimenttitle": experimentsid + "的实验标题" + "@string('lower', 5,8)", 
+        "experimenttitle": "Experiment " + experimentsid
+        
       }
     }
   }
@@ -98,7 +102,7 @@ export default [{
   method: "POST",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       message: "添加成功"
     }
   }
@@ -107,7 +111,7 @@ export default [{
   method: "GET",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       "data|0-3": [{
         id: "@increment()",
         "imgUrl|1-3": ["/testdata/" + "@integer(1,3)" + ".png"],
@@ -120,7 +124,7 @@ export default [{
   method: "GET",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       data: {
         id: "@increment()",
         "imgUrl|1-3": ["/testdata/" + "@integer(1,3)" + ".png"],
@@ -133,7 +137,7 @@ export default [{
   method: "DELETE",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       message: "删除成功"
     }
   }

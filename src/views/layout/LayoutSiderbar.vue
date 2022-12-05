@@ -12,7 +12,7 @@
       :title="isCollapse ? '' : 'Brain Science'"
     />
     <bs-menu
-      :menus="menus"
+      :menus="authMenus"
     />
   </el-scrollbar>
 </template>
@@ -20,13 +20,44 @@
 import BsLogo from "@/components/BsLogo.vue";
 import BsMenu from "@/components/menu/BsMenu.vue";
 
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import menus from "@/router/menu";
 import useGlobalStore from "@/stores/global";
+import useUserStore from "@/stores/user";
+import useMediaQuery from "@/stores/mediaQuery";
 import { storeToRefs } from "pinia";
 
 const globalStore = useGlobalStore();
+const userStore = useUserStore();
 const { isCollapse, asideWidth, showDrawer } = storeToRefs(globalStore);
+const { breakpoint } = useMediaQuery();
+
+const { user } = storeToRefs(userStore);
+
+const authMenus = ref([]);
+
+
+const isShow = (menu) => {
+  const menuLevel = menu?.meta?.level ?? 0;
+  return menuLevel <= user.value.access_level; 
+}
+
+const filterMenus = (ms) => {
+  let res = [];
+  ms.forEach(menu => {
+    if(menu.children) {
+      res.push({
+        ...menu,
+        children: filterMenus(menu.children)
+      })
+    } else if(isShow(menu)) {
+      res.push(menu);
+    }
+  })
+  return res;
+}
+
+authMenus.value = filterMenus(menus);
 
 </script>
 <style scoped lang="scss">

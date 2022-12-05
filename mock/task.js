@@ -5,7 +5,7 @@ export default [{
   method: "GET",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       "data|10-30": [{
         experimentsid: "", 
         taskname: "task" + "@string('lower', 3)", 
@@ -26,7 +26,7 @@ export default [{
   method: "POST",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       message: "新增任务成功"
     }
   }
@@ -35,7 +35,7 @@ export default [{
   method: "DELETE",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       message: "删除任务成功"
     }
   }
@@ -45,7 +45,7 @@ export default [{
   response: ({query}) => {
     const { taskid } = query
     return {
-      code: 1,
+      code: 0,
       data: {
         master: {
           experimentsid: "", 
@@ -96,7 +96,7 @@ export default [{
   response: ({ query }) => {
     const { taskid } = query;
     return {
-      code: 1,
+      code: 0,
       "data|2-5": [{
         taskid,
         "operationid": "@increment()",
@@ -117,7 +117,7 @@ export default [{
   method: "GET",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       data: function() {
         let res = [];
         let now = new Date();
@@ -133,7 +133,7 @@ export default [{
   method: "GET", 
   response: () => {
     return {
-      code: 1,
+      code: 0,
       data: "/testdata/1.png"
     }
   }

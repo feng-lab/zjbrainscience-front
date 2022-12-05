@@ -1,4 +1,5 @@
 export default [{
+  /*
   url: "/api/login",
   method: "post",
   response: () => {
@@ -12,16 +13,17 @@ export default [{
   method: "get",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       message: "登出错误"
     }
   }
 }, {
+  */
   url: "/api/getNotReadMsg",
   method: "POST",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       "data|0-10": [{
         "id|0-100": 0,
         status: 0,
@@ -37,7 +39,7 @@ export default [{
   method: "GET",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       "data|20": [{
         "id|0-100": 0,
         "status|0-1": 0,
@@ -53,7 +55,7 @@ export default [{
   method: "POST",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       "data|1": ["", "2,4"]
     }
   }

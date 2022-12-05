@@ -20,7 +20,9 @@ export default {
     selected: "Selected",
     targetFile: "Target Data Files",
     nofile: "No file! please select one from online EEG files or upload new file",
-    currentPage: "Page:"
+    urrentPage: "Page:",
+    operation: "Operations",
+    needLogin: "Please log in first!"
   },
   confirm: {
     resetform: "Are you sure to reset the form? All fields will be cleared!",
@@ -82,13 +84,16 @@ export default {
     channel: "Click to select channel",
     expand: "Expand",
     collapse: "Collapse",
-    clear: "Clear"
+    clear: "Clear",
+    backHome: "Back to home",
+    newUser: "New User"
   },
   menus: {
     management: "Home",
     experiments: "Experiments",
     task: "TaskList",
-    search: "SignalSearch"
+    search: "SignalSearch",
+    user: "User Management"
   },
   loginInfoStorage: {
     title: "Data Storage",
@@ -146,7 +151,6 @@ export default {
     subject: "Subjects",
     experiment: "Experiments",
     task: "Tasks",
-    operation: "Operations",
     systemremind: "Syetem Remind",
   },
   subject: {
@@ -259,5 +263,23 @@ export default {
     "404": "Not Found",
     "502": "The server has something wrong",
     default: "Network Error"
+  },
+  user: {
+    text: "User",
+    username: "User Name",
+    staffId: "Staff ID",
+    accessLevel: "Access Level",
+    lastLogin: "Last Login Time",
+    deleteConfirm: "Are you sure to delete User {user}?"
+  },
+  errorPage: {
+    notFound: "Sorry, the page you visited does not exist!",
+    noAuth: "Sorry, you don't have access to this page!"
+  },
+  auth: {
+    "0": "Custom",
+    "10": "Subject",
+    "100": "Researcher",
+    "1000": "Administrator"
   }
 }

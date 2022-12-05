@@ -61,7 +61,7 @@
             <el-icon>
               <bs-icon-avatar/>
             </el-icon>
-            {{ user.name }} 
+            {{ user.username }} 
           </span>
           <template #dropdown>
             <el-dropdown-menu>
@@ -94,11 +94,10 @@ const router = useRouter();
 const globalStore = useGlobalStore();
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
-const { doLogout } = userStore;
-const account = jsCookie.get("account");
-if(!user.value.name) {
-  user.value.name = account;
-}
+const { doLogout, getUserInfo } = userStore;
+
+//getUserInfo();
+
 const { isCollapse } = storeToRefs(globalStore);
 const { toggleCollapse, toggleDrawer } = globalStore;
 

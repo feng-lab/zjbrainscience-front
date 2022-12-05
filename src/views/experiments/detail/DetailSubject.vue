@@ -62,7 +62,7 @@ const columns = computed(() => ([{
 }, {
   prop: "operation",
   slot: "operation",
-  label: i18n.t("term.operation")
+  label: i18n.t("label.operation")
 }]));
 
 
