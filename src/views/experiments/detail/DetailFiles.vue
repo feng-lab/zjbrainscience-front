@@ -2,7 +2,7 @@
   <el-row class="m-b-16" gutter="16">
     <el-col :lg="cardShow ? 8 : 24" :xs="24" class="m-b-16">
       <el-card 
-        :header="cardShow ? '文件列表': ''"
+        :header="cardShow ? 'File List': ''"
         :class="[listType]"
         :shadow="cardShow ? 'always': 'never'"
         :body-style="cardShow ? {} : {padding: 0}"
@@ -72,7 +72,7 @@
     </el-col>
     <el-col :lg="listType === 'text' ? 16 : 24 " :xs="24">
       <el-scrollbar height="800px" ref="scrollRef" @scroll="handleScroll">
-        <el-card v-if="viewFile" class="m-b-16" header="EEG文件">
+        <el-card v-if="viewFile" class="m-b-16" header="EEG File">
           <!--
           <template #header> 
             <div class="between-flex"> 
