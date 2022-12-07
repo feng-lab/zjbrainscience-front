@@ -13,7 +13,7 @@
       >{{ $t("button.channel")}}</el-button>
     </el-col>
     <el-col :xs="24" :sm="6" class="m-b-8">
-      <bs-field :label="$t('label.window')">
+      <bs-field :label="$t('label.window') + $t('colon')">
         <el-select v-model="query.t" style="width: 100%">
           <el-option label="1秒" :value="1"/>
           <el-option label="2秒" :value="2"/>
@@ -23,7 +23,7 @@
       </bs-field>
     </el-col>
     <el-col :xs="24" :sm="6" class="m-b-8">
-      <bs-field :label="$t('label.currentPage')">
+      <bs-field :label="$t('label.currentPage') + $t('colon')">
         <el-input-number v-model="query.i" :min="1" style="width: 100%"/>
       </bs-field>
     </el-col>
@@ -41,12 +41,12 @@
       </el-button>
       <el-button 
         class="right m-r-8"
+        v-if="multiple"
         size="small" 
         link type="primary" 
         @click="query.channel=[]"
       >
         {{ $t("button.clear") }}
-        <el-icon></el-icon>
       </el-button>
     </div>
     <el-checkbox-group v-model="query.channel" v-if="multiple"> 

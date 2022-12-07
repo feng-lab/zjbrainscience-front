@@ -65,6 +65,7 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
+              <el-dropdown-item icon="lock" @click="modifyPassword">{{ $t('menus.password') }}</el-dropdown-item>
               <el-dropdown-item icon="switch-button" @click="doLogout">{{ $t('button.logout') }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -133,6 +134,10 @@ const handleClickMsg = async (id, index, status) => {
 const markAll = async () => {
   msgList.value.forEach(msg => msg.status = 1);
   await markMsgApi(account, "all")
+}
+
+const modifyPassword = () => {
+  router.push("/password");
 }
 </script>
 <style scoped lang="scss">

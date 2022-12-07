@@ -6,8 +6,8 @@ export default {
     remember: "Remember Me",
     startTime: "Start Time",
     endTime: "End Time",
-    channel: "Channel:",
-    window: "Window:",
+    channel: "Channel",
+    window: "Window",
     yes: "Yes",
     no: "No",
     female: "Female",
@@ -86,14 +86,16 @@ export default {
     collapse: "Collapse",
     clear: "Clear",
     backHome: "Back to home",
-    newUser: "New User"
+    newUser: "New User",
+    modify: "Modify"
   },
   menus: {
     management: "Home",
     experiments: "Experiments",
     task: "TaskList",
     search: "SignalSearch",
-    user: "User Management"
+    user: "User Management",
+    password: "Modify Password"
   },
   loginInfoStorage: {
     title: "Data Storage",
@@ -127,10 +129,10 @@ export default {
       subjectCnt: "Subject Count",
       exLocal: "Location",
       exDesc: "Description",
-      exName: "Name:",
-      noninvasive: "Non-invasive:",
-      date: "Date:",
-      isopen: "Public:",
+      exName: "Name",
+      noninvasive: "Non-invasive",
+      date: "Date",
+      isopen: "Public",
     },
     tab: {
       paradigm: "Paradigm",
@@ -270,7 +272,10 @@ export default {
     staffId: "Staff ID",
     accessLevel: "Access Level",
     lastLogin: "Last Login Time",
-    deleteConfirm: "Are you sure to delete User {user}?"
+    deleteConfirm: "Are you sure to delete User {user}?",
+    updateRole: "Modify User Access Level",
+    currentAl: "Current Access Level",
+    currentUser: "Current User",
   },
   errorPage: {
     notFound: "Sorry, the page you visited does not exist!",
@@ -281,5 +286,16 @@ export default {
     "10": "Subject",
     "100": "Researcher",
     "1000": "Administrator"
+  },
+  password: {
+    current: "Current Password",
+    new: "New Password",
+    confirm: "Confirm New Password",
+    valid: {
+      currentRequire: "Please input current password",
+      newRequire: "Please input new password",
+      confirmRequire: "Please input new password again",
+      confirmWrong: "Two inputs don't match"
+    }
   }
 }

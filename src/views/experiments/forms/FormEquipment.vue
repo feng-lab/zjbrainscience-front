@@ -5,27 +5,27 @@
     :on-close="handleClose"
     :title="title"
   >
-    <el-form-item :label="$t('device.id') + $t('colon')" prop="equipmentid">
+    <el-form-item :label="$t('device.id')" prop="equipmentid">
       <el-input 
         v-model="equipmentForm.equipmentid"
       />
     </el-form-item>
-    <el-form-item :label="$t('device.name') + $t('colon')" prop="name">
+    <el-form-item :label="$t('device.name')" prop="name">
       <el-input 
         v-model="equipmentForm.name"
       />
     </el-form-item>
-    <el-form-item :label="$t('device.type') + $t('colon')" prop="brand">
+    <el-form-item :label="$t('device.type')" prop="brand">
       <el-input 
         v-model="equipmentForm.brand"
       />
     </el-form-item>
-    <el-form-item :label="$t('device.purpose') + $t('colon')" prop="purpose">
+    <el-form-item :label="$t('device.purpose')" prop="purpose">
       <el-input 
         v-model="equipmentForm.purpose"
       />
     </el-form-item>
-    <el-form-item :label="$t('device.index') + $t('colon')" prop="index">
+    <el-form-item :label="$t('device.index')" prop="index">
       <el-input 
         v-model="equipmentForm.index"
       />
