@@ -9,13 +9,13 @@
     @open="loadSource"
     @close="handleClose"
   >
-    <el-form-item :label="$t('task.detail.name') + $t('colon')" prop="taskname">
+    <el-form-item :label="$t('task.detail.name')" prop="taskname">
       <el-input v-model="taskForm.taskname"/>
     </el-form-item>
-    <el-form-item :label="$t('task.detail.desc') + $t('colon')" prop="description">
+    <el-form-item :label="$t('task.detail.desc')" prop="description">
       <el-input v-model="taskForm.description"/>
     </el-form-item>
-    <el-form-item :label="$t('task.detail.dataset') + $t('colon')" required>
+    <el-form-item :label="$t('task.detail.dataset')" required>
       <el-button type="primary" @click="visible=true">{{ $t("button.select") }}</el-button>
       <span class="el-form-item__error" v-if="validating && !selectFiles.length">
         {{ $t("valid.checked") }}
@@ -35,7 +35,7 @@
           <bs-icon-img icon="Check"/>
         </el-tag>
     </el-form-item>
-    <el-form-item :label="$t('task.card.step') + $t('colon')" required>
+    <el-form-item :label="$t('task.card.step')" required>
       <el-button type="primary" @click="addWaveFilterStep">
         <template #icon>
           <img src="@/assets/img/analysis/waveFilter-icon.svg" class="btn-img"/>

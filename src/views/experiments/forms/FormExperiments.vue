@@ -10,14 +10,14 @@
         v-model="exForm.experimenttitle"
       />
     </el-form-item>
-    <el-form-item :label="$t('experiments.detail.exDesc') + $t('colon')" prop="description">
+    <el-form-item :label="$t('experiments.detail.exDesc')" prop="description">
       <el-input 
         type="textarea"
         autosize
         v-model="exForm.description"
       />
     </el-form-item>
-    <el-form-item :label="$t('experiments.detail.exType') + $t('colon')" prop="experimenttype">
+    <el-form-item :label="$t('experiments.detail.exType')" prop="experimenttype">
       <el-select v-model="exForm.experimenttype" style="width: 100%" clearable>
         <el-option label="SSVEP" value="SSVEP"/>
         <el-option label="MI" value="MI"/>
@@ -32,7 +32,7 @@
         <el-radio label="No"> {{ $t("label.no") }} </el-radio>
       </el-radio-group>
     </el-form-item>
-    <el-form-item :label="$t('experiments.detail.exLocal') + $t('colon')" prop="location">
+    <el-form-item :label="$t('experiments.detail.exLocal')" prop="location">
       <el-input 
         type="textarea"
         autosize
@@ -66,7 +66,7 @@
         </el-form-item>
       </el-col>
     </el-form-item>
-    <el-form-item :label="$t('experiments.detail.subjectType') + $t('colon')" prop="subjecttype">
+    <el-form-item :label="$t('experiments.detail.subjectType')" prop="subjecttype">
       <el-radio-group v-model="exForm.subjecttype">
         <el-radio label="人类">{{ $t("subject.category.human") }}</el-radio>
         <el-radio label="猕猴">{{ $t("subject.category.macaque") }}</el-radio>
@@ -75,10 +75,10 @@
         <el-radio label="其他">{{ $t("label.other") }}</el-radio>
       </el-radio-group>
     </el-form-item>
-    <el-form-item :label="$t('experiments.detail.subjectCnt') + $t('colon')" prop="subjectcounts">
+    <el-form-item :label="$t('experiments.detail.subjectCnt')" prop="subjectcounts">
       <el-input-number :min="1" v-model="exForm.subjectcounts"/>
     </el-form-item>
-    <el-form-item :label="$t('experiments.detail.isopen') + $t('colon')" prop="Isopen">
+    <el-form-item :label="$t('experiments.detail.isopen')" prop="Isopen">
       <el-radio-group v-model="exForm.Isopen">
         <el-radio label="1">{{ $t("label.yes") }}</el-radio>
         <el-radio label="0">{{ $t("label.no") }}</el-radio>

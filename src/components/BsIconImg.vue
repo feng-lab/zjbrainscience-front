@@ -25,5 +25,4 @@ const props = defineProps({
   }
 })
 
-console.log('bs icon img', props)
 </script>

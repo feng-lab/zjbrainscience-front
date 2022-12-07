@@ -38,6 +38,13 @@ const menus = [{
     icon: "User",
     level: 1000 //管理员以上
   }
+}, {
+  path: "password",
+  name: "password",
+  component: () => import("@/views/password/UserPassword.vue"),
+  meta: {
+    icon: "Lock"
+  }
 }]
 
 export default menus;

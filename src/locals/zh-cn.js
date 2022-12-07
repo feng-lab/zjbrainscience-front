@@ -6,8 +6,8 @@ export default {
     remember: "记住我",
     startTime: "开始时间",
     endTime: "结束时间",
-    channel: "通道选择：",
-    window: "时间窗口：",
+    channel: "通道选择",
+    window: "时间窗口",
     yes: "是",
     no: "否",
     female: "女",
@@ -20,7 +20,7 @@ export default {
     selected: "已选择",
     targetFile: "目标数据文件",
     nofile: "没有待搜索的文件，请先选择一个在线EEG文件或者上传本地文件！",
-    currentPage: "当前页：",
+    currentPage: "当前页",
     operation: "操作",
     needLogin: "请您先登录！",
   },
@@ -86,14 +86,16 @@ export default {
     collapse: "收起",
     clear: "清除",
     backHome: "返回首页",
-    newUser: "新增用户"
+    newUser: "新增用户",
+    modify: "修改"
   },
   menus: {
     management: "首页",
     experiments: "实验管理",
     task: "任务管理",
     search: "信号检索",
-    user: "用户管理"
+    user: "用户管理",
+    password: "密码修改"
   },
   loginInfoStorage: {
     title: "数据存储",
@@ -133,9 +135,9 @@ export default {
       subjectCnt: "被试数量",
       exLocal: "实验地点",
       exDesc: "实验描述",
-      exName: "实验名称：",
-      noninvasive: "是否无创：",
-      date: "实验日期：",
+      exName: "实验名称",
+      noninvasive: "是否无创",
+      date: "实验日期",
       isopen: "是否公开",
     },
     tab: {
@@ -276,7 +278,10 @@ export default {
     staffId: "员工号",
     accessLevel: "用户等级",
     lastLogin: "上次登录",
-    deleteConfirm: "确定要删除用户 {user} 吗？"
+    deleteConfirm: "确定要删除用户 {user} 吗？",
+    updateRole: "修改用户等级",
+    currentAl: "当前用户等级",
+    currentUser: "修改用户"
   },
   errorPage: {
     notFound: "抱歉，您当前访问的页面不存在！",
@@ -287,5 +292,16 @@ export default {
     "10": "被试",
     "100": "研究员",
     "1000": "管理员"
+  },
+  password: {
+    current: "当前密码",
+    new: "新密码",
+    confirm: "确认新密码",
+    valid: {
+      currentRequire: "请输入当前密码",
+      newRequire: "请输入新密码",
+      confirmRequire: "请再次输入新密码",
+      confirmWrong: "两次新密码输入不一致"
+    }
   }
 }

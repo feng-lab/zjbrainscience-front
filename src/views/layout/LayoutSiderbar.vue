@@ -30,7 +30,7 @@ import { storeToRefs } from "pinia";
 const globalStore = useGlobalStore();
 const userStore = useUserStore();
 const { isCollapse, asideWidth, showDrawer } = storeToRefs(globalStore);
-const { breakpoint } = useMediaQuery();
+const { breakpoint } = storeToRefs(useMediaQuery());
 
 const { user } = storeToRefs(userStore);
 

@@ -19,19 +19,20 @@
             <el-form-item prop="username">
               <template #label>
                 <span class="hidden-xs-only">
-                  {{ $t("label.username") }} {{ $t("colon") }}
+                  {{ $t("label.username") }}{{$t("colon")}}
                 </span>
               </template>
               <el-input 
                 prefix-icon="UserFilled"
                 :placeholder="$t('placeholder.input', { info: $t('label.username') })"
                 v-model="loginForm.username"
+                clearable
               />
             </el-form-item>
             <el-form-item prop="password">
               <template #label>
                 <span class="hidden-xs-only">
-                  {{ $t("label.password") }} {{ $t("colon") }}
+                  {{ $t("label.password") }}{{$t("colon")}} 
                 </span>
               </template>
               <el-input
@@ -41,6 +42,7 @@
                 prefix-icon="Lock"
                 :placeholder="$t('placeholder.input', { info: $t('label.password') })"
                 v-model="loginForm.password"
+                clearable
               />
             </el-form-item>
             <el-form-item>

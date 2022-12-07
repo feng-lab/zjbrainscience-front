@@ -7,6 +7,7 @@
     <el-form
       ref="formRef"
       label-width="120px"
+      :label-suffix="$t('colon')"
       :model="formModel"
       :rules="formRules"
     >
@@ -38,7 +39,7 @@ const props = defineProps([
 ])
 
 const formRef = ref()
-const emits = defineEmits("update:modelValue");
+const emits = defineEmits(["update:modelValue", "success"]);
 
 const { systemConfirm, resetForm } = useUtils();
 const i18n = useI18n();
@@ -53,13 +54,18 @@ const doSubmit = async (formRef) => {
   }
   const promise = [
     Promise.resolve(formRef.validate()), 
-    Promise.resolve(props.validator())
   ];
+  if(props.validator) {
+    promise.push(
+      Promise.resolve(props.validator())
+    )
+  }
 
   const [formValid, customValid] = await Promise.all(promise);
-  if(formValid && customValid) {
+  if(formValid && (!props.validator || customValid)) {
     await props.doFormSubmit();
-    emits("update:modelValue", false)
+    emits("update:modelValue", false);
+    emits("success");
   }
 }
 

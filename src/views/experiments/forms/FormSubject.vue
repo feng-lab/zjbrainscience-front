@@ -7,14 +7,14 @@
   >
     <el-row>
       <el-col :xs="24" :sm="12">
-        <el-form-item :label="$t('subject.id') + $t('colon')" prop="subjectid">
+        <el-form-item :label="$t('subject.id')" prop="subjectid">
           <el-input
             v-model="subjectForm.subjectid"
           />
         </el-form-item>
       </el-col>
       <el-col :xs="24" :sm="12">
-        <el-form-item :label="$t('subject.gender') + $t('colon')" prop="gender">
+        <el-form-item :label="$t('subject.gender')" prop="gender">
           <el-select
             style="width: 100%"
             v-model="subjectForm.gender"
@@ -27,7 +27,7 @@
     </el-row>
     <el-row>
       <el-col :xs="24" :sm="12">
-        <el-form-item :label="$t('subject.birth') + $t('colon')" prop="birthdate">
+        <el-form-item :label="$t('subject.birth')" prop="birthdate">
           <el-date-picker
             v-model="subjectForm.birthdate"
             style="width: 100%"
@@ -35,7 +35,7 @@
         </el-form-item>
       </el-col>
       <el-col :xs="24" :sm="12">
-        <el-form-item :label="$t('subject.death') + $t('colon')" prop="deathdate">
+        <el-form-item :label="$t('subject.death')" prop="deathdate">
           <el-date-picker
             v-model="subjectForm.deathdate"
             style="width: 100%"
@@ -45,14 +45,14 @@
     </el-row>
     <el-row>
       <el-col :xs="24" :sm="12">
-        <el-form-item :label="$t('subject.education')+$t('colon')" prop="education">
+        <el-form-item :label="$t('subject.education')" prop="education">
           <el-input
             v-model="subjectForm.education"
           />
         </el-form-item>
       </el-col>
       <el-col :xs="24" :sm="12">
-        <el-form-item :label="$t('subject.occupation') + $t('colon')" prop="occupation">
+        <el-form-item :label="$t('subject.occupation')" prop="occupation">
           <el-input
             v-model="subjectForm.occupation"
           />
@@ -61,21 +61,21 @@
     </el-row>
     <el-row>
       <el-col :xs="24" :sm="12">
-        <el-form-item :label="$t('subject.phone') + $t('colon')" prop="cellphonenumber">
+        <el-form-item :label="$t('subject.phone')" prop="cellphonenumber">
           <el-input
             v-model="subjectForm.cellphonenumber"
           />
         </el-form-item>
       </el-col>
       <el-col :xs="24" :sm="12">
-        <el-form-item :label="$t('subject.email') + $t('colon')" prop="inputemail">
+        <el-form-item :label="$t('subject.email')" prop="inputemail">
           <el-input
             v-model="subjectForm.inputemail"
           />
         </el-form-item>
       </el-col>
     </el-row>
-    <el-form-item :label="$t('subject.marriage') + $t('colon')" prop="marriagestatus">
+    <el-form-item :label="$t('subject.marriage')" prop="marriagestatus">
       <el-select
         v-model="subjectForm.marriagestatus"
         style="width: 100%"
@@ -84,7 +84,7 @@
         <el-option :label="$t('label.no')" value="否"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item :label="$t('subject.blood') + $t('colon')" prop="abobloodtype">
+    <el-form-item :label="$t('subject.blood')" prop="abobloodtype">
       <el-select
         v-model="subjectForm.abobloodtype"
         style="width: 100%"
@@ -96,7 +96,7 @@
         <el-option :label="$t('label.other')" value="其他"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item :label="$t('subject.lefthand') + $t('colon')" prop="lefthandflag">
+    <el-form-item :label="$t('subject.lefthand')" prop="lefthandflag">
       <el-select
         v-model="subjectForm.lefthandflag"
         style="width: 100%"
@@ -105,7 +105,7 @@
         <el-option :label="$t('label.no')" value="否"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item :label="$t('subject.address') + $t('colon')" prop="inputaddress">
+    <el-form-item :label="$t('subject.address')" prop="inputaddress">
       <el-input
         v-model="subjectForm.inputaddress"
       />
