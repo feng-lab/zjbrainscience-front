@@ -23,13 +23,12 @@ export default {
     currentPage: "当前页",
     operation: "操作",
     needLogin: "请您先登录！",
+    clickToDetail: "点击查看详情！",
   },
   confirm: {
     resetform: "确定要重置表单吗？所有字段数据将会被清除！",
     delFile: "确定删除文件 {file} 吗?"
   },
-  msgTitle: "任务 - {id}",
-  msg: "任务 {name} 的状态已为 {status}。点击查看详情！",
   placeholder: {
     input: "{info}",
     search: "搜索{content}",
@@ -70,7 +69,6 @@ export default {
     newFilter: "新增滤波步骤",
     newAnalysis: "新增分析步骤",
     more: "更多",
-    read: "全标已读",
     delete: "删除",
     edit: "编辑",
     new: "新增",
@@ -95,7 +93,8 @@ export default {
     task: "任务管理",
     search: "信号检索",
     user: "用户管理",
-    password: "密码修改"
+    password: "密码修改",
+    notification: "通知消息"
   },
   loginInfoStorage: {
     title: "数据存储",
@@ -302,6 +301,31 @@ export default {
       newRequire: "请输入新密码",
       confirmRequire: "请再次输入新密码",
       confirmWrong: "两次新密码输入不一致"
+    }
+  },
+  notify: {
+    type: {
+      text: "互动消息",
+      task_step_status: "任务状态通知"
+    }, 
+    content: {
+      task_step_status: "任务 {name}(ID: {id}) 的状态已更新为 {status}。",
+    },
+    list: {
+      type: "通知类型",
+      content: "通知内容",
+      status: "已读/未读",
+      create_at: "通知时间",
+      creator: "发送者"
+    },
+    status: {
+      read: "已读",
+      unread: "未读"
+    },
+    action: {
+      mark: "标记已读",
+      batchMark: "批量标记已读",
+      allMark: "全标已读"
     }
   }
 }

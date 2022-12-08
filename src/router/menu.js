@@ -31,12 +31,11 @@ const menus = [{
     level: 100 //研究员以上
   },
 }, {
-  path: "user",
-  name: "user",
-  component: () => import("@/views/user/User.vue"),
+  path: "notification",
+  name: "notification",
+  component: () => import("@/views/notification/Notification.vue"),
   meta: {
-    icon: "User",
-    level: 1000 //管理员以上
+    icon: "Message"
   }
 }, {
   path: "password",
@@ -44,6 +43,14 @@ const menus = [{
   component: () => import("@/views/password/UserPassword.vue"),
   meta: {
     icon: "Lock"
+  }
+}, {
+  path: "user",
+  name: "user",
+  component: () => import("@/views/user/User.vue"),
+  meta: {
+    icon: "User",
+    level: 1000 //管理员以上
   }
 }]
 

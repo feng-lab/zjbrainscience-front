@@ -22,14 +22,13 @@ export default {
     nofile: "No file! please select one from online EEG files or upload new file",
     urrentPage: "Page:",
     operation: "Operations",
-    needLogin: "Please log in first!"
+    needLogin: "Please log in first!",
+    clickToDetail: "Click for details!",
   },
   confirm: {
     resetform: "Are you sure to reset the form? All fields will be cleared!",
     delFile: "Are you sure to delete the file {file} ?"
   },
-  msgTitle: "Task - {id}",
-  msg: "{name}'s status has changed to {status}. Click for details!",
   placeholder: {
     input: "{info}",
     search: "Search {content}",
@@ -70,7 +69,6 @@ export default {
     newFilter: "New Filter Step",
     newAnalysis: "New Analysis Step",
     more: "More",
-    read: "Mark all as Read",
     delete: "Delete",
     edit: "Edit",
     new: "New",
@@ -95,7 +93,8 @@ export default {
     task: "TaskList",
     search: "SignalSearch",
     user: "User Management",
-    password: "Modify Password"
+    password: "Modify Password",
+    notification: "Notification"
   },
   loginInfoStorage: {
     title: "Data Storage",
@@ -296,6 +295,31 @@ export default {
       newRequire: "Please input new password",
       confirmRequire: "Please input new password again",
       confirmWrong: "Two inputs don't match"
+    }
+  },
+  notify: {
+    type: {
+      text: "Interactive Message",
+      task_step_status: "Task Status Notification"
+    }, 
+    content: {
+      task_step_status: "Task {name}(ID:{id})'s status has changed to {status}." 
+    },
+    list: {
+      type: "Type",
+      content: "Content",
+      status: "Status",
+      create_at: "Send Time",
+      creator: "Creator"
+    },
+    status: {
+      read: "Readed",
+      unread: "Unread"
+    },
+    action: {
+      mark: "Mark as Readed",
+      batchMark: "Batch Mark as Readed",
+      allMark: "Mark all as read"
     }
   }
 }
