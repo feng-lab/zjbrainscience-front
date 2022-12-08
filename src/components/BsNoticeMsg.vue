@@ -1,19 +1,27 @@
 <template>
-  <div :class="['the-message', 'p-8', { readed: message.status }]"  >
+  <div :class="['the-message', 'p-8', message.status ]"  >
     <el-avatar 
       class="the-message--avatar"
-      :icon="message.status ? BsIconReaded: BsIconNotRead"
+      :icon="message.status === 'read' ? BsIconReaded: BsIconNotRead"
     >
     </el-avatar> 
     <div>
       <div class="the-message--title">
-        <span>{{ $t("msgTitle", { id: message.taskid }) }}</span>
+        <span>{{ $t(`notify.type.${message.type}`) }}</span>
       </div>
       <div class="the-message--body">
-        <span :class="message.status ? '': 'not-read'">{{ $t("msg", { name: message.taskname, status: message.taskstatus } ) }}</span>
+        <span v-if="message.type === 'text'"> {{ message.content }} </span>
+        <span v-if="message.type === 'task_step_status'">
+          {{ $t(`notify.content.${message.type}`, {
+            name: message.content.task_name,
+            id: message.content.task_id,
+            status: STEP_INFO[message.content.task_status].status
+          })}}
+          {{ $t("label.clickToDetail")}}
+        </span>
       </div>
       <div class="the-message--time">
-        {{ message.time }}
+        {{ message.create_at }}
       </div>
     </div>
   </div>
@@ -21,6 +29,8 @@
 <script setup>
 import BsIconReaded from "@/components/icons/BsIconReaded.vue";
 import BsIconNotRead from "@/components/icons/BsIconNotRead.vue";
+import { STEP_INFO } from "@/utils/common";
+
 defineProps({
   message: Object
 })
@@ -48,7 +58,7 @@ defineProps({
   }
 }
 
-.readed {
+.read {
   color: var(--el-text-color-secondary);
   .the-message--title {
     color: var(--el-text-color-secondary);

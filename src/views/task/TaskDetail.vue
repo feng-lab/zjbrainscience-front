@@ -95,6 +95,7 @@ import TaskResultSuccess from './results/TaskResultSuccess.vue';
 import TaskResultProcess from './results/TaskResultProcess.vue';
 import TaskResultError from './results/TaskResultError.vue';
 import BsRouteLink from "@/components/BsRouteLink.vue";
+import { STEP_INFO } from '@/utils/common';
 
 import { onMounted, ref } from 'vue';
 import { onBeforeRouteUpdate } from "vue-router";
@@ -107,11 +108,6 @@ const props = defineProps({
 })
 
 
-const STEP_INFO = {
-  "0": {status: "error", color: "var(--el-color-danger)", icon: "CircleClose"},
-  "1": {status: "success", color: "var(--el-color-primary)", icon: "CircleCheck"},
-  "2": {status: "process", color: "var(--el-color-blue)", icon: "Loading"}
-}
 
 const taskinfo = ref({
   taskid:"", 
