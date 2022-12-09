@@ -3,59 +3,68 @@
     <el-row :gutter="12" class="multiple-line-row">
       <el-col :xs="24" :sm="16" :xl="20">
         <div class="button-line">
-        <el-button type="primary" @click="showNewForm" icon="Plus">{{ $t("button.newEx") }}</el-button>
+        <bs-route-link path="/experiments/new" type="primary">
+          <el-icon><Plus/></el-icon>
+          {{ $t("experiments.action.new") }}
+        </bs-route-link>
         <bs-sort-button
           :text="$t('button.sortByType')"
-          :order="listParams.sortBy === 'type' && listParams.sortOrder"
+          :order="listParams.sort_by === 'type' && listParams.sort_order"
           @click.prevent="setSortBy('type')"
         />
         <bs-sort-button
           :text="$t('button.sortByTime')"
-          :order="listParams.sortBy === 'starttime' && listParams.sortOrder"
-          @click="setSortBy('starttime')"
+          :order="listParams.sort_by === 'start_time' && listParams.sort_order"
+          @click="setSortBy('start_time')"
         />
         </div>
       </el-col>
       <el-col :xs="24" :sm="8" :xl="4">
         <el-input 
           class="col-right-btn" 
-          :placeholder="$t('placeholder.search', { content: $t('experiments.searchField.name')})"
+          v-model="listParams.search"
+          :placeholder="$t('placeholder.search', { content: $t('experiments.detail.name')})"
           prefix-icon="Search"
         />
       </el-col>
     </el-row>
   </el-card>
   <el-card>
-    <el-scrollbar height="var(--brain-body-scroll-height)">
+    <el-empty v-if="!exList.length"/>
+    <el-scrollbar height="var(--brain-body-scroll-height)" v-else>
       <el-row :gutter="16">
         <el-col
           v-for="ex in exList"
-          :key="ex.experimentsid"
+          :key="ex.id"
           :xs="24"
           :sm="12"
           :lg="8"
           :xl="6"
         >
           <bs-project-card
-            :title="ex.experimentsid"
+            :title="ex.name"
             icon-color="#faad14"
             :icon="BsIconExperiment"
             :content-style="{
               minHeight: '180px'
             }"
             :buttons="[{
+              text: $t('button.edit'),
+              icon: 'Edit',
+              onClick: () => handleEdit(ex.id)
+            }, {
               text: $t('button.detail'),
               icon: 'View',
-              onClick: () => handleView(ex.experimentsid)
+              onClick: () => handleView(ex.id)
             }, {
               text: $t('button.delete'),
               icon: 'Delete',
-              onClick: () => handleDelete(ex.experimentsid)
+              onClick: () => handleDelete(ex.id)
             }]"
           >
             <template #extra> 
-              <el-tag :type="statusTag[ex.experimentstype.toLowerCase()]"> 
-                {{ex.experimentstype }} 
+              <el-tag :type="statusTag[ex.type.toLowerCase()]"> 
+                {{ex.type}} 
               </el-tag>
             </template>
             <div class="m-b-8">
@@ -64,16 +73,16 @@
             <table>
               <tbody>
                 <bs-tr icon="User" icon-color="#52c41a" :label="'Session' + $t('colon')">
-                  {{ ex.numberofsessions }} 
+                  {{ ex.session_num }} 
                 </bs-tr>
                 <bs-tr icon="FolderOpened" icon-color="#52c41a" :label="'Trails' + $t('colon')">
-                  {{ ex.numberoftrails }} 
+                  {{ ex.trail_num }} 
                 </bs-tr>
                 <bs-tr icon="Clock" icon-color="#52c41a" :label="$t('label.startTime') + $t('colon')">
-                  {{ ex.startdate }} 
+                  {{ ex.start_at}} 
                 </bs-tr>
                 <bs-tr icon="Clock" icon-color="#52c41a" :label="$t('label.endTime') + $t('colon')">
-                  {{ ex.enddate }} 
+                  {{ ex.end_at}} 
                 </bs-tr>
               </tbody>
             </table>
@@ -86,17 +95,16 @@
           </el-button>
       </div>
     </el-scrollbar>
-    <ExperimentsForm v-model="showForm"/>
   </el-card>
 </template>
 <script setup>
 import BsIconExperiment from "@/components/icons/BsIconExperiment.vue";
 import BsTr from "@/components/BsTr.vue";
-import ExperimentsForm from "./forms/FormExperiments.vue";
 import BsProjectCard from "@/components/BsProjectCard.vue";
 import { FolderOpened } from "@element-plus/icons-vue";
+import BsRouteLink from "@/components/BsRouteLink.vue";
 
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { allExByPageApi, deleteExApi } from "@/api/experiments";
 import { useI18n } from "vue-i18n";
@@ -107,7 +115,6 @@ const router = useRouter();
 const i18n = useI18n();
 const { systemConfirm } = useUtils();
 
-const showForm = ref(false);
 const exList = ref([]);
 const loading = ref(false);
 const loadmore = ref(true);
@@ -124,23 +131,10 @@ const statusTag = {
   "p300": "blue"
 }
 
-const buttons = computed(() => {
-  return exid => {
-    return [{
-      text: i18n.t("button.detail"),
-      icon: "View",
-      onClick: () => handleView(exid)
-    }, {
-      text: i18n.t("button.delete"),
-      icon: "Delete",
-      onClick: () => handleDelete(exid)
-    }]
-  }
-})
-
 const listParams = ref({
-  sortBy: "starttime",
-  sortOrder: "desc",
+  search: "",
+  sort_by: "start_time",
+  sort_order: "desc",
   offset: 0,
   limit: 10, 
 })
@@ -159,12 +153,8 @@ const loadEx = async (more) => {
   listParams.value.offset = 0;
 }
 
-const showNewForm = () => {
-  showForm.value = true;
-}
-
 const handleView = (id) => {
-  router.push(`/experiments/${id}`)
+  router.push(`/experiments/detail/${id}`)
 
 }
 
@@ -178,16 +168,30 @@ const handleDelete = (id) => {
   })
 }
 
-const setSortBy = (byLable) => {
-  const { sortBy, sortOrder } = listParams.value;
-  if( sortBy === byLable) {
-    listParams.value.sortOrder =  sortOrder === "asce" ? "desc" : "asce";
-  } else {
-    listParams.value.sortOrder = "desc";
-  }
-  listParams.value.sortBy = byLable;
-  loadEx();
+const handleEdit = (id) => {
+  console.log('go to path', `/experiments/edit/${id}`)
+  router.push(`/experiments/edit/${id}`);
 }
+
+const setSortBy = (byLable) => {
+  let _sortOrder;
+  const { sort_by, sort_order } = listParams.value;
+  if( sort_by === byLable) {
+    _sortOrder =  sort_order === "asc" ? "desc" : "asc";
+  } else {
+    _sortOrder = "desc";
+  }
+  listParams.value = {
+    ...listParams.value,
+    sort_by: byLable,
+    sort_order: _sortOrder
+  }
+}
+
+watch(listParams, () => {
+  loadEx();
+}, {deep: true})
+
 </script>
 <style scoped lang="scss">
 

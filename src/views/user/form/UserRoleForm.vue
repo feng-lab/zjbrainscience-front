@@ -1,5 +1,5 @@
 <template>
-  <bs-form-dialog
+  <bs-dialog-form
     :title="$t('user.updateRole')"
     :form-rules="rules"
     :form-model="roleForm"
@@ -23,7 +23,7 @@
         />
       </el-select>
     </el-form-item>
-  </bs-form-dialog>
+  </bs-dialog-form>
 </template>
 
 <script setup>

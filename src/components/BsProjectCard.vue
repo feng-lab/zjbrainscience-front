@@ -34,7 +34,7 @@ import BsIconImg from "@/components/BsIconImg.vue";
 
 defineProps({
   icon: {
-    type: String,
+    type: [String, Object],
     default: "Histogram"
   },
   iconColor: {

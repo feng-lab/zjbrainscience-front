@@ -6,7 +6,7 @@
 </template>
 <script setup>
 const props = defineProps({
-  icon: String,
+  icon: [String, Object],
   iconColor: String,
   imgSrc: String,
   size: {

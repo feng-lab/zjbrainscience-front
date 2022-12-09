@@ -5,12 +5,12 @@
         <span>{{ $t(`menus.${menu.name}`) }}</span>
       </template>
   </el-menu-item>
-  <el-sub-menu v-else-if="menu.children.length">
+  <el-sub-menu :index="index" v-else-if="menu.children.length">
     <template #title>
       <bs-icon-img v-if="menu?.meta?.icon" :icon="menu.meta.icon"/>
       <span class="">{{ $t(`menus.${menu.name}`) }}</span>
     </template>
-    <bs-menu-content v-for="child in menu.children" :key="child.path" :menu="child" :parent-path="menu.path"/>
+    <bs-menu-content v-for="child in menu.children" :key="child.path" :menu="child" :parent-path="index"/>
   </el-sub-menu>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <bs-form-dialog
+  <bs-dialog-form
     :form-model="equipmentForm"
     :do-form-submit="handleSubmit"
     :on-close="handleClose"
@@ -30,10 +30,10 @@
         v-model="equipmentForm.index"
       />
     </el-form-item>
-  </bs-form-dialog>
+  </bs-dialog-form>
 </template>
 <script setup>
-import BsFormDialog from '@/components/BsFormDialog.vue';
+import BsDialogForm from '@/components/BsDialogForm.vue';
 
 import { ref, inject, computed, watch } from "vue";
 import { 

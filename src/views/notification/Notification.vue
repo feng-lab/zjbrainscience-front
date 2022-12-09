@@ -54,8 +54,8 @@
 </template>
 
 <script setup>
-import { ConfigTable } from "vue3-config-table/src/index";
-//import "vue3-config-table/lib/style.css";
+import { ConfigTable } from "vue3-config-table";
+import "vue3-config-table/lib/style.css";
 
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";

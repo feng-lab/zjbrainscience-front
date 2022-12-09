@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function newExApi(data) {
   return request({
-    url: "/api/addExperiments",
+    url: "/api/createExperiment",
     method: "POST",
     data
   })
@@ -26,56 +26,12 @@ export function allExByPageApi(params) {
   })
 }
 
-export function exDetailApi(experimentsid) {
+export function exDetailApi(experiment_id) {
   return request({
-    url: "/api/getExperimentsById",
+    url: "/api/getExperimentInfo",
     method: "GET",
     params: {
-      experimentsid
-    }
-  })
-}
-
-export function newParadigmApi(imgUrl, desc, experimentsid) {
-  return request({
-    url: "/api/addParadigms",
-    method: "POST",
-    data: {
-      imgUrl,
-      desc,
-      experimentsid
-    }
-  })
-}
-
-export function paradigmsByExApi(experimentsid) {
-  return request({
-    url: "/api/getParadigms",
-    method: "GET",
-    params: {
-      experimentsid
-    }
-  })
-}
-
-export function paradigmDetailApi(experimentsid, id) {
-  return request({
-    url: "/api/getParadigmById",
-    method: "GET",
-    params: {
-      experimentsid,
-      id
-    }
-  })
-}
-
-export function deleteParadigmApi(experimentsid, id) {
-  return request({
-    url: "/api/deleteParadigms",
-    method: "DELETE",
-    params: {
-      experimentsid,
-      id
+      experiment_id
     }
   })
 }
