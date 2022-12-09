@@ -9,11 +9,25 @@ const menus = [{
 }, {
   path: "experiments",
   name: "experiments",
-  component: () => import("@/views/experiments/Experiments.vue"),
   meta: {
     icon: "Notebook",
     level: 10 // 被试以上
-  }
+  },
+  children: [{
+    path: "new",
+    name: "newExperiment",
+    component: () => import("@/views/experiments/forms/FormExperiment.vue"),
+    meta: {
+      icon: "Plus"
+    }
+  }, {
+    path: "list",
+    name: "experimentList",
+    component: () => import("@/views/experiments/Experiments.vue"),
+    meta: {
+      icon: "List"
+    }
+  }]
 }, {
   path: "task",
   name: "task",

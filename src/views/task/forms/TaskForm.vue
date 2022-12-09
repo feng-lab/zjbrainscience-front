@@ -1,5 +1,5 @@
 <template>
-  <bs-form-dialog
+  <bs-dialog-form
     :form-model="taskForm"
     :title="$t('button.newTask')"
     :do-form-submit="handleSubmit"
@@ -84,7 +84,7 @@
     :source="source"
     multiple
   />
-  </bs-form-dialog>
+  </bs-dialog-form>
 </template>
 <script setup>
 

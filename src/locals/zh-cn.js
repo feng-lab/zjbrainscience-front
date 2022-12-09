@@ -33,6 +33,7 @@ export default {
     input: "{info}",
     search: "搜索{content}",
     select: "请选择{content}",
+    userSearch: "请输入员工号搜索用户",
   },
   sessionExpire: "您的会话session已过期，请重新登录！",
   valid: {
@@ -94,7 +95,9 @@ export default {
     search: "信号检索",
     user: "用户管理",
     password: "密码修改",
-    notification: "通知消息"
+    notification: "通知消息",
+    newExperiment: "新增实验",
+    experimentList: "实验列表"
   },
   loginInfoStorage: {
     title: "数据存储",
@@ -124,20 +127,27 @@ export default {
     }
   },
   experiments: {
-    searchField: {
-      name: "实验名称"
+    action: {
+      new: "新增实验",
+      edit: "编辑实验"
     },
     detail: {
-      exId: "实验编号",
-      exType: "实验类型",
-      subjectType: "被试对象",
-      subjectCnt: "被试数量",
-      exLocal: "实验地点",
-      exDesc: "实验描述",
-      exName: "实验名称",
-      noninvasive: "是否无创",
+      experiment_id: "实验编号",
+      type: "实验类型",
+      subject_type: "被试对象",
+      subject_num: "被试数量",
+      location: "实验地点",
+      description: "实验描述",
+      name: "实验名称",
+      is_non_invasive: "是否无创",
       date: "实验日期",
-      isopen: "是否公开",
+      is_shared: "是否公开",
+      main_operator: "主操作员",
+      assistants: "实验助手",
+      neuron_source: "细胞来源部位",
+      stimulation_type: "刺激类型",
+      session_num: "Session数量",
+      trail_num: "Trail数量"
     },
     tab: {
       paradigm: "实验范式",

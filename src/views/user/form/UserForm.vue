@@ -1,5 +1,5 @@
 <template> 
-  <bs-form-dialog
+  <bs-dialog-form
     :title="$t('button.new')+$t('user.text')"
     :form-model="userForm"
     :form-rules="rules"
@@ -21,12 +21,12 @@
         />
       </el-select>
     </el-form-item>
-  </bs-form-dialog>
+  </bs-dialog-form>
 
 </template>
 
 <script setup> 
-import BsFormDialog from '@/components/BsFormDialog.vue';
+import BsDialogForm from '@/components/BsDialogForm.vue';
 
 import { computed, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';

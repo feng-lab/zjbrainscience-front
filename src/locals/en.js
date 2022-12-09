@@ -32,7 +32,8 @@ export default {
   placeholder: {
     input: "{info}",
     search: "Search {content}",
-    select: "Select {content}"
+    select: "Select {content}",
+    userSearch: "Please enter the user's staff ID"
   },
   sessionExpire: "Your session has expired, please log in again!",
   valid: {
@@ -94,7 +95,9 @@ export default {
     search: "SignalSearch",
     user: "User Management",
     password: "Modify Password",
-    notification: "Notification"
+    notification: "Notification",
+    newExperiment: "New Experiment",
+    experimentList: "Experiment List"
   },
   loginInfoStorage: {
     title: "Data Storage",
@@ -118,20 +121,27 @@ export default {
     }
   },
   experiments: {
-    searchField: {
-      name: "Experiment Name"
+    action: {
+      new: "New Experiment",
+      edit: "Edit Experiment"
     },
     detail: {
-      exId: "ID",
-      exType: "Type",
-      subjectType: "Subject Type",
-      subjectCnt: "Subject Count",
-      exLocal: "Location",
-      exDesc: "Description",
-      exName: "Name",
-      noninvasive: "Non-invasive",
+      experiment_id: "ID",
+      type: "Type",
+      subject_type: "Subject Type",
+      subject_num: "Number of Subject",
+      location: "Location",
+      description: "Description",
+      name: "Name",
+      is_non_invasive: "Non-invasive",
       date: "Date",
-      isopen: "Public",
+      is_shared: "Public",
+      main_operator: "Main Operator",
+      assistants: "Assistants",
+      neuron_source: "Neuron Source",
+      stimulation_type: "Stimulation",
+      session_num: "Number of Session",
+      trail_num: "Number of Trail"
     },
     tab: {
       paradigm: "Paradigm",

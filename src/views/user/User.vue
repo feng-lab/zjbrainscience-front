@@ -17,20 +17,20 @@
   </config-table>
   <user-form
     v-model="showUserForm"
-    @success="()=>tableRef.reload()"
+    @submit-success="()=>tableRef.reload()"
   /> 
   <user-role-form
     v-model="showRoleForm"
     v-model:id="editUser"
-    @success="()=>tableRef.reload()"
+    @submit-success="()=>tableRef.reload()"
   />
 
 </template>
 
 <script setup> 
 import { ConfigTable } from "vue3-config-table";
-import "vue3-config-table/lib/style.css";
 import UserForm from "./form/UserForm.vue";
+import "vue3-config-table/lib/style.css";
 import UserRoleForm from "./form/UserRoleForm.vue";
 import { computed, ref } from "vue";
 import { useI18n } from 'vue-i18n';

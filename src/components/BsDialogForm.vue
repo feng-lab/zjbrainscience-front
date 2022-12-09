@@ -3,6 +3,8 @@
     :title="title"
     @closed="handleClose(formRef)"
     :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    :show-close="false"
   >
     <el-form
       ref="formRef"
@@ -39,7 +41,7 @@ const props = defineProps([
 ])
 
 const formRef = ref()
-const emits = defineEmits(["update:modelValue", "success"]);
+const emits = defineEmits(["update:modelValue", "submit-success"]);
 
 const { systemConfirm, resetForm } = useUtils();
 const i18n = useI18n();
@@ -65,7 +67,7 @@ const doSubmit = async (formRef) => {
   if(formValid && (!props.validator || customValid)) {
     await props.doFormSubmit();
     emits("update:modelValue", false);
-    emits("success");
+    emits("submit-success");
   }
 }
 
