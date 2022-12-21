@@ -5,8 +5,8 @@ import router from "./router";
 import i18n from "@/locals";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
-import './assets/css/main.scss';
 import 'element-plus/theme-chalk/display.css';
+import './assets/css/main.scss';
 
 const pinia = createPinia();
 const app = createApp(App);

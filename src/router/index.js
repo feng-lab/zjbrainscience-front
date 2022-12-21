@@ -77,8 +77,10 @@ router.beforeEach(async (to, from) => {
       }
     }
   } else if(to.name !== "login") {
-    const { user, getUserInfo }  = useUserStore();
-    if(!user.username) {
+    const userStore = useUserStore();
+    const { user }  = storeToRefs(userStore);
+    const { getUserInfo } = userStore;
+    if(!user.value.username) {
       await getUserInfo();
     }
     const level = to?.meta?.level ?? 0;

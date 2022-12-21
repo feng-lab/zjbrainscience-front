@@ -79,7 +79,7 @@
     </el-steps>
   <bs-target-file
     ref="targetFileRef"
-    v-model:visible="visible" 
+    v-model="visible" 
     v-model:selectFiles="selectFiles"
     :source="source"
     multiple

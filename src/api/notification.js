@@ -27,7 +27,7 @@ export function sendNotifyApi({type, receiver, content, create_at}) {
  */
 export function unReadNotifyCountApi() {
   return request({
-    url: "/api/getUnreadNotifyCount",
+    url: "/api/getUnreadNotificationCount",
     method: "GET"
   })
 }
@@ -53,14 +53,11 @@ export function unReadNotifyListApi(count) {
  * @param {Number} limit - 每页大小
  * @returns 
  */
-export function notifyByPageApi({limit, offset}) {
+export function notifyByPageApi(data) {
   return request({
     url: "/api/getNotificationsByPage",
     method: "GET",
-    params: {
-      limit,
-      offset
-    }
+    params: data
   })
 }
 

@@ -1,6 +1,5 @@
 <template>
   <el-dialog 
-    v-model="visible" 
     append-to-body
     @close="handleClose"
     :title="$t('label.targetFile')"
@@ -32,7 +31,6 @@
 <script setup>
 import { ref } from "vue";
 const props = defineProps({
-  visible: Boolean,
   source: Array,
   selectFiles: Array,
   selectFile: String,
@@ -47,27 +45,27 @@ const props = defineProps({
 const emits = defineEmits([
   "update:selectFiles", 
   "update:selectFile", 
-  "update:visible",
 ]);
 
 const tableRef = ref();
 const currentRow = ref();
 
-const handleClose = () => {
-    emits("update:visible", false);
-}
 
 const handleSubmit = () => {
   props.multiple ? 
     emits("update:selectFiles", tableRef.value.getSelectionRows()) 
     : emits("update:selectFile", currentRow.value)
-  emits("update:visible", false);
+  emits("update:modelValue", false);
 }
 
 const clearSelect = () => {
   if(tableRef.value) {
     tableRef.value.clearSelection();
   }
+}
+
+const handleClose = () => {
+  emits("update:modelValue", false);
 }
 
 const handleCurrentChange = (val) => {

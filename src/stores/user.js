@@ -24,7 +24,6 @@ const useUserStore = defineStore("user", () => {
   const getUserInfo = async () => {
     try {
       user.value = await currentUserApi();
-      console.log('after get user info', user.value)
     } catch (e) {
       ElMessage.error("Get current user info failed!");
     }

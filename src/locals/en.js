@@ -86,7 +86,22 @@ export default {
     clear: "Clear",
     backHome: "Back to home",
     newUser: "New User",
-    modify: "Modify"
+    modify: "Modify",
+    loadMore: "Load more"
+  },
+  elmessage: {
+    uploadSuccess: "Upload Success!",
+    uploadFail: "Upload Failed!",
+    deleteSuccess: "Delete Success!",
+    deleteFail: "Delete Failed!",
+    submitSuccess: "Submit Success!",
+    submitFail: "Submit Failed!",
+    handleSuccess: "Handle Success!",
+    handleFail: "Handle Failed!",
+    updateSuccess: "Update Success!",
+    updateFail: "Update Failed!",
+    newSuccess: "Add Success!",
+    newFailed: "Add Failed!"
   },
   menus: {
     management: "Home",
@@ -265,7 +280,8 @@ export default {
   file: {
     name: "File Name",
     type: "File Type",
-    experiment: "Association Experiment"
+    experiment: "Association Experiment",
+    deleteConfirm: "Are you sure to delete the file {name}?"
   },
   httpErrorMsg: {
     expire: "Session expired, please log in again",

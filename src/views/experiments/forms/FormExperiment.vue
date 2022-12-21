@@ -174,7 +174,6 @@ const props = defineProps({
   experiment_id: null
 })
 
-console.log('experiment form', props.experiment_id)
 
 const exForm = ref({
   name: "",
@@ -286,7 +285,9 @@ const handleCancel = () => {
 }
 
 watch(() => props.experiment_id, async (experiment_id) => {
-  exForm.value = await exDetailApi(experiment_id);
+  if(props.experiment_id) {
+    exForm.value = await exDetailApi(experiment_id);
+  }
 }, {
   immediate: true
 })

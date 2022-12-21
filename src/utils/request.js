@@ -61,7 +61,6 @@ request.interceptors.response.use(response => {
   if(url === "/api/login") {
     return Promise.resolve(response.data);
   } else {
-    console.log('response.data', response.data)
     const { code, message, data="" } = response.data;
     if(code === 1) {
       //后端处理失败

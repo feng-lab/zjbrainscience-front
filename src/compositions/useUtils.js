@@ -12,8 +12,8 @@ export function useUtils() {
     router.push("/");
   }
 
-  function systemConfirm(message, callback) {
-    ElMessageBox.confirm(
+  function systemConfirm(message, callback, errorHandle) {
+    return ElMessageBox.confirm(
       message, 
       i18n.t("term.systemremind"),
       {
@@ -27,6 +27,7 @@ export function useUtils() {
       callback();
     })
     .catch((err) => {
+      errorHandle(err);
       console.log("Error:", err);
     })
   }

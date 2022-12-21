@@ -54,7 +54,7 @@
     待实现
   </el-card>
   <bs-target-file
-    v-model:visible="visible" 
+    v-model="visible" 
     v-model:selectFile="selectFile"
     :source="source"
   />
