@@ -7,6 +7,7 @@
     :search-fields="searchFields"
     :tool-buttons="toolButtons"
     selectable="multiple"
+    refresh="manual"
     @select-change="handleSelectChange"
     row-key="id"
     list-key="items"
@@ -74,7 +75,7 @@ const waitToMark = ref([]);
 const router = useRouter();
 
 const columns = computed(() => (
-  ["type", "content", "status", "creator", "create_at"].map( prop => ({
+  ["type", "content", "status", "creator_name", "gmt_create"].map( prop => ({
     prop,
     label: i18n.t(`notify.list.${prop}`)
   }))
@@ -82,7 +83,12 @@ const columns = computed(() => (
 
 const searchFields = computed(() => ([{
   name: "type",
-  label: i18n.t("notify.list.type")
+  label: i18n.t("notify.list.type"),
+  searchType: "select",
+  options: [{
+    value: "task_step_status",
+    label: i18n.t("notify.type.task_step_status")
+  }]
 }, {
   name: "status",
   label: i18n.t("notify.list.status"),

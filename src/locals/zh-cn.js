@@ -341,8 +341,8 @@ export default {
       type: "通知类型",
       content: "通知内容",
       status: "已读/未读",
-      create_at: "通知时间",
-      creator: "发送者"
+      gmt_create: "通知时间",
+      creator_name: "发送者"
     },
     status: {
       read: "已读",
