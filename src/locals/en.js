@@ -335,8 +335,8 @@ export default {
       type: "Type",
       content: "Content",
       status: "Status",
-      create_at: "Send Time",
-      creator: "Creator"
+      gmt_create: "Send Time",
+      creator_name: "Creator"
     },
     status: {
       read: "Readed",
