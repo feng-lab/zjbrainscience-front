@@ -9,12 +9,12 @@
         </bs-route-link>
         <bs-sort-button
           :text="$t('button.sortByType')"
-          :order="listParams.sort_by === 'type' && listParams.sort_order"
+          :order="query.sort_by === 'type' && query.sort_order"
           @click.prevent="setSortBy('type')"
         />
         <bs-sort-button
           :text="$t('button.sortByTime')"
-          :order="listParams.sort_by === 'start_time' && listParams.sort_order"
+          :order="query.sort_by === 'start_time' && query.sort_order"
           @click="setSortBy('start_time')"
         />
         </div>
@@ -22,7 +22,8 @@
       <el-col :xs="24" :sm="8" :xl="4">
         <el-input 
           class="col-right-btn" 
-          v-model="listParams.search"
+          clearable
+          v-model="query.search"
           :placeholder="$t('placeholder.search', { content: $t('experiments.detail.name')})"
           prefix-icon="Search"
         />
@@ -30,8 +31,11 @@
     </el-row>
   </el-card>
   <el-card>
-    <el-empty v-if="!exList.length"/>
-    <el-scrollbar height="var(--brain-body-scroll-height)" v-else>
+    <bs-load-more 
+      :limit="6"
+      :load-method="allExByPageApi"
+      :query="query"
+      v-model="exList">
       <el-row :gutter="16">
         <el-col
           v-for="ex in exList"
@@ -89,12 +93,7 @@
           </bs-project-card>
         </el-col>
       </el-row>
-      <div class="load-more-btn" v-if="loadmore">
-          <el-button type="danger" @click="loadEx('more')" :loading="loading">
-            {{$t("button.load")}}{{$t("button.more")}}
-          </el-button>
-      </div>
-    </el-scrollbar>
+    </bs-load-more>
   </el-card>
 </template>
 <script setup>
@@ -103,8 +102,9 @@ import BsTr from "@/components/BsTr.vue";
 import BsProjectCard from "@/components/BsProjectCard.vue";
 import { FolderOpened } from "@element-plus/icons-vue";
 import BsRouteLink from "@/components/BsRouteLink.vue";
+import BsLoadMore from "@/components/BsLoadMore.vue";
 
-import { computed, onMounted, ref, watch } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { allExByPageApi, deleteExApi } from "@/api/experiments";
 import { useI18n } from "vue-i18n";
@@ -116,12 +116,6 @@ const i18n = useI18n();
 const { systemConfirm } = useUtils();
 
 const exList = ref([]);
-const loading = ref(false);
-const loadmore = ref(true);
-
-onMounted(() => {
-  loadEx();
-})
 
 const statusTag = {
   "mi": "success",
@@ -131,27 +125,11 @@ const statusTag = {
   "p300": "blue"
 }
 
-const listParams = ref({
+const query = ref({
   search: "",
   sort_by: "start_time",
   sort_order: "desc",
-  offset: 0,
-  limit: 10, 
 })
-
-const loadEx = async (more) => {
-  loading.value = true;
-  if(more) {
-    listParams.value.offset = exList.value.length;
-  }
-  const res = await allExByPageApi(listParams.value);
-  loading.value = false;
-  if(res.length < listParams.value.limit) {
-    loadmore.value = false;
-  }
-  exList.value = more ? [...exList.value, ...res ] : res;
-  listParams.value.offset = 0;
-}
 
 const handleView = (id) => {
   router.push(`/experiments/detail/${id}`)
@@ -167,7 +145,6 @@ const handleDelete = (id) => {
       await loadEx();
   })
 }
-
 const handleEdit = (id) => {
   console.log('go to path', `/experiments/edit/${id}`)
   router.push(`/experiments/edit/${id}`);
@@ -175,24 +152,20 @@ const handleEdit = (id) => {
 
 const setSortBy = (byLable) => {
   let _sortOrder;
-  const { sort_by, sort_order } = listParams.value;
+  const { sort_by, sort_order } = query.value;
   if( sort_by === byLable) {
     _sortOrder =  sort_order === "asc" ? "desc" : "asc";
   } else {
     _sortOrder = "desc";
   }
-  listParams.value = {
-    ...listParams.value,
+  query.value = {
+    ...query.value,
     sort_by: byLable,
     sort_order: _sortOrder
   }
 }
-
-watch(listParams, () => {
-  loadEx();
-}, {deep: true})
-
 </script>
+
 <style scoped lang="scss">
 
 $card-scroll-height: calc(100% - 198px);

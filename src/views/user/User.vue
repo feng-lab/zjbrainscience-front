@@ -1,5 +1,5 @@
 <template> 
-  <config-table
+  <admin-table-page
     ref="tableRef"
     :columns="columns"
     :fetch-method="getUserApi"
@@ -14,7 +14,7 @@
     <template #access_level="{ row }">
       {{ $t(`auth.${row.access_level}`) }}
     </template>
-  </config-table>
+  </admin-table-page>
   <user-form
     v-model="showUserForm"
     @submit-success="()=>tableRef.reload()"
@@ -28,9 +28,8 @@
 </template>
 
 <script setup> 
-import { ConfigTable } from "vue3-config-table";
+import { AdminTablePage } from "admin-table-page";
 import UserForm from "./form/UserForm.vue";
-import "vue3-config-table/lib/style.css";
 import UserRoleForm from "./form/UserRoleForm.vue";
 import { computed, ref } from "vue";
 import { useI18n } from 'vue-i18n';
@@ -111,6 +110,8 @@ const hiddenSearchFields = computed(() => ([{
 const onAddUserSuccess = () => {
   tableRef.value.reload();
 }
-
-
 </script>
+
+<style lang="scss">
+@use "admin-table-page/style/index.scss";
+</style>

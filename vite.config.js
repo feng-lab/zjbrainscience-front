@@ -29,13 +29,11 @@ export default ({ command }) => {
         resolvers: [ElementPlusResolver()],
       }),
       Components({
-        resolvers: [ElementPlusResolver({
-          importStyle: "sass",
-        })],
+        resolvers: [ElementPlusResolver()],
       }),
       viteMockServe({
         mockPath: "mock",
-        localEnabled: false,
+        localEnabled: true,
         watchFiles: true
       })
     ],

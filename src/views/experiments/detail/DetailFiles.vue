@@ -7,6 +7,11 @@
         :shadow="cardShow ? 'always': 'never'"
         :body-style="cardShow ? {} : {padding: 0}"
       >
+        <bs-load-more
+          v-model="files"
+          :load-method="filesByPageApi"
+          :query="query"
+        >
         <el-upload
           ref="uploadRef"
           v-model:file-list="files"
@@ -23,10 +28,15 @@
             <el-button type="primary" @click="handleZipUpload" icon="UploadFilled">压缩上传</el-button>
             -->
           </template>
-          <el-radio-group class="right" v-model="docType" @change="handleTypeChange">
-            <el-radio-button label="ALL">{{ $t("button.all") }}</el-radio-button>
-            <el-radio-button label="BDF">BDF</el-radio-button>
-            <el-radio-button label="MP4">MP4</el-radio-button>
+          <el-radio-group class="right" v-model="query.file_type" @change="handleTypeChange">
+            <el-radio-button label="">{{ $t("button.all") }}</el-radio-button>
+            <el-radio-button 
+              v-for="type in fileTypeList"
+              :key="type"
+              label="type"
+            >
+              {{ type.toUpperCase() }}
+            </el-radio-button>
           </el-radio-group>
           <template #file="{file}"> 
             <div v-if="listType === 'picture'" class="picture-item"> 
@@ -65,9 +75,12 @@
             </div>
           </template>
         </el-upload>
+        </bs-load-more>
+        <!--
         <div class="text-center" v-if="loadMore">
           <el-button type="danger" @click="loadEx('more')" :loading="loading">{{$t("button.load")}}{{$t("button.more")}}</el-button>
         </div>
+        -->
       </el-card>
     </el-col>
     <el-col :lg="listType === 'text' ? 16 : 24 " :xs="24">
@@ -159,21 +172,23 @@ import { useUtils } from "@/compositions/useUtils";
 import { useI18n } from "vue-i18n";
 import { useUpload } from "@/compositions/useUpload";
 import { ElMessage } from "element-plus";
-import { docByPageApi, deleteDocApi } from "@/api/files";
+import { filesByPageApi, deleteFileApi, fileTypesApi } from "@/api/files";
 import { eegDisplayApi } from "@/api/eeg";
+import BsLoadMore from "@/components/BsLoadMore.vue";
 
 const eegData = ref();
 
-const experimentid = inject("exid");
+const experiment_id = inject("exid");
 const fileList = ref([]);
 const uploadRef = ref();
 const crsftoken = jsCookie.get("csrftoken");
-const { files, options } = useUpload(experimentid);
+const { files, options } = useUpload(experiment_id);
 const accept = ref();
 const showFileSelect = ref(false);
 const forSelectFile = ref([]);
 const selectedFile = ref([]);
-const docType = ref("ALL")
+const fileType = ref("");
+const fileTypeList = ref([]);
 const listType = ref("picture");
 const filePath = "/testfile/";
 const loadMore = ref(true);
@@ -207,14 +222,19 @@ const viewMp4 = ref();
 const t = ref(5);
 const i = ref(1);
 
+const query = ref({
+  experiment_id,
+  file_type: ""
+})
+
 const cardShow = computed(() => listType.value === "text")
 
-onMounted(() => {
-  getDoc();
+onMounted(async () => {
+  fileTypeList.value = await fileTypesApi(experiment_id);
 })
 
 const getDoc = async () => {
-  const res = await docByPageApi(experimentid, docType.value, offset, limit);
+  const res = await filesByPageApi({ experiment_id, file_type: fileType.value, offset, limit });
   if(res.length < limit) {
     loadMore.value = false;
   }

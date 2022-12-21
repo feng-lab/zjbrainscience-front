@@ -109,7 +109,7 @@ const { breakpoint } = storeToRefs(useMediaQuery());
 const showMore = ref(false);
 
 provide('exid', props.experiment_id);
-provide('filePath', exForm.value.datapath);
+provide('filePath', `data/${props.experiment_id}/`);
 
 const activeName = ref("paradigm");
 

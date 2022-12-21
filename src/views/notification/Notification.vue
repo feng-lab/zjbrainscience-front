@@ -1,5 +1,5 @@
 <template>
-  <config-table
+  <admin-table-page
     ref="tableRef"
     :columns="columns"
     :locale="locale"
@@ -49,13 +49,12 @@
       >{{$t("button.view")}}</el-button>
 
     </template>
-  </config-table>
+  </admin-table-page>
   
 </template>
 
 <script setup>
-import { ConfigTable } from "vue3-config-table";
-import "vue3-config-table/lib/style.css";
+import { AdminTablePage } from "admin-table-page";
 
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -125,3 +124,6 @@ const handleMark = async (action, notification_ids) => {
 
 
 </script>
+<style lang="scss">
+@use "admin-table-page/style/index.scss";
+</style>

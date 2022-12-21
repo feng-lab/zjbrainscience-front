@@ -86,7 +86,22 @@ export default {
     clear: "清除",
     backHome: "返回首页",
     newUser: "新增用户",
-    modify: "修改"
+    modify: "修改",
+    loadMore: "加载更多"
+  },
+  elmessage: {
+    uploadSuccess: "上传成功！",
+    uploadFail: "上传失败！",
+    deleteSuccess: "删除成功！",
+    deleteFail: "删除失败！",
+    submitSuccess: "提交成功！",
+    submitFail: "提交失败！",
+    handleSuccess: "操作成功！",
+    handleFail: "操作失败！",
+    updateSuccess: "更新成功！",
+    updateFail: "更新失败！",
+    newSuccess: "新增成功！",
+    newFailed: "新增失败！"
   },
   menus: {
     management: "首页",
@@ -271,7 +286,8 @@ export default {
   file: {
     name: "文件名称",
     type: "文件类型",
-    experiment: "关联实验"
+    experiment: "关联实验",
+    deleteConfirm: "确定删除文件 {name}吗？"
   },
   httpErrorMsg: {
     expire: "会话已过期，请重新登录",

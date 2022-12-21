@@ -235,8 +235,6 @@ watch([start, end], () => {
 })
 
 const getDataGrowth = async () => {
-  console.log('start', start.value)
-  console.log('end', end.value)
   if(start.value && end.value) {
     if(start.value < end.value) {
       dataGrowth.value = await dataGrowthApi(start.value, end.value);
