@@ -33,7 +33,6 @@ const props = defineProps({
   }
 });
 
-console.log('props', props)
 const option = ref();
 /*
 const style= ref({
@@ -202,8 +201,7 @@ const getOption = () => {
           height: 15
     }],
     series
-  },
-  console.log('options', option.value)
+  }
 }
 
 

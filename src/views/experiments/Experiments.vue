@@ -32,7 +32,8 @@
   </el-card>
   <el-card>
     <bs-load-more 
-      :limit="6"
+      ref="loadRef"
+      :limit="8"
       :load-method="allExByPageApi"
       :query="query"
       v-model="exList">
@@ -131,6 +132,8 @@ const query = ref({
   sort_order: "desc",
 })
 
+const loadRef = ref();
+
 const handleView = (id) => {
   router.push(`/experiments/detail/${id}`)
 
@@ -142,7 +145,7 @@ const handleDelete = (id) => {
     async () => {
       await deleteExApi(id);
       ElMessage.success(`${i18n.t("button.delete")}${i18n.t("status.success")}`);
-      await loadEx();
+      await loadRef.value.handleLoadMore();
   })
 }
 const handleEdit = (id) => {

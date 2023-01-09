@@ -16,7 +16,7 @@
         {{ exForm.type }}
       </el-descriptions-item>
       <el-descriptions-item :label="$t('experiments.detail.main_operator')" align="center">
-        {{ exForm.main_operator}}
+        {{ `${exForm?.main_operator.username}(${exForm?.main_operator.staff_id})`}}
       </el-descriptions-item>
       <el-descriptions-item :label="$t('label.startTime')" align="center">
         {{ exForm.start_at }}
@@ -71,9 +71,9 @@
     </div>
     <el-tabs v-model="activeName">
       <el-tab-pane :label="$t('experiments.tab.paradigm')" name="paradigm"><DetailParadigm /></el-tab-pane>
-      <el-tab-pane :label="$t('term.file')" name="file"><DetailFiles /></el-tab-pane>
-      <el-tab-pane :label="$t('subject.text')" name="subject"><DetailSubject /></el-tab-pane>
-      <el-tab-pane :label="$t('experiments.tab.device')" name="equipment"><DetailEquipment /></el-tab-pane>
+      <el-tab-pane :label="$t('term.file')" name="file" lazy><DetailFiles /></el-tab-pane>
+      <el-tab-pane :label="$t('subject.text')" name="subject" lazy><DetailSubject /></el-tab-pane>
+      <el-tab-pane :label="$t('experiments.tab.device')" name="equipment" lazy><DetailEquipment /></el-tab-pane>
     </el-tabs>
   </el-card>
   
@@ -94,7 +94,11 @@ const props = defineProps({
   experiment_id: String
 });
 const exForm = ref({
-  datapath: ""
+  datapath: "",
+  main_operator: {
+    username: "",
+    staff_id: ""
+  }
 });
 
 const column = {
@@ -109,7 +113,6 @@ const { breakpoint } = storeToRefs(useMediaQuery());
 const showMore = ref(false);
 
 provide('exid', props.experiment_id);
-provide('filePath', `data/${props.experiment_id}/`);
 
 const activeName = ref("paradigm");
 

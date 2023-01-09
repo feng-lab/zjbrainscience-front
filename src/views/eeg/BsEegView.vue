@@ -3,7 +3,7 @@
     <el-col :xs="24" :sm="6" class="m-b-8">
       <bs-field :label="$t('term.file') + $t('colon')"> 
         <el-tag>
-        {{ file }}
+        {{ file.name }}
         </el-tag>
       </bs-field>
     </el-col>
@@ -14,7 +14,7 @@
     </el-col>
     <el-col :xs="24" :sm="6" class="m-b-8">
       <bs-field :label="$t('label.window') + $t('colon')">
-        <el-select v-model="query.t" style="width: 100%">
+        <el-select v-model="query.window" style="width: 100%">
           <el-option label="1秒" :value="1"/>
           <el-option label="2秒" :value="2"/>
           <el-option label="5秒" :value="5"/>
@@ -24,7 +24,7 @@
     </el-col>
     <el-col :xs="24" :sm="6" class="m-b-8">
       <bs-field :label="$t('label.currentPage') + $t('colon')">
-        <el-input-number v-model="query.i" :min="1" style="width: 100%"/>
+        <el-input-number v-model="query.page_index" :min="0" style="width: 100%"/>
       </bs-field>
     </el-col>
   </el-row>
@@ -105,25 +105,17 @@ const channelSelect = ref(false);
 
 
 const query = ref({
-  channel: props.multiple ? []: CHANNELS[0] ,
-  i: 1,
-  t: 5
+  channels: props.multiple ? CHANNELS: CHANNELS[0] ,
+  page_index: 0,
+  window: 5
 })
 
 const getEEG = async () => {
-  console.log('eeg', query.value)
   if(props.file) {
-    const [ p1, c ] = props.file.split(".");
-    if(query) {
-      const { i, t, channel } = query.value;
-      eegData.value = await eegDisplayApi({
-        p1,
-        c,
-        i,
-        t,
-        channel: props.multiple ? channel.join(",") : channel
-      });
-    }
+    eegData.value = await eegDisplayApi({
+      file_id: props.file.id,
+      ...query.value
+    });
   }
 }
 watch(() => ({

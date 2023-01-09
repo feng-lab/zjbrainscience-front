@@ -67,3 +67,26 @@ export function deleteParadigmApi(id) {
     }
   })
 }
+
+/**
+ * 更新实验范式
+ * @param { Number } id - 实验范式ID
+ * @param { Array } images - 图片ID列表
+ * @param { String } description - 范式描述
+ * @param { Number } experiment_id - 实验ID
+ * @param { String } creator - 范式创建者
+ * @returns 
+ */
+export function updateParadigmApi({ id, experiment_id, creator, description, images }) {
+  return request({
+    url: "/api/updateParadigm",
+    method: "POST",
+    data: {
+      id,
+      experiment_id,
+      creator,
+      description,
+      images
+    }
+  })
+}

@@ -17,19 +17,19 @@ export function fileTypesApi(experiment_id) {
 /**
  * 分页获取文件列表 
  * @param {Number} experiment_id - 实验ID
- * @param {String} path          - 文件名
+ * @param {String} name          - 文件名
  * @param {String} file_type     - 文件类型
  * @param {Number} offset        - 分页起始位置
  * @param {Number} limit         - 分页大小
  * @returns 
  */
-export function filesByPageApi({ experiment_id, path="", file_type="", offset=0, limit=10 }) {
+export function filesByPageApi({ experiment_id, name="", file_type="", offset=0, limit=10 }) {
   return request({
     url: "/api/getFilesByPage",
     method: "GET",
     params: {
       experiment_id,
-      path,
+      name,
       file_type,
       offset,
       limit

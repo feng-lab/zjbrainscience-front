@@ -1,24 +1,22 @@
 import request from "@/utils/request";
 
 /**
- * 
- * @param {String} p1       - 文件名称
- * @param {String} c        - 文件类型
- * @param {Number} t        - 时间窗口大小
- * @param {Number} i        - 当前页数
- * @param {String} channel  - 通道
+ * 解析EEG文件
+ * @param {Number} file_id          - 文件ID
+ * @param {Number} window           - 时间窗口大小
+ * @param {Number} page_index       - 当前页数，从0开始
+ * @param {Array<String>} channels  - 通道列表
  * @returns 
  */
-export function eegDisplayApi({ p1, t, i, c, channel }) {
+export function eegDisplayApi({ file_id, window, page_index, channels }) {
   return request({
-    url: "/api/data/displayEEG",
+    url: "/api/displayEEG",
     method: "POST",
     data: {
-      p1,
-      t,
-      i,
-      c,
-      channel
+      file_id,
+      window,
+      page_index,
+      channels
     }
   })
 }
