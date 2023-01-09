@@ -44,6 +44,7 @@
             :placeholder="$t('label.startTime')"
             type="datetime"
             style="width: 100%"
+            value-format="YYYY-MM-DD HH:mm:ss"
             v-model="exForm.start_at"
           />
         </el-form-item>
@@ -58,67 +59,58 @@
             :placeholder="$t('label.endTime')"
             type="datetime"
             style="width: 100%"
+            value-format="YYYY-MM-DD HH:mm:ss"
             v-model="exForm.end_at"
           />
         </el-form-item>
       </el-col>
     </el-form-item>
-    <el-row>
-      <el-col :xs="24" :md="12">
-        <el-form-item :label="$t('experiments.detail.main_operator')" prop="main_operator"> 
-          <el-select
-            style="width: 100%"
-            clearable
-            v-model="exForm.main_operator"
-            remote
-            filterable
-            :remote-method="handleMainOperatorSearch"
-            :placeholder="$t('placeholder.userSearch')"
-          >
-            <el-option
-              v-for="option in mainOperatorOptions"
-              :key="option.value"
-              v-bind="option"
-            />
-          </el-select>
-        </el-form-item>
-      </el-col>
-      <el-col :xs="24" :md="12">
-        <el-form-item :label="$t('experiments.detail.assistants')" prop="assistants"> 
-          <el-select
-            style="width: 100%"
-            clearable
-            multiple
-            v-model="exForm.assistants"
-            remote
-            :reserve-keyword="false"
-            filterable
-            :remote-method="handleAssistantsSearch"
-            :placeholder="$t('placeholder.userSearch')"
-          >
-            <el-option
-              v-for="option in assistantsOptions"
-              :key="option.value"
-              v-bind="option"
-            />
-          </el-select>
-        </el-form-item>
-      </el-col>
-      <el-col :xs="24" :md="12">
-        <el-form-item :label="$t('experiments.detail.neuron_source')" prop="neuron_source"> 
-          <el-input
-            v-model="exForm.neuron_source"
-          />
-        </el-form-item>
-      </el-col>
-      <el-col :xs="24" :md="12">
-        <el-form-item :label="$t('experiments.detail.stimulation_type')" prop="stimulation_type"> 
-          <el-input
-            v-model="exForm.stimulation_type"
-          />
-        </el-form-item>
-      </el-col>
-    </el-row>
+    <el-form-item :label="$t('experiments.detail.main_operator')" prop="main_operator"> 
+      <el-select
+        style="width: 100%"
+        clearable
+        v-model="exForm.main_operator"
+        remote
+        filterable
+        :remote-method="handleMainOperatorSearch"
+        :placeholder="$t('placeholder.userSearch')"
+      >
+        <el-option
+          v-for="option in mainOperatorOptions"
+          :key="option.value"
+          v-bind="option"
+        />
+      </el-select>
+    </el-form-item>
+    <el-form-item :label="$t('experiments.detail.assistants')" prop="assistants" v-if="type === 'new'"> 
+      <el-select
+        style="width: 100%"
+        clearable
+        multiple
+        v-model="exForm.assistants"
+        remote
+        :reserve-keyword="false"
+        filterable
+        :remote-method="handleAssistantsSearch"
+        :placeholder="$t('placeholder.userSearch')"
+      >
+        <el-option
+          v-for="option in assistantsOptions"
+          :key="option.value"
+          v-bind="option"
+        />
+      </el-select>
+    </el-form-item>
+    <el-form-item :label="$t('experiments.detail.neuron_source')" prop="neuron_source"> 
+      <el-input
+        v-model="exForm.neuron_source"
+      />
+    </el-form-item>
+    <el-form-item :label="$t('experiments.detail.stimulation_type')" prop="stimulation_type"> 
+      <el-input
+        v-model="exForm.stimulation_type"
+      />
+    </el-form-item>
     <el-form-item :label="$t('experiments.detail.subject_type')" prop="subject_type">
       <el-radio-group v-model="exForm.subject_type">
         <el-radio label="人类">{{ $t("subject.category.human") }}</el-radio>
@@ -164,8 +156,8 @@
 import BsPageForm from "@/components/BsPageForm.vue";
 
 import { ref, computed, watch } from "vue";
-import { newExApi, exDetailApi } from "@/api/experiments";
-import { useRouter } from "vue-router";
+import { newExApi, updateExApi, exDetailApi } from "@/api/experiments";
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRouter } from "vue-router";
 import useUserStore from "@/stores/user";
 import { useI18n } from "vue-i18n";
 import { useUserSearch } from "@/compositions/useUserSearch";
@@ -207,6 +199,7 @@ const { user } = useUserStore();
 const router = useRouter();
 
 const type = computed(() => {
+  console.log('experiment form router', router.currentRoute)
   return router.currentRoute.value.path.split('/')[2]
 })
 
@@ -273,10 +266,12 @@ const rules = computed(() => ({
 }))
 
 const doFormSubmit = async () => {
-  const id = await newExApi({
+  const remoteFunc = type.value === "new" ? newExApi : updateExApi;
+  const id = await remoteFunc({
     ...exForm.value,
   });
-  router.push(`/experiments/detail/${id}`)
+  const exId = id ?? props.experiment_id;
+  router.push(`/experiments/detail/${exId}`)
 }
 
 const handleCancel = () => {
@@ -286,13 +281,26 @@ const handleCancel = () => {
 
 watch(() => props.experiment_id, async (experiment_id) => {
   if(props.experiment_id) {
-    exForm.value = await exDetailApi(experiment_id);
+    const res = await exDetailApi(experiment_id);
+    const { main_operator } = res;
+    exForm.value = {
+      ...res,
+      main_operator: main_operator.id,
+      assistants: []
+    }
+    mainOperatorOptions.value.push({
+      value: main_operator.id,
+      label: `${main_operator.username}(${main_operator.staff_id})`
+    })
   }
 }, {
   immediate: true
 })
 
+onBeforeRouteLeave((to, from) => {
+  if(type.value === "edit") {
+    experimentFormRef.value.reset();
+  }
+})
 
 </script>
-<style lang="scss" scoped>
-</style>

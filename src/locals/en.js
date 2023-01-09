@@ -280,6 +280,9 @@ export default {
   file: {
     name: "File Name",
     type: "File Type",
+    list: "File List",
+    eeg: "EEG",
+    video: "Video",
     experiment: "Association Experiment",
     deleteConfirm: "Are you sure to delete the file {name}?"
   },

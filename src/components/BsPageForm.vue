@@ -80,7 +80,7 @@ const handleReset = (formRef) => {
 }
 
 defineExpose({
-  reset: handleReset
+  reset: ()=>handleReset(formRef.value)
 })
 
 

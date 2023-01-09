@@ -1,14 +1,14 @@
 <template>
-  <el-scrollbar v-if="modelValue.length" :height="height">
+  <div v-if="modelValue.length">
+  <el-scrollbar  :height="height">
     <slot></slot>
-    <!--
     <div class="load-more-btn" v-if="loadMore">
       <el-button :type="type" @click="handleLoadMore(true)" :loading="loading">
         {{ $t("button.loadMore") }}
       </el-button>
     </div>
-    -->
   </el-scrollbar> 
+      </div>
   <el-empty v-else/>
   
 </template>
@@ -46,21 +46,23 @@ let offset = 0;
 const params = computed(() => ({
   ...props.query,
   limit: props.limit,
-  offset
 }))
 
 const handleLoadMore = async (more) => {
   loading.value = true;
   if(more) {
-    offset = props.moduleValue.length;
+    offset = props.modelValue.length;
   }
-  const res = await props.loadMethod(params.value);
+  const res = await props.loadMethod({
+    ...params.value,
+    offset
+  });
+  const newList = res.items ?? res;
   loading.value = false;
-  console.log('res length: ', res.length, 'props limit: ', props.limit)
-  if( res?.length < props.limit ) {
+  if( newList?.length < props.limit ) {
     loadMore.value = false;
   }
-  const list = more ? [...props.moduleValue, ...res] : res;
+  const list = more ? [...props.modelValue, ...newList] : newList;
   emits("update:modelValue", list);
   offset = 0;
 }

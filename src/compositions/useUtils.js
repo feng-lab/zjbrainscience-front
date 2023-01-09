@@ -27,8 +27,7 @@ export function useUtils() {
       callback();
     })
     .catch((err) => {
-      errorHandle(err);
-      console.log("Error:", err);
+      return errorHandle(err);
     })
   }
 

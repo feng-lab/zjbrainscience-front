@@ -1,46 +1,38 @@
 <template>
-  <el-row class="m-b-16" gutter="16">
+  <el-row class="m-b-16" :gutter="16">
     <el-col :lg="cardShow ? 8 : 24" :xs="24" class="m-b-16">
       <el-card 
-        :header="cardShow ? 'File List': ''"
+        :header="cardShow ? $t('file.list'): ''"
         :class="[listType]"
         :shadow="cardShow ? 'always': 'never'"
         :body-style="cardShow ? {} : {padding: 0}"
       >
-        <bs-load-more
-          v-model="files"
-          :load-method="filesByPageApi"
-          :query="query"
-        >
+        <el-scrollbar :height="files.length?650:50" class="m-b-16">
         <el-upload
           ref="uploadRef"
           v-model:file-list="files"
           v-bind="options"
-          :on-preview="handlePreview"
-          :on-change="handleChange"
-          :accept="accept"
-          :auto-upload="false"
           :class="[listType]"
         >
           <template #trigger> 
-            <el-button type="primary" @click="handleBatchUpload" icon="Upload">{{ $t("button.bulkUpload")}}</el-button>
+            <el-button type="primary" icon="Upload">{{ $t("button.bulkUpload")}}</el-button>
             <!--
             <el-button type="primary" @click="handleZipUpload" icon="UploadFilled">压缩上传</el-button>
             -->
           </template>
-          <el-radio-group class="right" v-model="query.file_type" @change="handleTypeChange">
+          <el-radio-group class="right" v-model="query.file_type" @change="handleTypeChange" v-if="files.length">
             <el-radio-button label="">{{ $t("button.all") }}</el-radio-button>
             <el-radio-button 
               v-for="type in fileTypeList"
               :key="type"
-              label="type"
+              :label="type"
             >
               {{ type.toUpperCase() }}
             </el-radio-button>
           </el-radio-group>
           <template #file="{file}"> 
             <div v-if="listType === 'picture'" class="picture-item"> 
-              <div class="picture-item--thumbnail m-b-8">
+              <div class="picture-item--thumbnail m-b-8 m-r-8">
                 <img :src="getThumbnail(file)"/>
               </div>
               <div>
@@ -49,7 +41,7 @@
               <span class="picture-item--actions">
                 <span @click="handlePreview(file)"><el-icon><View /></el-icon></span>
                 <span>
-                  <a :underline="false" :download="file.name" :href="`${filePath}${file.name}`" >
+                  <a :underline="false" :download="file.name" :href="getPreviewUrl(file.id)">
                     <el-icon><Download/></el-icon>
                   </a>
                 </span>
@@ -58,7 +50,7 @@
             </div>
             <div v-else class="text-item">
               <div class="text-item--name" @click="handlePreview(file)"> 
-                <el-icon class="text-item--name--icon"><Document/></el-icon>
+                <el-icon class="text-item--name--icon m-r-4"><Document/></el-icon>
                 <span>{{ file.name }}</span>
               </div>
               <div class="text-item--percent"> 
@@ -67,61 +59,36 @@
               <div class="text-item--actions"> 
                 <el-button-group>
                   <el-button size="small">
-                    <el-link :underline="false" :download="file.name" :href="`${filePath}${file.name}`" icon="Download"></el-link> 
+                    <el-link :underline="false" :download="file.name" :href="getPreviewUrl(file.id)" icon="Download"></el-link> 
                   </el-button>
                   <el-button icon="Delete" size="small" type="danger" @click="handleDelete(file)"></el-button>
                 </el-button-group>
               </div>
             </div>
+
           </template>
         </el-upload>
-        </bs-load-more>
-        <!--
-        <div class="text-center" v-if="loadMore">
-          <el-button type="danger" @click="loadEx('more')" :loading="loading">{{$t("button.load")}}{{$t("button.more")}}</el-button>
-        </div>
-        -->
+        </el-scrollbar>
+          <bs-load-more
+            v-model="files"
+            ref="loadMoreRef"
+            :load-method="filesByPageApi"
+            :limit="10"
+            :height="50"
+            :query="query"
+          />
       </el-card>
     </el-col>
-    <el-col :lg="listType === 'text' ? 16 : 24 " :xs="24">
-      <el-scrollbar height="800px" ref="scrollRef" @scroll="handleScroll">
-        <el-card v-if="viewFile" class="m-b-16" header="EEG File">
-          <!--
-          <template #header> 
-            <div class="between-flex"> 
-              <div>{{ `数据文件 - ${viewFile.name}` }}</div>
-              <div class="eeg-file-control"> 
-                <div> 
-                  <span>时间窗口: </span>
-                  <el-select v-model="t" @change="getEEG">
-                    <el-option label="1秒" :value="1"/>
-                    <el-option label="2秒" :value="2"/>
-                    <el-option label="5秒" :value="5"/>
-                    <el-option label="10秒" :value="10"/>
-                  </el-select>
-                </div>
-                <div> 
-                  <el-pagination
-                    layout="prev,pager,next,slot"
-                    :page-count="7"
-                    :pager-count="3"
-                    v-model:current-page="i"
-                    @current-change="getEEG"
-                  >
-                  </el-pagination>
-                </div>
-              </div>
-            </div>
-          </template>
-          <bs-eeg-display :eeg-data="eegData" chart-height="700"/>
-          -->
+    <el-col :lg="listType === 'text' ? 16 : 24 " :xs="24" v-if="viewFile||viewMp4">
+      <el-scrollbar height="800px" ref="scrollRef">
+        <el-card class="m-b-16" v-if="viewFile" :header="$t('file.eeg')">
           <bs-eeg-view
-            :file="viewFile.name"
+            :file="viewFile"
             :chart-height="700"
             multiple
           />
         </el-card>
-        <el-card :header="`视频文件 - ${viewMp4.name}`" v-if="viewMp4">
+        <el-card :header="`${$t('file.video')}- ${viewMp4.name}`" v-if="viewMp4">
           <div style="text-align: center;" id="videoPlay">
             <video :src="viewMp4.url" controls/>
           </div>
@@ -129,6 +96,15 @@
       </el-scrollbar>
     </el-col>
   </el-row>
+  <el-dialog 
+    v-model="previewImg" 
+    width="80%"
+  >
+    <div class="preview">
+      <img class="preview-image" :src="previewImgUrl" alt="Preview Image" />
+    </div>
+  </el-dialog>
+  <!--
   <el-dialog 
     v-model="showFileSelect" 
     title="选择压缩包中的文件"
@@ -158,48 +134,45 @@
       <el-button type="primary" @click="handleConfirm">{{$t("button.upload")}}</el-button>
     </template>
   </el-dialog>
+  -->
   
 </template>
 <script setup>
 import BsEegDisplay from "@/components/BsEegDisplay.vue";
 import BsEegView from "@/views/eeg/BsEegView.vue";
 
-import { ref, inject, nextTick, onMounted, watch, computed } from "vue";
+import { ref, inject, nextTick, onMounted, computed } from "vue";
 import jsCookie from "js-cookie";
 import Thumbnail from "@/utils/thumbnail";
-import jszip from "jszip";
+//import jszip from "jszip";
 import { useUtils } from "@/compositions/useUtils";
 import { useI18n } from "vue-i18n";
 import { useUpload } from "@/compositions/useUpload";
 import { ElMessage } from "element-plus";
 import { filesByPageApi, deleteFileApi, fileTypesApi } from "@/api/files";
 import { eegDisplayApi } from "@/api/eeg";
+import { getPreviewUrl } from "@/utils/common";
 import BsLoadMore from "@/components/BsLoadMore.vue";
 
-const eegData = ref();
 
 const experiment_id = inject("exid");
-const fileList = ref([]);
 const uploadRef = ref();
-const crsftoken = jsCookie.get("csrftoken");
 const { files, options } = useUpload(experiment_id);
-const accept = ref();
+//const accept = ref();
 const showFileSelect = ref(false);
 const forSelectFile = ref([]);
 const selectedFile = ref([]);
-const fileType = ref("");
+//const fileType = ref("");
 const fileTypeList = ref([]);
 const listType = ref("picture");
-const filePath = "/testfile/";
-const loadMore = ref(true);
-const limit = 30;
-let offset = 0;
 const i18n = useI18n();
+const previewImg = ref(false);
+const previewImgUrl = ref("");
 
-const mp4Ref = ref();
+const loadMoreRef = ref();
+
 const scrollRef = ref();
 
-const { systemConfirm } = useUtils();
 
 const checkAll = ref(false);
 const isIndeterminate = ref(false);
@@ -218,10 +191,6 @@ const handleFileSelectChange = (value) => {
 const viewFile = ref();
 const viewMp4 = ref();
 
-/* eeg display param */
-const t = ref(5);
-const i = ref(1);
-
 const query = ref({
   experiment_id,
   file_type: ""
@@ -233,56 +202,28 @@ onMounted(async () => {
   fileTypeList.value = await fileTypesApi(experiment_id);
 })
 
-const getDoc = async () => {
-  const res = await filesByPageApi({ experiment_id, file_type: fileType.value, offset, limit });
-  if(res.length < limit) {
-    loadMore.value = false;
-  }
-  files.value = [...res.map(file => ({
-    name: file.name,
-    url: `${filePath}${file.name}`
-  })), ...files.value]
-  offset = files.value.length;
-}
-
-const getEEG = async () => {
-  console.log(viewFile.value.name);
-  const [p1, c ] = viewFile.value.name.split(".");
-  console.log('p1', p1, 'c', c)
-  eegData.value = await eegDisplayApi({
-    p1,
-    t: t.value,
-    i: i.value,
-    c
-  })
-}
 
 const handleTypeChange = () => {
-  files.value = [];
-  getDoc();
+  loadMoreRef.value.handleLoadMore();
 }
 
 
-const zipTool = new jszip();
+//const zipTool = new jszip();
 
 const getThumbnail = (file) => {
-  const { name, url } = file;
+  const { id, name, url } = file;
   const extension = name.split(".").pop().toLowerCase();
+  if(["png", "jpeg", "gif", "jpg"].includes(extension)) {
+    return getPreviewUrl(id);
+  }
   return Thumbnail[extension] ?? Thumbnail["unknown"];
 }
 
 const handleDelete = (file) => {
-  systemConfirm(
-    i18n.t("confirm.delFile", {file: file.name}),
-    ()=>uploadRef.value.handleRemove(file)
-  )
+    uploadRef.value.handleRemove(file)
 }
 
-const handleUploadError = (error, uploadFile) => {
-  ElMessage.error(`${uploadFile.name} 上传失败!`),
-  console.log('error', error);
-}
-
+/*
 const handleZipUpload = () => {
   accept.value = "application/zip";
 }
@@ -315,10 +256,14 @@ const handleChange = (uploadFile, uploadFiles) => {
     })
   }
 }
+*/
 
 const viewFileOp = {
   "mp4": (file) => {
-    viewMp4.value = file
+    viewMp4.value = {
+      ...file,
+      url: getPreviewUrl(file.id)
+    }
     if(viewFile.value) {
       nextTick(() => {
         scrollRef.value.setScrollTop(600);
@@ -327,17 +272,22 @@ const viewFileOp = {
   },
   "bdf": (file) => { 
     viewFile.value = file
-    getEEG();
+  },
+  "png": (file) => {
+    previewImg.value = true;
+    previewImgUrl.value = getPreviewUrl(file.id);
   }
 }
 
 const handlePreview = (file) => {
   const type = file.name.split('.').pop().toLowerCase();
   const operation = viewFileOp[type];
-  console.log('type', type, operation)
+  console.log('type', type, operation, file)
   if(operation) {
     operation(file);
-    listType.value = "text";
+    if(type !== "png") {
+      listType.value = "text";
+    }
   } else {
     ElMessage.error("当前文件类型不支持在线解析查看");
   }
@@ -368,7 +318,7 @@ const handleConfirm = () => {
   border: none;
 }
 .picture {
-  min-height: 500px;
+  min-height: 50vh;
   :deep(el-upload) {
     float: left;
   }
@@ -443,7 +393,7 @@ const handleConfirm = () => {
     cursor: pointer;
   }
   &--percent {
-    width:  60%;
+    width:  40%;
     margin-right: 16px;
     .el-progress {
       top: -2px;
@@ -479,6 +429,14 @@ const handleConfirm = () => {
 .eeg-file-control {
   display: flex;
   align-items: center;
+}
+
+.preview {
+  text-align: center;
+  &-image {
+    max-width: 100%;
+    object-fit: fill;
+  }
 }
 
 </style>

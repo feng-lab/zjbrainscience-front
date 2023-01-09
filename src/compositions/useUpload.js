@@ -5,7 +5,7 @@ import { useI18n } from "vue-i18n";
 import { deleteFileApi } from "@/api/files";
 import { useUtils } from "./useUtils";
 
-export function useUpload(experiment_id, path, is_original=false) {
+export function useUpload(experiment_id, is_original=false) {
   const access_token = jsCookie.get("access_token");
   const token_type = jsCookie.get("token_type");
   const i18n = useI18n();
@@ -16,18 +16,20 @@ export function useUpload(experiment_id, path, is_original=false) {
   }
   const handleRemove = async (uploadFile) => {
     const { id, name } = uploadFile;
-    await systemConfirm(
+    const res = await systemConfirm(
       i18n.t("file.deleteConfirm", { name }),
       async () => {
         await deleteFileApi(id);
-        canDelete = true;
-        console.log('now delete', canDelete);
+        
         ElMessage.success(i18n.t("elmessage.deleteSuccess"));
       },
       (error) => {
-        return false;
+        return "abort";
       }
     );
+    if(res === "abort") {
+      return false
+    }
   }
 
   const handleSuccess = (response, uploadFile) => {
@@ -40,7 +42,6 @@ export function useUpload(experiment_id, path, is_original=false) {
     "on-error": handleUploadError,
     "data":{
       experiment_id,
-      path,
       is_original
     },
     headers: {

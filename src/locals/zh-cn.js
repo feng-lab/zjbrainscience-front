@@ -286,6 +286,9 @@ export default {
   file: {
     name: "文件名称",
     type: "文件类型",
+    list: "文件列表",
+    eeg: "EEG文件",
+    video: "视频文件",
     experiment: "关联实验",
     deleteConfirm: "确定删除文件 {name}吗？"
   },
