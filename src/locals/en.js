@@ -87,7 +87,9 @@ export default {
     backHome: "Back to home",
     newUser: "New User",
     modify: "Modify",
-    loadMore: "Load more"
+    loadMore: "Load more",
+    newAssistants: "New Assistants",
+    batchDelete: "Batch Delete"
   },
   elmessage: {
     uploadSuccess: "Upload Success!",
@@ -161,6 +163,7 @@ export default {
     tab: {
       paradigm: "Paradigm",
       device: "Device",
+      assistant: "Assistants"
     },
     deleteConfirm: "Are you sure to delete the experiment (ID: {id})?"
   },
@@ -170,7 +173,9 @@ export default {
     formlabel: {
       image: "Images",
       description: "Description"
-    }
+    },
+    creator: "Creator",
+    createTime: "Create Time"
   },
   term: {
     file: "Files",
@@ -211,6 +216,9 @@ export default {
     purpose: "Purpose",
     index: "Index",
     deleteConfirm: "Are you sure to delete the device(ID: {id}) from the current experiment?"
+  },
+  assistants: {
+    deleteConfirm: "Are you sure to delete the assistants?"
   },
   task: {
     deleteConfirm: "Are you sure to delete task: {name}(ID:{id})",
@@ -296,8 +304,9 @@ export default {
   },
   user: {
     text: "User",
+    id: "User ID",
     username: "User Name",
-    staffId: "Staff ID",
+    staff_id: "Staff ID",
     accessLevel: "Access Level",
     lastLogin: "Last Login Time",
     deleteConfirm: "Are you sure to delete User {user}?",

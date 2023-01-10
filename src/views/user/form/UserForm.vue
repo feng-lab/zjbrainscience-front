@@ -8,7 +8,7 @@
     <el-form-item :label="$t('user.username')" prop="username">
       <el-input v-model="userForm.username"/>
     </el-form-item>
-    <el-form-item :label="$t('user.staffId')" prop="staff_id">
+    <el-form-item :label="$t('user.staff_id')" prop="staff_id">
       <el-input v-model="userForm.staff_id"/> 
     </el-form-item>
     <el-form-item :label="$t('user.accessLevel') " prop="access_level">
@@ -50,7 +50,7 @@ const rules = reactive({
   }],
   staff_id: [{ 
     required: true, 
-    message: i18n.t("valid.require", {action: i18n.t("action.input"), field: i18n.t("user.staffId")}),
+    message: i18n.t("valid.require", {action: i18n.t("action.input"), field: i18n.t("user.staff_id")}),
     trigger: "blur"
   }],
   access_level: [{ 

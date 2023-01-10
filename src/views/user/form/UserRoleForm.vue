@@ -43,13 +43,13 @@ const roleForm = ref({
   access_level: null
 })
 
-const rules = ref({
+const rules = computed(() => ({
   access_level: [{ 
     required: true, 
     message: i18n.t("valid.require", {action: i18n.t("action.select"), field: i18n.t("user.accessLevel")}), 
     trigger: "change"
   }],
-})
+}));
 
 const handleOpened = async () => {
   roleForm.value = props.id && await userInfoApi(props.id);

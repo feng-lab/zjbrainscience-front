@@ -35,11 +35,11 @@
             <el-icon color="#faad14"><Histogram/></el-icon>
           </template>
           <bs-list-item-content
-            title="创建人"
+            :title="$t('paradigm.creator')"
             content="wynne"
           />
           <bs-list-item-content
-            title="创建时间"
+            :title="$t('paradigm.createTime')"
             :content="paradigm.gmt_create"
           />
         </bs-list-item>

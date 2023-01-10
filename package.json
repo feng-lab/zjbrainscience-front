@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.9",
-    "admin-table-page": "^0.0.6",
+    "admin-table-page": "^0.0.7",
     "axios": "^1.1.2",
     "echarts": "^5.4.0",
     "echarts-liquidfill": "^3.1.0",

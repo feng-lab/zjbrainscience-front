@@ -87,7 +87,9 @@ export default {
     backHome: "返回首页",
     newUser: "新增用户",
     modify: "修改",
-    loadMore: "加载更多"
+    loadMore: "加载更多",
+    newAssistants: "新增助手",
+    batchDelete: "批量删除"
   },
   elmessage: {
     uploadSuccess: "上传成功！",
@@ -167,6 +169,7 @@ export default {
     tab: {
       paradigm: "实验范式",
       device: "实验设备",
+      assistant: "实验助手"
     },
     deleteConfirm: "确定删除实验 （ID： {id}） 吗？"
   },
@@ -176,7 +179,9 @@ export default {
     formlabel: {
       image: "实验图片",
       description: "文字描述"
-    }
+    },
+    creator: "创建人",
+    createTime: "创建时间"
   },
   term: {
     file: "文件",
@@ -217,6 +222,9 @@ export default {
     purpose: "实验用途",
     index: "序号",
     deleteConfirm: "确定从当前实验移除设备 （ID： {id}） 吗？"
+  },
+  assistants: {
+    deleteConfirm: "确定删除所选实验助手？"
   },
   task: {
     deleteConfirm: "确定删除任务： {name}(ID: {id}) 吗？",
@@ -302,8 +310,9 @@ export default {
   },
   user: {
     text: "用户",
+    id: "用户ID",
     username: "用户名",
-    staffId: "员工号",
+    staff_id: "员工号",
     accessLevel: "用户等级",
     lastLogin: "上次登录",
     deleteConfirm: "确定要删除用户 {user} 吗？",
