@@ -104,7 +104,7 @@ const searchFields = computed(() =>[{
 
 const hiddenSearchFields = computed(() => ([{
   name: "staff_id",
-  label: i18n.t("user.staffId")
+  label: i18n.t("user.staff_id")
 }]))
 
 const onAddUserSuccess = () => {

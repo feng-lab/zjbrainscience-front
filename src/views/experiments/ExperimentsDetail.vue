@@ -67,28 +67,31 @@
       </el-button>
       <el-button class="right" link size="small" type="primary" v-else @click="showMore=true"> 
         {{ $t("button.more") }}
+        <el-icon><arrow-down/></el-icon>
       </el-button>
     </div>
     <el-tabs v-model="activeName">
-      <el-tab-pane :label="$t('experiments.tab.paradigm')" name="paradigm"><DetailParadigm /></el-tab-pane>
-      <el-tab-pane :label="$t('term.file')" name="file" lazy><DetailFiles /></el-tab-pane>
-      <el-tab-pane :label="$t('subject.text')" name="subject" lazy><DetailSubject /></el-tab-pane>
-      <el-tab-pane :label="$t('experiments.tab.device')" name="equipment" lazy><DetailEquipment /></el-tab-pane>
+      <el-tab-pane :label="$t('experiments.tab.paradigm')" name="paradigm"><detail-paradigm/></el-tab-pane>
+      <el-tab-pane :label="$t('term.file')" name="file" lazy><detail-files/></el-tab-pane>
+      <el-tab-pane :label="$t('subject.text')" name="subject" lazy><detail-subject/></el-tab-pane>
+      <el-tab-pane :label="$t('experiments.tab.device')" name="equipment" lazy><detail-equipment/></el-tab-pane>
+      <el-tab-pane :label="$t('experiments.tab.assistant')" name="assistant" lazy><detail-assistants/></el-tab-pane>
     </el-tabs>
   </el-card>
   
 </template>
 <script setup>
-import DetailParadigm from "./detail/DetailParadigm.vue";
-import DetailFiles from "./detail/DetailFiles.vue";
-import DetailSubject from "./detail/DetailSubject.vue";
-import DetailEquipment from "./detail/DetailEquipment.vue";
 import BsRouteLink from "@/components/BsRouteLink.vue";
 
 import { ref, provide, onMounted } from "vue";
 import { exDetailApi } from "@/api/experiments";
 import { storeToRefs } from "pinia";
 import useMediaQuery from "@/stores/mediaQuery";
+import DetailParadigm from "./detail/DetailParadigm.vue";
+import DetailFiles from "./detail/DetailFiles.vue";
+import DetailSubject from "./detail/DetailSubject.vue";
+import DetailEquipment from "./detail/DetailEquipment.vue";
+import DetailAssistants from "./detail/DetailAssistants.vue";
 
 const props = defineProps({
   experiment_id: String

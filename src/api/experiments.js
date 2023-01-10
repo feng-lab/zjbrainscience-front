@@ -68,37 +68,3 @@ export function exDetailApi(experiment_id) {
     }
   })
 }
-
-/**
- * 添加实验助手
- * @param { Number } experiment_id - 实验ID
- * @param { Array<Number> } assistant_ids - 实验助手ID列表
- * @returns 
- */
-export function addExAssistantApi({ experiment_id, assistant_ids }) {
-  return request({
-    url: "/api/addExperimentAssistants",
-    method: "POST",
-    data: {
-      experiment_id,
-      assistant_ids
-    }
-  })
-}
-
-/**
- * 删除实验助手
- * @param { Number } experiment_id - 实验ID
- * @param { Array<Number> } assistant_ids - 实验助手ID列表
- * @returns 
- */
-export function deleteExAssistantApi({ experiment_id, assistant_ids }) {
-  return request({
-    url: "/api/deleteExperimentAssistants",
-    method: "DELETE",
-    data: {
-      experiment_id,
-      assistant_ids
-    }
-  })
-}
