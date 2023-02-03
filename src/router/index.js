@@ -29,11 +29,17 @@ const router = createRouter({
           path: "experiments/edit/:experiment_id",
           name: "experiments-edit",
           component: () => import("@/views/experiments/forms/FormExperiment.vue"),
+          meta: {
+            level: 100
+          },
           props: true
         },
         {
           path: "experiments/detail/:experiment_id",
           name: "experiments-detail",
+          meta: {
+            level: 10
+          },
           component: () => import("@/views/experiments/ExperimentsDetail.vue"),
           props: true
         },
@@ -41,6 +47,9 @@ const router = createRouter({
           path: "task/:taskid",
           name: "task-detail",
           component: () => import("@/views/task/TaskDetail.vue"),
+          meta: {
+            level: 100
+          },
           props: true
         },
         {
@@ -68,6 +77,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
+  console.log('to', to)
   if(!hasLogined() && to.name !== "login") {
     ElMessage.error(i18n.global.t("label.needLogin"));
     return { 
@@ -80,11 +90,11 @@ router.beforeEach(async (to, from) => {
     const userStore = useUserStore();
     const { user }  = storeToRefs(userStore);
     const { getUserInfo } = userStore;
-    if(!user.value.username) {
+    if(!user.value.staff_id) {
       await getUserInfo();
     }
     const level = to?.meta?.level ?? 0;
-    if(level > user.access_level) {
+    if(level > user.value.access_level) {
       return { name: "403"};
     }
   }

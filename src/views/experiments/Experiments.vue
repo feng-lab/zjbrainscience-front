@@ -3,7 +3,7 @@
     <el-row :gutter="12" class="multiple-line-row">
       <el-col :xs="24" :sm="16" :xl="20">
         <div class="button-line">
-        <bs-route-link path="/experiments/new" type="primary">
+        <bs-route-link path="/experiments/new" type="primary" v-if="user.access_level > 10">
           <el-icon><Plus/></el-icon>
           {{ $t("experiments.action.new") }}
         </bs-route-link>
@@ -56,6 +56,7 @@
             :buttons="[{
               text: $t('button.edit'),
               icon: 'Edit',
+              hide: user.access_level < 100,
               onClick: () => handleEdit(ex.id)
             }, {
               text: $t('button.detail'),
@@ -64,6 +65,7 @@
             }, {
               text: $t('button.delete'),
               icon: 'Delete',
+              hide: user.access_level < 100,
               onClick: () => handleDelete(ex.id)
             }]"
           >
@@ -111,12 +113,15 @@ import { allExByPageApi, deleteExApi } from "@/api/experiments";
 import { useI18n } from "vue-i18n";
 import { useUtils } from "@/compositions/useUtils";
 import { ElMessage } from "element-plus";
+import useUserStore from "@/stores/user";
 
 const router = useRouter();
 const i18n = useI18n();
 const { systemConfirm } = useUtils();
 
 const exList = ref([]);
+const { user } = useUserStore();
+console.log('user', user)
 
 const statusTag = {
   "mi": "success",

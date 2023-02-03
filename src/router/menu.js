@@ -18,7 +18,8 @@ const menus = [{
     name: "newExperiment",
     component: () => import("@/views/experiments/forms/FormExperiment.vue"),
     meta: {
-      icon: "Plus"
+      icon: "Plus",
+      level: 100 // 研究员以上
     }
   }, {
     path: "list",
@@ -28,6 +29,7 @@ const menus = [{
       icon: "List"
     }
   }]
+  /*
 }, {
   path: "task",
   name: "task",
@@ -44,12 +46,14 @@ const menus = [{
     icon: "Aim",
     level: 100 //研究员以上
   },
+  */
 }, {
   path: "notification",
   name: "notification",
   component: () => import("@/views/notification/Notification.vue"),
   meta: {
-    icon: "Message"
+    icon: "Message",
+    level: 10
   }
 }, {
   path: "password",

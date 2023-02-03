@@ -15,7 +15,7 @@
       </el-icon>
     </div>
     <div class="header-content--right">
-      <div class="action">
+      <div class="action" v-if="user.access_level">
         <el-dropdown
           :hide-on-click="false"
           trigger="click"
@@ -66,7 +66,12 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item icon="lock" @click="goToPassword">{{ $t('menus.password') }}</el-dropdown-item>
+              <el-dropdown-item icon="postcard">
+                <el-tooltip :content="$t('label.changeAccessLevel')" placement="top">
+                  <el-tag>{{$t(`auth.${user.access_level}`)}}</el-tag>
+                </el-tooltip>
+              </el-dropdown-item>
+              <el-dropdown-item icon="lock" @click="goToPassword" divided>{{ $t('menus.password') }}</el-dropdown-item>
               <el-dropdown-item icon="switch-button" @click="()=>doLogout(false)">{{ $t('button.logout') }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -110,8 +115,10 @@ const msgList = ref([]);
 const unReadCount = ref(0);
 
 onMounted(async () => {
-  getUnReadMsgCnt();
-  timer = setInterval(getUnReadMsgCnt, 60 * 5 * 1000)
+  if(user.value.access_level) {
+    getUnReadMsgCnt();
+    timer = setInterval(getUnReadMsgCnt, 60 * 5 * 1000)
+  }
 })
 
 onUnmounted(() => {

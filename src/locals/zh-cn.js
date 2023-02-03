@@ -24,7 +24,8 @@ export default {
     operation: "操作",
     needLogin: "请您先登录！",
     clickToDetail: "点击查看详情！",
-    loading: "加载中..."
+    loading: "加载中...",
+    changeAccessLevel: "如果需要修改权限，请联系管理员！"
   },
   confirm: {
     resetform: "确定要重置表单吗？所有字段数据将会被清除！",

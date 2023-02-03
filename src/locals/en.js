@@ -24,7 +24,8 @@ export default {
     operation: "Operations",
     needLogin: "Please log in first!",
     clickToDetail: "Click for details!",
-    loading: "Loading..."
+    loading: "Loading...",
+    changeAccessLevel: "Please contact the administrator to modify your permissions!"
   },
   confirm: {
     resetform: "Are you sure to reset the form? All fields will be cleared!",

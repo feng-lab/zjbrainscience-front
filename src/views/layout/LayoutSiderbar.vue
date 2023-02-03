@@ -45,7 +45,7 @@ const isShow = (menu) => {
 const filterMenus = (ms) => {
   let res = [];
   ms.forEach(menu => {
-    if(menu.children) {
+    if(menu.children && isShow(menu)) {
       res.push({
         ...menu,
         children: filterMenus(menu.children)
