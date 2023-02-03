@@ -45,6 +45,7 @@
             type="datetime"
             style="width: 100%"
             value-format="YYYY-MM-DD HH:mm:ss"
+            :disabled-date="startDisabledDate"
             v-model="exForm.start_at"
           />
         </el-form-item>
@@ -59,6 +60,7 @@
             :placeholder="$t('label.endTime')"
             type="datetime"
             style="width: 100%"
+            :disabled-date="endDisabledDate"
             value-format="YYYY-MM-DD HH:mm:ss"
             v-model="exForm.end_at"
           />
@@ -73,6 +75,7 @@
         remote
         filterable
         :remote-method="handleMainOperatorSearch"
+        :loading="mpLoading"
         :placeholder="$t('placeholder.userSearch')"
       >
         <el-option
@@ -92,6 +95,7 @@
         :reserve-keyword="false"
         filterable
         :remote-method="handleAssistantsSearch"
+        :loading="assistantLoading"
         :placeholder="$t('placeholder.userSearch')"
       >
         <el-option
@@ -189,10 +193,10 @@ const exForm = ref({
 const experimentFormRef = ref();
 
 const mainOperatorOptions = ref([]);
-const { handleRemoteSearch:handleMainOperatorSearch } = useUserSearch(mainOperatorOptions);
+const { handleRemoteSearch:handleMainOperatorSearch , loading: mpLoading} = useUserSearch(mainOperatorOptions);
 
 const assistantsOptions = ref([]);
-const { handleRemoteSearch:handleAssistantsSearch } = useUserSearch(assistantsOptions);
+const { handleRemoteSearch:handleAssistantsSearch, loading: assistantLoading } = useUserSearch(assistantsOptions);
 
 const { user } = useUserStore();
 
@@ -264,6 +268,14 @@ const rules = computed(() => ({
     trigger: "change"
   }],
 }))
+
+const endDisabledDate = (time) => {
+  return time.getTime() < new Date(exForm.value.start_at).getTime();
+}
+
+const startDisabledDate = (time) => {
+  return time.getTime() > new Date(exForm.value.end_at).getTime();
+}
 
 const doFormSubmit = async () => {
   const remoteFunc = type.value === "new" ? newExApi : updateExApi;

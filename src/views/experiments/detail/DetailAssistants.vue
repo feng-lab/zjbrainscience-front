@@ -26,6 +26,7 @@
         v-model="assistantForm.assistant_ids"
         remote
         :reserve-keyword="false"
+        :loading="loading"
         filterable
         :remote-method="handleRemoteSearch"
         :placeholder="$t('placeholder.userSearch')"
@@ -66,7 +67,7 @@ const assistantForm = ref({
 
 const pageSize = ref(10);
 
-const { options, handleRemoteSearch } = useUserSearch();
+const { options, loading, handleRemoteSearch } = useUserSearch();
 const { user } = useUserStore();
 
 const assistantTableRef= ref();
