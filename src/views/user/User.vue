@@ -39,6 +39,7 @@ import { ElMessage } from "element-plus";
 import { ACCESS_LEVEL } from "@/utils/common";
 import { storeToRefs } from "pinia";
 import useGlobalStore from "@/stores/global";
+import useUserStore from "@/stores/user";
 
 const i18n = useI18n();
 const { systemConfirm } = useUtils();
@@ -48,6 +49,7 @@ const showRoleForm = ref(false);
 const editUser = ref();
 const tableRef = ref();
 const { locale } = storeToRefs(useGlobalStore());
+const { doLogout, user } = useUserStore();
 
 
 const columns = computed(() => ([{
@@ -75,6 +77,9 @@ const actionColumn = computed(() => ([{
       async () => {
         await deleteUserApi(row.id);
         ElMessage.success(i18n.t("button.delete")+i18n.t("status.success"))
+        if(row.username === user.username) {
+          doLogout(true);
+        }
         tableRef.value.reload();
       }
     )

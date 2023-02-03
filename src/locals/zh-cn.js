@@ -91,7 +91,8 @@ export default {
     loadMore: "加载更多",
     newAssistants: "新增助手",
     batchDelete: "批量删除",
-    filter: "筛选"
+    filter: "筛选",
+    changePassword: "点击修改密码！"
   },
   elmessage: {
     uploadSuccess: "上传成功！",
@@ -105,7 +106,11 @@ export default {
     updateSuccess: "更新成功！",
     updateFail: "更新失败！",
     newSuccess: "新增成功！",
-    newFailed: "新增失败！"
+    newFailed: "新增失败！",
+    updatePasswordSuccess: "更新密码成功！请使用新密码重新登陆",
+    updatePassword: "欢迎您首次登陆！当前密码为初始密码, 可先修改密码！",
+    getUserInfoFail: "获取当前用户信息失败！"
+    
   },
   menus: {
     management: "首页",

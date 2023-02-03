@@ -33,6 +33,7 @@ import { updatePasswordApi } from "@/api/user";
 import { ElMessage } from "element-plus";
 import useMediaQuery from "@/stores/mediaQuery";
 import { storeToRefs } from "pinia";
+import useUserStore from "@/stores/user";
 
 const pwdFormRef = ref();
 const pwdForm = reactive({
@@ -43,6 +44,7 @@ const pwdForm = reactive({
 
 const i18n = useI18n();
 const { breakpoint } = storeToRefs(useMediaQuery());
+const { doLogout } = useUserStore();
 
 const confirmValid = (rule, value, callback) => {
   if(value === "") {
@@ -85,12 +87,17 @@ const handleSubmit = (formRef) => {
   formRef.validate(async (valid) => {
     if(valid) {
       const { current, newPwd } = pwdForm;
-      await updatePasswordApi({
-        old_password: current,
-        new_password: newPwd
-      });
-      ElMessage.success(i18n.t("button.submit") + i18n.t("status.success"));
-      handleReset(pwdFormRef.value);
+      try{
+        await updatePasswordApi({
+          old_password: current,
+          new_password: newPwd
+        });
+        ElMessage.success(i18n.t("elmessage.updatePasswordSuccess"));
+        doLogout();
+        handleReset(pwdFormRef.value);
+      } catch(e) {
+        console.log(e);
+      }
     } else {
       console.log("error submit!");
       return false;
