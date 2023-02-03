@@ -46,12 +46,13 @@
 import { AdminTablePage } from "admin-table-page";
 import BsDialogForm from "@/components/BsDialogForm.vue";
 
-import { ref, inject, computed, onMounted, onBeforeMount } from "vue";
+import { ref, inject, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useUserSearch } from "@/compositions/useUserSearch";
 import { useUtils } from "@/compositions/useUtils";
 import { newAssistantsApi, deleteAssistantsApi, getAssistantsApi } from "@/api/assistants";
 import { ElMessage } from "element-plus";
+import useUserStore from "@/stores/user";
 
 const i18n = useI18n();
 const { systemConfirm } = useUtils();
@@ -66,6 +67,7 @@ const assistantForm = ref({
 const pageSize = ref(10);
 
 const { options, handleRemoteSearch } = useUserSearch();
+const { user } = useUserStore();
 
 const assistantTableRef= ref();
 const columns = computed(() => (
@@ -76,27 +78,33 @@ const columns = computed(() => (
 ))
 
 
-const toolButtons = computed(() => ([{
-  text: i18n.t("button.newAssistants"),
-  onClick: () => {
-    showAssistantForm.value = true;
-  }
-}, {
-  text: i18n.t("button.batchDelete"),
-  type: "danger",
-  onClick: async () => {
-    const assistant_ids = assistantTableRef.value.getSelections().map(assistant => assistant.id);
-    await deleteAssistants(assistant_ids);
-    assistantTableRef.value.clearSelection();
-  }
-}]))
+const toolButtons = computed(() => {
+  return user.access_level > 10 ? [{
+      text: i18n.t("button.newAssistants"),
+      icon: "Plus",
+      onClick: () => {
+        showAssistantForm.value = true;
+      }
+    }, {
+      text: i18n.t("button.batchDelete"),
+      icon: "Delete",
+      type: "danger",
+      onClick: async () => {
+        const assistant_ids = assistantTableRef.value.getSelections().map(assistant => assistant.id);
+        await deleteAssistants(assistant_ids);
+        assistantTableRef.value.clearSelection();
+      }
+  }] : [];
+})
 
-const actionColumn = computed(() => ([{
-  text: i18n.t("button.delete"),
-  onClick: (row) => {
-    deleteAssistants([row.id]);
-  }
-}]))
+const actionColumn = computed(() => {
+  return user.access_level > 10 ? [{
+    text: i18n.t("button.delete"),
+    onClick: (row) => {
+      deleteAssistants([row.id]);
+    }
+  }] : [];
+})
 
 const deleteAssistants = async (assistant_ids) => {
   if(!assistant_ids.length) return;

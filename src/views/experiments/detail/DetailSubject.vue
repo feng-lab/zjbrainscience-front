@@ -1,22 +1,20 @@
 <template>
-  <bs-table
-    ref="tableRef"
+  <admin-table-page
+    ref="subjectTableRef"
     :columns="columns"
-    :button-list="buttonList"
+    :tool-buttons="toolButtons"
+    :action-column="actionColumn"
     :fetch-method="humanSubjectApi"
-    :query="{ experimentsid }"
-  >
-    <template #operation="{ row }">
-      <el-button link type="primary" size="small" @click="handleView(row.subjectid)">{{ $t("button.edit") }}</el-button>
-      <el-divider direction="vertical"/>
-      <el-button link type="primary" size="small" @click="handleDelete(row.subjectid)">{{ $t("button.delete") }}</el-button>
-    </template>
-  </bs-table>
+    :extra-query="{ experimentsid }"
+    selectable="multiple"
+    list-key="items"
+    row-key="id"
+  />
   <form-subject v-model="showSubjectForm" v-model:subjectid="viewSubject"/>
   
 </template>
 <script setup>
-import BsTable from '@/components/BsTable.vue';
+import { AdminTablePage } from "admin-table-page";
 import FormSubject from '../forms/FormSubject.vue';
 
 import { ref, computed, inject } from "vue";
@@ -24,6 +22,7 @@ import { useI18n } from "vue-i18n";
 import { humanSubjectApi, deleteHumanSubjectApi } from "@/api/subject"
 import { useUtils } from "@/compositions/useUtils";
 import { ElMessage } from "element-plus";
+import useUserStore from '@/stores/user';
 
 const showSubjectForm = ref(false);
 const viewSubject = ref();
@@ -31,7 +30,8 @@ const i18n = useI18n();
 
 const experimentsid = inject("exid");
 
-const tableRef = ref();
+const subjectTableRef = ref();
+const { user } = useUserStore();
 
 
 const doAdd = () => {
@@ -40,31 +40,36 @@ const doAdd = () => {
 
 const { systemConfirm } = useUtils();
 
-const buttonList = computed(() => ([{
-  text: i18n.t("button.new") + i18n.t("subject.text"),
-  type: "primary",
-  icon: "Plus",
-  onClick: doAdd
-}]))
+const toolButtons = computed(() => {
+  return user.access_level > 10 ? [{
+    text: i18n.t("button.newSubject"), 
+    type: "primary",
+    icon: "Plus",
+    onClick: doAdd
+  }, {
+    text: i18n.t("button.batchDelete"),
+    type: "danger",
+    icon: "Delete",
+    onClick: handleBatchDelete
+  }] : [];
+});
 
-const columns = computed(() => ([{
-  prop: "subjectid",
-  label: i18n.t("subject.id")
-}, {
-  prop: "gender",
-  label: i18n.t("subject.gender")
-}, {
-  prop: "birthdate",
-  label: i18n.t("subject.birthdate")
-}, {
-  prop: "abobloodtype",
-  label: i18n.t("subject.blood")
-}, {
-  prop: "operation",
-  slot: "operation",
-  label: i18n.t("label.operation")
-}]));
+const columns = computed(() => (
+  ["id", "gender", "birthdate", "blood"].map(prop => ({
+    prop,
+    label: i18n.t(`subject.${prop}`)
+  }))
+))
 
+const actionColumn = computed(() => {
+  return user.access_level > 10 ? [{
+    text: i18n.t("button.edit"),
+    onClick: (row) => handleView(row.id)
+  }, {
+    text: i18n.t("button.delete"),
+    onClick: (row) => handleDelete(row.id)
+  }] : [];
+})
 
 const handleView = (subjectid) => {
   showSubjectForm.value = true;
@@ -87,4 +92,11 @@ const handleDelete = (subjectid) => {
   )
 }
 
+const handleBatchDelete = () => {
+
+}
+
 </script>
+<style lang="scss">
+@use "admin-table-page/style/index.scss";
+</style>

@@ -15,7 +15,7 @@
           :class="[listType]"
         >
           <template #trigger> 
-            <el-button type="primary" icon="Upload">{{ $t("button.bulkUpload")}}</el-button>
+            <el-button type="primary" icon="Upload" v-if="user.access_level > 10">{{ $t("button.bulkUpload")}}</el-button>
             <!--
             <el-button type="primary" @click="handleZipUpload" icon="UploadFilled">压缩上传</el-button>
             -->
@@ -153,11 +153,13 @@ import { filesByPageApi, deleteFileApi, fileTypesApi } from "@/api/files";
 import { eegDisplayApi } from "@/api/eeg";
 import { getPreviewUrl } from "@/utils/common";
 import BsLoadMore from "@/components/BsLoadMore.vue";
+import useUserStore from "@/stores/user";
 
 
 const experiment_id = inject("exid");
 const uploadRef = ref();
 const { files, options } = useUpload(experiment_id);
+const { user } = useUserStore();
 //const accept = ref();
 const showFileSelect = ref(false);
 const forSelectFile = ref([]);

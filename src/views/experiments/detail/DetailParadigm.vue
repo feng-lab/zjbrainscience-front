@@ -1,7 +1,12 @@
 <template>
   <el-row class="m-b-16">
     <el-col :span="24">
-      <el-button type="primary" icon="Plus" @click="addParadigm">{{ $t("button.newParadigm") }}</el-button>
+      <el-button 
+        type="primary" 
+        icon="Plus" 
+        @click="addParadigm" 
+        v-if="user.access_level > 10"
+      >{{ $t("button.newParadigm") }}</el-button>
     </el-col>
   </el-row>
     <el-card 
@@ -62,11 +67,13 @@ import { paradigmsByExApi, deleteParadigmApi } from "@/api/paradigm.js";
 import { useUtils } from "@/compositions/useUtils";
 import { useI18n } from "vue-i18n";
 import { ElMessage } from "element-plus";
+import useUserStore from "@/stores/user";
 
 const paradigmList = ref([]);
 
 const activeParadigm = ref([]);
 const experimentid = inject("exid");
+const { user } = useUserStore();
 const loadMoreRef = ref();
 const query = {
   experiment_id: experimentid
