@@ -39,24 +39,33 @@
         {{ $t("button.collapse") }}
         <el-icon><ArrowUp/></el-icon>
       </el-button>
-      <el-button 
-        class="right m-r-8"
-        v-if="multiple"
-        size="small" 
-        link type="primary" 
-        @click="query.channel=[]"
-      >
-        {{ $t("button.clear") }}
-      </el-button>
+      <template v-if="multiple">
+        <el-button 
+          class="right m-r-8"
+          size="small" 
+          link type="primary" 
+          @click="query.channels=CHANNELS"
+        >
+          {{ $t("button.checkall") }}
+        </el-button>
+        <el-button 
+          class="right"
+          size="small" 
+          link type="primary" 
+          @click="query.channels=[CHANNELS[0]]"
+        >
+          {{ $t("button.filter") }}
+        </el-button>
+      </template>
     </div>
-    <el-checkbox-group v-model="query.channel" v-if="multiple"> 
+    <el-checkbox-group v-model="query.channels" v-if="multiple"> 
       <el-checkbox
         v-for="ch in CHANNELS"
         :key="ch"
         :label="ch"
       />
     </el-checkbox-group>
-    <el-radio-group v-model="query.channel" v-else>
+    <el-radio-group v-model="query.channels" v-else>
       <el-radio
         v-for="ch in CHANNELS"
         :key="ch"
@@ -65,6 +74,8 @@
     </el-radio-group>
 
   </div>
+  <el-skeleton :loading="loading" animated style="width:100%" :rows="5">
+    <template #default>
   <bs-eeg-display 
     :eeg-data="eegData" 
     v-bind="{
@@ -73,6 +84,8 @@
       zoom
     }"
   />
+    </template>
+  </el-skeleton>
 </template>
 
 <script setup>
@@ -102,20 +115,22 @@ const props = defineProps({
 
 const eegData  = ref();
 const channelSelect = ref(false);
+const loading = ref(false);
 
 
 const query = ref({
   channels: props.multiple ? CHANNELS: CHANNELS[0] ,
-  page_index: 0,
+  page_index: 1,
   window: 5
 })
-
 const getEEG = async () => {
   if(props.file) {
+    loading.value = true;
     eegData.value = await eegDisplayApi({
       file_id: props.file.id,
       ...query.value
     });
+    loading.value = false;
   }
 }
 watch(() => ({

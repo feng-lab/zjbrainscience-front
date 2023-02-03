@@ -24,7 +24,7 @@ export function useUtils() {
       }
     )
     .then(() => {
-      callback();
+      return callback();
     })
     .catch((err) => {
       return errorHandle(err);
