@@ -24,6 +24,7 @@ export default {
     operation: "Operations",
     needLogin: "Please log in first!",
     clickToDetail: "Click for details!",
+    loading: "Loading..."
   },
   confirm: {
     resetform: "Are you sure to reset the form? All fields will be cleared!",
@@ -89,7 +90,8 @@ export default {
     modify: "Modify",
     loadMore: "Load more",
     newAssistants: "New Assistants",
-    batchDelete: "Batch Delete"
+    batchDelete: "Batch Delete",
+    filter: "Filter"
   },
   elmessage: {
     uploadSuccess: "Upload Success!",

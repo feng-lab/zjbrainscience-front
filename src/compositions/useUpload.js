@@ -19,9 +19,12 @@ export function useUpload(experiment_id, is_original=false) {
     const res = await systemConfirm(
       i18n.t("file.deleteConfirm", { name }),
       async () => {
-        await deleteFileApi(id);
-        
-        ElMessage.success(i18n.t("elmessage.deleteSuccess"));
+        try{
+          await deleteFileApi(id);
+          ElMessage.success(i18n.t("elmessage.deleteSuccess"));
+        } catch(e) {
+          return "abort";
+        }
       },
       (error) => {
         return "abort";

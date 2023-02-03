@@ -24,6 +24,7 @@ export default {
     operation: "操作",
     needLogin: "请您先登录！",
     clickToDetail: "点击查看详情！",
+    loading: "加载中..."
   },
   confirm: {
     resetform: "确定要重置表单吗？所有字段数据将会被清除！",
@@ -89,7 +90,8 @@ export default {
     modify: "修改",
     loadMore: "加载更多",
     newAssistants: "新增助手",
-    batchDelete: "批量删除"
+    batchDelete: "批量删除",
+    filter: "筛选"
   },
   elmessage: {
     uploadSuccess: "上传成功！",

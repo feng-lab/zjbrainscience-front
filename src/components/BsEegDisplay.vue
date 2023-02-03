@@ -60,7 +60,7 @@ onMounted(()=> {
 })
 
 const getOption = () => {
-  const { Stimulation, datasets } = props.eegData; 
+  const { stimulation, datasets } = props.eegData; 
   const xAxis = [];
   const yAxis = [];
   const grid = [];
@@ -141,7 +141,7 @@ const getOption = () => {
           fontWeight: 600
         },
         symbol: ['none', 'none'],
-        data: Stimulation.map(mark => ({
+        data: stimulation.map(mark => ({
           xAxis: mark
         }))
       }

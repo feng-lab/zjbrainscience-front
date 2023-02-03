@@ -198,13 +198,17 @@ const query = ref({
 
 const cardShow = computed(() => listType.value === "text")
 
-onMounted(async () => {
-  fileTypeList.value = await fileTypesApi(experiment_id);
+onMounted(() => {
+  getFileTypes();
 })
 
 
 const handleTypeChange = () => {
   loadMoreRef.value.handleLoadMore();
+}
+
+const getFileTypes = async () => {
+  fileTypeList.value = await fileTypesApi(experiment_id);
 }
 
 
@@ -219,9 +223,22 @@ const getThumbnail = (file) => {
   return Thumbnail[extension] ?? Thumbnail["unknown"];
 }
 
-const handleDelete = (file) => {
-    uploadRef.value.handleRemove(file)
+const handleDelete = async (file) => {
+  await uploadRef.value.handleRemove(file);
+  if(viewFile.value?.id === file.id) {
+    listType.value = "picture";
+    viewFile.value = null;
+  }
+  if(listType.value === "picture") {
+    setTimeout(getFileTypes, 200);
+  }
 }
+
+const handleSuccess = (response, uploadFile) => {
+  uploadFile.id = response.data;
+  getFileTypes();
+}
+options["on-success"] = handleSuccess;
 
 /*
 const handleZipUpload = () => {
