@@ -91,14 +91,14 @@ import { useI18n } from 'vue-i18n';
 import useUserStore from "@/stores/user";
 
 const loginFormRef = ref();
+const { doLogin, user } = useUserStore();
 const loginForm = ref({
-  username: "",
+  username: user.username,
   password: ""
 });
 
 const { resetForm } = useUtils();
 
-const { doLogin } = useUserStore();
 
 
 const i18n = useI18n();

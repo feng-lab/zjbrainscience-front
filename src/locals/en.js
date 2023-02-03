@@ -91,7 +91,8 @@ export default {
     loadMore: "Load more",
     newAssistants: "New Assistants",
     batchDelete: "Batch Delete",
-    filter: "Filter"
+    filter: "Filter",
+    changePassword: "Click to change!"
   },
   elmessage: {
     uploadSuccess: "Upload Success!",
@@ -105,7 +106,10 @@ export default {
     updateSuccess: "Update Success!",
     updateFail: "Update Failed!",
     newSuccess: "Add Success!",
-    newFailed: "Add Failed!"
+    newFailed: "Add Failed!",
+    updatePasswordSuccess: "Update Password success! Please log in again with the new password!",
+    updatePassword: "Welcome to your first login! The current password is the initial password, you can change it first!",
+    getUserInfoFail: "Get current user info failed!"
   },
   menus: {
     management: "Home",
@@ -116,7 +120,7 @@ export default {
     password: "Modify Password",
     notification: "Notification",
     newExperiment: "New Experiment",
-    experimentList: "Experiment List"
+    experimentList: "Experiment List",
   },
   loginInfoStorage: {
     title: "Data Storage",

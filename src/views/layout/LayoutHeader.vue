@@ -67,7 +67,7 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item icon="lock" @click="goToPassword">{{ $t('menus.password') }}</el-dropdown-item>
-              <el-dropdown-item icon="switch-button" @click="doLogout">{{ $t('button.logout') }}</el-dropdown-item>
+              <el-dropdown-item icon="switch-button" @click="()=>doLogout(false)">{{ $t('button.logout') }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown> 
