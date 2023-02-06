@@ -76,14 +76,14 @@
   </div>
   <el-skeleton :loading="loading" animated style="width:100%" :rows="5">
     <template #default>
-  <bs-eeg-display 
-    :eeg-data="eegData" 
-    v-bind="{
-      chartHeight,
-      toolBox,
-      zoom
-    }"
-  />
+      <bs-eeg-display 
+        :eeg-data="eegData" 
+        v-bind="{
+          chartHeight,
+          toolBox,
+          zoom
+        }"
+      />
     </template>
   </el-skeleton>
 </template>
@@ -97,7 +97,7 @@ import { eegDisplayApi } from "@/api/eeg";
 import { CHANNELS } from "@/utils/common";
 
 const props = defineProps({
-  file: String,
+  file: Object,
   chartHeight: Number,
   toolBox: {
     type: Boolean,
