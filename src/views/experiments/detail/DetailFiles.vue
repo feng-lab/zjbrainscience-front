@@ -48,7 +48,7 @@
                 <span @click="handleDelete(file)"><el-icon><Delete /></el-icon></span>
               </span>
             </div>
-            <div v-else class="text-item">
+            <div v-else :class="['text-item', file.id === viewFile.id ? 'viewing' : '']">
               <div class="text-item--name" @click="handlePreview(file)"> 
                 <el-icon class="text-item--name--icon m-r-4"><Document/></el-icon>
                 <span>{{ file.name }}</span>
@@ -406,6 +406,7 @@ const handleConfirm = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 2px 4px;
   gap: 8px;
   &--name {
     flex: 2;
@@ -439,6 +440,10 @@ const handleConfirm = () => {
       }
     }
   }
+}
+
+.viewing {
+  background-color: var(--el-color-primary-light-9);
 }
 
 :deep(.el-upload-list__item:hover .el-progress__text) {

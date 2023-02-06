@@ -46,18 +46,20 @@ const gridHeight = ref(100);
 watch(
   () => props.eegData,
   () => {
-    const { chartHeight, eegData } = props;
-    if(eegData.datasets.length) {
-      gridHeight.value = parseInt((chartHeight - 40)/eegData.datasets.length);
-    }
     getOption();
-
   }
 )
 
 onMounted(()=> {
   getOption();
 })
+
+const setGridHeight = () => {
+  const { chartHeight, eegData } = props;
+  if(eegData.datasets.length) {
+    gridHeight.value = parseInt((chartHeight - 40)/eegData.datasets.length);
+  }
+}
 
 const getOption = () => {
   const { stimulation, datasets } = props.eegData; 
@@ -69,6 +71,7 @@ const getOption = () => {
   const title = [];
   option.value = {
   }
+  setGridHeight();
   datasets.forEach((data, index) => {
     xAxisIndexs.push(index);
     title.push({
