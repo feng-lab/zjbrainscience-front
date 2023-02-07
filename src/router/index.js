@@ -41,7 +41,31 @@ const router = createRouter({
             level: 10
           },
           component: () => import("@/views/experiments/ExperimentsDetail.vue"),
-          props: true
+          props: true,
+          children: [{
+            path: "",
+            redirect: {name: "paradigm"}
+          }, {
+            path: "paradigm",
+            name: "paradigm",
+            component: () => import("@/views/experiments/detail/DetailParadigm.vue")
+          }, {
+            path: "file",
+            name: "file",
+            component: () => import("@/views/experiments/detail/DetailFiles.vue")
+          }, {
+            path: "subject",
+            name: "subject",
+            component: () => import("@/views/experiments/detail/DetailSubject.vue")
+          }, {
+            path: "equipment",
+            name: "equipment",
+            component: () => import("@/views/experiments/detail/DetailEquipment.vue")
+          }, {
+            path: "assistant",
+            name: "assistant",
+            component: () => import("@/views/experiments/detail/DetailAssistants.vue")
+          }]
         },
         {
           path: "task/:taskid",
@@ -61,7 +85,7 @@ const router = createRouter({
           path: "404",
           name: "404",
           component: () => import("@/views/error/Error404.vue")
-        }
+        }, 
       ]
     },
     {
