@@ -70,13 +70,20 @@
         <el-icon><arrow-down/></el-icon>
       </el-button>
     </div>
-    <el-tabs v-model="activeName">
-      <el-tab-pane :label="$t('experiments.tab.paradigm')" name="paradigm"><detail-paradigm/></el-tab-pane>
-      <el-tab-pane :label="$t('term.file')" name="file" lazy><detail-files/></el-tab-pane>
-      <el-tab-pane :label="$t('subject.text')" name="subject" lazy><detail-subject/></el-tab-pane>
-      <el-tab-pane :label="$t('experiments.tab.device')" name="equipment" lazy><detail-equipment/></el-tab-pane>
-      <el-tab-pane :label="$t('experiments.tab.assistant')" name="assistant" lazy><detail-assistants/></el-tab-pane>
-    </el-tabs>
+    <el-menu
+      :default-active="activeName"
+      mode="horizontal"
+      router
+    >
+      <el-menu-item :index="`${routePrefix}paradigm`">{{$t('experiments.tab.paradigm')}}</el-menu-item>
+      <el-menu-item :index="`${routePrefix}file`">{{$t('term.file')}}</el-menu-item>
+      <el-menu-item :index="`${routePrefix}subject`">{{$t('subject.text')}}</el-menu-item>
+      <el-menu-item :index="`${routePrefix}equipment`">{{$t('experiments.tab.equipment')}}</el-menu-item>
+      <el-menu-item :index="`${routePrefix}assistant`">{{$t('experiments.tab.assistant')}}</el-menu-item>
+    </el-menu>
+    <div class="m-t-16">
+      <router-view/>
+    </div>
   </el-card>
   
 </template>
@@ -87,11 +94,7 @@ import { ref, provide, onMounted } from "vue";
 import { exDetailApi } from "@/api/experiments";
 import { storeToRefs } from "pinia";
 import useMediaQuery from "@/stores/mediaQuery";
-import DetailParadigm from "./detail/DetailParadigm.vue";
-import DetailFiles from "./detail/DetailFiles.vue";
-import DetailSubject from "./detail/DetailSubject.vue";
-import DetailEquipment from "./detail/DetailEquipment.vue";
-import DetailAssistants from "./detail/DetailAssistants.vue";
+import { useRoute } from "vue-router";
 
 const props = defineProps({
   experiment_id: String
@@ -104,6 +107,8 @@ const exForm = ref({
   }
 });
 
+const routePrefix = `/experiments/detail/${props.experiment_id}/`;
+
 const column = {
   "xl": 4,
   "lg": 4,
@@ -114,10 +119,11 @@ const column = {
 const { breakpoint } = storeToRefs(useMediaQuery()); 
 
 const showMore = ref(false);
+const route = useRoute();
+
+const activeName = ref(route.fullPath);
 
 provide('exid', props.experiment_id);
-
-const activeName = ref("paradigm");
 
 onMounted(async () => {
   exForm.value = await exDetailApi(props.experiment_id);

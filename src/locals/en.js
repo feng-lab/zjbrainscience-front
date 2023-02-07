@@ -169,7 +169,7 @@ export default {
     },
     tab: {
       paradigm: "Paradigm",
-      device: "Device",
+      equipment: "Equipment",
       assistant: "Assistants"
     },
     deleteConfirm: "Are you sure to delete the experiment (ID: {id})?"

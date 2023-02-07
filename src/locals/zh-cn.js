@@ -176,7 +176,7 @@ export default {
     },
     tab: {
       paradigm: "实验范式",
-      device: "实验设备",
+      equipment: "实验设备",
       assistant: "实验助手"
     },
     deleteConfirm: "确定删除实验 （ID： {id}） 吗？"
