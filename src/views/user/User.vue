@@ -1,6 +1,6 @@
 <template> 
   <admin-table-page
-    ref="tableRef"
+    ref="userTableRef"
     :columns="columns"
     :fetch-method="getUserApi"
     :action-column="actionColumn"
@@ -17,12 +17,12 @@
   </admin-table-page>
   <user-form
     v-model="showUserForm"
-    @submit-success="()=>tableRef.reload()"
+    @submit-success="()=>userTableRef.reload()"
   /> 
   <user-role-form
     v-model="showRoleForm"
     v-model:id="editUser"
-    @submit-success="()=>tableRef.reload()"
+    @submit-success="()=>userTableRef.reload()"
   />
 
 </template>
@@ -40,6 +40,7 @@ import { ACCESS_LEVEL } from "@/utils/common";
 import { storeToRefs } from "pinia";
 import useGlobalStore from "@/stores/global";
 import useUserStore from "@/stores/user";
+import { useTable } from "@/compositions/useTable";
 
 const i18n = useI18n();
 const { systemConfirm } = useUtils();
@@ -47,9 +48,10 @@ const { systemConfirm } = useUtils();
 const showUserForm = ref(false);
 const showRoleForm = ref(false);
 const editUser = ref();
-const tableRef = ref();
 const { locale } = storeToRefs(useGlobalStore());
 const { doLogout, user } = useUserStore();
+
+const { tableRef:userTableRef, columnConfirmAction } = useTable();
 
 
 const columns = computed(() => ([{
@@ -71,19 +73,12 @@ const actionColumn = computed(() => ([{
   }
 }, {
   text: i18n.t("button.delete"),
-  onClick: (row) => {
-    systemConfirm(
-      i18n.t("user.deleteConfirm", { user: row.username }),
-      async () => {
-        await deleteUserApi(row.id);
-        ElMessage.success(i18n.t("button.delete")+i18n.t("status.success"))
-        if(row.username === user.username) {
-          doLogout(true);
-        }
-        tableRef.value.reload();
-      }
-    )
-  }
+  onClick: (row) => columnConfirmAction(
+    i18n.t("user.deleteConfirm", { user: row.username }),
+    deleteUserApi,
+    row.id,
+    "delete"
+  )
 }]))
 
 const toolButtons = computed(() => [{
@@ -112,9 +107,6 @@ const hiddenSearchFields = computed(() => ([{
   label: i18n.t("user.staff_id")
 }]))
 
-const onAddUserSuccess = () => {
-  tableRef.value.reload();
-}
 </script>
 
 <style lang="scss">
