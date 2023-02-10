@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { loginApi, logoutApi } from "@/api/common.js";
+import { loginApi, logoutApi } from "@/api/auth.js";
 import { currentUserApi } from "@/api/user";
 import jsCookie from "js-cookie";
 import router from "@/router";

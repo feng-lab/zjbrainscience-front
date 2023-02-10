@@ -54,6 +54,7 @@ import { useUtils } from "@/compositions/useUtils";
 import { newAssistantsApi, deleteAssistantsApi, getAssistantsApi } from "@/api/assistants";
 import { ElMessage } from "element-plus";
 import useUserStore from "@/stores/user";
+import { useTable } from "@/compositions/useTable";
 
 const i18n = useI18n();
 const { systemConfirm } = useUtils();
@@ -70,7 +71,14 @@ const pageSize = ref(10);
 const { options, loading, handleRemoteSearch } = useUserSearch();
 const { user } = useUserStore();
 
-const assistantTableRef= ref();
+const { 
+  tableRef:assistantTableRef, 
+  columnConfirmAction,
+  batchAction
+} = useTable();
+
+const deleteConfirm = i18n.t("assistants.deleteConfirm");
+
 const columns = computed(() => (
   ["id", "username", "staff_id"].map(prop => ({
     prop,
@@ -90,40 +98,30 @@ const toolButtons = computed(() => {
       text: i18n.t("button.batchDelete"),
       icon: "Delete",
       type: "danger",
-      onClick: async () => {
-        const assistant_ids = assistantTableRef.value.getSelections().map(assistant => assistant.id);
-        await deleteAssistants(assistant_ids);
-        assistantTableRef.value.clearSelection();
-      }
+      onClick: () => batchAction({
+        method: deleteAssistantsApi,
+        action: "delete",
+        extraParams: { experiment_id },
+        idsKey: "assistant_ids",
+        confirmMsg: deleteConfirm
+      })
   }] : [];
 })
 
 const actionColumn = computed(() => {
   return user.access_level > 10 ? [{
     text: i18n.t("button.delete"),
-    onClick: (row) => {
-      deleteAssistants([row.id]);
-    }
+    onClick: (row) => columnConfirmAction(
+      deleteConfirm,
+      deleteAssistantsApi,
+      {
+        experiment_id,
+        assistant_ids: [row.id]
+      },
+      "delete"
+    )
   }] : [];
 })
-
-const deleteAssistants = async (assistant_ids) => {
-  if(!assistant_ids.length) return;
-  systemConfirm(
-    i18n.t("assistants.deleteConfirm"),
-    async () => {
-      await deleteAssistantsApi({
-        experiment_id,
-        assistant_ids
-      });
-      assistantTableRef.value.reload();
-      ElMessage.success(i18n.t("elmessage.deleteSuccess"));
-    }
-  )
-}
-
-
-
 
 const doFormSubmit = () => {
   console.log('submit', assistantForm.value)
