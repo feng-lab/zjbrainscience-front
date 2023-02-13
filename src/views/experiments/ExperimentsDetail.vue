@@ -1,7 +1,7 @@
 <template>
   <el-card class="main-content">
     <el-descriptions 
-      :title="exForm.name" 
+      :title="`${exForm.name} (ID: ${exForm.id})`" 
       :column="column[breakpoint]"
       border
       class="m-b-24"
@@ -66,7 +66,7 @@
         <el-icon><arrow-up/></el-icon>
       </el-button>
       <el-button class="right" link size="small" type="primary" v-else @click="showMore=true"> 
-        {{ $t("button.more") }}
+        {{ $t("button.moreDetails") }}
         <el-icon><arrow-down/></el-icon>
       </el-button>
     </div>
@@ -90,14 +90,14 @@
 <script setup>
 import BsRouteLink from "@/components/BsRouteLink.vue";
 
-import { ref, provide, onMounted } from "vue";
+import { ref, provide, onMounted, computed } from "vue";
 import { exDetailApi } from "@/api/experiments";
 import { storeToRefs } from "pinia";
 import useMediaQuery from "@/stores/mediaQuery";
 import { useRoute } from "vue-router";
 
 const props = defineProps({
-  experiment_id: String
+  experiment_id: String 
 });
 const exForm = ref({
   datapath: "",
@@ -121,9 +121,9 @@ const { breakpoint } = storeToRefs(useMediaQuery());
 const showMore = ref(false);
 const route = useRoute();
 
-const activeName = ref(route.fullPath);
+const activeName = computed(() => route.fullPath); 
 
-provide('exid', props.experiment_id);
+provide('exid', Number(props.experiment_id));
 
 onMounted(async () => {
   exForm.value = await exDetailApi(props.experiment_id);
