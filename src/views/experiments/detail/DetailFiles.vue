@@ -3,8 +3,8 @@
     <el-col :lg="cardShow ? 8 : 24" :xs="24" class="m-b-16">
       <el-card 
         :header="cardShow ? $t('file.list'): ''"
-        :class="[listType]"
-        :shadow="cardShow ? 'always': 'never'"
+        :class="cardShow? 'text' : 'picture'"
+        :shadow="cardShow ? 'always' : 'never'"
         :body-style="cardShow ? {} : {padding: 0}"
       >
         <el-scrollbar :height="files.length?650:50" class="m-b-16">
@@ -12,7 +12,7 @@
           ref="uploadRef"
           v-model:file-list="files"
           v-bind="options"
-          :class="[listType]"
+          :class="cardShow ? 'text' : 'picture'"
         >
           <template #trigger> 
             <el-button type="primary" icon="Upload" v-if="user.access_level > 10">{{ $t("button.bulkUpload")}}</el-button>
@@ -31,24 +31,7 @@
             </el-radio-button>
           </el-radio-group>
           <template #file="{file}"> 
-            <div v-if="listType === 'picture'" class="picture-item"> 
-              <div class="picture-item--thumbnail m-b-8 m-r-8">
-                <img :src="getThumbnail(file)"/>
-              </div>
-              <div>
-                {{ file.name }}
-              </div>
-              <span class="picture-item--actions">
-                <span @click="handlePreview(file)"><el-icon><View /></el-icon></span>
-                <span>
-                  <a :underline="false" :download="file.name" :href="getPreviewUrl(file.id)">
-                    <el-icon><Download/></el-icon>
-                  </a>
-                </span>
-                <span @click="handleDelete(file)"><el-icon><Delete /></el-icon></span>
-              </span>
-            </div>
-            <div v-else :class="['text-item', file.id === viewFile.id ? 'viewing' : '']">
+            <div v-if="viewFile || viewMp4" :class="['text-item', file.id === viewFile?.id || file.id === viewMp4?.id ? 'viewing' : '']">
               <div class="text-item--name" @click="handlePreview(file)"> 
                 <el-icon class="text-item--name--icon m-r-4"><Document/></el-icon>
                 <span>{{ file.name }}</span>
@@ -65,6 +48,23 @@
                 </el-button-group>
               </div>
             </div>
+            <div v-else class="picture-item"> 
+              <div class="picture-item--thumbnail m-b-8 m-r-8">
+                <img :src="getThumbnail(file)"/>
+              </div>
+              <div>
+                {{ file.name }}
+              </div>
+              <span class="picture-item--actions">
+                <span @click="handlePreview(file)"><el-icon><View /></el-icon></span>
+                <span>
+                  <a :underline="false" :download="file.name" :href="getPreviewUrl(file.id)">
+                    <el-icon><Download/></el-icon>
+                  </a>
+                </span>
+                <span @click="handleDelete(file)"><el-icon><Delete /></el-icon></span>
+              </span>
+            </div>
 
           </template>
         </el-upload>
@@ -79,7 +79,7 @@
           />
       </el-card>
     </el-col>
-    <el-col :lg="listType === 'text' ? 16 : 24 " :xs="24" v-if="viewFile||viewMp4">
+    <el-col :lg="16" :xs="24" v-if="viewFile||viewMp4">
       <el-scrollbar height="800px" ref="scrollRef">
         <el-card class="m-b-16" v-if="viewFile" :header="$t('file.eeg')">
           <bs-eeg-view
@@ -166,7 +166,6 @@ const forSelectFile = ref([]);
 const selectedFile = ref([]);
 //const fileType = ref("");
 const fileTypeList = ref([]);
-const listType = ref("picture");
 const i18n = useI18n();
 const previewImg = ref(false);
 const previewImgUrl = ref("");
@@ -198,7 +197,7 @@ const query = ref({
   file_type: ""
 })
 
-const cardShow = computed(() => listType.value === "text")
+const cardShow = computed(() => viewFile.value || viewMp4.value);
 
 onMounted(() => {
   getFileTypes();
@@ -228,12 +227,12 @@ const getThumbnail = (file) => {
 const handleDelete = async (file) => {
   await uploadRef.value.handleRemove(file);
   if(viewFile.value?.id === file.id) {
-    listType.value = "picture";
     viewFile.value = null;
   }
-  if(listType.value === "picture") {
-    setTimeout(getFileTypes, 200);
+  if(viewMp4.value?.id === file.id) {
+    viewMp4.value = null;
   }
+  setTimeout(getFileTypes, 200);
 }
 
 const handleSuccess = (response, uploadFile) => {
@@ -279,18 +278,18 @@ const handleChange = (uploadFile, uploadFiles) => {
 
 const viewFileOp = {
   "mp4": (file) => {
-    viewMp4.value = {
+    viewMp4.value = file.id === viewMp4.value?.id ? null : {
       ...file,
       url: getPreviewUrl(file.id)
     }
-    if(viewFile.value) {
+    if(viewMp4.value && viewFile.value) {
       nextTick(() => {
         scrollRef.value.setScrollTop(600);
       })
     }
   },
   "bdf": (file) => { 
-    viewFile.value = file
+    viewFile.value = file.id === viewFile.value?.id ? null : file
   },
   "png": (file) => {
     previewImg.value = true;
@@ -299,19 +298,14 @@ const viewFileOp = {
 }
 
 const handlePreview = (file) => {
-  const type = file.name.split('.').pop().toLowerCase();
+  const { name } = file;
+  const type = name.split('.').pop().toLowerCase();
   const operation = viewFileOp[type];
-  console.log('type', type, operation, file)
   if(operation) {
     operation(file);
-    if(type !== "png") {
-      listType.value = "text";
-    }
   } else {
     ElMessage.error("当前文件类型不支持在线解析查看");
   }
-  console.log('viewMp4', viewMp4.value);
-  console.log('viewFile', viewFile.value);
 }
 
 const initSelect = () => {
