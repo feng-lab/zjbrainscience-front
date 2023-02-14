@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useUtils } from "./useUtils";
 
-export function useTable() {
+export function useTable(idKey) {
   const tableRef = ref();
   const { systemConfirm } = useUtils();
   const i18n = useI18n();
@@ -12,34 +12,32 @@ export function useTable() {
     ElMessage.success(i18n.t(`elmessage.${action}Success`));
     tableRef.value.reload();
   }
-  const columnConfirmAction = (confirmMsg, method, params, action) => {
-    systemConfirm(
+  const columnConfirmAction = async (confirmMsg, method, params, action) => {
+    await systemConfirm(
       confirmMsg,
       () => columnAction(method, params, action)
     )
   }
-  const batchAction = ({
+  const batchAction = async ({
     method, 
     action, 
     extraParams={}, 
-    idsKey="ids", 
     needConfirm=true, 
     confirmMsg=""
   }) => {
-    const ids = tableRef.value.getSelections().map(item => item.id);
-    if(!ids.length) {
+    const ids = tableRef.value.getSelections()?.map(item => item[idKey]);
+    if(!ids?.length) {
       ElMessage.warning(i18n.t("valid.checked"));
       return
     }
     const params = {
       ...extraParams,
-      [idsKey]: ids
+      ids
     }
-    console.log('params', params)
     if(needConfirm) {
-      columnConfirmAction(confirmMsg, method, params, action);
+      await columnConfirmAction(confirmMsg, method, params, action);
     } else {
-      columnAction(method, params, action);
+      await columnAction(method, params, action);
     }
     tableRef.value.clearSelection();
   }

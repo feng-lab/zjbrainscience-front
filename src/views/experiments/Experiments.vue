@@ -149,7 +149,7 @@ const handleDelete = (id) => {
     i18n.t("experiments.deleteConfirm", { id }), 
     async () => {
       await deleteExApi(id);
-      ElMessage.success(`${i18n.t("button.delete")}${i18n.t("status.success")}`);
+      ElMessage.success(i18n.t("elmessage.deleteSuccess"));
       await loadRef.value.handleLoadMore();
   })
 }

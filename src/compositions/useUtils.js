@@ -8,8 +8,30 @@ export function useUtils() {
   const router = useRouter();
   const i18n = useI18n();
 
+  const GENDER = computed(() => ({
+    "male": i18n.t("label.male"),
+    "female": i18n.t("label.female") 
+  }))
+
+  const YES_OR_NO = computed(() => ({
+    [false]: i18n.t("label.no"),
+    [true]: i18n.t("label.yes") 
+  }))
+
+  const MARITAL_STATUS = computed(() => ({
+    "married": i18n.t("label.married"),
+    "unmarried": i18n.t("label.unmarried")
+  }))
+
   function backToHome() {
     router.push("/");
+  }
+
+  function objectToOptions(obj) {
+    return Object.entries(obj).map(([value, label]) => ({
+      value,
+      label
+    }))
   }
 
   function systemConfirm(message, callback, errorHandle) {
@@ -37,8 +59,12 @@ export function useUtils() {
   }
 
   return {
+    GENDER,
+    YES_OR_NO,
+    MARITAL_STATUS,
     backToHome,
     systemConfirm,
-    resetForm
+    resetForm,
+    objectToOptions
   }
 }

@@ -1,0 +1,168 @@
+<template>
+  <experiments-associate
+    ref="subjectRef"
+    :columns="columns"
+    i18n-prefix="subject"
+    :add-button-text="$t('button.newSubject')"
+    :search-fields="searchFields"
+    :list-api="getSubjectDatas"
+    :delete-api="deleteHumanSubjectApi"
+    :disassociate-api="disassociateSubjectApi"
+    :associate-api="associateSubjectApi"
+    :action-column-props="{
+      fixed: 'right',
+      width: '200' 
+    }"
+    id-key="user_id"
+    list-path="/experiments/subject"
+    @show-new-form="handleNew"
+    @view-detail="handleView"
+  >
+    <template #table>
+      <el-table-column 
+        prop="username" 
+        align="center"
+        :label="$t('subject.username')"
+      >
+        <template #default="{ row }">
+          <span class="m-r-4">{{ row.username }}</span>
+          <el-tooltip :content="$t('subject.loginTips', {user: row.username})" placement="top">
+            <el-icon 
+              class="copy-subject-tips"
+              @click="() => handleCopy(row.username)"
+            >
+              <DocumentCopy/>
+            </el-icon>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+    </template>
+    <subject-form 
+      v-model="showSubjectForm" 
+      v-model:user_id="viewSubject"
+      @submit-success="handleSubmitSuccess"
+    />
+  </experiments-associate>
+</template>
+<script setup>
+import SubjectForm from "./SubjectForm.vue";
+
+import { h, ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
+import { 
+  humanSubjectApi, 
+  deleteHumanSubjectApi,
+  disassociateSubjectApi,
+  associateSubjectApi
+} from "@/api/subject"
+import ExperimentsAssociate from "../experiments/ExperimentsAssociate.vue";
+import { ABO_BLOOD_TYPE } from "@/utils/common";
+import { useUtils } from "@/compositions/useUtils";
+import useClipboard from 'vue-clipboard3';
+import { ElMessage, ElMessageBox } from "element-plus";
+
+const subjectRef = ref();
+const showSubjectForm = ref(false);
+const viewSubject = ref();
+const i18n = useI18n();
+const {GENDER, YES_OR_NO, MARITAL_STATUS, objectToOptions } = useUtils();
+const { toClipboard } = useClipboard();
+
+const columns = [
+  "user_id", 
+  "gender",
+  "birthdate",
+  "death_date",
+  "abo_blood_type",
+  "marital_status",
+  "is_left_handed",
+  "education",
+  "occupation" 
+];
+
+let isAssociateAfterNew = false;
+
+
+const handleView = (subjectid) => {
+  showSubjectForm.value = true;
+  viewSubject.value = subjectid;
+}
+
+const handleNew = ({ showForm, isAssociate }) => {
+  showSubjectForm.value = showForm;
+  isAssociateAfterNew = isAssociate;
+}
+
+const handleSubmitSuccess = async (res) => {
+  await subjectRef.value.reloadTable();
+  if(res) {
+    const { user_id, username, password } = res;
+    ElMessageBox.confirm(
+      h('div', null, [
+        h('p', {style: { marginBottom: '8px' }}, i18n.t("subject.copyAccountInfo")),
+        h('p', null, `username: ${username}`),
+        h('p', null, `password: ${password}`)
+      ]),
+      i18n.t("subject.copyAccountTitle"),
+      {
+        confirmButtonText: i18n.t("button.copy"),
+        cancelButtonText: i18n.t("button.cancel"),
+        type: "info"
+      }
+    ).then(() => {
+      handleCopy(username);
+    })
+    if(isAssociateAfterNew) {
+      await subjectRef.value.handleAssociate(true, user_id);
+    }
+  }
+}
+
+const getSubjectDatas = (params) => {
+  return humanSubjectApi(params).then(res => {
+    const { total, items } = res;
+    return {
+      total,
+      items: items.map(item => ({
+        ...item,
+        gender: computed(() => GENDER.value[item.gender]),
+        marital_status: computed(() => MARITAL_STATUS.value[item.marital_status]),
+        is_left_handed: computed(() => YES_OR_NO.value[item.is_left_handed])
+      }))
+    }
+  })
+}
+const searchFields = computed(() => ([{
+  name: "gender",
+  label: i18n.t("subject.gender"),
+  searchType: "select",
+  options: objectToOptions(GENDER.value)
+}, {
+  name: "abo_blood_type",
+  label: i18n.t("subject.abo_blood_type"),
+  searchType: "select",
+  options: ABO_BLOOD_TYPE
+}, {
+  name: "marital_status",
+  label: i18n.t("subject.marital_status"),
+  searchType: "select",
+  options: objectToOptions(MARITAL_STATUS.value)
+}, {
+  name: "is_left_handed",
+  label: i18n.t("subject.is_left_handed"),
+  searchType: "select",
+  options: objectToOptions(YES_OR_NO.value)
+}]));
+
+const handleCopy = async (username) => {
+  const copyText = `username: ${username}\npassword: ${username}#brain#${username}`
+  await toClipboard(copyText);
+  ElMessage.success(i18n.t("elmessage.copySuccess"));
+}
+</script>
+
+<style lang="scss" scoped>
+.copy-subject-tips {
+  cursor: pointer;
+}
+</style>

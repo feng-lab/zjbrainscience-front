@@ -28,6 +28,23 @@ const menus = [{
     meta: {
       icon: "List"
     }
+  }, {
+    path: "equipment",
+    name: "equipmentList",
+    props: true,
+    component: () => import("@/views/equipment/Equipment.vue"),
+    meta: {
+      icon: "Monitor",
+      level: 100
+    }
+  }, {
+    path: "subject",
+    name: "subjectList",
+    component: () => import("@/views/subject/Subject.vue"),
+    meta: {
+      icon: "Coin",
+      level: 100
+    }
   }]
   /*
 }, {
