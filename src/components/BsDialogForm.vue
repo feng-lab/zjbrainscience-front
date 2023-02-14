@@ -65,9 +65,9 @@ const doSubmit = async (formRef) => {
 
   const [formValid, customValid] = await Promise.all(promise);
   if(formValid && (!props.validator || customValid)) {
-    await props.doFormSubmit();
+    const res = await props.doFormSubmit();
     emits("update:modelValue", false);
-    emits("submit-success");
+    emits("submit-success", res);
   }
 }
 

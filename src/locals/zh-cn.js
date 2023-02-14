@@ -25,7 +25,9 @@ export default {
     needLogin: "请您先登录！",
     clickToDetail: "点击查看详情！",
     loading: "加载中...",
-    changeAccessLevel: "如果需要修改权限，请联系管理员！"
+    changeAccessLevel: "如果需要修改权限，请联系管理员！",
+    unmarried: "未婚",
+    married: "已婚",
   },
   confirm: {
     resetform: "确定要重置表单吗？所有字段数据将会被清除！",
@@ -62,8 +64,8 @@ export default {
     newParadigm: "新增范式",
     all: "全部",
     view: "查看",
-    newSubject: "新增被试",
-    newDevice: "新增设备",
+    newSubject: "添加被试",
+    newDevice: "添加设备",
     download: "下载",
     upload: "上传文件",
     online: "在线文件",
@@ -93,7 +95,12 @@ export default {
     newAssistants: "新增助手",
     batchDelete: "批量删除",
     filter: "筛选",
-    changePassword: "点击修改密码！"
+    changePassword: "点击修改密码！",
+    linkToExperiment: "关联到实验",
+    moreDetails: "更多详情",
+    batchDisassociate: "批量取消关联",
+    disassociate: "取消关联",
+    copy: "复制",
   },
   elmessage: {
     uploadSuccess: "上传成功！",
@@ -106,23 +113,29 @@ export default {
     handleFail: "操作失败！",
     updateSuccess: "更新成功！",
     updateFail: "更新失败！",
+    copySuccess: "复制成功！",
     newSuccess: "新增成功！",
-    newFailed: "新增失败！",
+    newFail: "新增失败！",
+    associateSuccess: "关联实验成功！",
+    associateFail: "关联实验成功！",
+    disassociateSuccess: "取消关联实验成功！",
+    disassociateFail: "取消关联实验成功！",
     updatePasswordSuccess: "更新密码成功！请使用新密码重新登陆",
     updatePassword: "欢迎您首次登陆！当前密码为初始密码, 可先修改密码！",
     getUserInfoFail: "获取当前用户信息失败！"
-    
   },
   menus: {
     management: "首页",
     experiments: "实验管理",
+    newExperiment: "新增实验",
+    experimentList: "实验列表",
     task: "任务管理",
     search: "信号检索",
-    user: "用户管理",
-    password: "密码修改",
+    equipmentList: "设备列表",
+    subjectList: "被试列表",
     notification: "通知消息",
-    newExperiment: "新增实验",
-    experimentList: "实验列表"
+    password: "密码修改",
+    user: "用户管理",
   },
   loginInfoStorage: {
     title: "数据存储",
@@ -137,12 +150,6 @@ export default {
     desc: "快速便捷的脑电数据分析及可视化视图，帮助您快速了解实验数据的意义"
   },
   home: {
-    statistic: {
-      ex: "实验",
-      file: "文件",
-      subject: "被试",
-      task: "任务"
-    },
     charts: {
       dataType: "实验数据类型分布",
       subject: "被试特征分布",
@@ -200,19 +207,22 @@ export default {
   },
   subject: {
     text: "人类被试",
-    id: "编号",
+    user_id: "被试ID",
+    username: "系统用户名",
+    loginTips: "点击复制被试{user}的登录账号信息",
+    copyAccountInfo: "创建了一个权限为被试的系统账号，可以复制账号信息通知该被试登录系统",
+    copyAccountTitle: "登录账号",
     gender: "性别",
     type: "类型",
     birthdate: "出生日期",
-    blood: "血型",
-    birth: "出生日期",
-    death: "死亡日期",
+    abo_blood_type: "血型",
+    death_date: "死亡日期",
     education: "教育水平",
     occupation: "职业",
-    phone: "电话",
+    phone_number: "电话",
     email: "邮箱",
-    marriage: "是否婚配",
-    lefthand: "是否左撇子",
+    marital_status: "是否婚配",
+    is_left_handed: "是否左撇子",
     address: "地址",
     category: {
       human: "人类",
@@ -220,16 +230,26 @@ export default {
       dog: "犬",
       pig: "猪"
     },
-    deleteConfirm: "确定从当前实验移除被试 （ID： {id}） 吗？"
   }, 
   device: {
     text: "设备",
-    id: "编号",
+    id: "设备ID",
     name: "设备名称",
-    type: "设备类型",
+    brand: "设备类型",
     purpose: "实验用途",
     index: "序号",
-    deleteConfirm: "确定从当前实验移除设备 （ID： {id}） 吗？"
+  },
+  associate: {
+    selectFromTips: "从表格中选择一个或多个{item}，点击上面的<关联到实验>按钮将设备关联到 ID为{id} 的实验",
+    inputExId: "输入实验ID：",
+    confirm: {
+      delete: "确定从系统删除所选{item}吗？",
+      disassociate: "确定取消所选{item}与当前实验的关联吗？该操作不会从系统删除该{item}"
+    },
+    newfrom: {
+      select: "选择已有{item}",
+      add: "新增{item}"
+    },
   },
   assistants: {
     deleteConfirm: "确定删除所选实验助手？"

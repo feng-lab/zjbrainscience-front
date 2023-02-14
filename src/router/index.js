@@ -44,6 +44,7 @@ const router = createRouter({
           props: true,
           children: [{
             path: "",
+            name: "default",
             redirect: {name: "paradigm"}
           }, {
             path: "paradigm",
@@ -56,11 +57,11 @@ const router = createRouter({
           }, {
             path: "subject",
             name: "subject",
-            component: () => import("@/views/experiments/detail/DetailSubject.vue")
+            component: () => import("@/views/subject/Subject.vue")
           }, {
             path: "equipment",
             name: "equipment",
-            component: () => import("@/views/experiments/detail/DetailEquipment.vue")
+            component: () => import("@/views/equipment/Equipment.vue")
           }, {
             path: "assistant",
             name: "assistant",
@@ -93,10 +94,12 @@ const router = createRouter({
       name: 'login',
       component: () => import('@/views/login/Login.vue')
     },
+    /*
     {
       path: "/:patchMatch(.*)*",
       redirect: "/404"
     }
+    */
   ]
 })
 
