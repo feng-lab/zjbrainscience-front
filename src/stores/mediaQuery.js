@@ -1,6 +1,7 @@
 
-import { defineStore } from "pinia";
+import { defineStore, storeToRefs } from "pinia";
 import { ref } from "vue";
+import useGlobalStore from "./global";
 
 const useMediaQuery = defineStore("mediaQuery", () => {
   const breakpoint = ref("");
@@ -15,6 +16,12 @@ const useMediaQuery = defineStore("mediaQuery", () => {
   const setBreakpoint = (bp, mql) => {
     if(mql.matches) {
       breakpoint.value = bp;
+      const { isCollapse } = storeToRefs(useGlobalStore());
+      if(bp === "md") {
+        isCollapse.value = true;
+      } else {
+        isCollapse.value = false;
+      }
       console.log('now break point is ', breakpoint.value)
     }
   }
