@@ -187,7 +187,7 @@ const handleDelete = (id, name) => {
     i18n.t("task.deleteConfirm", { id, name}),
     async () => {
       await deleteTaskApi(taskid);
-      ElMessage.success(`${i18n.t("button.delete")}${i18n.t("status.success")}`);
+      ElMessage.success(i18n.t("elmessage.deleteSuccess"));
       getTaskList();
     }
   )

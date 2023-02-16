@@ -15,11 +15,11 @@ export function useNotification() {
   } 
   const handleMarkNotify = async (action, notification_ids, showMessage=true) => {
     await markToRead({ 
-      is_all: action === "allMask",
+      is_all: action === "allMark",
       notification_ids 
     });
     if(showMessage) {
-      ElMessage.success(i18n.t(`notify.action.${action}`) + i18n.t("status.success"));
+      ElMessage.success(i18n.t('elmessage.markNotifySuccess'));
     }
   }
 

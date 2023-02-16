@@ -11,6 +11,7 @@
     selectable="multiple"
     list-key="items"
     row-key="id"
+    :locale="locale"
   />
   <bs-dialog-form 
     v-model="showForm"
@@ -58,11 +59,14 @@ import { ElMessage } from "element-plus";
 import useUserStore from "@/stores/user";
 import { useTable } from "@/compositions/useTable";
 import { useShowForm } from "@/compositions/useShowForm";
+import { storeToRefs } from "pinia";
+import useGlobalStore from "@/stores/global";
 
 const i18n = useI18n();
 const { systemConfirm } = useUtils();
 const showAssistantForm = ref(false);
 const experiment_id = inject("exid");
+const { locale } = storeToRefs(useGlobalStore());
 
 const assistantForm = ref({
   assistant_ids: [],
@@ -105,7 +109,6 @@ const toolButtons = computed(() => {
         method: deleteAssistantsApi,
         action: "delete",
         extraParams: { experiment_id },
-        idsKey: "assistant_ids",
         confirmMsg: deleteConfirm
       })
   }] : [];
@@ -119,7 +122,7 @@ const actionColumn = computed(() => {
       deleteAssistantsApi,
       {
         experiment_id,
-        assistant_ids: [row.id]
+        ids: [row.id]
       },
       "delete"
     )

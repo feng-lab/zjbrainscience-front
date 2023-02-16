@@ -116,6 +116,8 @@ export default {
     copySuccess: "复制成功！",
     newSuccess: "新增成功！",
     newFail: "新增失败！",
+    markNotifySuccess: "标记已读成功!",
+    markNotifyFail: "标记已读失败!",
     associateSuccess: "关联实验成功！",
     associateFail: "关联实验成功！",
     disassociateSuccess: "取消关联实验成功！",

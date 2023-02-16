@@ -20,7 +20,7 @@ export default {
     selected: "Selected",
     targetFile: "Target Data Files",
     nofile: "No file! please select one from online EEG files or upload new file",
-    urrentPage: "Page:",
+    currentPage: "Page",
     operation: "Operations",
     needLogin: "Please log in first!",
     clickToDetail: "Click for details!",
@@ -116,6 +116,8 @@ export default {
     copySuccess: "Copy success!",
     newSuccess: "Add success!",
     newFail: "Add failed!",
+    markNotifySuccess: "Mark as read success!",
+    markNotifyFail: "Mark as read failed!",
     associateSuccess: "Associate to experiment success!",
     associateFail: "Associate to experiment failed!",
     disassociateSuccess: "Disassociate from experiment success!",
@@ -244,7 +246,7 @@ export default {
     inputExId: "Please input the {item}'s ID:",
     confirm: {
       delete: "Are you sure to delete the selected {item} from the system?",
-      disassociate: "Are you sure to disassociate the selected {item} from the experiment?The selected{item} won't be deleted however"
+      disassociate: "Are you sure to disassociate the selected {item} from the experiment?The selected {item} won't be deleted however"
     },
     newfrom: {
       select: "Select an existing {item}",
@@ -390,7 +392,7 @@ export default {
     },
     action: {
       mark: "Mark as Readed",
-      batchMark: "Batch Mark as Readed",
+      batchMark: "Batch Mark as Read",
       allMark: "Mark all as read"
     }
   }

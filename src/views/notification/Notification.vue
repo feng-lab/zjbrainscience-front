@@ -111,7 +111,7 @@ const toolButtons = computed(() => ([{
   }
 }, {
   text: i18n.t("notify.action.allMark"),
-  onClick: () => handleMark("allMask")
+  onClick: () => handleMark("allMark")
 }]))
 
 const { handleMarkNotify, handleViewNotify } = useNotification();
