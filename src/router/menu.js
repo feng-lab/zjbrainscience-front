@@ -1,4 +1,5 @@
 const menus = [{
+  /*
   path: "management",
   name: "management",
   component: () => import("@/views/home/Home.vue"),
@@ -7,6 +8,7 @@ const menus = [{
     //未设置level,即默认最低权限，所有人可见
   }
 }, {
+  */
   path: "experiments",
   name: "experiments",
   meta: {
