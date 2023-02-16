@@ -16,7 +16,7 @@
     id-key="user_id"
     list-path="/experiments/subject"
     @show-new-form="handleNew"
-    @view-detail="handleView"
+    @view-detail="handleShowForm"
   >
     <template #table>
       <el-table-column 
@@ -38,9 +38,9 @@
       </el-table-column>
     </template>
     <subject-form 
-      v-model="showSubjectForm" 
-      v-model:user_id="viewSubject"
-      @submit-success="handleSubmitSuccess"
+      v-model="showForm" 
+      v-model:cu-id="itemId"
+      @submit-success="handleSubjectSubmitSuccess"
     />
   </experiments-associate>
 </template>
@@ -56,17 +56,25 @@ import {
   associateSubjectApi
 } from "@/api/subject"
 import ExperimentsAssociate from "../experiments/ExperimentsAssociate.vue";
-import { ABO_BLOOD_TYPE } from "@/utils/common";
+import { ABO_BLOOD_TYPE, objectToOptions } from "@/utils/common";
 import { useUtils } from "@/compositions/useUtils";
-import useClipboard from 'vue-clipboard3';
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessageBox } from "element-plus";
+import { useShowForm } from "@/compositions/useShowForm";
+import { useAssociateToExperiment } from "@/compositions/useAssociateToExperiment";
 
-const subjectRef = ref();
-const showSubjectForm = ref(false);
-const viewSubject = ref();
 const i18n = useI18n();
-const {GENDER, YES_OR_NO, MARITAL_STATUS, objectToOptions } = useUtils();
-const { toClipboard } = useClipboard();
+const {GENDER, YES_OR_NO, MARITAL_STATUS, copyText} = useUtils();
+const { 
+  showForm, 
+  itemId, 
+  handleShowForm 
+} = useShowForm();
+
+const {
+  associateRef: subjectRef,
+  handleNew,
+  handleSubmitSuccess
+} = useAssociateToExperiment(showForm, "user_id");
 
 const columns = [
   "user_id", 
@@ -80,23 +88,12 @@ const columns = [
   "occupation" 
 ];
 
-let isAssociateAfterNew = false;
 
 
-const handleView = (subjectid) => {
-  showSubjectForm.value = true;
-  viewSubject.value = subjectid;
-}
-
-const handleNew = ({ showForm, isAssociate }) => {
-  showSubjectForm.value = showForm;
-  isAssociateAfterNew = isAssociate;
-}
-
-const handleSubmitSuccess = async (res) => {
-  await subjectRef.value.reloadTable();
+const handleSubjectSubmitSuccess = async (res) => {
+  await handleSubmitSuccess(res);
   if(res) {
-    const { user_id, username, password } = res;
+    const { username, password } = res;
     ElMessageBox.confirm(
       h('div', null, [
         h('p', {style: { marginBottom: '8px' }}, i18n.t("subject.copyAccountInfo")),
@@ -110,11 +107,9 @@ const handleSubmitSuccess = async (res) => {
         type: "info"
       }
     ).then(() => {
-      handleCopy(username);
+      const text = `username: ${username}\npassword: ${username}#brain#${username}`;
+      copyText(text);
     })
-    if(isAssociateAfterNew) {
-      await subjectRef.value.handleAssociate(true, user_id);
-    }
   }
 }
 
@@ -154,11 +149,6 @@ const searchFields = computed(() => ([{
   options: objectToOptions(YES_OR_NO.value)
 }]));
 
-const handleCopy = async (username) => {
-  const copyText = `username: ${username}\npassword: ${username}#brain#${username}`
-  await toClipboard(copyText);
-  ElMessage.success(i18n.t("elmessage.copySuccess"));
-}
 </script>
 
 <style lang="scss" scoped>

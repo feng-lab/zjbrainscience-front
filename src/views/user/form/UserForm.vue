@@ -1,9 +1,10 @@
 <template> 
   <bs-dialog-form
-    :title="$t('button.new')+$t('user.text')"
-    :form-model="userForm"
+    :title="$t('button.newUser')"
+    :cu="false"
+    v-model:form="userForm"
     :form-rules="rules"
-    :do-form-submit="handleSubmit"
+    :form-submit-api="handleSubmit"
   >
     <el-form-item :label="$t('user.username')" prop="username">
       <el-input v-model="userForm.username"/>
@@ -28,10 +29,10 @@
 <script setup> 
 import BsDialogForm from '@/components/BsDialogForm.vue';
 
-import { computed, reactive, ref, watch } from 'vue';
+import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ACCESS_LEVEL } from '@/utils/common';
-import { newUserApi, userInfoApi } from '@/api/user';
+import { newUserApi } from '@/api/user';
 
 
 const i18n = useI18n();
@@ -68,7 +69,6 @@ const handleSubmit = async () => {
     username, 
     staff_id,
     access_level,
-    account_type: "admin",
     password: `${username}#brain#${staff_id}` 
   })
 }

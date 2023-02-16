@@ -75,13 +75,13 @@ export function deleteHumanSubjectApi({ ids: user_ids }) {
  * @param { Array } user_ids   - subject 用户ID列表
  * @param { Number } experiment_id  - 实验ID
  */
-export function disassociateSubjectApi({ids, experiment_id}) {
+export function disassociateSubjectApi({ids: user_ids, experiment_id}) {
   return request({
     url: "/api/deleteHumanSubjectsFromExperiment",
     method: "DELETE",
     data: {
       experiment_id,
-      user_ids: ids
+      user_ids
     }
   })
 }

@@ -1,9 +1,10 @@
 <template>
   <bs-dialog-form
     :title="$t('user.updateRole')"
+    :cu="false"
     :form-rules="rules"
-    :form-model="roleForm"
-    :do-form-submit="handleSubmit"
+    v-model:form="roleForm"
+    :form-submit-api="handleSubmit"
     @open="handleOpened"
   >
     <el-form-item :label="$t('user.currentUser')">

@@ -184,6 +184,7 @@ const handleNewForm = () => {
 }
 
 const handleView = (showId) => {
+  console.log('show-id', showId)
   emits("viewDetail", showId);
 }
 
@@ -210,7 +211,7 @@ const handleAssociate = async (isSingle, id) => {
       action: "associate"
     });
     if(linkEx.value) {
-      router.push(`/experiments/detail/${linkEx.value}/subject`)
+      router.push(`/experiments/detail/${linkEx.value}/${props.i18nPrefix}`)
     }
   }
 }

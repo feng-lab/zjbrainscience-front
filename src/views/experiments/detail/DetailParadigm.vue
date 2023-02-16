@@ -4,16 +4,15 @@
       <el-button 
         type="primary" 
         icon="Plus" 
-        @click="addParadigm" 
+        @click="() => handleShowForm()" 
         v-if="user.access_level > 10"
       >{{ $t("button.newParadigm") }}</el-button>
     </el-col>
   </el-row>
     <el-card 
-      :header="showDetail ? '实验范式列表': ''" 
-      :shadow="showDetail ? 'always' : 'never'"
-      :class="showDetail ? '': 'list'"
-      :body-style="showDetail ? {}: {padding: 0}"
+      shadow="never"
+      class="list"
+      :body-style="{padding: 0}"
     >
       <bs-load-more 
         ref="loadMoreRef"
@@ -30,7 +29,7 @@
           :description="paradigm.description"
           :actions="[{
             text: $t('button.edit'),
-            onClick: () => handleEdit(paradigm.id)
+            onClick: () => handleShowForm(paradigm.id)
           }, {
             text: $t('button.delete'),
             onClick: () => handleDelete(paradigm.id)
@@ -52,9 +51,9 @@
       </bs-load-more>
     </el-card>
   <form-paradigm
-    v-model="showParadigm" 
-    :paradigm-id="editParadigm"
-    @form-closed="handleClose"
+    v-model="showForm" 
+    v-model:cu-id="itemId"
+    @submit-success="handleSubmitSuccess"
   />
 </template>
 <script setup>
@@ -62,48 +61,29 @@ import BsList, { BsListItem, BsListItemContent } from "@/components/list";
 import FormParadigm from "../forms/FormParadigm.vue";
 import BsLoadMore from "@/components/BsLoadMore.vue";
 
-import { inject, onMounted, ref } from "vue";
+import { inject, ref } from "vue";
 import { paradigmsByExApi, deleteParadigmApi } from "@/api/paradigm.js";
 import { useUtils } from "@/compositions/useUtils";
 import { useI18n } from "vue-i18n";
 import { ElMessage } from "element-plus";
 import useUserStore from "@/stores/user";
+import { useShowForm } from "@/compositions/useShowForm";
 
 const paradigmList = ref([]);
 
-const activeParadigm = ref([]);
 const experimentid = inject("exid");
 const { user } = useUserStore();
 const loadMoreRef = ref();
 const query = {
   experiment_id: experimentid
 }
-const editParadigm = ref();
 const { systemConfirm } = useUtils();
-const showDetail = ref(false);
+const { showForm, itemId, handleShowForm } = useShowForm();
 
 const i18n = useI18n();
 
 const loadParadigms = async () => {
   paradigmList.value = await paradigmsByExApi(experimentid);
-}
-
-const showParadigm = ref(false);
-
-const addParadigm = () => {
-  showParadigm.value = true;
-}
-
-const handleEdit = (id) => {
-  showParadigm.value = true;
-  editParadigm.value = id;
-}
-
-const handleClose = (reload) => {
-  editParadigm.value = null;
-  if(reload) {
-    loadMoreRef.value.handleLoadMore();
-  }
 }
 
 const handleDelete = (id) => {
@@ -115,6 +95,10 @@ const handleDelete = (id) => {
       loadMoreRef.value.handleLoadMore();
     }
   )
+}
+
+const handleSubmitSuccess = () => {
+  loadMoreRef.value.handleLoadMore();
 }
 
 </script>

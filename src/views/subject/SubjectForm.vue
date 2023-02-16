@@ -1,10 +1,12 @@
 <template>
   <bs-dialog-form
+    v-model:form="subjectForm"
     :form-rules="rules"
-    :title="title"
+    :title="$t('subject.text')"
     :form-model="subjectForm"
-    :do-form-submit="handleSubmit"
-    :on-close="handleClose"
+    :form-submit-api="newHumanSubjectApi"
+    :form-update-api="updateHumanSubjectApi"
+    :form-detail-api="humanSubjectDetailApi"
   >
     <el-row>
       <el-col :xs="24" :sm="12">
@@ -128,7 +130,7 @@
 <script setup>
 import BsDialogForm from "@/components/BsDialogForm.vue";
 
-import { inject, ref, watch, computed, reactive } from "vue";
+import { ref, reactive } from "vue";
 import { 
   humanSubjectDetailApi, 
   newHumanSubjectApi, 
@@ -138,19 +140,10 @@ import { useI18n } from "vue-i18n";
 import { ABO_BLOOD_TYPE } from "@/utils/common";
 import { useUtils } from "@/compositions/useUtils";
 
-const props = defineProps({
-  user_id: [String, Number]
-})
-
-const emits = defineEmits(["update:user_id"])
-
-console.log('user_id', props.user_id)
 
 const i18n = useI18n();
 const { GENDER, YES_OR_NO, MARITAL_STATUS } = useUtils();
-console.log('yes or no', YES_OR_NO.value)
 
-const type = ref("new");
 
 const rules = reactive({
   "gender" : [{ required: true , trigger: ["blur", "change"]}],
@@ -159,17 +152,8 @@ const rules = reactive({
   "email": [{ type: "email", trigger: ["blur", "change"] }]
 })
 
-const title = computed(() => {
-  let res = `${i18n.t(`button.${type.value}`)}${i18n.t('subject.text')}`;
-  if(type.value === "edit") {
-    res += ` (ID: ${props.user_id})`
-  }
-  return res;
-})
-
 
 const subjectForm = ref({
-  //subjectid: "",
   gender: "male",
   abo_blood_type: "",
   marital_status: "unmarried",
@@ -182,27 +166,6 @@ const subjectForm = ref({
   email: "",
   address: ""
 })
-
-watch(
-  () => props.user_id,
-  async (user_id, old) => {
-    console.log('watch user_id', user_id)
-    if(user_id) {
-      type.value = "edit";
-      subjectForm.value = await humanSubjectDetailApi(user_id);
-    }
-  }
-)
-
-const handleSubmit = () => {
-  const method = type.value === "edit" ? updateHumanSubjectApi : newHumanSubjectApi; 
-  return method(subjectForm.value)
-}
-
-const handleClose = () => {
-  type.value = "new";
-  emits("update:user_id", null);
-}
 
 
 

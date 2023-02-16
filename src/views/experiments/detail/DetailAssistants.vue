@@ -13,9 +13,11 @@
     row-key="id"
   />
   <bs-dialog-form 
-    v-model="showAssistantForm"
-    :form-model="assistantForm"
-    :do-form-submit="doFormSubmit"
+    v-model="showForm"
+    :cu="false"
+    :title="$t('button.newAssistants')"
+    v-model:form="assistantForm"
+    :form-submit-api="doFormSubmit"
     :form-rules="rules"
   >
     <el-form-item :label="$t('experiments.tab.assistant')" prop="assistant_ids">
@@ -55,6 +57,7 @@ import { newAssistantsApi, deleteAssistantsApi, getAssistantsApi } from "@/api/a
 import { ElMessage } from "element-plus";
 import useUserStore from "@/stores/user";
 import { useTable } from "@/compositions/useTable";
+import { useShowForm } from "@/compositions/useShowForm";
 
 const i18n = useI18n();
 const { systemConfirm } = useUtils();
@@ -70,6 +73,8 @@ const pageSize = ref(10);
 
 const { options, loading, handleRemoteSearch } = useUserSearch();
 const { user } = useUserStore();
+
+const { showForm, handleShowForm } = useShowForm();
 
 const { 
   tableRef:assistantTableRef, 
@@ -91,9 +96,7 @@ const toolButtons = computed(() => {
   return user.access_level > 10 ? [{
       text: i18n.t("button.newAssistants"),
       icon: "Plus",
-      onClick: () => {
-        showAssistantForm.value = true;
-      }
+      onClick: handleShowForm
     }, {
       text: i18n.t("button.batchDelete"),
       icon: "Delete",
