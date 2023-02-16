@@ -17,9 +17,11 @@
       <el-select v-model="exForm.type" style="width: 100%" clearable>
         <el-option label="SSVEP" value="SSVEP"/>
         <el-option label="MI" value="MI"/>
-        <el-option label="Neuron Spike" value="Neuron Spike"/>
+        <el-option label="Neuron Spike" value="neuron"/>
+        <!--
         <el-option label="P300" value="P300"/>
         <el-option label="Others" value="Others"/>
+        -->
       </el-select>
     </el-form-item>
     <el-form-item :label="$t('experiments.detail.description')" prop="description">

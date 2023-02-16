@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useUtils } from "./useUtils";
 
-export function useTable(idKey) {
+export function useTable(idKey="id") {
   const tableRef = ref();
   const { systemConfirm } = useUtils();
   const i18n = useI18n();

@@ -38,7 +38,7 @@ export function newAssistantsApi({ experiment_id, assistant_ids }) {
  * @param { Array<Number> } assistant_ids - 助手ID列表
  * @returns 
  */
-export function deleteAssistantsApi({ experiment_id, assistant_ids }) {
+export function deleteAssistantsApi({ experiment_id, ids: assistant_ids }) {
   return request({
     url: "/api/deleteExperimentAssistants",
     method: "DELETE",

@@ -8,7 +8,7 @@
     :form-update-api="updateHumanSubjectApi"
     :form-detail-api="humanSubjectDetailApi"
   >
-    <el-row>
+    <el-row :gutter="8">
       <el-col :xs="24" :sm="12">
         <el-form-item :label="$t('subject.gender')" prop="gender">
           <el-select
@@ -39,7 +39,7 @@
         </el-form-item>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row :gutter="8">
       <el-col :xs="24" :sm="12">
         <el-form-item :label="$t('subject.birthdate')" prop="birthdate">
           <el-date-picker
@@ -61,7 +61,7 @@
         </el-form-item>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row :gutter="8">
       <el-col :xs="24" :sm="12">
         <el-form-item :label="$t('subject.education')" prop="education">
           <el-input
@@ -77,7 +77,7 @@
         </el-form-item>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row :gutter="8">
       <el-col :xs="24" :sm="12">
         <el-form-item :label="$t('subject.phone_number')" prop="phone_number">
           <el-input
