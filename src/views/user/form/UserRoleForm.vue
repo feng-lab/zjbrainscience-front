@@ -1,9 +1,9 @@
 <template>
   <bs-dialog-form
+    v-model:form="roleForm"
     :title="$t('user.updateRole')"
     :cu="false"
     :form-rules="rules"
-    v-model:form="roleForm"
     :form-submit-api="handleSubmit"
     @open="handleOpened"
   >
