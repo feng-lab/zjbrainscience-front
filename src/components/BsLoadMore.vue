@@ -1,6 +1,6 @@
 <template>
   <div v-if="modelValue.length">
-  <el-scrollbar  :height="height">
+  <el-scrollbar  :max-height="height">
     <slot></slot>
     <div class="load-more-btn" v-if="loadMore">
       <el-button :type="type" @click="handleLoadMore(true)" :loading="loading">

@@ -11,7 +11,7 @@
     :associate-api="associateSubjectApi"
     :action-column-props="{
       fixed: 'right',
-      width: '200' 
+      width: actionColumnWidth
     }"
     id-key="user_id"
     list-path="/experiments/subject"
@@ -61,9 +61,15 @@ import { useUtils } from "@/compositions/useUtils";
 import { ElMessageBox } from "element-plus";
 import { useShowForm } from "@/compositions/useShowForm";
 import { useAssociateToExperiment } from "@/compositions/useAssociateToExperiment";
+import useMediaQuery from "@/stores/mediaQuery";
 
 const i18n = useI18n();
 const {GENDER, YES_OR_NO, MARITAL_STATUS, copyText} = useUtils();
+const { breakpoint } = useMediaQuery();
+
+const actionColumnWidth = computed(() => {
+  return breakpoint === "xs" ? 100 : 200;
+})
 const { 
   showForm, 
   itemId, 

@@ -52,6 +52,10 @@ defineProps({
   justify-content: space-between;
   border-bottom: 1px solid var(--el-border-color-light);
   padding: 12px 24px;
+  @media only screen and (max-width: 426px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
   &-meta {
     display: flex;
     flex: 1 1;
@@ -65,7 +69,6 @@ defineProps({
     &--content {
       cursor: pointer;
       flex: 1 0;
-      width: 0;
       &--title {
         margin-bottom: 4px;
         display: flex;
@@ -83,6 +86,10 @@ defineProps({
   }
   &-content {
     display: flex;
+    @media only screen and (max-width: 426px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
     flex: 1;
     &--item {
       display: inline-block;
@@ -99,6 +106,9 @@ defineProps({
   &-actions {
     flex: 0 0 auto;
     margin-left: 48px;
+    @media only screen and (max-width: 426px) {
+      margin-left: 38px;
+    }
     padding: 0px;
   }
 }
