@@ -9,7 +9,7 @@
   >
     <el-form
       ref="formRef"
-      label-width="120px"
+      label-width="auto"
       :label-suffix="$t('colon')"
       :model="form"
       :rules="formRules"
@@ -60,7 +60,7 @@ const cuType = ref("new");
 const formTitle = computed(() => {
   const prefix = props.cu ? i18n.t(`button.${cuType.value}`) : "";
   const idStr = props.cu && cuType.value === "edit" ? `(ID: ${props.cuId})` : "";
-  return `${prefix}${props.title}${idStr}`
+  return `${prefix} ${props.title}${idStr}`
 })
 
 const { systemConfirm, resetForm } = useUtils();

@@ -7,12 +7,12 @@
         </el-tag>
       </bs-field>
     </el-col>
-    <el-col :xs="24" :sm="6" class="m-b-8">
+    <el-col :xs="24" :sm="4" class="m-b-8">
       <el-button 
         @click="channelSelect=true"
       >{{ $t("button.channel")}}</el-button>
     </el-col>
-    <el-col :xs="24" :sm="6" class="m-b-8">
+    <el-col :xs="24" :sm="8" class="m-b-8">
       <bs-field :label="$t('label.window') + $t('colon')">
         <el-select v-model="query.window" style="width: 100%">
           <el-option label="1秒" :value="1"/>
@@ -145,7 +145,7 @@ watch(() => ({
 </script>
 <style lang="scss" scoped>
 .channel-select {
-  background: var(--el-fill-color-light);
+  background: var(--el-color-info-light-9);
   padding: 12px 24px;
   border-radius: 8px;
   &-button {
