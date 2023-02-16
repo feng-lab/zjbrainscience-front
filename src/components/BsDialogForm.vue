@@ -1,16 +1,17 @@
 <template>
   <el-dialog
-    :title="title"
+    :title="formTitle"
     @closed="handleClose(formRef)"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     :show-close="false"
+    v-loading="loading"
   >
     <el-form
       ref="formRef"
       label-width="120px"
       :label-suffix="$t('colon')"
-      :model="formModel"
+      :model="form"
       :rules="formRules"
     >
       <slot></slot>
@@ -26,46 +27,65 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useUtils } from '@/compositions/useUtils';
 import { useI18n } from 'vue-i18n';
 
-const props = defineProps([
-  "title" ,
-  "doFormSubmit",
-  "doFormReset",
-  "formModel",
-  "formRules",
-  "onClose",
-  "validator"
-])
+const props = defineProps({
+  title: {
+    type: String ,
+    default: ""
+  },
+  formSubmitApi: Function,
+  formUpdateApi: Function,
+  formResetApi: Function,
+  formDetailApi: Function,
+  form: Object,
+  formRules: Object,
+  onClose: Function,
+  formValidApi: Function,
+  cu: {
+    type: Boolean,
+    default: true 
+  },
+  cuId: [String, Number]
+})
 
-const formRef = ref()
-const emits = defineEmits(["update:modelValue", "submit-success"]);
+const loading = ref(false);
+
+const formRef = ref();
+const emits = defineEmits(["update:modelValue", "submit-success", "update:cuId", 'update:form']);
+const cuType = ref("new");
+
+const formTitle = computed(() => {
+  const prefix = props.cu ? i18n.t(`button.${cuType.value}`) : "";
+  const idStr = props.cu && cuType.value === "edit" ? `(ID: ${props.cuId})` : "";
+  return `${prefix}${props.title}${idStr}`
+})
 
 const { systemConfirm, resetForm } = useUtils();
 const i18n = useI18n();
-console.log('formRef', formRef)
 
 
 const doSubmit = async (formRef) => {
   if(!formRef) return;
-  if(!props.doFormSubmit) {
+  if(!(props.formSubmitApi || props.formUpdateApi)) {
     emits("update:modelValue", false)
     return;
   }
   const promise = [
     Promise.resolve(formRef.validate()), 
   ];
-  if(props.validator) {
+  if(props.formValidApi) {
     promise.push(
-      Promise.resolve(props.validator())
+      Promise.resolve(props.formValidApi())
     )
   }
 
   const [formValid, customValid] = await Promise.all(promise);
   if(formValid && (!props.validator || customValid)) {
-    const res = await props.doFormSubmit();
+    const method = props.cu && cuType.value === "edit" ? props.formUpdateApi: props.formSubmitApi;
+    const res = await method(props.form);
     emits("update:modelValue", false);
     emits("submit-success", res);
   }
@@ -79,7 +99,7 @@ const confirmReset = (formRef) => {
 }
 
 const handleReset = (formRef) => {
-  props.doFormReset && props.doFormReset();
+  props.formResetApi && props.formResetApi();
   resetForm(formRef);
 }
 
@@ -87,8 +107,23 @@ const handleClose = (formRef) => {
   if(props.onClose) {
     props.onClose();
   }
+  cuType.value = "new";
+  emits("update:cuId", null);
   handleReset(formRef);
 }
+
+watch(
+  () => props.cuId,
+  async (id) => {
+    if(id) {
+      cuType.value = "edit";
+      loading.value = true;
+      const detail = await props.formDetailApi(id);
+      loading.value = false;
+      emits("update:form", detail);
+    }
+  }
+)
 
 
 </script>

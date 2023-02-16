@@ -2,22 +2,21 @@
   <experiments-associate
     ref="equipmentRef"
     :columns="columns"
-    i18n-prefix="device"
-    :add-button-text="$t('button.newDevice')"
+    i18n-prefix="equipment"
+    :add-button-text="$t('button.newEquipment')"
     :search-fields="searchFields"
-    :list-api="devicesApi"
-    :delete-api="deleteDeviceApi"
-    :disassociate-api="disassociateDeviceApi"
-    :associate-api="associateDeviceApi"
+    :list-api="equipmentsApi"
+    :delete-api="deleteEquipmentApi"
+    :disassociate-api="disassociateEquipmentApi"
+    :associate-api="associateEquipmentApi"
     list-path="/experiments/equipment"
-    batchKey="device_ids"
-    @show-new-form="() => showEquipmentForm = true"
-    @view-detail="handleView"
+    @show-new-form="handleNew"
+    @view-detail="handleShowForm"
   >
     <equipment-form
-      v-model="showEquipmentForm" 
-      v-model:id="equipmentid" 
-      @submit-success="() => equipmentRef.reloadTable()"
+      v-model="showForm" 
+      v-model:cu-id="itemId" 
+      @submit-success="handleSubmitSuccess"
     />
   </experiments-associate>
   
@@ -26,32 +25,40 @@
 import EquipmentForm from "./EquipmentForm.vue";
 import ExperimentsAssociate from "../experiments/ExperimentsAssociate.vue";
 
-import { ref, computed } from "vue";
+import { computed, inject } from "vue";
 import { 
-  devicesApi, 
-  deleteDeviceApi, 
-  associateDeviceApi, 
-  disassociateDeviceApi 
-} from "@/api/device";
+  equipmentsApi,
+  deleteEquipmentApi,
+  associateEquipmentApi,
+  disassociateEquipmentApi
+} from "@/api/equipment";
 import { useI18n } from "vue-i18n";
+import { useShowForm } from "@/compositions/useShowForm";
+import { useAssociateToExperiment } from "@/compositions/useAssociateToExperiment";
 
-const equipmentid = ref();
-const showEquipmentForm = ref(false);
-const equipmentRef = ref();
 const i18n = useI18n();
+const experiment_id = inject("exid", null);
 
-const columns = ["id", "name", "brand", "purpose", "index"];
+const { 
+  showForm, 
+  itemId, 
+  handleShowForm 
+} = useShowForm();
+const { 
+  associateRef: equipmentRef, 
+  handleNew, 
+  handleSubmitSuccess 
+} = useAssociateToExperiment(showForm);
+
+
+const basic_columns = ["id", "name", "brand", "purpose"];
+const columns = experiment_id ? [...basic_columns, "index"] : basic_columns;
 
 const searchFields = computed(() =>  
   ["name", "brand"].map(name => ({
     name,
-    label: i18n.t(`device.${name}`)
+    label: i18n.t(`equipment.${name}`)
   }))
 )
 
-
-const handleView = (showId) => {
-  showEquipmentForm.value = true;
-  equipmentid.value = showId;
-}
 </script>

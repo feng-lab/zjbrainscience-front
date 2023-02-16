@@ -1,12 +1,12 @@
 <template>
   <bs-dialog-form
-    :title="title"
-    :do-form-submit="doFormSubmit"
-    :do-form-reset="handleReset"
-    :form-model="paradigmForm"
-    @open="handleOpen"
-    @closed="handleClose"
-    v-loading="loading"
+    :title="$t('paradigm.text')"
+    :form-submit-api="handleSubmit"
+    :form-update-api="handleUpdate"
+    :form-reset-api="handleReset"
+    :form-valid-api="handleValid"
+    :form-detail-api="handleDetail"
+    v-model:form="paradigmForm"
   >
     <el-form-item :label="$t('paradigm.formlabel.image')">
       <el-upload
@@ -42,29 +42,13 @@
 <script setup>
 import BsDialogForm from '@/components/BsDialogForm.vue';
 
-import { computed, inject, ref, toRef } from "vue";
+import { inject, ref } from "vue";
 import { useUpload } from "@/compositions/useUpload";
 import { newParadigmApi, paradigmDetailApi, updateParadigmApi } from "@/api/paradigm.js";
 import { getPreviewUrl } from '@/utils/common';
-import { ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
 
-const props = defineProps({
-  paradigmId: Number
-})
-
-const emits = defineEmits(["formClosed"]);
-const loading = ref(false);
-
 const i18n = useI18n();
-const type = ref("new");
-const title = computed(() => {
-  let res = `${i18n.t(`button.${type.value}`)}${i18n.t('paradigm.text')}`;
-  if(props.paradigmId) {
-    res += ` (ID: ${props.paradigmId})`
-  }
-  return res;
-})
 
 
 const experiment_id = inject("exid");
@@ -80,28 +64,35 @@ const paradigmForm = ref({
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 
-const doFormSubmit = () => {
+const handleValid = () => {
   const { description } = paradigmForm.value;
   if( !description && files.value.length === 0) {
-    ElMessage.error(i18n.t("valid.newParadigm"));
-    return Promise.reject();
+    Promise.reject(i18n.t("valid.newParadigm"));
   }
+  return true;
+}
+
+const getFinalForm = () => {
   const images = files.value.map(file => file.id);
-  let params = {
+  paradigmForm.value = { 
     images,
     ...paradigmForm.value,
   }
-  let remoteFunc = newParadigmApi;
-  if(type.value === "edit") {
-    params = {
-      ...params,
-      creator: params.creator.id
-    };
-    remoteFunc = updateParadigmApi;
-  }
-  return remoteFunc(params).then(() => {
-    emits("formClosed", true);
-  })
+}
+
+
+const handleUpdate = () => {
+  getFinalForm();
+  const { creator } = paradigmForm.value; 
+  return updateParadigmApi({
+    ...paradigmForm.value,
+    creator: creator.id
+  });
+}
+
+const handleSubmit = () => {
+  getFinalForm();
+  return newParadigmApi(paradigmForm.value);
 }
 
 const handlePictureCardPreview = (uploadFile) => {
@@ -109,28 +100,18 @@ const handlePictureCardPreview = (uploadFile) => {
   dialogVisible.value = true;
 }
 
-const handleOpen = async () => {
-  const { paradigmId } = props;
-  if(paradigmId) {
-    loading.value = true;
-    const { images, ...paradigm } = await paradigmDetailApi(paradigmId);
-    loading.value = false;
-    files.value = images.map(id => ({id, url: getPreviewUrl(id) }));
-    paradigmForm.value = paradigm;
-    type.value = "edit";
-  }
+const handleDetail = async (id) => {
+  const { images, ...paradigm } = await paradigmDetailApi(id);
+  files.value = images.map(id => ({id, url: getPreviewUrl(id) }));
+  return Promise.resolve(paradigm);
 }
 
-const handleClose = () => {
-  type.value = "new";
-  handleReset();
-  emits("formClosed");
-}
 
 const handleReset = () => {
   files.value = [];
   paradigmForm.value= {
-    description: ""
+    description: "",
+    experiment_id
   };
 }
 

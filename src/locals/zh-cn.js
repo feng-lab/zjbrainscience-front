@@ -65,7 +65,7 @@ export default {
     all: "全部",
     view: "查看",
     newSubject: "添加被试",
-    newDevice: "添加设备",
+    newEquipment: "添加设备",
     download: "下载",
     upload: "上传文件",
     online: "在线文件",
@@ -210,7 +210,7 @@ export default {
     user_id: "被试ID",
     username: "系统用户名",
     loginTips: "点击复制被试{user}的登录账号信息",
-    copyAccountInfo: "创建了一个权限为被试的系统账号，可以复制账号信息通知该被试登录系统",
+    copyAccountInfo: "系统自动为新增被试创建了登录账号，可以复制账号信息通知该被试登录系统",
     copyAccountTitle: "登录账号",
     gender: "性别",
     type: "类型",
@@ -231,7 +231,7 @@ export default {
       pig: "猪"
     },
   }, 
-  device: {
+  equipment: {
     text: "设备",
     id: "设备ID",
     name: "设备名称",

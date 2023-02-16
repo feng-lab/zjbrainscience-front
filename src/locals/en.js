@@ -65,7 +65,7 @@ export default {
     all: "ALL",
     view: "View",
     newSubject: "New Subject",
-    newDevice: "New Device",
+    newEquipment: "New Equipment",
     download: "Download",
     upload: "Upload",
     online: "Online Files",
@@ -210,7 +210,7 @@ export default {
     user_id: "ID",
     username: "Username",
     loginTips: "Click to copy the login account information of the subject {user}",
-    copyAccountInfo: "Created a system account with subject privileges, copy the account information to notify the subject to log in the system!",
+    copyAccountInfo: "Created a system account for the subject automatically. Copy the account information to notify the subject to log in the system!",
     copyAccountTitle: "Login account",
     gender: "Gender",
     type: "Type",
@@ -231,7 +231,7 @@ export default {
       pig: "Swine"
     },
   },
-  device: {
+  equipment: {
     text: "Equipment",
     id: "ID",
     name: "Name",

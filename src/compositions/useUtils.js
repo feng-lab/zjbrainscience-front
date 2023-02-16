@@ -3,6 +3,7 @@ import { ElMessageBox } from "element-plus";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
+import useClipboard from 'vue-clipboard3';
 
 export function useUtils() {
   const router = useRouter();
@@ -25,13 +26,6 @@ export function useUtils() {
 
   function backToHome() {
     router.push("/");
-  }
-
-  function objectToOptions(obj) {
-    return Object.entries(obj).map(([value, label]) => ({
-      value,
-      label
-    }))
   }
 
   function systemConfirm(message, callback, errorHandle) {
@@ -58,6 +52,12 @@ export function useUtils() {
     formRef.resetFields();
   }
 
+  async function copyText (text) {
+    const { toClipboard } = useClipboard();
+    await toClipboard(text);
+    ElMessage.success(i18n.t("elmessage.copySuccess"));
+  }
+
   return {
     GENDER,
     YES_OR_NO,
@@ -65,6 +65,6 @@ export function useUtils() {
     backToHome,
     systemConfirm,
     resetForm,
-    objectToOptions
+    copyText
   }
 }
