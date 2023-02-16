@@ -27,5 +27,15 @@ defineProps({
     &--content {
       color: var(--el-text-color-regular);
     }
+    @media only screen and (max-width: 426px) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      &--title::after {
+        content: ":";
+        margin-left: 4px;
+      }
+    }
 }
 </style>

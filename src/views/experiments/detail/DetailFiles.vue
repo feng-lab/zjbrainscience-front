@@ -7,25 +7,26 @@
         :shadow="cardShow ? 'always' : 'never'"
         :body-style="cardShow ? {} : {padding: 0}"
       >
-        <el-scrollbar :height="files.length?650:50" class="m-b-16">
+        <el-scrollbar :max-height="650" class="m-b-16">
         <el-upload
           ref="uploadRef"
           v-model:file-list="files"
           v-bind="options"
-          :class="cardShow ? 'text' : 'picture'"
+          :class="['bs-upload', cardShow ? 'text-upload' : 'picture']"
         >
           <template #trigger> 
-            <el-button type="primary" icon="Upload" v-if="user.access_level > 10">{{ $t("button.bulkUpload")}}</el-button>
+            <el-button  class="m-b-8" type="primary" icon="Upload" v-if="user.access_level > 10">{{ $t("button.bulkUpload")}}</el-button>
             <!--
             <el-button type="primary" @click="handleZipUpload" icon="UploadFilled">压缩上传</el-button>
             -->
           </template>
-          <el-radio-group class="right" v-model="query.file_type" @change="handleTypeChange" v-if="files.length">
-            <el-radio-button label="">{{ $t("button.all") }}</el-radio-button>
+          <el-radio-group class="right m-b-8" v-model="query.file_type" @change="handleTypeChange" v-if="files.length">
+            <el-radio-button size="small" label="">{{ $t("button.all") }}</el-radio-button>
             <el-radio-button 
               v-for="type in fileTypeList"
               :key="type"
               :label="type"
+              size="small"
             >
               {{ type.toUpperCase() }}
             </el-radio-button>
@@ -73,7 +74,7 @@
             v-model="files"
             ref="loadMoreRef"
             :load-method="filesByPageApi"
-            :limit="10"
+            :limit="30"
             :height="50"
             :query="query"
           />
@@ -233,6 +234,7 @@ const handleDelete = async (file) => {
     viewMp4.value = null;
   }
   setTimeout(getFileTypes, 200);
+  loadMoreRef.value.handleLoadMore();
 }
 
 const handleSuccess = (response, uploadFile) => {
@@ -341,7 +343,8 @@ const handleConfirm = () => {
     margin: 0;
     position: absolute;
     left: 0;
-    top: 48px;
+    top: 72px;
+    gap: 8px;
   }
   :deep(.el-card) {
     border: none;
@@ -349,8 +352,8 @@ const handleConfirm = () => {
 
   :deep(.el-upload-list__item) {
       overflow: hidden;
-      width: 148px;
-      height: 148px;
+      width: 124px;
+      height: 124px;
       box-sizing: border-box;
   }
   .picture-item {
@@ -400,6 +403,16 @@ const handleConfirm = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media only screen and (max-width: 376px) {
+    margin-bottom: 8px;
+    width: calc(100vw - 116px);
+    flex-direction: column;
+    align-items: baseline;
+    border: 1px solid var(--el-border-color-lighter);
+    border-radius: 4px;
+    font-size: .8em;
+    padding: 8px 4px;
+  }
   padding: 2px 4px;
   gap: 8px;
   &--name {
@@ -407,7 +420,10 @@ const handleConfirm = () => {
     cursor: pointer;
   }
   &--percent {
-    width:  40%;
+    width:  30%;
+    @media only screen and (max-width: 376px) {
+      width: 100%;
+    }
     margin-right: 16px;
     .el-progress {
       top: -2px;
@@ -454,6 +470,14 @@ const handleConfirm = () => {
   &-image {
     max-width: 100%;
     object-fit: fill;
+  }
+}
+
+.bs-upload {
+  @media only screen and (max-width: 376px) {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
   }
 }
 
