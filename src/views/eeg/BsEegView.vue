@@ -7,11 +7,6 @@
         </el-tag>
       </bs-field>
     </el-col>
-    <el-col :xs="24" :sm="4" class="m-b-8">
-      <el-button 
-        @click="channelSelect=true"
-      >{{ $t("button.channel")}}</el-button>
-    </el-col>
     <el-col :xs="24" :sm="8" class="m-b-8">
       <bs-field :label="$t('label.window') + $t('colon')">
         <el-select v-model="query.window" style="width: 100%">
@@ -25,6 +20,14 @@
     <el-col :xs="24" :sm="6" class="m-b-8">
       <bs-field :label="$t('label.currentPage') + $t('colon')">
         <el-input-number v-model="query.page_index" :min="0" style="width: 100%"/>
+      </bs-field>
+    </el-col>
+    <el-col :xs="24" :sm="4" class="m-b-8">
+      <bs-field>
+      <el-button 
+        @click="channelSelect=true"
+        style="width: 100%"
+      >{{ $t("button.channel")}}</el-button>
       </bs-field>
     </el-col>
   </el-row>
