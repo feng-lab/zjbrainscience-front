@@ -54,6 +54,7 @@ defineProps({
 </script>
 <style lang="scss" scoped>
 .project-card {
+  margin: 4px 8px;
   &-header {
     padding: 12px 20px;
     &--title {

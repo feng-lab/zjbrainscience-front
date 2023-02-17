@@ -30,14 +30,15 @@
       </el-col>
     </el-row>
   </el-card>
-  <el-card>
+  <el-card body-style="min-height: calc(100vh - 200px)">
     <bs-load-more 
+      :height="720"
       ref="loadRef"
       :limit="8"
       :load-method="allExByPageApi"
       :query="query"
       v-model="exList">
-      <el-row :gutter="16">
+      <el-row>
         <el-col
           v-for="ex in exList"
           :key="ex.id"
@@ -114,6 +115,7 @@ import { useI18n } from "vue-i18n";
 import { useUtils } from "@/compositions/useUtils";
 import { ElMessage } from "element-plus";
 import useUserStore from "@/stores/user";
+import useMediaQuery from "@/stores/mediaQuery";
 
 const router = useRouter();
 const i18n = useI18n();
@@ -121,7 +123,6 @@ const { systemConfirm } = useUtils();
 
 const exList = ref([]);
 const { user } = useUserStore();
-console.log('user', user)
 
 const statusTag = {
   "mi": "success",

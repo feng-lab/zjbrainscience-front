@@ -7,20 +7,21 @@
         :shadow="cardShow ? 'always' : 'never'"
         :body-style="cardShow ? {} : {padding: 0}"
       >
-        <el-scrollbar :max-height="650" class="m-b-16">
+        <el-scrollbar max-height="50vh" class="m-b-16">
         <el-upload
           ref="uploadRef"
           v-model:file-list="files"
           v-bind="options"
+          :style="{minHeight: files.length ? '50vh' : 0}"
           :class="['bs-upload', cardShow ? 'text-upload' : 'picture']"
         >
           <template #trigger> 
-            <el-button  class="m-b-8" type="primary" icon="Upload" v-if="user.access_level > 10">{{ $t("button.bulkUpload")}}</el-button>
+            <el-button  class="m-b-8 m-t-4" type="primary" icon="Upload" v-if="user.access_level > 10">{{ $t("button.bulkUpload")}}</el-button>
             <!--
             <el-button type="primary" @click="handleZipUpload" icon="UploadFilled">压缩上传</el-button>
             -->
           </template>
-          <el-radio-group class="right m-b-8" v-model="query.file_type" @change="handleTypeChange" v-if="files.length">
+          <el-radio-group class="m-b-8 type-options right" v-model="query.file_type" @change="handleTypeChange" v-if="files.length">
             <el-radio-button size="small" label="">{{ $t("button.all") }}</el-radio-button>
             <el-radio-button 
               v-for="type in fileTypeList"
@@ -66,7 +67,6 @@
                 <span @click="handleDelete(file)"><el-icon><Delete /></el-icon></span>
               </span>
             </div>
-
           </template>
         </el-upload>
         </el-scrollbar>
@@ -74,9 +74,10 @@
             v-model="files"
             ref="loadMoreRef"
             :load-method="filesByPageApi"
-            :limit="30"
+            :limit="10"
             :height="50"
             :query="query"
+            @load-completed="() => unCompleted = false"
           />
       </el-card>
     </el-col>
@@ -91,7 +92,7 @@
         </el-card>
         <el-card :header="`${$t('file.video')}- ${viewMp4.name}`" v-if="viewMp4">
           <div style="text-align: center;" id="videoPlay">
-            <video :src="viewMp4.url" controls/>
+            <video style="width: 100%" :src="viewMp4.url" controls/>
           </div>
         </el-card>
       </el-scrollbar>
@@ -99,10 +100,11 @@
   </el-row>
   <el-dialog 
     v-model="previewImg" 
+    :title="previewImgFile.name"
     width="80%"
   >
     <div class="preview">
-      <img class="preview-image" :src="previewImgUrl" alt="Preview Image" />
+      <img class="preview-image" :src="previewImgFile.url" alt="Preview Image" />
     </div>
   </el-dialog>
   <!--
@@ -170,6 +172,12 @@ const fileTypeList = ref([]);
 const i18n = useI18n();
 const previewImg = ref(false);
 const previewImgUrl = ref("");
+const previewImgFile = ref({
+  url: "",
+  name: ""
+});
+
+let unCompleted = true;
 
 const loadMoreRef = ref();
 
@@ -197,6 +205,8 @@ const query = ref({
   experiment_id,
   file_type: ""
 })
+
+let timer = null;
 
 const cardShow = computed(() => viewFile.value || viewMp4.value);
 
@@ -233,13 +243,20 @@ const handleDelete = async (file) => {
   if(viewMp4.value?.id === file.id) {
     viewMp4.value = null;
   }
-  setTimeout(getFileTypes, 200);
-  loadMoreRef.value.handleLoadMore();
+  getFileTypes();
+  if(unCompleted && files.value.length <= 10) {
+    loadMoreRef.value.handleLoadMore(true, 1);
+  }
 }
 
 const handleSuccess = (response, uploadFile) => {
   uploadFile.id = response.data;
-  getFileTypes();
+  if(!timer) {
+    timer = setTimeout(() => {
+      getFileTypes();
+      timer = null;
+    }, 500);
+  }
 }
 options["on-success"] = handleSuccess;
 
@@ -294,8 +311,12 @@ const viewFileOp = {
     viewFile.value = file.id === viewFile.value?.id ? null : file
   },
   "png": (file) => {
+    const { id, name } = file;
     previewImg.value = true;
-    previewImgUrl.value = getPreviewUrl(file.id);
+    previewImgFile.value = {
+      url: getPreviewUrl(id),
+      name
+    }
   }
 }
 
@@ -333,7 +354,6 @@ const handleConfirm = () => {
   border: none;
 }
 .picture {
-  min-height: 50vh;
   :deep(el-upload) {
     float: left;
   }
@@ -343,7 +363,7 @@ const handleConfirm = () => {
     margin: 0;
     position: absolute;
     left: 0;
-    top: 72px;
+    top: 76px;
     gap: 8px;
   }
   :deep(.el-card) {

@@ -117,21 +117,27 @@
         v-model="exForm.stimulation_type"
       />
     </el-form-item>
-    <el-form-item :label="$t('experiments.detail.subject_type')" prop="subject_type">
-      <el-radio-group v-model="exForm.subject_type">
-        <el-radio label="人类">{{ $t("subject.category.human") }}</el-radio>
-        <el-radio label="猕猴">{{ $t("subject.category.macaque") }}</el-radio>
-        <el-radio label="犬">{{ $t("subject.category.dog") }}</el-radio>
-        <el-radio label="猪">{{ $t("subject.category.pig") }}</el-radio>
-        <el-radio label="其他">{{ $t("label.other") }}</el-radio>
-      </el-radio-group>
-    </el-form-item>
-    <el-form-item :label="$t('experiments.detail.subject_num')" prop="subject_num">
-      <el-input-number 
-        :min="1" 
-        v-model="exForm.subject_num"
-      />
-    </el-form-item>
+    <el-row :gutter="16">
+      <el-col :xs=24 :sm="12">
+        <el-form-item :label="$t('experiments.detail.subject_type')" prop="subject_type">
+          <el-radio-group v-model="exForm.subject_type">
+            <el-radio label="人类">{{ $t("subject.category.human") }}</el-radio>
+            <el-radio label="猕猴">{{ $t("subject.category.macaque") }}</el-radio>
+            <el-radio label="犬">{{ $t("subject.category.dog") }}</el-radio>
+            <el-radio label="猪">{{ $t("subject.category.pig") }}</el-radio>
+            <el-radio label="其他">{{ $t("label.other") }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-col>
+      <el-col :xs="24" :sm="12">
+        <el-form-item :label="$t('experiments.detail.subject_num')" prop="subject_num">
+          <el-input-number 
+            :min="1" 
+            v-model="exForm.subject_num"
+          />
+        </el-form-item>
+      </el-col>
+    </el-row>
     <el-form-item :label="$t('experiments.detail.session_num')" prop="session_num"> 
       <el-input-number
         :min="0" 

@@ -17,7 +17,7 @@ defineProps({
   align-items: center;
   justify-content: end;
   &-label{
-    width: 40%;
+    width: 60%;
     text-align: end;
     margin-right: 8px;
   }
