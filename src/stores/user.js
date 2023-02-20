@@ -32,13 +32,11 @@ const useUserStore = defineStore("user", () => {
   }
 
   const doLogout = async (deleteUser=false) => {
-    const username = deleteUser ? "" : user.value.username;
-    console.log('username', username, "deleteUser", deleteUser)
+    const staff_id = deleteUser ? "" : user.value.staff_id;
     user.value = { 
       access_level: 0 ,
-      username,
+      staff_id
     };
-    console.log('user', user.value)
     await logoutApi();
     jsCookie.remove("access_token");
     jsCookie.remove("token_type");

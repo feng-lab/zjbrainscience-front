@@ -118,7 +118,7 @@ router.beforeEach(async (to, from) => {
     const userStore = useUserStore();
     const { user }  = storeToRefs(userStore);
     const { getUserInfo } = userStore;
-    if(!user.value.staff_id) {
+    if(!user.value.username) {
       await getUserInfo();
     }
     const level = to?.meta?.level ?? 0;

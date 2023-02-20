@@ -6,7 +6,6 @@
     :action-column="actionColumn"
     :tool-buttons="toolButtons"
     :search-fields="searchFields"
-    :hidden-search-fields="hiddenSearchFields"
     list-key="items"
     :locale="locale"
     row-key="id"
@@ -58,6 +57,9 @@ const columns = computed(() => ([{
   prop: "username",
   label: i18n.t("user.username"),
 }, {
+  prop: "staff_id",
+  label: i18n.t("user.staff_id"),
+}, {
   prop: "access_level",
   label: i18n.t("user.accessLevel")
 }, {
@@ -90,8 +92,8 @@ const toolButtons = computed(() => [{
 }])
 
 const searchFields = computed(() =>[{
-  name: "username",
-  label: i18n.t("user.username"),
+  name: "staff_id",
+  label: i18n.t("user.staff_id")
 }, {
   name: "access_level",
   label: i18n.t("user.accessLevel"),
@@ -100,15 +102,9 @@ const searchFields = computed(() =>[{
     value: level,
     label: i18n.t(`auth.${level}`)
   }))
+}, {
+  name: "username",
+  label: i18n.t("user.username"),
 }])
 
-const hiddenSearchFields = computed(() => ([{
-  name: "staff_id",
-  label: i18n.t("user.staff_id")
-}]))
-
 </script>
-
-<style lang="scss">
-@use "admin-table-page/style/index.scss";
-</style>
