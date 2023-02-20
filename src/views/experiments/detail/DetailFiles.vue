@@ -82,11 +82,11 @@
       </el-card>
     </el-col>
     <el-col :lg="16" :xs="24" v-if="viewFile||viewMp4">
-      <el-scrollbar height="800px" ref="scrollRef">
+      <el-scrollbar max-height="700px" ref="scrollRef">
         <el-card class="m-b-16" v-if="viewFile" :header="$t('file.eeg')">
           <bs-eeg-view
             :file="viewFile"
-            :chart-height="700"
+            :chart-height="500"
             multiple
           />
         </el-card>

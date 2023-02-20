@@ -106,7 +106,7 @@ const toolButtons = computed(() => {
     icon: "Plus",
     type: "primary",
     ref: newFromSelectBtnRef,
-    show: !!experiment_id
+    show: !!experiment_id,
   }, {
     text: props.addButtonText,
     icon: "Plus",
@@ -222,6 +222,3 @@ defineExpose({
 })
 
 </script>
-<style lang="scss">
-@use "admin-table-page/style/index.scss";
-</style>
