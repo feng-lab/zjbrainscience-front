@@ -130,6 +130,3 @@ const handleMark = async (action, notification_ids) => {
 
 
 </script>
-<style lang="scss">
-@use "admin-table-page/style/index.scss";
-</style>

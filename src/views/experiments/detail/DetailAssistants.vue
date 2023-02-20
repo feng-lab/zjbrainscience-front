@@ -165,7 +165,3 @@ const getTableData = () => {
 
 </script>
 
-
-<style lang="scss">
-@use "admin-table-page/style/index.scss";
-</style>
