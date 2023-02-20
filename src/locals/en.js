@@ -37,7 +37,7 @@ export default {
     input: "{info}",
     search: "Search {content}",
     select: "Select {content}",
-    userSearch: "Please enter the user's staff ID"
+    userSearch: "Please enter the user's system ID"
   },
   sessionExpire: "Your session has expired, please log in again!",
   valid: {
@@ -211,8 +211,9 @@ export default {
     text: "Human Subject",
     user_id: "ID",
     username: "Username",
+    staff_id: "System ID",
     loginTips: "Click to copy the login account information of the subject {user}",
-    copyAccountInfo: "Created a system account for the subject automatically. Copy the account information to notify the subject to log in the system!",
+    copyAccountInfo: "Created a system account for the subject automatically. Copy the account information used to log in the system!",
     copyAccountTitle: "Login account",
     gender: "Gender",
     type: "Type",
@@ -342,7 +343,7 @@ export default {
     text: "User",
     id: "User ID",
     username: "User Name",
-    staff_id: "Staff ID",
+    staff_id: "System ID",
     accessLevel: "Access Level",
     lastLogin: "Last Login Time",
     deleteConfirm: "Are you sure to delete User {user}?",

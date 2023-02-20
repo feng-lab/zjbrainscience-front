@@ -20,16 +20,16 @@
   >
     <template #table>
       <el-table-column 
-        prop="username" 
+        prop="staff_id" 
         align="center"
-        :label="$t('subject.username')"
+        :label="$t('subject.staff_id')"
       >
         <template #default="{ row }">
           <span class="m-r-4">{{ row.username }}</span>
           <el-tooltip :content="$t('subject.loginTips', {user: row.username})" placement="top">
             <el-icon 
               class="copy-subject-tips"
-              @click="() => handleCopy(row.username)"
+              @click="() => copyText(getCopyText(row.staff_id))"
             >
               <DocumentCopy/>
             </el-icon>
@@ -99,12 +99,12 @@ const columns = [
 const handleSubjectSubmitSuccess = async (res) => {
   await handleSubmitSuccess(res);
   if(res) {
-    const { username, password } = res;
+    const { staff_id, password } = res;
     ElMessageBox.confirm(
       h('div', null, [
         h('p', {style: { marginBottom: '8px' }}, i18n.t("subject.copyAccountInfo")),
-        h('p', null, `username: ${username}`),
-        h('p', null, `password: ${password}`)
+        h('p', null, `ID: ${staff_id}`),
+        h('p', null, `Password: ${password}`)
       ]),
       i18n.t("subject.copyAccountTitle"),
       {
@@ -113,10 +113,13 @@ const handleSubjectSubmitSuccess = async (res) => {
         type: "info"
       }
     ).then(() => {
-      const text = `username: ${username}\npassword: ${username}#brain#${username}`;
-      copyText(text);
+      copyText(getCopyText(staff_id));
     })
   }
+}
+
+const getCopyText = (staff_id) => {
+  return `ID: ${staff_id}\npassword: ${staff_id}#brain#${staff_id}`;
 }
 
 const getSubjectDatas = (params) => {

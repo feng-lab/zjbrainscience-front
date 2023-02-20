@@ -19,12 +19,12 @@
             <el-form-item prop="username">
               <template #label>
                 <span class="hidden-xs-only">
-                  {{ $t("label.username") }}{{$t("colon")}}
+                  {{ $t("user.staff_id") }}{{$t("colon")}}
                 </span>
               </template>
               <el-input 
                 prefix-icon="UserFilled"
-                :placeholder="$t('placeholder.input', { info: $t('label.username') })"
+                :placeholder="$t('placeholder.input', { info: $t('user.staff_id') })"
                 v-model="loginForm.username"
                 clearable
               />
@@ -93,7 +93,7 @@ import useUserStore from "@/stores/user";
 const loginFormRef = ref();
 const { doLogin, user } = useUserStore();
 const loginForm = ref({
-  username: user.username,
+  username: user.staff_id,
   password: ""
 });
 
@@ -106,7 +106,7 @@ const i18n = useI18n();
 const rules = computed(() => ({
   username: [{ 
     required: true, 
-    message: i18n.t("valid.require", {field: i18n.t("label.username"), action: i18n.t("action.input")}),
+    message: i18n.t("valid.require", {field: i18n.t("user.staff_id"), action: i18n.t("action.input")}),
     trigger: "blur" 
   }],
   password: [{ 
