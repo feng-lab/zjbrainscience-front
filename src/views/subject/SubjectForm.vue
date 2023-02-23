@@ -155,7 +155,7 @@ const rules = reactive({
 
 const subjectForm = ref({
   gender: "male",
-  abo_blood_type: "",
+  abo_blood_type: "A",
   marital_status: "unmarried",
   is_left_handed: false,
   birthdate: "",

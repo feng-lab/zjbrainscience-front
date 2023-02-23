@@ -31,12 +31,6 @@ const { initOption } = useCharts(
   [LineChart, GridComponent, DataZoomComponent]
 );
 const i18n = useI18n();
-initOption.value.toolbox.feature['dataZoom'] = {
-  title: {
-    zoom: i18n.t("label.chartZoom"),
-    back: i18n.t("label.chartZoomBack"),
-  }
-}
 let series = {
   type: "line",
   ...props.series
@@ -64,6 +58,16 @@ if(props.area) {
 }
 
 const option = computed(() => {
+  const feature = {
+    ...initOption.value.toolbox.feature,
+    dataZoom: {
+      title: {
+        zoom: i18n.t("label.chartZoom"),
+        back: i18n.t("label.chartZoomBack"),
+      }
+    },
+    ...props.option?.toolbox.feature,
+  }
   const o = {
     ...initOption.value,
     tooltip: {
@@ -76,6 +80,7 @@ const option = computed(() => {
     toolbox: {
       ...initOption.value.toolbox,
       ...props.option?.toolbox,
+      feature,
     }
   }
   if(props.dataset) {
@@ -86,6 +91,8 @@ const option = computed(() => {
   }
   return o;
 })
+
+console.log('options', option.value)
 
 const clearChart = () => {
   return chartRef.value.clear();

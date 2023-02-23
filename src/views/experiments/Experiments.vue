@@ -70,6 +70,11 @@
               onClick: () => handleDelete(ex.id)
             }]"
           >
+            <template #titletail>
+              <el-tag size="small" type="info" class="m-t-4">
+                {{ `ID: ${ex.id}`}} 
+              </el-tag>
+            </template>
             <template #extra> 
               <el-tag :type="statusTag[ex.type.toLowerCase()]"> 
                 {{ex.type}} 

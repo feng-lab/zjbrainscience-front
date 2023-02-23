@@ -42,7 +42,7 @@ export default {
   sessionExpire: "Your session has expired, please log in again!",
   valid: {
     require: "Please {action} {field}",
-    checked: "Please select at least one",
+    checked: "Please select one at least",
     newParadigm: "Please upload pictures or input the description!",
     taskstep: "Please add at least one step"
   },
@@ -256,6 +256,14 @@ export default {
   },
   assistants: {
     deleteConfirm: "Are you sure to delete the assistants?"
+  },
+  eeg: {
+    window: {
+      1: "1 second",
+      2: "2 seconds",
+      5: "5 seconds",
+      10: "10 seconds",
+    }
   },
   task: {
     deleteConfirm: "Are you sure to delete task: {name}(ID:{id})",

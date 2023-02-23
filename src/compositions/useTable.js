@@ -10,11 +10,12 @@ export function useTable(idKey="id") {
   const columnAction = async (method, params, action) => {
     await method(params);
     ElMessage.success(i18n.t(`elmessage.${action}Success`));
+    tableRef.value.clearSelection();
     tableRef.value.reload();
   }
   const columnConfirmAction = async (confirmMsg, method, params, action) => {
     await systemConfirm(
-      confirmMsg,
+      confirmMsg?.value ?? confirmMsg,
       () => columnAction(method, params, action)
     )
   }
@@ -25,7 +26,7 @@ export function useTable(idKey="id") {
     needConfirm=true, 
     confirmMsg=""
   }) => {
-    const ids = tableRef.value.getSelections()?.map(item => item[idKey]);
+    const ids = (tableRef.value.getSelections()??[]).map(item => item[idKey]);
     if(!ids?.length) {
       ElMessage.warning(i18n.t("valid.checked"));
       return

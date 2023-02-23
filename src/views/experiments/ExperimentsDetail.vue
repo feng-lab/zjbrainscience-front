@@ -47,10 +47,10 @@
           {{ experiment_id }}
         </el-descriptions-item>
         <el-descriptions-item :label="$t('experiments.detail.is_non_invasive')" align="center">
-          {{ exForm.is_non_invasive}}
+          {{ YES_OR_NO[exForm.is_non_invasive] }}
         </el-descriptions-item>
         <el-descriptions-item :label="$t('experiments.detail.is_shared')" align="center">
-          {{ exForm.is_shared }}
+          {{ YES_OR_NO[exForm.is_shared] }}
         </el-descriptions-item>
         <el-descriptions-item :label="$t('experiments.detail.location')" label-align="center">
           {{ exForm.location }}
@@ -95,6 +95,7 @@ import { exDetailApi } from "@/api/experiments";
 import { storeToRefs } from "pinia";
 import useMediaQuery from "@/stores/mediaQuery";
 import { useRoute } from "vue-router";
+import { useUtils } from "@/compositions/useUtils";
 
 const props = defineProps({
   experiment_id: String 
@@ -122,6 +123,7 @@ const showMore = ref(false);
 const route = useRoute();
 
 const activeName = computed(() => route.fullPath); 
+const { YES_OR_NO } = useUtils();
 
 provide('exid', Number(props.experiment_id));
 

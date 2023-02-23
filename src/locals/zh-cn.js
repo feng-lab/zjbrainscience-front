@@ -257,6 +257,14 @@ export default {
   assistants: {
     deleteConfirm: "确定删除所选实验助手？"
   },
+  eeg: {
+    window: {
+      1: "1秒",
+      2: "2秒",
+      5: "5秒",
+      10: "10秒",
+    }
+  },
   task: {
     deleteConfirm: "确定删除任务： {name}(ID: {id}) 吗？",
     searchField: {
