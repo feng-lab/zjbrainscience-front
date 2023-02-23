@@ -94,7 +94,6 @@
         multiple
         v-model="exForm.assistants"
         remote
-        :reserve-keyword="false"
         filterable
         :remote-method="handleAssistantsSearch"
         :loading="assistantLoading"

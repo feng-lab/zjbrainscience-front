@@ -28,7 +28,6 @@
         multiple
         v-model="assistantForm.assistant_ids"
         remote
-        :reserve-keyword="false"
         :loading="loading"
         filterable
         :remote-method="handleRemoteSearch"
@@ -86,7 +85,7 @@ const {
   batchAction
 } = useTable();
 
-const deleteConfirm = i18n.t("assistants.deleteConfirm");
+const deleteConfirm = computed(() => i18n.t("assistants.deleteConfirm"));
 
 const columns = computed(() => (
   ["id", "username", "staff_id"].map(prop => ({

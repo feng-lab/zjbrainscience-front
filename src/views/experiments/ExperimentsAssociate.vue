@@ -84,11 +84,13 @@ const {
   batchAction
 } = useTable(props.idKey);
 
-const deleteConfirmMsg = i18n.t("associate.confirm.delete", { item: i18n.t(`${props.i18nPrefix}.text`) });
-const disassociateConfirmMsg = i18n.t("associate.confirm.disassociate", { item: i18n.t(`${props.i18nPrefix}.text`) });
+const deleteConfirmMsg = computed(() => {
+  return i18n.t("associate.confirm.delete", { item: i18n.t(`${props.i18nPrefix}.text`) })
+});
+const disassociateConfirmMsg = computed(() => i18n.t("associate.confirm.disassociate", { item: i18n.t(`${props.i18nPrefix}.text`) }));
 
 const linkEx = computed(() => {
-  return router.currentRoute.value.query?.linkEx;
+  return Number(router.currentRoute.value.query?.linkEx);
 })
 
 

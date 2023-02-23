@@ -40,10 +40,10 @@ export function useUtils() {
       }
     )
     .then(() => {
-      return callback();
+      return callback && callback();
     })
     .catch((err) => {
-      return errorHandle(err);
+      return errorHandle && errorHandle(err);
     })
   }
 

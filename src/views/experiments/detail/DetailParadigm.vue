@@ -17,6 +17,7 @@
       <bs-load-more 
         ref="loadMoreRef"
         height="600px"
+        :limit="6"
         :load-method="paradigmsByExApi"
         v-model="paradigmList"
         :query="query"

@@ -10,10 +10,12 @@
     <el-col :xs="24" :sm="8" class="m-b-8">
       <bs-field :label="$t('label.window') + $t('colon')">
         <el-select v-model="query.window" style="width: 100%">
-          <el-option label="1秒" :value="1"/>
-          <el-option label="2秒" :value="2"/>
-          <el-option label="5秒" :value="5"/>
-          <el-option label="10秒" :value="10"/>
+          <el-option
+            v-for="w in [1, 2, 5, 10]"
+            :key="w"
+            :value="w"
+            :label="$t(`eeg.window.${w}`)"
+          />
         </el-select>
       </bs-field>
     </el-col>
