@@ -18,7 +18,7 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="emits('update:modelValue', false)">{{ $t("button.cancel") }}</el-button>
+        <el-button @click="handleCancel">{{ $t("button.cancel") }}</el-button>
         <el-button @click="confirmReset(formRef)">{{ $t("button.reset") }}</el-button>
         <el-button type="primary" @click="doSubmit(formRef)">{{ $t("button.submit") }}</el-button >
       </span>
@@ -30,6 +30,7 @@
 import { ref, computed, watch } from 'vue';
 import { useUtils } from '@/compositions/useUtils';
 import { useI18n } from 'vue-i18n';
+import { ElMessage } from 'element-plus';
 
 const props = defineProps({
   title: {
@@ -54,7 +55,13 @@ const props = defineProps({
 const loading = ref(false);
 
 const formRef = ref();
-const emits = defineEmits(["update:modelValue", "submit-success", "update:cuId", 'update:form']);
+const emits = defineEmits([
+  "update:modelValue", 
+  "submit-success", 
+  "update:cuId", 
+  "update:form",
+  "cancel-submit"
+]);
 const cuType = ref("new");
 
 const formTitle = computed(() => {
@@ -83,13 +90,22 @@ const doSubmit = async (formRef) => {
   }
 
   const [formValid, customValid] = await Promise.all(promise);
-  if(formValid && (!props.validator || customValid)) {
-    const method = props.cu && cuType.value === "edit" ? props.formUpdateApi: props.formSubmitApi;
+  console.log('formvalid', formValid);
+  console.log('customvalid', customValid);
+  if(formValid && (!props.formValidApi || customValid)) {
+    let method = props.formSubmitApi;
+    let action = "submit";
+    if( props.cu && cuType.value === "edit") {
+      method = props.formUpdateApi;
+      action = "update";
+    }
     const res = await method(props.form);
+    ElMessage.success(i18n.t(`elmessage.${action}Success`));
     emits("update:modelValue", false);
     emits("submit-success", res);
   }
 }
+
 
 const confirmReset = (formRef) => {
   systemConfirm(
@@ -97,6 +113,12 @@ const confirmReset = (formRef) => {
     () => handleReset(formRef)
   )
 }
+
+const handleCancel = () => {
+  emits("update:modelValue", false);
+  emits("cancel-submit");
+}
+
 
 const handleReset = (formRef) => {
   props.formResetApi && props.formResetApi();
