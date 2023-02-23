@@ -1,11 +1,11 @@
 <template>
   <bs-dialog-form
     :title="$t('paradigm.text')"
-    :form-submit-api="handleSubmit"
-    :form-update-api="handleUpdate"
+    :form-submit-api="() => handleSubmit()"
+    :form-update-api="() => handleSubmit(true)"
     :form-reset-api="handleReset"
-    :form-valid-api="handleValid"
     :form-detail-api="handleDetail"
+    @cancel-submit="handleCancel"
     v-model:form="paradigmForm"
   >
     <el-form-item :label="$t('paradigm.formlabel.image')">
@@ -45,8 +45,10 @@ import BsDialogForm from '@/components/BsDialogForm.vue';
 import { inject, ref } from "vue";
 import { useUpload } from "@/compositions/useUpload";
 import { newParadigmApi, paradigmDetailApi, updateParadigmApi } from "@/api/paradigm.js";
+import { deleteFileApi } from "@/api/files.js";
 import { getPreviewUrl } from '@/utils/common';
 import { useI18n } from "vue-i18n";
+import { ElMessage } from 'element-plus';
 
 const i18n = useI18n();
 
@@ -64,35 +66,26 @@ const paradigmForm = ref({
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 
-const handleValid = () => {
+const handleSubmit = (update) => {
   const { description } = paradigmForm.value;
   if( !description && files.value.length === 0) {
-    Promise.reject(i18n.t("valid.newParadigm"));
+    ElMessage.error(i18n.t("valid.newParadigm"));
+    return Promise.reject();
   }
-  return true;
-}
-
-const getFinalForm = () => {
   const images = files.value.map(file => file.id);
-  paradigmForm.value = { 
+  let params = { 
     images,
     ...paradigmForm.value,
   }
-}
-
-
-const handleUpdate = () => {
-  getFinalForm();
-  const { creator } = paradigmForm.value; 
-  return updateParadigmApi({
-    ...paradigmForm.value,
-    creator: creator.id
-  });
-}
-
-const handleSubmit = () => {
-  getFinalForm();
-  return newParadigmApi(paradigmForm.value);
+  if(update) {
+    const { creator } = paradigmForm.value; 
+    return updateParadigmApi({
+      ...params,
+      creator: creator.id
+    });
+  } else {
+    return newParadigmApi(params);
+  }
 }
 
 const handlePictureCardPreview = (uploadFile) => {
@@ -104,6 +97,15 @@ const handleDetail = async (id) => {
   const { images, ...paradigm } = await paradigmDetailApi(id);
   files.value = images.map(id => ({id, url: getPreviewUrl(id) }));
   return Promise.resolve(paradigm);
+}
+
+const handleCancel = () => {
+  console.log('cancel submit paradigm')
+  if(files.value.length) {
+    files.value.forEach(async (file) => {
+      await deleteFileApi(file.id);
+    })
+  }
 }
 
 
