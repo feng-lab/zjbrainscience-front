@@ -5,7 +5,8 @@
     :form-update-api="() => handleSubmit(true)"
     :form-reset-api="handleReset"
     :form-detail-api="handleDetail"
-    @cancel-submit="handleCancel"
+    :onClose="handleClose"
+    @submit-success="handleSubmitSuccess"
     v-model:form="paradigmForm"
   >
     <el-form-item :label="$t('paradigm.formlabel.image')">
@@ -62,6 +63,8 @@ const paradigmForm = ref({
   experiment_id
 });
 
+const modelClosed = ref(false);
+
 
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
@@ -99,22 +102,40 @@ const handleDetail = async (id) => {
   return Promise.resolve(paradigm);
 }
 
-const handleCancel = () => {
-  console.log('cancel submit paradigm')
-  if(files.value.length) {
-    files.value.forEach(async (file) => {
-      await deleteFileApi(file.id);
-    })
+const handleSubmitSuccess = (res) => {
+  const { id } = paradigmForm.value;
+  if(!id && res) {
+    paradigmForm.value.id = res;
+  } 
+}
+
+const clearUploadedFiles = () => {
+  console.log('files: ', files.value)
+  console.log('need delete files')
+  files.value.forEach(async (file) => {
+    await deleteFileApi(file.id);
+  })
+}
+
+const handleClose = () => {
+  const { id } = paradigmForm.value;
+  console.log('paradigm id: ', id, files.value.length && !id)
+  if(files.value.length && !id ) {
+    clearUploadedFiles();
   }
 }
 
 
-const handleReset = () => {
-  files.value = [];
+const handleReset = (afterClose) => {
+  console.log('reset after close ? ', afterClose)
+  if(!afterClose) {
+    clearUploadedFiles();
+  }
   paradigmForm.value= {
-    description: "",
-    experiment_id
+    ...paradigmForm.value,
+    description: ""
   };
+  files.value = [];
 }
 
 </script>

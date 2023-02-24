@@ -1,11 +1,9 @@
 <template>
   <el-dialog
     :title="formTitle"
-    @closed="handleClose(formRef)"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     :show-close="false"
-    v-loading="loading"
   >
     <el-form
       ref="formRef"
@@ -13,13 +11,14 @@
       :label-suffix="$t('colon')"
       :model="form"
       :rules="formRules"
+      v-loading="loading"
     >
       <slot></slot>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="handleCancel">{{ $t("button.cancel") }}</el-button>
-        <el-button @click="confirmReset(formRef)">{{ $t("button.reset") }}</el-button>
+        <el-button @click="handleClose(formRef)">{{ $t("button.cancel") }}</el-button>
+        <el-button @click="()=>confirmReset(formRef)">{{ $t("button.reset") }}</el-button>
         <el-button type="primary" @click="doSubmit(formRef)">{{ $t("button.submit") }}</el-button >
       </span>
     </template>
@@ -90,8 +89,6 @@ const doSubmit = async (formRef) => {
   }
 
   const [formValid, customValid] = await Promise.all(promise);
-  console.log('formvalid', formValid);
-  console.log('customvalid', customValid);
   if(formValid && (!props.formValidApi || customValid)) {
     let method = props.formSubmitApi;
     let action = "submit";
@@ -101,7 +98,7 @@ const doSubmit = async (formRef) => {
     }
     const res = await method(props.form);
     ElMessage.success(i18n.t(`elmessage.${action}Success`));
-    emits("update:modelValue", false);
+    handleClose(formRef);
     emits("submit-success", res);
   }
 }
@@ -114,14 +111,10 @@ const confirmReset = (formRef) => {
   )
 }
 
-const handleCancel = () => {
-  emits("update:modelValue", false);
-  emits("cancel-submit");
-}
 
 
-const handleReset = (formRef) => {
-  props.formResetApi && props.formResetApi();
+const handleReset = (formRef, afterClose=false) => {
+  props.formResetApi && props.formResetApi(afterClose);
   resetForm(formRef);
 }
 
@@ -129,9 +122,10 @@ const handleClose = (formRef) => {
   if(props.onClose) {
     props.onClose();
   }
+  emits("update:modelValue", false);
   cuType.value = "new";
   emits("update:cuId", null);
-  handleReset(formRef);
+  handleReset(formRef, true);
 }
 
 watch(
