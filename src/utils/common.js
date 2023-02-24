@@ -29,3 +29,11 @@ export const STEP_INFO = {
   "1": {status: "success", color: "var(--el-color-primary)", icon: "CircleCheck"},
   "2": {status: "process", color: "var(--el-color-blue)", icon: "Loading"}
 }
+
+export const EXPERIMENT_TYPE = {
+  "SSVEP": "SSVEP",
+  "MI": "MI",
+  "neuron": "Neuron Spike"
+}
+
+export const SUBJECT_TYPE = [ "human", "macaque", "dog", "pig", "other" ];

@@ -13,7 +13,7 @@
         </bs-route-link>
       </template>
       <el-descriptions-item :label="$t('experiments.detail.type')" align="center">
-        {{ exForm.type }}
+        {{ EXPERIMENT_TYPE[exForm.type] }}
       </el-descriptions-item>
       <el-descriptions-item :label="$t('experiments.detail.main_operator')" align="center">
         {{ `${exForm?.main_operator.username}(${exForm?.main_operator.staff_id})`}}
@@ -26,7 +26,7 @@
       </el-descriptions-item>
       <template v-if="showMore">
         <el-descriptions-item :label="$t('experiments.detail.subject_type')" align="center">
-          {{ exForm.subject_type }}
+          {{ $t(`subject.category.${exForm.subject_type}`) }}
         </el-descriptions-item>
         <el-descriptions-item :label="$t('experiments.detail.subject_num')" align="center">
           {{ exForm.subject_num }}
@@ -96,6 +96,7 @@ import { storeToRefs } from "pinia";
 import useMediaQuery from "@/stores/mediaQuery";
 import { useRoute } from "vue-router";
 import { useUtils } from "@/compositions/useUtils";
+import { EXPERIMENT_TYPE, SUBJECT_TYPE } from "@/utils/common";
 
 const props = defineProps({
   experiment_id: String 

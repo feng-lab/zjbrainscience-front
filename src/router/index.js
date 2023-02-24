@@ -58,11 +58,11 @@ const router = createRouter({
           }, {
             path: "subject",
             name: "subject",
-            component: () => import("@/views/subject/Subject.vue")
+            component: () => import("@/views/subject/SubjectList.vue")
           }, {
             path: "equipment",
             name: "equipment",
-            component: () => import("@/views/equipment/Equipment.vue")
+            component: () => import("@/views/equipment/EquipmentList.vue")
           }, {
             path: "assistant",
             name: "assistant",

@@ -231,7 +231,8 @@ export default {
       human: "Human",
       macaque: "Macaque",
       dog: "Puppy",
-      pig: "Swine"
+      pig: "Swine",
+      other: "Other"
     },
   },
   equipment: {

@@ -18,7 +18,7 @@ export default ({ command }) => {
       host: "127.0.0.1",
       proxy: {
         "/api": {
-          target: "http://10.11.40.170:1919/"
+          target: "http://10.101.40.3:1919/"
         }
       }
     },

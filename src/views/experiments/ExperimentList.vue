@@ -77,7 +77,7 @@
             </template>
             <template #extra> 
               <el-tag :type="statusTag[ex.type.toLowerCase()]"> 
-                {{ex.type}} 
+                {{ EXPERIMENT_TYPE[ex.type] }} 
               </el-tag>
             </template>
             <div class="m-b-8">
@@ -120,7 +120,7 @@ import { useI18n } from "vue-i18n";
 import { useUtils } from "@/compositions/useUtils";
 import { ElMessage } from "element-plus";
 import useUserStore from "@/stores/user";
-import useMediaQuery from "@/stores/mediaQuery";
+import { EXPERIMENT_TYPE } from "@/utils/common.js";
 
 const router = useRouter();
 const i18n = useI18n();
@@ -131,10 +131,10 @@ const { user } = useUserStore();
 
 const statusTag = {
   "mi": "success",
-  "ssvep": "danger",
-  "others": "warning",
-  "neuronspike": "purple",
-  "p300": "blue"
+  "ssvep": "warning",
+  "others": "danger",
+  "neuron": "blue",
+  "p300": "purple"
 }
 
 const query = ref({
