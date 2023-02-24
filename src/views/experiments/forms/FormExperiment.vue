@@ -15,13 +15,12 @@
     </el-form-item>
     <el-form-item :label="$t('experiments.detail.type')" prop="type">
       <el-select v-model="exForm.type" style="width: 100%" clearable>
-        <el-option label="SSVEP" value="SSVEP"/>
-        <el-option label="MI" value="MI"/>
-        <el-option label="Neuron Spike" value="neuron"/>
-        <!--
-        <el-option label="P300" value="P300"/>
-        <el-option label="Others" value="Others"/>
-        -->
+        <el-option 
+          v-for="(label, value) in EXPERIMENT_TYPE"
+          :key="value"
+          :value="value"
+          :label="label"
+        />
       </el-select>
     </el-form-item>
     <el-form-item :label="$t('experiments.detail.description')" prop="description">
@@ -120,11 +119,13 @@
       <el-col :xs=24 :sm="12">
         <el-form-item :label="$t('experiments.detail.subject_type')" prop="subject_type">
           <el-radio-group v-model="exForm.subject_type">
-            <el-radio label="人类">{{ $t("subject.category.human") }}</el-radio>
-            <el-radio label="猕猴">{{ $t("subject.category.macaque") }}</el-radio>
-            <el-radio label="犬">{{ $t("subject.category.dog") }}</el-radio>
-            <el-radio label="猪">{{ $t("subject.category.pig") }}</el-radio>
-            <el-radio label="其他">{{ $t("label.other") }}</el-radio>
+            <el-radio
+              v-for="stype in SUBJECT_TYPE"
+              :key="stype"
+              :label="stype"
+            >
+              {{ $t(`subject.category.${stype}`) }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
       </el-col>
@@ -172,6 +173,7 @@ import { onBeforeRouteLeave, onBeforeRouteUpdate, useRouter } from "vue-router";
 import useUserStore from "@/stores/user";
 import { useI18n } from "vue-i18n";
 import { useUserSearch } from "@/compositions/useUserSearch";
+import { EXPERIMENT_TYPE, SUBJECT_TYPE } from "@/utils/common.js";
 
 const props = defineProps({
   experiment_id: null
@@ -182,13 +184,13 @@ const exForm = ref({
   name: "",
   description: "",
   type: "SSVEP",
-  is_non_invasive: "Yes",
+  is_non_invasive: true,
   location: "",
   start_at: "",
   end_at: "",
-  subject_type: "人类",
+  subject_type: "human",
   subject_num: 1,
-  is_shared: "1",
+  is_shared: true,
   main_operator: null,
   assistants: [],
   neuron_source: "",

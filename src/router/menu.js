@@ -26,7 +26,7 @@ const menus = [{
   }, {
     path: "list",
     name: "experimentList",
-    component: () => import("@/views/experiments/Experiments.vue"),
+    component: () => import("@/views/experiments/ExperimentList.vue"),
     meta: {
       icon: "List"
     }
@@ -34,7 +34,7 @@ const menus = [{
     path: "equipment",
     name: "equipmentList",
     props: true,
-    component: () => import("@/views/equipment/Equipment.vue"),
+    component: () => import("@/views/equipment/EquipmentList.vue"),
     meta: {
       icon: "Monitor",
       level: 100
@@ -42,7 +42,7 @@ const menus = [{
   }, {
     path: "subject",
     name: "subjectList",
-    component: () => import("@/views/subject/Subject.vue"),
+    component: () => import("@/views/subject/SubjectList.vue"),
     meta: {
       icon: "Coin",
       level: 100

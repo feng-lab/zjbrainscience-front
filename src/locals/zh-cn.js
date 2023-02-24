@@ -231,7 +231,8 @@ export default {
       human: "人类",
       macaque: "猕猴",
       dog: "犬",
-      pig: "猪"
+      pig: "猪",
+      other: "其他"
     },
   }, 
   equipment: {
