@@ -302,17 +302,22 @@ const handleCancel = () => {
 
 watch(() => props.experiment_id, async (experiment_id) => {
   if(props.experiment_id) {
-    const res = await exDetailApi(experiment_id);
-    const { main_operator } = res;
-    exForm.value = {
-      ...res,
-      main_operator: main_operator.id,
-      assistants: []
+    try {
+
+      const res = await exDetailApi(experiment_id);
+      const { main_operator } = res;
+      exForm.value = {
+        ...res,
+        main_operator: main_operator.id,
+        assistants: []
+      }
+      mainOperatorOptions.value.push({
+        value: main_operator.id,
+        label: `${main_operator.username}(${main_operator.staff_id})`
+      })
+    } catch(e) {
+      router.push("/experiments/list");
     }
-    mainOperatorOptions.value.push({
-      value: main_operator.id,
-      label: `${main_operator.username}(${main_operator.staff_id})`
-    })
   }
 }, {
   immediate: true

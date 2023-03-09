@@ -98,8 +98,8 @@ const doSubmit = async (formRef) => {
     }
     const res = await method(props.form);
     ElMessage.success(i18n.t(`elmessage.${action}Success`));
-    handleClose(formRef);
     emits("submit-success", res);
+    handleClose(formRef);
   }
 }
 
