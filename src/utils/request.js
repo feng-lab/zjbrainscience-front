@@ -28,7 +28,7 @@ const errorHandle = {
       message: msg
     });
     const { fullPath, name } = router.currentRoute.value;
-    if(name !== "login") {
+    if(name !== "login" && code !== 1) {
       router.push({
         name: "login",
         query: {
@@ -62,7 +62,7 @@ request.interceptors.response.use(response => {
     return Promise.resolve(response.data);
   } else {
     const { code, message, data="" } = response.data;
-    if(code === 1) {
+    if(code) {
       //后端处理失败
       ElMessage.error(message);
       return Promise.reject(response);
