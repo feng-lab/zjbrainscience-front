@@ -295,6 +295,10 @@ const handleChange = (uploadFile, uploadFiles) => {
 }
 */
 
+const handleEEGFileView = (file) => {
+  viewFile.value = file.id === viewFile.value?.id ? null : file
+}
+
 const viewFileOp = {
   "mp4": (file) => {
     viewMp4.value = file.id === viewMp4.value?.id ? null : {
@@ -307,9 +311,8 @@ const viewFileOp = {
       })
     }
   },
-  "bdf": (file) => { 
-    viewFile.value = file.id === viewFile.value?.id ? null : file
-  },
+  "bdf": handleEEGFileView,
+  "edf": handleEEGFileView,
   "png": (file) => {
     const { id, name } = file;
     previewImg.value = true;
@@ -319,6 +322,7 @@ const viewFileOp = {
     }
   }
 }
+
 
 const handlePreview = (file) => {
   const { name } = file;
