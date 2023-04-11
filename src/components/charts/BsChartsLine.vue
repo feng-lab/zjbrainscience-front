@@ -24,9 +24,8 @@ const props = defineProps({
   area: Boolean,
 });
 
-const chartRef = ref();
 
-const { initOption } = useCharts(
+const { chartRef, initOption, chartFunctions} = useCharts(
   props.title, 
   [LineChart, GridComponent, DataZoomComponent]
 );
@@ -92,14 +91,10 @@ const option = computed(() => {
   return o;
 })
 
-console.log('options', option.value)
 
-const clearChart = () => {
-  return chartRef.value.clear();
-}
-
-defineExpose({
-  clearChart
+defineExpose({ 
+  clear: () => chartRef.value.clear(),
+  dispatchAction: (param) => chartRef.value.dispatchAction(param)
 });
 
 

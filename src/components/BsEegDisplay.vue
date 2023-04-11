@@ -9,8 +9,9 @@
 <script setup> 
 import BsChartsLine from '@/components/charts/BsChartsLine.vue';
 
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 const props = defineProps({
+  legends: Array,
   eegData: {
     type: Object,
     required: true,
@@ -34,6 +35,11 @@ const props = defineProps({
   }
 });
 
+const showDataset = computed(() => {
+  const { datasets } = props.eegData;
+  return datasets.filter(ds => props.legends.indexOf(ds.name) > -1);
+})
+
 const option = ref();
 /*
 const style= ref({
@@ -45,7 +51,7 @@ const chartRef = ref();
 const gridHeight = ref(100);
 
 watch(
-  () => props.eegData,
+  showDataset,
   () => {
     getOption();
   }
@@ -56,14 +62,15 @@ onMounted(()=> {
 })
 
 const setGridHeight = () => {
-  const { chartHeight, eegData } = props;
-  if(eegData.datasets.length) {
-    gridHeight.value = parseInt((chartHeight - 40)/eegData.datasets.length);
+  const { chartHeight } = props;
+  const gridNum = showDataset.value.length;
+  if(gridNum) {
+    gridHeight.value = parseInt((chartHeight - 40)/gridNum);
   }
 }
 
 const getOption = () => {
-  const { stimulation, datasets, x_data } = props.eegData; 
+  const { stimulation, x_data } = props.eegData; 
   const xAxis = [];
   const yAxis = [];
   const grid = [];
@@ -73,7 +80,7 @@ const getOption = () => {
   option.value = {
   }
   setGridHeight();
-  datasets.forEach((data, index) => {
+  showDataset.value.forEach((data, index) => {
     xAxisIndexs.push(index);
     title.push({
       show: true,
@@ -96,7 +103,7 @@ const getOption = () => {
     xAxis.push({
       id: index,
       gridId: index,
-      show: true,
+      show: index === 0,
       type: "category",
       axisLine: {
         onZero: index !== 0
@@ -140,7 +147,7 @@ const getOption = () => {
           color: "#52c41a",
         },
         label: {
-          show: index === (datasets.length -1),
+          show: index === (showDataset.value.length -1),
           color: "#52c41a",
           fontWeight: 600
         },
@@ -151,7 +158,7 @@ const getOption = () => {
       }
     })
   });
-  chartRef.value.clearChart();
+  chartRef.value.clear();
   option.value = {
     toolbox: {
       show: props.toolBox
@@ -178,7 +185,7 @@ const getOption = () => {
         params.forEach(param => {
           const s = param.marker + 
               `<span style="font-weight: 400;margin-left: 2px"> ${param.seriesName}:</span>` + 
-              `<span style="float: right;margin-left: 16px;font-weight: 900"> ${param.value.toFixed(2)} ${datasets[param.seriesIndex].unit}</span>` 
+              `<span style="float: right;margin-left: 16px;font-weight: 900"> ${param.value.toFixed(2)} ${showDataset.value[param.seriesIndex].unit}</span>` 
           body += `<div style="zoom: .8;margin-right: 14px">${s}</div>`
         })
         return `<div style="width: ${width}px">${header}<div style="display:flex;flex-wrap: wrap">${body}</div></div>`;
