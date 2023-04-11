@@ -1,27 +1,44 @@
 <template>
   <el-card class="m-b-16">
     <el-row :gutter="12" class="multiple-line-row">
-      <el-col :xs="24" :sm="16" :xl="20">
+      <el-col :xs="24" :lg="9" :xl="12">
         <div class="button-line">
-        <bs-route-link path="/experiments/new" type="primary" v-if="user.access_level > 10">
-          <el-icon><Plus/></el-icon>
-          {{ $t("experiments.action.new") }}
-        </bs-route-link>
-        <bs-sort-button
-          :text="$t('button.sortByType')"
-          :order="query.sort_by === 'type' && query.sort_order"
-          @click.prevent="setSortBy('type')"
-        />
-        <bs-sort-button
-          :text="$t('button.sortByTime')"
-          :order="query.sort_by === 'start_time' && query.sort_order"
-          @click="setSortBy('start_time')"
-        />
+          <bs-route-link path="/experiments/new" type="primary" v-if="user.access_level > 10">
+            <el-icon><Plus/></el-icon>
+            {{ $t("experiments.action.new") }}
+          </bs-route-link>
+          <bs-sort-button
+            :text="$t('button.sortByType')"
+            :order="query.sort_by === 'type' && query.sort_order"
+            @click.prevent="setSortBy('type')"
+          />
+          <bs-sort-button
+            :text="$t('button.sortByTime')"
+            :order="query.sort_by === 'start_time' && query.sort_order"
+            @click="setSortBy('start_time')"
+          />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="8" :xl="4">
+      <el-col :xs="24" :sm="8" :lg="5" :xl="4">
+        <el-select v-model="query.type" style="width: 100%" clearable :placeholder="$t('experiments.detail.type')">
+          <el-option 
+            v-for="(label, value) in EXPERIMENT_TYPE"
+            :key="value"
+            :value="value"
+            :label="label"
+          />
+        </el-select>
+      </el-col>
+      <el-col :xs="24" :sm="8" :lg="5" :xl="4">
+        <el-input
+          clearable
+          v-model="query.tag"
+          :placeholder="$t('placeholder.search', { content: $t('experiments.detail.tags')})"
+          prefix-icon="Search"
+        />
+      </el-col>
+      <el-col :xs="24" :sm="8" :lg="5" :xl="4">
         <el-input 
-          class="col-right-btn" 
           clearable
           v-model="query.search"
           :placeholder="$t('placeholder.search', { content: $t('experiments.detail.name')})"
@@ -99,6 +116,14 @@
                 </bs-tr>
               </tbody>
             </table>
+            <el-tag
+              v-for="tag in ex.tags"
+              :key="tag"
+              class="m-r-8 m-t-8"
+              effect="dark"
+            >
+              {{ tag }}
+            </el-tag>
           </bs-project-card>
         </el-col>
       </el-row>
@@ -141,6 +166,8 @@ const query = ref({
   search: "",
   sort_by: "start_time",
   sort_order: "desc",
+  type: "",
+  tag: ""
 })
 
 const loadRef = ref();

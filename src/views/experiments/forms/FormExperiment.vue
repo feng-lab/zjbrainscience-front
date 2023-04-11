@@ -162,18 +162,51 @@
         <el-radio :label="false">{{ $t("label.no") }}</el-radio>
       </el-radio-group>
     </el-form-item>
+    <el-form-item prop="tags">
+      <template #label>
+        <span class="icon-label">
+          {{ $t('experiments.detail.tags')}}
+          <el-tooltip :content="$t('experiments.tagsTooltip')">
+            <bs-icon-img icon="QuestionFilled"/>
+          </el-tooltip>
+          {{ $t('colon')}}
+        </span>
+      </template>
+      <el-tag
+        v-for="tag in exForm.tags"
+        :key="tag"
+        closable
+        class="m-r-8"
+        @close="handleTagClose(tag)"
+      >
+        {{ tag }}
+      </el-tag>
+      <el-input
+        v-if="inputTagVisible"
+        ref="InputRef"
+        v-model="inputValue"
+        size="small"
+        style="width: 20em"
+        @keyup.enter="handleInputTagConfirm"
+        @blur="handleInputTagConfirm"
+      />
+      <el-button v-else size="small" @click="showInputTag" icon="Plus">
+        {{ $t('experiments.tagBtn') }}
+      </el-button>
+
+    </el-form-item>
   </bs-page-form>
 </template>
 <script setup>
 import BsPageForm from "@/components/BsPageForm.vue";
 
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, nextTick } from "vue";
 import { newExApi, updateExApi, exDetailApi } from "@/api/experiments";
-import { onBeforeRouteLeave, onBeforeRouteUpdate, useRouter } from "vue-router";
-import useUserStore from "@/stores/user";
+import { onBeforeRouteLeave, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useUserSearch } from "@/compositions/useUserSearch";
 import { EXPERIMENT_TYPE, SUBJECT_TYPE } from "@/utils/common.js";
+import BsIconImg from "@/components/BsIconImg.vue";
 
 const props = defineProps({
   experiment_id: null
@@ -196,10 +229,14 @@ const exForm = ref({
   neuron_source: "",
   stimulation_type: "",
   session_num: 0,
-  trail_num: 0
+  trail_num: 0,
+  tags: new Set()
 })
 
 const experimentFormRef = ref();
+const inputTagVisible = ref(false);
+const inputValue = ref("");
+const InputRef = ref();
 
 const mainOperatorOptions = ref([]);
 const { handleRemoteSearch:handleMainOperatorSearch , loading: mpLoading} = useUserSearch(mainOperatorOptions);
@@ -207,7 +244,6 @@ const { handleRemoteSearch:handleMainOperatorSearch , loading: mpLoading} = useU
 const assistantsOptions = ref([]);
 const { handleRemoteSearch:handleAssistantsSearch, loading: assistantLoading } = useUserSearch(assistantsOptions);
 
-const { user } = useUserStore();
 
 const router = useRouter();
 
@@ -290,6 +326,7 @@ const doFormSubmit = async () => {
   const remoteFunc = type.value === "new" ? newExApi : updateExApi;
   const id = await remoteFunc({
     ...exForm.value,
+    tags: [...exForm.value.tags]
   });
   const exId = id ?? props.experiment_id;
   router.push(`/experiments/detail/${exId}`)
@@ -297,7 +334,9 @@ const doFormSubmit = async () => {
 
 const handleCancel = () => {
   experimentFormRef.value.reset();
-  router.push("/experiments/list");
+  history.state.back ?  
+    router.back() : 
+    router.push("/experiments/list");
 }
 
 watch(() => props.experiment_id, async (experiment_id) => {
@@ -328,5 +367,24 @@ onBeforeRouteLeave((to, from) => {
     experimentFormRef.value.reset();
   }
 })
+
+const handleTagClose = (tag) => {
+  exForm.value.tags.delete(tag);
+}
+
+const showInputTag = () => {
+  inputTagVisible.value = true;
+  nextTick(() => {
+    InputRef.value?.input?.focus()
+  })
+}
+
+const handleInputTagConfirm = () => {
+  if(inputValue.value) {
+    exForm.value.tags.add(inputValue.value);
+  }
+  inputTagVisible.value = false;
+  inputValue.value = "";
+}
 
 </script>

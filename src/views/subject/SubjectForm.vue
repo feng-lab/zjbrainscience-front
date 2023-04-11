@@ -10,6 +10,15 @@
   >
     <el-row :gutter="8">
       <el-col :xs="24" :sm="12">
+        <el-form-item :label="$t('subject.name')" prop="name">
+          <el-input
+            clearable
+            v-model="subjectForm.name"
+            :placeholder="$t('subject.namePlaceholder')"
+          />
+        </el-form-item>
+      </el-col>
+      <el-col :xs="24" :sm="12">
         <el-form-item :label="$t('subject.gender')" prop="gender">
           <el-select
             style="width: 100%"
@@ -22,6 +31,16 @@
               :value="value"
             />
           </el-select>
+        </el-form-item>
+      </el-col>
+      <el-col :xs="24" :sm="12">
+        <el-form-item :label="$t('subject.birthdate')" prop="birthdate">
+          <el-date-picker
+            clearable
+            v-model="subjectForm.birthdate"
+            style="width: 100%"
+            value-format="YYYY-MM-DD"
+          />
         </el-form-item>
       </el-col>
       <el-col :xs="24" :sm="12">
@@ -38,18 +57,6 @@
           </el-select>
         </el-form-item>
       </el-col>
-    </el-row>
-    <el-row :gutter="8">
-      <el-col :xs="24" :sm="12">
-        <el-form-item :label="$t('subject.birthdate')" prop="birthdate">
-          <el-date-picker
-            clearable
-            v-model="subjectForm.birthdate"
-            style="width: 100%"
-            value-format="YYYY-MM-DD"
-          />
-        </el-form-item>
-      </el-col>
       <el-col :xs="24" :sm="12">
         <el-form-item :label="$t('subject.death_date')" prop="death_date">
           <el-date-picker
@@ -60,8 +67,6 @@
           />
         </el-form-item>
       </el-col>
-    </el-row>
-    <el-row :gutter="8">
       <el-col :xs="24" :sm="12">
         <el-form-item :label="$t('subject.education')" prop="education">
           <el-input
@@ -76,8 +81,6 @@
           />
         </el-form-item>
       </el-col>
-    </el-row>
-    <el-row :gutter="8">
       <el-col :xs="24" :sm="12">
         <el-form-item :label="$t('subject.phone_number')" prop="phone_number">
           <el-input
@@ -85,15 +88,13 @@
           />
         </el-form-item>
       </el-col>
-      <el-col :xs="24" :sm="12">
-        <el-form-item :label="$t('subject.email')" prop="email">
-          <el-input
-            v-model="subjectForm.email"
-            type="email"
-          />
-        </el-form-item>
-      </el-col>
     </el-row>
+    <el-form-item :label="$t('subject.email')" prop="email">
+      <el-input
+        v-model="subjectForm.email"
+        type="email"
+      />
+    </el-form-item>
     <el-form-item :label="$t('subject.marital_status')" prop="marital_status">
       <el-select
         v-model="subjectForm.marital_status"
@@ -146,6 +147,7 @@ const { GENDER, YES_OR_NO, MARITAL_STATUS } = useUtils();
 
 
 const rules = reactive({
+  "name" : [{ required: true , trigger: ["blur", "change"]}],
   "gender" : [{ required: true , trigger: ["blur", "change"]}],
   "abo_blood_type" : [{ required: true, trigger: ["blur", "change"] }],
   "birthdate" : [{ required: true, trigger: ["blur", "change"] }],
@@ -164,7 +166,8 @@ const subjectForm = ref({
   occupation: "",
   phone_number: "",
   email: "",
-  address: ""
+  address: "",
+  name: ""
 })
 
 

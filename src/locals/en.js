@@ -138,6 +138,10 @@ export default {
     notification: "Notification",
     password: "Modify Password",
     user: "User Management",
+    atlas: "Brain Atlas",
+    allen_ccf: "Allen CCF",
+    brainnetome: "Brainnetome",
+    eeum: "EEUM"
   },
   loginInfoStorage: {
     title: "Data Storage",
@@ -181,14 +185,17 @@ export default {
       neuron_source: "Neuron Source",
       stimulation_type: "Stimulation",
       session_num: "Number of Session",
-      trail_num: "Number of Trail"
+      trail_num: "Number of Trail",
+      tags: "Tags"
     },
     tab: {
       paradigm: "Paradigm",
       equipment: "Equipment",
       assistant: "Assistants"
     },
-    deleteConfirm: "Are you sure to delete the experiment (ID: {id})?"
+    deleteConfirm: "Are you sure to delete the experiment (ID: {id})?",
+    tagsTooltip: "You can tag the experiment with customize label, such as 'patient', etc., which used to filter experiments and manage experiments with customized category",
+    tagBtn: "New Tag"
   },
   paradigm: {
     text: "Paradigm",
@@ -208,6 +215,8 @@ export default {
     systemremind: "Syetem Remind",
   },
   subject: {
+    name: "Name",
+    namePlaceholder: "Name or acronym for name",
     text: "Human Subject",
     user_id: "ID",
     username: "Username",

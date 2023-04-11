@@ -1,12 +1,15 @@
 <template>
   <el-card class="main-content">
     <el-descriptions 
-      :title="`${exForm.name} (ID: ${exForm.id})`" 
       :column="column[breakpoint]"
+      :title="`${exForm.name} (ID: ${exForm.id})`"
       border
       class="m-b-24"
     >
       <template #extra>
+        <bs-route-link :path="`/experiments/edit/${exForm.id}`" icon="Edit">
+          {{ $t("button.edit") }}
+        </bs-route-link>
         <bs-route-link path="/experiments/list" type="danger">
           <el-icon><CaretLeft /></el-icon>
           {{ $t("button.back") }}
@@ -24,6 +27,16 @@
       <el-descriptions-item :label="$t('label.endTime')" align="center">
         {{ exForm.end_at }}
       </el-descriptions-item>
+        <el-descriptions-item :label="$t('experiments.detail.tags')" label-align="center">
+          <el-tag
+            v-for="tag in exForm.tags"
+            :key="tag"
+            class="m-l-8"
+            effect="dark"
+          >
+            {{ tag}}
+          </el-tag>
+        </el-descriptions-item>
       <template v-if="showMore">
         <el-descriptions-item :label="$t('experiments.detail.subject_type')" align="center">
           {{ $t(`subject.category.${exForm.subject_type}`) }}

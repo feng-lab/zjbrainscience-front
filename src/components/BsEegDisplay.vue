@@ -16,7 +16,8 @@ const props = defineProps({
     required: true,
     default: {
       Stimulation: [],
-      datasets: []
+      datasets: [],
+      x_data: []
     }
   },
   toolBox: {
@@ -62,7 +63,7 @@ const setGridHeight = () => {
 }
 
 const getOption = () => {
-  const { stimulation, datasets } = props.eegData; 
+  const { stimulation, datasets, x_data } = props.eegData; 
   const xAxis = [];
   const yAxis = [];
   const grid = [];
@@ -107,7 +108,7 @@ const getOption = () => {
       axisLabel: {
         show: index === 0
       },
-      //data: xData.map(x => x * 1000)
+      data: x_data.map(x => x * 1000)
     });
     yAxis.push({
       show: false,
@@ -171,14 +172,14 @@ const getOption = () => {
         return obj;
       },
       formatter: (params) => {
-        const width = Math.max(parseInt(params.length / 30 * 120), 120);
-        const header = `<div style="font-weight: 900;font-size: 18px; margin-bottom: 8px">${params[0].axisValue}</div>`;
+        const width = Math.max(parseInt(params.length / 15 * 120), 120);
+        const header = `<div style="font-weight: 900;font-size: 16px; margin-bottom: 8px">${params[0].axisValue}</div>`;
         let body = "";
         params.forEach(param => {
           const s = param.marker + 
               `<span style="font-weight: 400;margin-left: 2px"> ${param.seriesName}:</span>` + 
-              `<span style="float: right;margin-left: 20px;font-weight: 900"> ${param.value.toFixed(2)} ${datasets[param.seriesIndex].unit}</span>` 
-          body += `<div style="zoom: .8;margin-right: 16px">${s}</div>`
+              `<span style="float: right;margin-left: 16px;font-weight: 900"> ${param.value.toFixed(2)} ${datasets[param.seriesIndex].unit}</span>` 
+          body += `<div style="zoom: .8;margin-right: 14px">${s}</div>`
         })
         return `<div style="width: ${width}px">${header}<div style="display:flex;flex-wrap: wrap">${body}</div></div>`;
       }

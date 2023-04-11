@@ -33,7 +33,8 @@ export const STEP_INFO = {
 export const EXPERIMENT_TYPE = {
   "SSVEP": "SSVEP",
   "MI": "MI",
-  "neuron": "Neuron Spike"
+  "neuron": "Neuron Spike",
+  "other": "Other"
 }
 
 export const SUBJECT_TYPE = [ "human", "macaque", "dog", "pig", "other" ];

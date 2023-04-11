@@ -49,7 +49,7 @@
           class="right m-r-8"
           size="small" 
           link type="primary" 
-          @click="query.channels=CHANNELS"
+          @click="query.channels=channels"
         >
           {{ $t("button.checkall") }}
         </el-button>
@@ -57,7 +57,7 @@
           class="right"
           size="small" 
           link type="primary" 
-          @click="query.channels=[CHANNELS[0]]"
+          @click="query.channels=[channels[0]]"
         >
           {{ $t("button.filter") }}
         </el-button>
@@ -65,14 +65,14 @@
     </div>
     <el-checkbox-group v-model="query.channels" v-if="multiple"> 
       <el-checkbox
-        v-for="ch in CHANNELS"
+        v-for="ch in channels"
         :key="ch"
         :label="ch"
       />
     </el-checkbox-group>
     <el-radio-group v-model="query.channels" v-else>
       <el-radio
-        v-for="ch in CHANNELS"
+        v-for="ch in channels"
         :key="ch"
         :label="ch"
       />
@@ -98,7 +98,7 @@ import BsEegDisplay from '@/components/BsEegDisplay.vue';
 import BsField from '@/components/BsField.vue';
 
 import { computed, onMounted, ref, watch } from "vue";
-import { eegDisplayApi } from "@/api/eeg";
+import { eegDisplayApi, eegChannelsApi } from "@/api/eeg";
 import { CHANNELS } from "@/utils/common";
 
 const props = defineProps({
@@ -121,15 +121,18 @@ const props = defineProps({
 const eegData  = ref();
 const channelSelect = ref(false);
 const loading = ref(false);
+const channels = ref([]);
 
 
 const query = ref({
-  channels: props.multiple ? CHANNELS: CHANNELS[0] ,
+  channels: [],
   page_index: 1,
   window: 5
 })
 const getEEG = async () => {
-  if(props.file) {
+  if(!query.value.channels.length) {
+    query.value.channels = [channels.value[0]]
+  } else if(props.file) {
     loading.value = true;
     eegData.value = await eegDisplayApi({
       file_id: props.file.id,
@@ -138,11 +141,20 @@ const getEEG = async () => {
     loading.value = false;
   }
 }
-watch(() => ({
-  file: props.file,
-  query
-}), getEEG, {
-  immediate: true,
+
+const getEEGChannel = async () => {
+  if(props.file) {
+    channels.value = await eegChannelsApi(props.file.id);
+    query.value.channels = channels.value;
+  }
+}
+watch (
+  () => props.file, 
+  getEEGChannel,
+  { immediate: true }
+);
+
+watch(query, getEEG, {
   deep: true
 })
 

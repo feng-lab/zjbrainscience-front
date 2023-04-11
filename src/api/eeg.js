@@ -20,3 +20,18 @@ export function eegDisplayApi({ file_id, window, page_index, channels }) {
     }
   })
 }
+
+/**
+ * 获取EEG文件的channel
+ * @param {*} file_id 文件ID 
+ * @returns 
+ */
+export function eegChannelsApi(file_id) {
+  return request({
+    url: "/api/getEEGChannels",
+    method: "GET",
+    params: {
+      file_id
+    }
+  })
+}
