@@ -138,6 +138,10 @@ export default {
     notification: "通知消息",
     password: "密码修改",
     user: "用户管理",
+    atlas: "脑图谱",
+    allen_ccf: "Allen CCF",
+    brainnetome: "Brainnetome",
+    eeum: "EEUM"
   },
   loginInfoStorage: {
     title: "数据存储",
@@ -181,14 +185,17 @@ export default {
       neuron_source: "细胞来源部位",
       stimulation_type: "刺激类型",
       session_num: "Session数量",
-      trail_num: "Trail数量"
+      trail_num: "Trail数量",
+      tags: "实验标签"
     },
     tab: {
       paradigm: "实验范式",
       equipment: "实验设备",
       assistant: "实验助手"
     },
-    deleteConfirm: "确定删除实验 （ID： {id}） 吗？"
+    deleteConfirm: "确定删除实验 （ID： {id}） 吗？",
+    tagsTooltip: "您可以为实验贴上自定义标签，如‘患者’等，后续可通过这些自定义标签来筛选实验，方便对您的实验按您的标准进行归类管理",
+    tagBtn: "新增标签"
   },
   paradigm: {
     text: "实验范式",
@@ -208,6 +215,8 @@ export default {
     systemremind: "系统提示",
   },
   subject: {
+    name: "姓名",
+    namePlaceholder: "被试姓名或首字母缩写",
     text: "人类被试",
     user_id: "被试ID",
     username: "系统用户名",

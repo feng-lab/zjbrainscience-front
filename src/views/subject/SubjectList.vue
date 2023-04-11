@@ -84,6 +84,7 @@ const {
 
 const columns = [
   "user_id", 
+  "name",
   "gender",
   "birthdate",
   "death_date",
@@ -137,6 +138,9 @@ const getSubjectDatas = (params) => {
   })
 }
 const searchFields = computed(() => ([{
+  name: "name",
+  label: i18n.t("subject.name"),
+}, {
   name: "gender",
   label: i18n.t("subject.gender"),
   searchType: "select",
@@ -151,11 +155,6 @@ const searchFields = computed(() => ([{
   label: i18n.t("subject.marital_status"),
   searchType: "select",
   options: objectToOptions(MARITAL_STATUS.value)
-}, {
-  name: "is_left_handed",
-  label: i18n.t("subject.is_left_handed"),
-  searchType: "select",
-  options: objectToOptions(YES_OR_NO.value)
 }]));
 
 </script>
