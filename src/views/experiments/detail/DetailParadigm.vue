@@ -41,7 +41,7 @@
           </template>
           <bs-list-item-content
             :title="$t('paradigm.creator')"
-            content="wynne"
+            :content="paradigm.creator.username"
           />
           <bs-list-item-content
             :title="$t('paradigm.createTime')"
