@@ -40,7 +40,7 @@
       <el-col :xs="24" :sm="8" :lg="5" :xl="4">
         <el-input 
           clearable
-          v-model="query.search"
+          v-model="query.name"
           :placeholder="$t('placeholder.search', { content: $t('experiments.detail.name')})"
           prefix-icon="Search"
         />
@@ -163,7 +163,7 @@ const statusTag = {
 }
 
 const query = ref({
-  search: "",
+  name: "",
   sort_by: "start_time",
   sort_order: "desc",
   type: "",
