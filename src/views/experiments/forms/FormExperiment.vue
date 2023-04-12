@@ -344,11 +344,12 @@ watch(() => props.experiment_id, async (experiment_id) => {
     try {
 
       const res = await exDetailApi(experiment_id);
-      const { main_operator } = res;
+      const { main_operator, tags } = res;
       exForm.value = {
         ...res,
         main_operator: main_operator.id,
-        assistants: []
+        assistants: [],
+        tags: new Set(tags) 
       }
       mainOperatorOptions.value.push({
         value: main_operator.id,
