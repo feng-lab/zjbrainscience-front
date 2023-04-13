@@ -107,6 +107,20 @@
       <img class="preview-image" :src="previewImgFile.url" alt="Preview Image" />
     </div>
   </el-dialog>
+  <el-dialog
+    v-model="previewJson"
+    :title="previewJsonFile.name"
+    :destroy-on-close="true"
+  >
+    <vue-json-pretty 
+      :deep="1"
+      :data="previewJsonFile.data"
+      :showLength="true"
+      :showLineNumber="true"
+      :showIcon="false"
+      :virtual="true"
+    />
+  </el-dialog>
   <!--
   <el-dialog 
     v-model="showFileSelect" 
@@ -143,6 +157,8 @@
 <script setup>
 import BsEegDisplay from "@/components/BsEegDisplay.vue";
 import BsEegView from "@/views/eeg/BsEegView.vue";
+import VueJsonPretty from "vue-json-pretty";
+import 'vue-json-pretty/lib/styles.css';
 
 import { ref, inject, nextTick, onMounted, computed } from "vue";
 import jsCookie from "js-cookie";
@@ -154,7 +170,7 @@ import { useUpload } from "@/compositions/useUpload";
 import { ElMessage } from "element-plus";
 import { filesByPageApi, deleteFileApi, fileTypesApi } from "@/api/files";
 import { eegDisplayApi } from "@/api/eeg";
-import { getPreviewUrl } from "@/utils/common";
+import { getFileData, getPreviewUrl } from "@/utils/common";
 import BsLoadMore from "@/components/BsLoadMore.vue";
 import useUserStore from "@/stores/user";
 
@@ -171,10 +187,17 @@ const selectedFile = ref([]);
 const fileTypeList = ref([]);
 const i18n = useI18n();
 const previewImg = ref(false);
-const previewImgUrl = ref("");
 const previewImgFile = ref({
   url: "",
   name: ""
+});
+
+
+const previewJson = ref(false);
+const previewJsonFile = ref({
+  data: {},
+  name: "",
+  id: ""
 });
 
 let unCompleted = true;
@@ -299,6 +322,7 @@ const handleEEGFileView = (file) => {
   viewFile.value = file.id === viewFile.value?.id ? null : file
 }
 
+
 const viewFileOp = {
   "mp4": (file) => {
     viewMp4.value = file.id === viewMp4.value?.id ? null : {
@@ -310,6 +334,18 @@ const viewFileOp = {
         scrollRef.value.setScrollTop(600);
       })
     }
+  },
+  "json": async (file) => {
+    let { id, name } = file;
+    if( id !== previewJsonFile.value.id) {
+      let jsonValue = await getFileData(id);
+      previewJsonFile.value = {
+        data: JSON.parse(JSON.stringify(jsonValue)),
+        name,
+        id
+      }
+    }
+    previewJson.value = true;
   },
   "bdf": handleEEGFileView,
   "edf": handleEEGFileView,
