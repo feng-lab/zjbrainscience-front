@@ -1,4 +1,5 @@
 import i18n from "@/locals";
+import axios from "axios";
 
 /**  Function  */
 
@@ -15,6 +16,20 @@ export function objectToOptions(obj) {
     value,
     label
   }))
+}
+
+export function getFileData(file_id) {
+  let file_url = getPreviewUrl(file_id);
+  console.log('file_url', file_url)
+  return new Promise((resolve, reject) =>  {
+    axios({ withCredentials: true, url: file_url, })
+    .then(response => {
+      resolve(response.data);
+    })
+    .catch(error => {
+      reject(error);
+    }) 
+  });
 }
 
 /** CONSTANTS */
