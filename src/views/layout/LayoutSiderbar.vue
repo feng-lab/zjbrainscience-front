@@ -3,8 +3,6 @@
     class="sidebar aside" 
     :style="{
         width: asideWidth,
-        backgroundColor: showDrawer ? '#fff' : '#303133',
-        color: showDrawer? '#606266': '#fff'
     }"
   >
     <bs-logo
@@ -66,14 +64,9 @@ authMenus.value = filterMenus(menus);
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: #303133;
-  color: #fff;
+  background-color: transparent;
   :deep(.el-menu) {
     border-right: none;
-  }
-  :deep(.el-menu-item.is-active) {
-    color: #fff;
-    background-color: #52c41a;
   }
 }
 </style>

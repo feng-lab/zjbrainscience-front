@@ -48,8 +48,8 @@ const menus = [{
       level: 100
     }
   }]
-  /*
 }, {
+  /*
   path: "task",
   name: "task",
   component: () => import("@/views/task/Task.vue"),
@@ -65,7 +65,35 @@ const menus = [{
     icon: "Aim",
     level: 100 //研究员以上
   },
+}, {
   */
+  path: "atlas",
+  name: "atlas",
+  meta: {
+    icon: "Aim",
+  },
+  children: [{
+    path: "allen_ccf",
+    name: "allen_ccf",
+    component: () => import("@/views/atlas/allen_ccf/AllenCCF.vue"),
+    meta: {
+      icon: "Check"
+    }
+  }, {
+    path: "brainnetome",
+    name: "brainnetome",
+    component: () => import("@/views/atlas/brainnetome/Brainnetome.vue"),
+    meta: {
+      icon: "Check"
+    }
+  }, {
+    path: "eeum",
+    name: "eeum",
+    component: () => import("@/views/atlas/eeum/Eeum.vue"),
+    meta: {
+      icon: "Check"
+    }
+  }]
 }, {
   path: "notification",
   name: "notification",

@@ -19,6 +19,9 @@ export default ({ command }) => {
       proxy: {
         "/api": {
           target: "http://10.101.40.3:1919/"
+        },
+        "/atlas_data": {
+          target: "http://127.0.0.1/"
         }
       }
     },
