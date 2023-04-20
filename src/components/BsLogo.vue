@@ -39,6 +39,7 @@ const { backToHome } = useUtils();
       height: 32px;
       line-height: 32px;
       margin-left: 10px;
+      font-size: 1.5em;
     }
   }
 }
