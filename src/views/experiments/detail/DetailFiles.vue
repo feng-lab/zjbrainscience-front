@@ -87,6 +87,7 @@
           <bs-eeg-view
             :file="viewFile"
             :chart-height="500"
+            :file-type="viewFileType"
             multiple
           />
         </el-card>
@@ -168,7 +169,7 @@ import { useUtils } from "@/compositions/useUtils";
 import { useI18n } from "vue-i18n";
 import { useUpload } from "@/compositions/useUpload";
 import { ElMessage } from "element-plus";
-import { filesByPageApi, deleteFileApi, fileTypesApi } from "@/api/files";
+import { filesByPageApi, fileTypesApi } from "@/api/files";
 import { eegDisplayApi } from "@/api/eeg";
 import { getFileData, getPreviewUrl } from "@/utils/common";
 import BsLoadMore from "@/components/BsLoadMore.vue";
@@ -200,6 +201,7 @@ const previewJsonFile = ref({
   id: ""
 });
 
+
 let unCompleted = true;
 
 const loadMoreRef = ref();
@@ -222,6 +224,7 @@ const handleFileSelectChange = (value) => {
 }
 
 const viewFile = ref();
+const viewFileType = ref();
 const viewMp4 = ref();
 
 const query = ref({
@@ -318,9 +321,12 @@ const handleChange = (uploadFile, uploadFiles) => {
 }
 */
 
+
+
 const handleEEGFileView = (file) => {
   viewFile.value = file.id === viewFile.value?.id ? null : file
 }
+
 
 
 const viewFileOp = {
@@ -347,6 +353,7 @@ const viewFileOp = {
     }
     previewJson.value = true;
   },
+  "nev": handleEEGFileView,
   "bdf": handleEEGFileView,
   "edf": handleEEGFileView,
   "png": (file) => {
@@ -361,9 +368,11 @@ const viewFileOp = {
 
 
 const handlePreview = (file) => {
-  const { name } = file;
-  const type = name.split('.').pop().toLowerCase();
-  const operation = viewFileOp[type];
+  let { name } = file;
+  let [ fileName, extension ] = name.split(".");
+  let [ fn, isNev ] = fileName.split(".");
+  viewFileType.value = (isNev ?? extension).toLowerCase();
+  let operation = viewFileOp[viewFileType.value];
   if(operation) {
     operation(file);
   } else {

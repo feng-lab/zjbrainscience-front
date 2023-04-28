@@ -1,6 +1,6 @@
 <template>
   <div class="bs-field">
-    <span class="bs-field-label">{{ label }}</span>
+    <span class="bs-field-label">{{ label }}{{ $t("colon")}}</span>
     <div class="bs-field-content">
     <slot></slot>
     </div>
@@ -17,7 +17,7 @@ defineProps({
   align-items: center;
   justify-content: end;
   &-label{
-    width: 60%;
+    width: 120px;
     text-align: end;
     margin-right: 8px;
   }

@@ -52,6 +52,46 @@ export function deleteFileApi(id) {
   })
 }
 
+/**
+ * 
+ * @param { Number } file_id 文件ID
+ * @returns 
+ */
+export function neuroSpikeFileInfoApi(file_id) {
+  console.log('file_id', file_id)
+  return request({
+    url: "/api/getNeuralSpikeInfo",
+    method: "GET",
+    params: {
+      file_id
+    }
+  })
+}
+
+/**
+ * 
+ * @param {Object} data 
+ *  {
+ *    "file_id": Number,
+ *    "window": Number,
+ *    "page_index": Number,
+ *    "block_index": Number,
+ *    "segment_index": Number,
+ *    "analog_signal_index": Number,
+ *    "channel_indexes": Array<Number>
+ *  }
+ *  
+ * @returns 
+ */
+export function displayNeuroSpikeFileApi(data) {
+  return request({
+    url: "/api/displayNeuralSpike",
+    method: "POST",
+    data
+  })
+
+}
+
 
 export function targetFilesApi() {
   return request({

@@ -105,7 +105,6 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
-  console.log('to', to)
   if(!hasLogined() && to.name !== "login") {
     ElMessage.error(i18n.global.t("label.needLogin"));
     return { 

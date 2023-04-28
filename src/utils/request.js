@@ -8,7 +8,7 @@ import i18n from "@/locals";
 
 const request = axios.create({
   //baseURL: import.meta.env.VITE_APP_API,
-  timeout: 6000,
+  timeout: 60000,
   withCredentials: true
 });
 
