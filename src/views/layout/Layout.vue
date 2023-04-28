@@ -48,7 +48,6 @@ const { asideWidth } = storeToRefs(globalStore);
 
 const layoutType = computed(() => {
   const route = useRoute();
-  console.log('route', route);
   return route.fullPath.startsWith("/atlas/") ? "atlas" : "common";
 }) 
 
