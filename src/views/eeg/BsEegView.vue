@@ -1,6 +1,6 @@
 <template>
-  <el-row class="m-b-16" :gutter="16">
-    <el-col :xs="24" :sm="6" class="m-b-8">
+  <el-row :gutter="16">
+    <el-col :xs="24" :sm="8" class="m-b-8">
       <bs-field :label="$t('term.file')"> 
         <el-tag>
         {{ file.name }}
@@ -19,93 +19,66 @@
         </el-select>
       </bs-field>
     </el-col>
-    <el-col :xs="24" :sm="6" class="m-b-8">
+    <el-col :xs="24" :sm="8" class="m-b-8">
       <bs-field :label="$t('label.currentPage')">
         <el-input-number v-model="query.page_index" :min="0" style="width: 100%"/>
       </bs-field>
     </el-col>
-    <el-col :span="24" class="m-b-8" v-if="fileType === 'nev'">
-      <bs-field :label="$t('button.channel')">
-        <el-cascader
-          v-model="nevAnalogSignal"
-          @change="handleChange"
-          :props="cascaderProps"
-          collapse-tags
-          clearable
-          collapse-tags-tooltip
-          style="width: 60%"
-          class="m-r-8"
-        />
-        <el-tree-select
-          v-model="nevSelectedChannels"
-          multiple
-          collapse-tags
-          collapse-tags-tooltip
-          :data="nevChannels"
-          show-checkbox
-          filterable
-        />
-      </bs-field>
-    </el-col>
-    <el-col :xs="24" :sm="4" class="m-b-8" v-else>
-        <el-button 
-          @click="channelSelect=true"
-          style="width: 100%"
-        >{{ $t("button.channel")}}</el-button>
-    </el-col>
   </el-row>
-  <div v-if="channelSelect" class="channel-select"> 
-    <div class="channel-select-button">
-      <el-button 
-        class="right"
-        size="small" 
-        link type="primary" 
-        @click="channelSelect=false"
+  <div class="m-b-8">
+    <bs-field :label="$t('button.channel')">
+      <el-row :gutter="16">
+        <el-col :xs="24" :sm="16" v-if="fileType === 'nev'">
+          <el-cascader
+            v-model="nevAnalogSignal"
+            @change="handleChange"
+            :props="cascaderProps"
+            collapse-tags
+            clearable
+            collapse-tags-tooltip
+            style="width: 100%"
+            class="m-b-8"
+            :placeholder="$t('placeholder.select', { content: 'Analog Signal'})"
+          />
+      </el-col>
+      <el-col :xs="24" :sm="fileType === 'nev' ? 8 : 24">
+      <el-tree-select
+        ref="treeSelectRef"
+        v-model="selectedChannels"
+        multiple
+        collapse-tags
+        collapse-tags-tooltip
+        :data="channels"
+        show-checkbox
+        filterable
+        clearable
+        node-key="value"
+        :placeholder="$t('placeholder.select', { content: 'Channel'})"
+        style="width: 100%"
+        :default-expanded-keys="['all']"
       >
-        {{ $t("button.collapse") }}
-        <el-icon><ArrowUp/></el-icon>
-      </el-button>
-      <template v-if="multiple">
-        <el-button 
-          class="right m-r-8"
-          size="small" 
-          link type="primary" 
-          @click="selectedChannels=channels"
-        >
-          {{ $t("button.checkall") }}
-        </el-button>
-        <el-button 
-          class="right"
-          size="small" 
-          link type="primary" 
-          @click="selectedChannels=[channels[0]]"
-        >
-          {{ $t("button.filter") }}
-        </el-button>
-      </template>
-    </div>
-    <el-checkbox-group v-model="selectedChannels" v-if="multiple"> 
-      <el-checkbox
-        v-for="ch in channels"
-        :key="ch"
-        :label="ch"
-      />
-    </el-checkbox-group>
-    <el-radio-group v-model="selectedChannels" v-else>
-      <el-radio
-        v-for="ch in channels"
-        :key="ch"
-        :label="ch"
-      />
-    </el-radio-group>
-
+        <template #default="{ node, data}">
+          <span class="channel-tree">
+            <span>
+              <span>{{ node.label }} </span>
+              <span v-if="data.value === 'all'">{{ `(${data.children.length})`}}</span>
+            </span>
+            <span v-if="data.value === 'all' ">
+              <a @click="handleClearChecked(node, data)">{{ $t("button.clear")}}</a>
+            </span>
+          </span>
+        </template>
+      </el-tree-select>
+      </el-col>
+      </el-row>
+    </bs-field>
   </div>
   <el-skeleton :loading="loading" animated style="width:100%" :rows="5">
     <template #default>
       <el-empty :description="$t('button.channel')" v-if="!eegData" :style="{height: `${chartHeight}px`}"/>
       <bs-eeg-display 
         v-else
-        :legends="selectedChannels"
+        :legends="selectedLengends"
         :eeg-data="eegData" 
         v-bind="{
           chartHeight,
@@ -125,6 +98,7 @@ import { computed, onMounted, reactive, ref, watch } from "vue";
 import { eegDisplayApi, eegChannelsApi } from "@/api/eeg";
 import { neuroSpikeFileInfoApi, displayNeuroSpikeFileApi } from "@/api/files";
 import lodashUtil from "lodash/util";
+import lodashArray from "lodash/array";
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
@@ -145,17 +119,23 @@ const props = defineProps({
   fileType: String,
 })
 
+const treeSelectRef = ref();
+
 const eegData  = ref();
-const channelSelect = ref(false);
 const loading = ref(false);
 const channels = ref([]);
 const selectedChannels = ref([]);
+const selectedLengends = ref([]);
+let fetchNevChannels = [];
+let fetchMode = false;
+
 let nevFileData = null;
 const nevInfoMap = {};
 const nevAnalogSignal = ref([]);
 const i18n = useI18n();
-const nevChannels = ref([]);
-const nevSelectedChannels = ref([]);
+
+const emits = defineEmits(["closePreview"])
+
 
 
 const query = ref({
@@ -171,8 +151,8 @@ const handleChange = (value) => {
                                   .segments[segment_index]
                                   .analog_signals[analog_signal_index]
                                   .channel_count;
-    nevChannels.value = [{
-      value: "",
+    channels.value = [{
+      value: "all",
       label: i18n.t("button.checkall"),
       children: lodashUtil.range(channelCount).map((ch) => ({
         value: ch,
@@ -182,18 +162,28 @@ const handleChange = (value) => {
   }
 }
 
+const handleCheckedChange = async () => {
+  const checkedChannels = treeSelectRef.value.getCheckedNodes(true)
+                                             .map(ch => ch.value);
+}
+
+const handleClearChecked = () => {
+  selectedChannels.value = [];
+}
+
 
 
 const getEEG = async () => {
   if(!props.file) return;
-  if(!channels.value.length && !nevSelectedChannels.value.length) return;
+  if(!channels.value.length && !selectedChannels.value.length) return;
   let param = {
     file_id: props.file.id,
     ...query.value
   }
   let extraParam = {
-    channels: channels.value
+    channels: selectedChannels.value
   }
+
   let getDataApi = eegDisplayApi;
   if(props.fileType === "nev") {
     let [block_index=0, segment_index=0, analog_signal_index=0] = nevAnalogSignal.value;
@@ -201,24 +191,41 @@ const getEEG = async () => {
       block_index,
       segment_index,
       analog_signal_index,
-      channel_indexes: nevSelectedChannels.value
+      channel_indexes: fetchMode ? fetchNevChannels : selectedChannels.value
     }
     getDataApi = displayNeuroSpikeFileApi;
-    selectedChannels.value = nevSelectedChannels.value.map(ch => `channel ${ch}`);
   }
 
   loading.value = true;
-  eegData.value = await getDataApi({
+  let res = await getDataApi({
     ...param,
     ...extraParam
   });
+  if(fetchMode) {
+    eegData.value = {
+      ...res,
+      datasets: [...(eegData.value?.datasets ?? []), ...res.datasets]
+    }
+  } else {
+    eegData.value = res;
+  }
   loading.value = false;
+  fetchMode = false;
+  fetchNevChannels = [];
 }
 
 const getEEGChannel = async () => {
   if(props.file) {
-    channels.value = await eegChannelsApi(props.file.id);
-    selectedChannels.value = channels.value;
+    let res = await eegChannelsApi(props.file.id);
+    channels.value = [{
+      value: "all",
+      label: i18n.t("button.checkall"),
+      children: res.map(ch => ({
+        label: ch,
+        value: ch
+      }))
+    }]
+    selectedChannels.value = res;
   }
 }
 
@@ -258,11 +265,16 @@ watch (
   () => props.file, 
   async () => {
     eegData.value = null;
-    nevChannels.value = [];
-    nevSelectedChannels.value = []
+    channels.value = [];
+    selectedChannels.value = []
     if(props.fileType === "nev") {
       loading.value = true;
-      nevFileData = await neuroSpikeFileInfoApi(props.file.id);
+      await neuroSpikeFileInfoApi(props.file.id).then(res => {
+        nevFileData = res;
+      }).catch(err => {
+        emits("closePreview", true);
+        return;
+      });
       loading.value = false;
     } else {
       await getEEGChannel();
@@ -272,20 +284,31 @@ watch (
   { immediate: true }
 );
 
-watch([query, nevSelectedChannels], getEEG, {
+watch(query , getEEG, {
   deep: true
+})
+
+watch(selectedChannels, (newValue) => {
+  if(!newValue.length) return; 
+  if(props.fileType === "nev" ) {
+    let eegDatasets = eegData.value?.datasets.map(ds => Number(ds.name.split(" ")[1])) ?? [];
+    fetchNevChannels = lodashArray.difference(newValue, eegDatasets);
+    fetchNevChannels.length && (fetchMode = true) && getEEG();
+    selectedLengends.value = newValue.map(ch => `channel ${ch}`);
+  } else {
+    selectedLengends.value = newValue;
+  } 
 })
 
 
 </script>
 <style lang="scss" scoped>
-.channel-select {
-  background: var(--el-color-info-light-9);
-  padding: 12px 24px;
-  border-radius: 8px;
-  &-button {
-    overflow: hidden;
+.channel-tree {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  a {
+    color: var(--el-color-primary)
   }
-
 }
 </style>
