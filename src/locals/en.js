@@ -346,8 +346,11 @@ export default {
     list: "File List",
     eeg: "EEG",
     video: "Video",
+    allTypes: "All file types",
     experiment: "Association Experiment",
-    deleteConfirm: "Are you sure to delete the file {name}?"
+    deleteConfirm: "Are you sure to delete the file {name}?",
+    uploadTooltip: "Please pack multiple files about one NEV data into a Zip archive with *.nev.zip as the file extension when uploading Neural spike data",
+    notSupport: "The current file type does not support online parsing and viewing"
   },
   httpErrorMsg: {
     expire: "Session expired, please log in again",

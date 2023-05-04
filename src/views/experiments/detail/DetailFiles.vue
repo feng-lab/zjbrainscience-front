@@ -16,12 +16,21 @@
           :class="['bs-upload', cardShow ? 'text-upload' : 'picture']"
         >
           <template #trigger> 
-            <el-button  class="m-b-8 m-t-4" type="primary" icon="Upload" v-if="user.access_level > 10">{{ $t("button.bulkUpload")}}</el-button>
+            <el-button  
+              class="m-b-8 m-t-4" 
+              type="primary" 
+              icon="Upload" 
+              v-if="user.access_level > 10"
+              @mouseover="showUploadTitle = true"
+              @mouseout="showUploadTitle = false"
+            >
+              {{ $t("button.bulkUpload")}}
+            </el-button>
             <!--
             <el-button type="primary" @click="handleZipUpload" icon="UploadFilled">压缩上传</el-button>
             -->
           </template>
-          <el-radio-group class="m-b-8 type-options right" v-model="query.file_type" @change="handleTypeChange" v-if="files.length">
+          <el-radio-group class="m-b-8 type-options right" v-model="query.file_type" @change="handleTypeChange" v-if="fileTypeList.length && fileTypeList.length < 4">
             <el-radio-button size="small" label="">{{ $t("button.all") }}</el-radio-button>
             <el-radio-button 
               v-for="type in fileTypeList"
@@ -32,6 +41,29 @@
               {{ type.toUpperCase() }}
             </el-radio-button>
           </el-radio-group>
+          <span class="right" v-if="fileTypeList.length >= 4">
+            <el-select v-model="query.file_type" clearable>
+              <el-option
+                value=""
+                :label="$t('file.allTypes')"
+              />
+              <el-option
+                v-for="type in fileTypeList"
+                :key="type"
+                :label="type.toUpperCase()"
+                :value="type"
+              />
+            </el-select>
+
+          </span>
+          <div class="m-b-8" v-if="showUploadTitle">
+            <el-alert 
+              type="warning" 
+              show-icon 
+              :title="$t('file.uploadTooltip')" 
+              :closable="false"
+            />
+          </div>
           <template #file="{file}"> 
             <div v-if="viewFile || viewMp4" :class="['text-item', file.id === viewFile?.id || file.id === viewMp4?.id ? 'viewing' : '']">
               <div class="text-item--name" @click="handlePreview(file)"> 
@@ -85,6 +117,7 @@
       <el-scrollbar max-height="700px" ref="scrollRef">
         <el-card class="m-b-16" v-if="viewFile" :header="$t('file.eeg')">
           <bs-eeg-view
+            @close-preview="handleClosePreview"
             :file="viewFile"
             :chart-height="500"
             :file-type="viewFileType"
@@ -201,6 +234,8 @@ const previewJsonFile = ref({
   id: ""
 });
 
+const showUploadTitle = ref(false);
+
 
 let unCompleted = true;
 
@@ -251,6 +286,12 @@ const getFileTypes = async () => {
 
 
 //const zipTool = new jszip();
+const handleClosePreview = (notSupport) => {
+  viewFile.value = null;
+  if(notSupport) {
+    ElMessage.error(i18n.t("file.notSupport"));
+  }
+}
 
 const getThumbnail = (file) => {
   const { id, name, url } = file;
@@ -376,7 +417,7 @@ const handlePreview = (file) => {
   if(operation) {
     operation(file);
   } else {
-    ElMessage.error("当前文件类型不支持在线解析查看");
+    ElMessage.error(i18n.t("file.notSupport"));
   }
 }
 
@@ -412,7 +453,7 @@ const handleConfirm = () => {
     margin: 0;
     position: absolute;
     left: 0;
-    top: 76px;
+    top: 88px;
     gap: 8px;
   }
   :deep(.el-card) {
@@ -472,7 +513,7 @@ const handleConfirm = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  @media only screen and (max-width: 376px) {
+  @media only screen and (max-width: 426px) {
     margin-bottom: 8px;
     width: calc(100vw - 116px);
     flex-direction: column;
@@ -490,7 +531,7 @@ const handleConfirm = () => {
   }
   &--percent {
     width:  30%;
-    @media only screen and (max-width: 376px) {
+    @media only screen and (max-width: 426px) {
       width: 100%;
     }
     margin-right: 16px;
@@ -543,7 +584,7 @@ const handleConfirm = () => {
 }
 
 .bs-upload {
-  @media only screen and (max-width: 376px) {
+  @media only screen and (max-width: 426px) {
     display: flex;
     flex-direction: column;
     align-items: baseline;

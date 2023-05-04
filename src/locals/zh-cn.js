@@ -346,8 +346,11 @@ export default {
     list: "文件列表",
     eeg: "EEG文件",
     video: "视频文件",
+    allTypes: "全部文件类型",
     experiment: "关联实验",
-    deleteConfirm: "确定删除文件 {name}吗？"
+    deleteConfirm: "确定删除文件 {name}吗？",
+    uploadTooltip: "上传Neural spike数据时，请将同一份NEV数据的多个文件打包为Zip压缩包，并以*.nev.zip作为文件后缀名",
+    notSupport: "当前文件类型不支持在线解析查看"
   },
   httpErrorMsg: {
     expire: "会话已过期，请重新登录",
