@@ -48,6 +48,7 @@ const errorHandle = {
 
 request.interceptors.request.use(config => {
   const { url } = config;
+  config.headers["Content-Language"] = i18n.global.locale.value === "zhCn" ? "zh-CN" : "en-US";
   if(url !== "/api/login") {
     const access_token = jsCookie.get("access_token");
     const token_type = jsCookie.get("token_type");
