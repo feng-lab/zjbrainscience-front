@@ -1,14 +1,21 @@
 <template>
   <bs-atlas
-    :tree-data="LABEL_TREE"
-    :state="STATE"
     title="Allen CCF"
-    layer-name="allen_ccf"
+    name="allen_ccf"
     site="https://atlas.brain-map.org"
+    whole-segment-id="997"
+    :tree-data="LABEL_TREE"
+    :atlas-state="atlasState"
+    :plugins="{
+      connectivity: 'lr' 
+    }"
+    :connectivity-edges="connectivityEdges"
+    :connectivity-endpoints="connectivityEndpoints"
   />
 </template>
 
 <script setup>
 import LABEL_TREE from './labelTree';
-import STATE from './state';
+import { atlasState, segmentColors, connectivityEdges, connectivityEndpoints } from './propsData';
+
 </script>

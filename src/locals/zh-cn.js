@@ -141,7 +141,8 @@ export default {
     atlas: "脑图谱",
     allen_ccf: "Allen CCF",
     brainnetome: "Brainnetome",
-    eeum: "EEUM"
+    eeum: "EEUM",
+    lemur: "Lemur"
   },
   loginInfoStorage: {
     title: "数据存储",

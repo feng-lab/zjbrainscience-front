@@ -93,6 +93,14 @@ const menus = [{
     meta: {
       icon: "Check"
     }
+  }, {
+    path: "lemur",
+    name: "lemur",
+    component: () => import("@/views/atlas/lemur/Lemur.vue"),
+    meta: {
+      icon: "Check",
+      level: 1000
+    }
   }]
 }, {
   path: "notification",

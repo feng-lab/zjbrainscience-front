@@ -84,7 +84,7 @@ export default {
     prev: "Prev",
     next: "Next",
     bulkUpload: "Bulk Upload",
-    channel: "Click to select channel",
+    channel: "Channel",
     expand: "Expand",
     collapse: "Collapse",
     clear: "Clear",
@@ -141,7 +141,8 @@ export default {
     atlas: "Brain Atlas",
     allen_ccf: "Allen CCF",
     brainnetome: "Brainnetome",
-    eeum: "EEUM"
+    eeum: "EEUM",
+    lemur: "Lemur"
   },
   loginInfoStorage: {
     title: "Data Storage",
