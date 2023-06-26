@@ -21,11 +21,11 @@ const codeObj = {
 const errorHandle = {
   "401": (error) => {
     const { code, message } = error;
-    const { type, msg=message } = codeObj[code]
+    let type = code === 4 ? "warning" : "error";
 
     ElMessage({
       type, 
-      message: msg
+      message
     });
     const { fullPath, name } = router.currentRoute.value;
     if(name !== "login" && code !== 1) {
@@ -37,9 +37,9 @@ const errorHandle = {
       })
     }
   },
-  "400": () => {
+  "400": (error) => {
     ElMessage.error(
-      i18n.global.t("httpErrorMsg.paramsErr")
+      error.message
     )
   }
 }
