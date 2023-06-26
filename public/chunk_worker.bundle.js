@@ -12138,12 +12138,16 @@ function require(x) { throw new Error('Cannot require ' + x) }
     AnnotationType2[AnnotationType2["LINE"] = 1] = "LINE";
     AnnotationType2[AnnotationType2["AXIS_ALIGNED_BOUNDING_BOX"] = 2] = "AXIS_ALIGNED_BOUNDING_BOX";
     AnnotationType2[AnnotationType2["ELLIPSOID"] = 3] = "ELLIPSOID";
+    AnnotationType2[AnnotationType2["SPHERE"] = 4] = "SPHERE";
+    AnnotationType2[AnnotationType2["CONE"] = 5] = "CONE";
   })(AnnotationType || (AnnotationType = {}));
   var annotationTypes = [
     0,
     1,
     2,
-    3
+    3,
+    4,
+    5
   ];
   var propertyTypeDataType = {
     "float32": DataType.FLOAT32,
@@ -12560,6 +12564,70 @@ function require(x) { throw new Error('Cannot require ' + x) }
         callback(annotation.center, false);
         callback(annotation.radii, true);
       }
+    },
+    [4]: {
+      icon: "\u25CF",
+      description: "Sphere",
+      toJSON: (annotation) => {
+        return {
+          center: Array.from(annotation.center)
+        };
+      },
+      restoreState: (annotation, obj, rank) => {
+        annotation.center = verifyObjectProperty(obj, "center", (x) => parseFixedLengthArray(new Float32Array(rank), x, verifyFiniteFloat));
+      },
+      serializedBytes: (rank) => rank * 4,
+      serialize: (buffer, offset, isLittleEndian, rank, annotation) => {
+        serializeFloatVector(buffer, offset, isLittleEndian, rank, annotation.center);
+      },
+      deserialize: (buffer, offset, isLittleEndian, rank, id) => {
+        const center = new Float32Array(rank);
+        deserializeFloatVector(buffer, offset, isLittleEndian, rank, center);
+        return { type: 4, center, id, properties: [] };
+      },
+      visitGeometry(annotation, callback) {
+        callback(annotation.center, false);
+      }
+    },
+    [5]: {
+      icon: "\u25B3",
+      description: "Cone",
+      toJSON: (annotation) => {
+        return {
+          base: Array.from(annotation.base),
+          baseRadius: annotation.baseRadius,
+          axis: Array.from(annotation.axis),
+          axisRadius: annotation.axisRadius
+        };
+      },
+      restoreState: (annotation, obj, rank) => {
+        annotation.base = verifyObjectProperty(obj, "base", (x) => parseFixedLengthArray(new Float32Array(rank), x, verifyFiniteFloat));
+        annotation.baseRadius = verifyObjectProperty(obj, "baseRadius", verifyFiniteNonNegativeFloat);
+        annotation.axis = verifyObjectProperty(obj, "axis", (x) => parseFixedLengthArray(new Float32Array(rank), x, verifyFiniteFloat));
+        annotation.axisRadius = verifyObjectProperty(obj, "axisRadius", verifyFiniteNonNegativeFloat);
+      },
+      serializedBytes: (rank) => 2 * 4 * (rank + 1),
+      serialize(buffer, offset, isLittleEndian, rank, annotation) {
+        offset = serializeFloatVector(buffer, offset, isLittleEndian, rank, annotation.base);
+        buffer.setFloat32(offset, annotation.baseRadius, isLittleEndian);
+        offset = serializeFloatVector(buffer, offset + 4, isLittleEndian, rank, annotation.axis);
+        buffer.setFloat32(offset, annotation.axisRadius, isLittleEndian);
+      },
+      deserialize: (buffer, offset, isLittleEndian, rank, id) => {
+        const base = new Float32Array(rank);
+        const axis = new Float32Array(rank);
+        offset = deserializeFloatVector(buffer, offset, isLittleEndian, rank, base);
+        const baseRadius = buffer.getFloat32(offset, isLittleEndian);
+        offset = deserializeFloatVector(buffer, offset + 4, isLittleEndian, rank, axis);
+        const axisRadius = buffer.getFloat32(offset, isLittleEndian);
+        return { type: 5, base, baseRadius, axis, axisRadius, id, properties: [] };
+      },
+      visitGeometry(annotation, callback) {
+        annotation.baseRadius = 1;
+        annotation.axisRadius = 2;
+        callback(annotation.base, false);
+        callback(annotation.axis, false);
+      }
     }
   };
   function annotationToJson(annotation, schema) {
@@ -12779,7 +12847,7 @@ function require(x) { throw new Error('Cannot require ' + x) }
   var AnnotationSerializer = class {
     constructor(propertySerializers) {
       this.propertySerializers = propertySerializers;
-      this.annotations = [[], [], [], []];
+      this.annotations = [[], [], [], [], [], []];
     }
     add(annotation) {
       this.annotations[annotation.type].push(annotation);

@@ -1,15 +1,15 @@
 <template>
   <bs-atlas
-    :tree-data="LABEL_TREE"
-    :state="STATE"
     title="Eeum"
-    layer-name="eeum"
-    default-visible="all"
+    name="eeum"
     site="https://eeum-brain.com"
+    :tree-data="LABEL_TREE"
+    :atlas-state="atlasState"
+    :segment-colors="segmentColors"
   />
 </template>
 
 <script setup>
 import LABEL_TREE from './labelTree';
-import STATE from './state';
+import { atlasState, segmentColors } from './propsData';
 </script>
