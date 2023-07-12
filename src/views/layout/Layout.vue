@@ -104,7 +104,7 @@ const layoutType = computed(() => {
       z-index: 10;
       position: absolute;
       top: 20px;
-      left: calc(25% - 40px);
+      left: calc(21% - 40px);
       height: 48px;
       width: 40px;
     }
