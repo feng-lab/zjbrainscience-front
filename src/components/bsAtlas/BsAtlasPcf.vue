@@ -2,8 +2,8 @@
   <div class="atlas-widget bdchart">
     <bs-charts 
       chart-type="sunburst" 
-      width="325px" 
-      height="250px"
+      width="100%" 
+      height="230px"
       :data="pcfTree"
       :option="chart_option"
       :series="chart_series"
@@ -98,9 +98,9 @@ defineExpose({
 
 <style lang="scss" scoped>
 .bdchart {
-  position: absolute;
-  bottom: 10px;
-  left: 385px;
+  //position: absolute;
+  //bottom: 10px;
+  //left: 385px;
   z-index: 99;
   overflow: hidden;
 }

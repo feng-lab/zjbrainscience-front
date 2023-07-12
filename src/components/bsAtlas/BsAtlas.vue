@@ -1,38 +1,8 @@
 <template>
   <div class="bs-atlas">
-    <div class="atlas-widget bs-atlas-tooltip" v-if="selectedSegmentId">
-      <h1>ID: {{ selectedSegmentId }}</h1>
-      <div v-for="key in ['Acronym', 'Description', 'Lobe', 'Gyrus']" :key="key">
-        <template v-if="selectedSegmentInfo[key]">
-          <p class="icon-label"><bs-icon-img icon="Memo"/><strong>{{key}}</strong></p>
-          <p>{{selectedSegmentInfo[key]}}</p>
-        </template>
-      </div>
-    </div>
-    <div class="atlas-widget bs-atlas-tooltip" v-if="focusConnectivity?.id">
-      <h1>Connectivity</h1>
-      <p> 
-        <span class="label">
-          <span> {{ focusConnectivity.point1 }} </span>
-          <bs-icon-img icon="Right" v-if="focusConnectivity.opposite"/>
-          <bs-icon-img icon="Switch" v-else/>
-          <span> {{ focusConnectivity.point2 }}: </span> 
-        </span>
-        <span class="m-l-8 red">{{Number(focusConnectivity.value).toExponential()}}</span>
-      </p>
-      <p v-if="focusConnectivity.opposite && !selectedMode"> 
-        <span class="label">
-          <span> {{ focusConnectivity.point2 }} </span>
-          <bs-icon-img icon="Back" />
-          <span>{{ focusConnectivity.point1 }}: </span>
-        </span>
-        <span class="m-l-8 red">{{Number(focusConnectivity.opposite).toExponential()}}</span>
-      </p>
-    </div>
-    <bs-atlas-bdf ref="bdfRef" v-if="plugins?.bdf" v-bind="bdfData"/>
-    <bs-atlas-pcf ref="pcfRef" v-if="plugins?.pcf" v-bind="pcfData"/>
     <el-row class="bs-atlas-visualize" justify="space-between">
-      <el-col :span="6" class="label">
+      <el-col :span="5" class="bs-atlas-visualize-left m-l-8">
+        <div class="label">
           <h1 class="atlas-title"> 
             {{ title }} 
             <p class="m-b-8">
@@ -60,8 +30,40 @@
               />
             </el-scrollbar>
           </div>
+        </div>
+        <div class="bs-atlas-tooltip-box">
+          <div class="atlas-widget bs-atlas-tooltip" v-if="selectedSegmentId">
+            <h1>ID: {{ selectedSegmentId }}</h1>
+            <div v-for="key in ['Acronym', 'Description', 'Lobe', 'Gyrus']" :key="key">
+              <template v-if="selectedSegmentInfo[key]">
+                <p class="icon-label"><bs-icon-img icon="Memo"/><strong>{{key}}</strong></p>
+                <p class="description">{{selectedSegmentInfo[key]}}</p>
+              </template>
+            </div>
+          </div>
+          <div class="atlas-widget bs-atlas-tooltip" v-if="focusConnectivity?.id">
+            <h1>Connectivity</h1>
+            <p> 
+              <span class="label">
+                <span> {{ focusConnectivity.point1 }} </span>
+                <bs-icon-img icon="Right" v-if="focusConnectivity.opposite"/>
+                <bs-icon-img icon="Switch" v-else/>
+                <span> {{ focusConnectivity.point2 }}: </span> 
+              </span>
+              <span class="m-l-8 red">{{Number(focusConnectivity.value).toExponential()}}</span>
+            </p>
+            <p v-if="focusConnectivity.opposite && !selectedMode"> 
+              <span class="label">
+                <span> {{ focusConnectivity.point2 }} </span>
+                <bs-icon-img icon="Back" />
+                <span>{{ focusConnectivity.point1 }}: </span>
+              </span>
+              <span class="m-l-8 red">{{Number(focusConnectivity.opposite).toExponential()}}</span>
+            </p>
+          </div>
+        </div>
       </el-col>
-      <el-col :span="17" class="neuro" >
+      <el-col :span="14" class="neuro" >
         <vue-neuroglancer
           ref="neuroRef"
           :state="state"
@@ -70,22 +72,17 @@
           @focus-annotation-changed="handleFocusAnnotationChanged"
           @toggle-segment="handleToggleSegment"
         />
-        <div class="tool-box">
-          <div class="tool-box-item" v-if="plugins?.connectivity">
-            <span class="tool-box-item-label">Connectivity</span>
-            <el-select v-if="plugins?.connectivity === 'lr'" @change="handleChangeShowSide" v-model="showWhitchSide">
-              <el-option value="all" label="All"/>
-              <el-option value="none" label="None"/>
-              <el-option value="left" label="Left"/>
-              <el-option value="right" label="Right"/>
-            </el-select>
-            <el-switch v-model="showConnectivity" @change="handleShowConnectivity" v-else/>
-          </div>
-          <div class="tool-box-item">
-            <span class="tool-box-item-label">Whole Brain</span>
-            <el-switch v-model="showWholeBrain" @change="handleShowWholeBrain"></el-switch>
-          </div>
-        </div>
+      </el-col>
+      <el-col :span="4" style="padding: 20px 8px 0px 0px">
+        <bs-atlas-bdf ref="bdfRef" v-if="plugins?.bdf" v-bind="bdfData" class="m-b-8"/>
+        <bs-atlas-pcf ref="pcfRef" v-if="plugins?.pcf" v-bind="pcfData" class="m-b-8"/>
+        <bs-atlas-setting 
+          :layers="Object.values(renderLayers)"
+          :plugins="plugins"
+          @change-layer-visible="handleLayerVisibleChanged"
+          @change-mesh-alpha="setMeshLayerAlpha"
+          @change-normalize="setNormalizedRange"
+        />
       </el-col>
     </el-row>
   </div>
@@ -97,20 +94,26 @@ import "@feng-lab/vue-neuroglancer/style/index.css";
 import { nextTick, onMounted, ref, watch, computed } from "vue";
 import BsIconImg from "../BsIconImg.vue";
 import BsAtlasBdf from "./BsAtlasBdf.vue";
+import { segmentProps, useSegmentLayer } from "@/compositions/atlas/useSegmentLayer";
+import { useWholeBrainLayer, wholeBrainProps } from "@/compositions/atlas/useWholeBrainLayer";
+import { useAtlas } from "@/compositions/atlas/useAtlas";
+import { useBigBrainLayer } from "@/compositions/atlas/useBigBrainLayer";
+import { connectivityProps, useConnectivityLayer } from "@/compositions/atlas/useConnectivityLayer";
+
+const { 
+  neuroRef, 
+  renderLayers, 
+  addLayer, 
+  state,
+  setLayerVisible
+} = useAtlas();
+
 
 const props = defineProps({
-  treeData: {
-    type:Array,
-    default: [],
-    required: true
-  },
   name: {
     type: String,
     required: true
   },
-  segmentsColors: Object,
-  wholeSegmentId: String,
-  baseUrl: String,
   atlasState: {
     type: Object,
     default: {},
@@ -118,22 +121,26 @@ const props = defineProps({
   },
   title: String,
   site: String,
-  defaultVisible: {
-    type: [Array, String],
-    default: [],
-    validator(value) {
-      return typeof value === "string" ? value === "all" : true
-    }
-  },
   plugins: Object,
   pcfData: Object,
   bdfData: Object,
-  connectivityEdges: Object,
-  connectivityEndpoints: Object,
+  ...segmentProps,    
+  ...wholeBrainProps,
+  ...connectivityProps
 })
 
-const treeRef = ref();
-const neuroRef = ref();
+const baseUrl = `http://${window.location.host}/atlas_data/${props.name}`;
+
+const { 
+  treeRef, 
+  segmentationLayer, 
+  layer:segmentLayer, 
+  layerSetting:segmentLayerSetting,
+  setMeshLayerAlpha
+} = useSegmentLayer(neuroRef, baseUrl, props);
+
+
+//const treeRef = ref();
 const selectedSegmentId = ref();
 const selectedSegmentInfo = ref({});
 const filterText = ref("");
@@ -143,108 +150,42 @@ const pcfRef = ref();
 const focusConnectivity = ref();
 const showWhitchSide = ref("all");
 
-const showConnectivity = ref(props?.plugins?.connectivity);
+const showConnectivity = ref(false);
 const showWholeBrain = ref(true);
 let segmentsLayer = null;
 const selectedMode = ref(false);
 
-const baseUrl = `http://${window.location.host}/atlas_data/${props.name}`;
 const segmentsLayerName = `${props.name}_segments`;
 const wholeLayerName = `${props.name}_whole`;
 const connectivity = `${props.name}_connectivity`;
 const connectivityEdgesLayerName = `${connectivity}_edges`;
 const connectivityEndpointsLayerName = `${connectivity}_endpoints`;
 
-const state = ref({
-  "showAxisLines": true,
-  "showScaleBar": false,
-  "showDefaultAnnotations": false,
-  "showSlices": false,
-  "layout": "3d",
-  "crossSectionBackgroundColor": "#262626",
-  "layers" : [{
-    "type": "segmentation", 
-    "source": `precomputed://${baseUrl}/${segmentsLayerName}`, 
-    "tab": "segments", 
-    "meshSilhouetteRendering": showConnectivity.value ? 1 : 0,
-    "name": segmentsLayerName,
-    "segmentColors": props.segmentsColors
-  }],
-  ...props.atlasState
-})
+//const layers = [segmentLayerSetting];
+const { setNormalizedRange } = useBigBrainLayer(neuroRef, baseUrl, props);
+
+
+if(props.plugins?.bigBrain) {
+  const { layer: bigBrainLayer, layerSetting: bigBrainLayerSetting, setNormalizedRange } = useBigBrainLayer(neuroRef, baseUrl, props);
+  addLayer(bigBrainLayer, bigBrainLayerSetting);
+}
+
+addLayer(segmentLayer, segmentLayerSetting);
+
 if(props.wholeSegmentId) {
-  state.value.layers = [
-    ...state.value.layers,
-    {
-      "type": "segmentation", 
-      "source": `precomputed://${baseUrl}/${wholeLayerName}`, 
-      "tab": "segments", 
-      "name": wholeLayerName,
-      "disableResponseDblclick0Event": true,
-      "segments": [props.wholeSegmentId],
-      "meshSilhouetteRendering": 5,
-      "segmentDefaultColor": "#ffffff",
-    }
-
-  ]
-
+  const { layer: wholeBrainLayer, layerSetting: wholeBrainLayerSetting } = useWholeBrainLayer(baseUrl, props);
+  addLayer(wholeBrainLayer, wholeBrainLayerSetting);
 }
 if(props.plugins?.connectivity) {
-  if(props.plugins.connectivity === 'lr') {
-    ["left", "right"].forEach(x => {
-      state.value.layers = [
-        ...state.value.layers,
-      {
-        "type": "annotation",
-        "source": `precomputed://${baseUrl}/${connectivity}/${x}/edges`, 
-        "tab": "annotations",
-        "linkedSegmentationLayer": {
-          "segment": segmentsLayerName
-        },
-        "filterBySegmentation": [ "segment" ],
-        "name": `${x}_${connectivityEdgesLayerName}`,
-        "shader": "\nvoid main() {\n  setColor(defaultColor());\n  setEndpointMarkerSize(0.0);\n}\n",
-      },
-      {
-        "type": "annotation",
-        "source": `precomputed://${baseUrl}/${connectivity}/${x}/endpoints`,
-        "tab": "annotations",
-        "linkedSegmentationLayer": {
-          "segment": segmentsLayerName
-        },
-        "filterBySegmentation": [ "segment" ],
-        "name": `${x}_${connectivityEndpointsLayerName}`
-      }
-      ]
-    })
-
-  } else {
-    state.value.layers = [
-      ...state.value.layers,
-    {
-      "type": "annotation",
-      "source": `precomputed://${baseUrl}/${connectivity}/edges`, 
-      "tab": "annotations",
-      "linkedSegmentationLayer": {
-        "segment": segmentsLayerName
-      },
-      "filterBySegmentation": [ "segment" ],
-      "name": connectivityEdgesLayerName,
-      "shader": "\nvoid main() {\n  setColor(defaultColor());\n  setEndpointMarkerSize(0.0);\n}\n",
-    },
-    {
-      "type": "annotation",
-      "source": `precomputed://${baseUrl}/${connectivity}/endpoints`,
-      "tab": "annotations",
-      "linkedSegmentationLayer": {
-        "segment": segmentsLayerName
-      },
-      "filterBySegmentation": [ "segment" ],
-      "name": connectivityEndpointsLayerName
-    }
-    ]
-  }
+  const { layer: connectivityLayer, layerSetting: connectivityLayerSetting } = useConnectivityLayer(baseUrl, props, segmentLayerSetting.key);
+  addLayer(connectivityLayer, connectivityLayerSetting);
 }
+
+state.value = {
+  ...state.value,
+  ...props.atlasState
+}
+
 
 onMounted(() => {
   labelIndices = treeToIndices(props.treeData);
@@ -253,7 +194,6 @@ onMounted(() => {
   } else if(props.defaultVisible.length){
     treeRef.value.setCheckedKeys(props.defaultVisible);
   }
-  segmentsLayer = neuroRef.value.getManagedLayer(segmentsLayerName);
 })
 
 const handleClickEndpoints = (point) => {
@@ -285,55 +225,19 @@ const handleClickSegments = (segment) => {
   props.plugins?.pcf && pcfRef.value.handleSelect(key, info?.Acronym);
 }
 
-const handleShowConnectivity = (value) => {
-  const endpointsLayer = neuroRef.value.getManagedLayer(connectivityEndpointsLayerName);
-  endpointsLayer.setVisible(value);
-  const edgesLayer = neuroRef.value.getManagedLayer(connectivityEdgesLayerName);
-  edgesLayer.setVisible(value);
-  const { meshSilhouetteRendering } = state.value.layers[0];
-  if(value) {
-    segmentsLayer.layer.displayState.silhouetteRendering.value = 1
-  } else {
-    segmentsLayer.layer.displayState.silhouetteRendering.value = 0
-  }
+
+const handleLayerVisibleChanged = (layer, isRender) => {
+  let layers = layer.layers;
+  if(layer.key.endsWith("_connectivity")) {
+    segmentationLayer.value.layer.displayState.silhouetteRendering.value = Number(!!isRender);
+    if(typeof isRender === "string") {
+      setLayerVisible(layers, false);
+      layers = layers.filter(l => l.endsWith(`_${isRender}`))
+    }
+  } 
+  setLayerVisible(layers, isRender)
 }
 
-const setLayerVisible = (layerName, visible) => {
-  const layer = neuroRef.value.getManagedLayer(layerName);
-  layer.setVisible(visible);
-} 
-
-const handleChangeShowSide = (value) => {
-  if(value === 'left') {
-    segmentsLayer.layer.displayState.silhouetteRendering.value = 1
-    setLayerVisible(`left_${connectivityEdgesLayerName}`, true);
-    setLayerVisible(`left_${connectivityEndpointsLayerName}`, true);
-    setLayerVisible(`right_${connectivityEdgesLayerName}`, false);
-    setLayerVisible(`right_${connectivityEndpointsLayerName}`, false);
-  } else if(value === 'right') {
-    segmentsLayer.layer.displayState.silhouetteRendering.value = 1
-    setLayerVisible(`left_${connectivityEdgesLayerName}`, false);
-    setLayerVisible(`left_${connectivityEndpointsLayerName}`, false);
-    setLayerVisible(`right_${connectivityEdgesLayerName}`, true);
-    setLayerVisible(`right_${connectivityEndpointsLayerName}`, true);
-  } else if(value === 'all') {
-    segmentsLayer.layer.displayState.silhouetteRendering.value = 1
-    setLayerVisible(`left_${connectivityEdgesLayerName}`, true);
-    setLayerVisible(`left_${connectivityEndpointsLayerName}`, true);
-    setLayerVisible(`right_${connectivityEdgesLayerName}`, true);
-    setLayerVisible(`right_${connectivityEndpointsLayerName}`, true);
-  } else if(value === 'none') {
-    segmentsLayer.layer.displayState.silhouetteRendering.value = 0
-    setLayerVisible(`left_${connectivityEdgesLayerName}`, false);
-    setLayerVisible(`left_${connectivityEndpointsLayerName}`, false);
-    setLayerVisible(`right_${connectivityEdgesLayerName}`, false);
-    setLayerVisible(`right_${connectivityEndpointsLayerName}`, false);
-  }
-}
-
-const handleShowWholeBrain = (value) => {
-  neuroRef.value.getManagedLayer(wholeLayerName).setVisible(value);
-}
 
 const clickEventsHandler = {
   "endpoints": handleClickEndpoints,
@@ -361,15 +265,10 @@ const eventBindings = [{
 
 
 const handleTreeValue = () => {
-  const start = new Date().getTime();
   const ids = treeRef.value.getCheckedNodes(false, false)
                           .filter(node => Number(node.id))
                           .map(node => node.id);
-  const middle = new Date().getTime();
-  console.log('get checked value cost:', middle - start);
   neuroRef.value.setVisibleSegments(segmentsLayerName, ids);
-  const end = new Date().getTime();
-  console.log('render checked value cost:', end - middle);
 }
 
 const handleFocusSegmentChanged = (segmentId, layer) => {
@@ -433,12 +332,24 @@ const treeToIndices = (trees) => {
 
 <style lang="scss" scoped>
 .bs-atlas {
+  height: 100%;
+  &-tooltip-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
   &-tooltip {
-    position: absolute;
-    right: 20px;
-    top: 50px;
-    z-index: 99;
-    width: 320px;
+    h1 {
+      color: #fff;
+      &::before {
+        content: "";
+        border-left: 5px solid #52c41a;
+        margin-right: 8px;
+      }
+    }
+    .description{
+      color: #fff;
+    }
     background-color: rgba(17, 26, 44, 0.7) !important;
     &-close-btn {
       position: absolute;
@@ -463,16 +374,25 @@ const treeToIndices = (trees) => {
   }
 
   &-visualize{
-    min-height: 98vh;
-      .label {
-        margin-top: 20px;
-        padding-left: 20px;
-        .atlas-title {
-          color: #fff;
-        }
-        .tree-scroll {
-          height: 80%;
-        }
+    min-height: 100vh;
+    .label {
+      margin-top: 20px;
+      //padding-left: 20px;
+      .atlas-title {
+        color: #fff;
+      }
+      .tree-scroll {
+        height: 80%;
+        --el-fill-color-light: #000;
+      }
+    }
+    &-left {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      >* {
+        flex:1;
+      }
     }
     .neuro {
       margin: 20px 20px 0;

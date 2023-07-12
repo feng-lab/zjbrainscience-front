@@ -14,10 +14,11 @@ export const atlasState = {
     ]
   },
   "position": [
-    73,
+    70,
     87,
-    73
+    72
   ],
+  "crossSectionBackgroundAlpha": 0.3,
   "crossSectionScale": 0.5,
   "projectionOrientation": [
     -0.5501037240028381,
