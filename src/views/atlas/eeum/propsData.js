@@ -1,7 +1,8 @@
 export const atlasState = {
   "dimensions": {"x": [1e-05, "m"], "y": [1e-05, "m"], "z": [0.0001, "m"]}, 
   "position": [900.0, 650.0, 90.0], 
-  "crossSectionScale": 3.74, 
+  "crossSectionScale": 6.5, 
+  "layout": "3sliceR",
   "projectionOrientation": [
     0.022934094071388245,
     0.7397342920303345,

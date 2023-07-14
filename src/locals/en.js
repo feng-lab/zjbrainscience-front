@@ -142,7 +142,8 @@ export default {
     allen_ccf: "Allen CCF",
     brainnetome: "Brainnetome",
     eeum: "EEUM",
-    lemur: "Lemur"
+    lemur: "Lemur",
+    macaque: "Macaque"
   },
   loginInfoStorage: {
     title: "Data Storage",
