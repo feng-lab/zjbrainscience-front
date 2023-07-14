@@ -1,5 +1,17 @@
 <template>
   <div class="atlas-widget atlas-setting">
+        <!--
+    <div class="atlas-setting-item">
+      <p class="atlas-setting-item-label">Layout</p>
+      <div class="atlas-setting-item-content">
+        <el-radio-group v-model="layout">
+          <el-radio v-for="l in layouts" :key="l" :label="l">
+            <span>{{ l }}</span>
+          </el-radio>
+        </el-radio-group>
+      </div>
+    </div>
+        -->
     <div class="atlas-setting-item">
       <p class="atlas-setting-item-label">Render Datas</p>
       <div class="atlas-setting-item-content">
@@ -9,7 +21,7 @@
             class="right"
             style="width: 45%"
             v-if="layer.key.startsWith('lr_')" 
-            @change="val => emits('changeLayerVisible', layer, val)"
+            @change="val => emits('changeRenderVisible', layer, val)"
             v-model="showWhitchSideConnect"
           >
             <el-option :value="1" label="All"/>
@@ -20,8 +32,24 @@
           <el-switch 
             v-else 
             v-model="dataSwitchArr[layer.key]" 
-            @change="val => emits('changeLayerVisible', layer, val)"
+            @change="val => emits('changeRenderVisible', layer, val)"
           />
+        </div>
+        <div class="render-data" v-if="plugins?.bdf">
+          <span>Behavioral Domain</span>
+          <el-switch v-model="dataSwitchArr['bdf']" @change="val => emits('changeRenderVisible', 'bdf', val)" />
+        </div>
+        <div class="render-data" v-if="plugins?.pcf">
+          <span>Paradigm Class</span>
+          <el-switch v-model="dataSwitchArr['pcf']" @change="val => emits('changeRenderVisible', 'pcf', val)" />
+        </div>
+        <div class="render-data" v-if="plugins?.fc">
+          <span>Functional Connectivity</span>
+          <el-switch v-model="dataSwitchArr['fc']" @change="val => emits('changeRenderVisible', 'fc', val)" />
+        </div>
+        <div class="render-data" v-if="plugins?.sc">
+          <span>Structural Connectivity</span>
+          <el-switch v-model="dataSwitchArr['sc']" @change="val => emits('changeRenderVisible', 'sc', val)" />
         </div>
       </div>
     </div>
@@ -64,31 +92,39 @@
 
 </template>
 <script setup>
+import { useAtlas } from "@/compositions/atlas/useAtlas";
 import { reactive, ref } from "vue";
+
+const { supportPlugins } = useAtlas();
 
 const props = defineProps({
   layers: Array,
-  plugins: Object
+  plugins: Object,
+  defaultLayout: String
 })
 
 const emits = defineEmits([
-  "changeLayerVisible",
+  "changeRenderVisible",
   "changeMeshAlpha",
-  "changeNormalize"
+  "changeNormalize",
+  "changeLayout"
 ])
 
 const dataSwitchArr = ref({})
+const layouts = ["4panel", "xy-3d", "yz-3d", "xz-3d", "3sliceT", "3sliceB", "3sliceR", "3sliceL"];
 
 
 
 const showWhitchSideConnect = ref(0);
 
-const meshAlpha = ref(0.5)
+const meshAlpha = ref(0.8)
+
+const layout = ref(props.defaultLayout);
 
 const defaultRange = props.plugins?.bigBrain?.normalizeRange ?? [0, 1];
-console.log('default range', defaultRange)
 const normalizedRange = ref(defaultRange);
 const marks = ref({});
+
 marks.value[defaultRange[0]] = String(defaultRange[0]);
 marks.value[defaultRange[1]] = String(defaultRange[1]);
 
@@ -100,8 +136,14 @@ props.layers.forEach(layer => {
   dataSwitchArr.value[layer.key] = !!layer?.defaultShow;
 })
 
+supportPlugins.forEach(plugin => {
+  if(Object.keys(props?.plugins ?? []).includes(plugin)) {
+    dataSwitchArr.value[plugin] = true;
+  }
+})
+
+
 const handleChangeNormalize = () => {
-  console.log('range changed', invertNormalizedRange.value, normalizedRange.value)
   const range = invertNormalizedRange.value ? [normalizedRange.value[1], normalizedRange.value[0]] : normalizedRange.value;
   emits("changeNormalize", range)
 }

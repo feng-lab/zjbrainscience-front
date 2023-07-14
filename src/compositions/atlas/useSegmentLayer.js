@@ -30,7 +30,8 @@ export function useSegmentLayer(neuroRef, baseUrl, atlasProps) {
     "tab": "segments", 
     name,
     "removeOctant": atlasProps.removeOctant,
-    "segmentColors": atlasProps.segmentsColors
+    "segmentColors": atlasProps.segmentsColors,
+    "selectedAlpha": 0.8
   }]
   const layerSetting = {
     label: "Mesh",

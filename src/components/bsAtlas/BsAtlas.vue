@@ -1,22 +1,25 @@
 <template>
   <div class="bs-atlas">
     <el-row class="bs-atlas-visualize" justify="space-between">
-      <el-col :span="5" class="bs-atlas-visualize-left m-l-8">
+      <el-col :span="4" class="bs-atlas-visualize-left m-l-8">
         <div class="label">
           <h1 class="atlas-title"> 
             {{ title }} 
-            <p class="m-b-8">
+            <p v-if="site">
               <el-link :href="site" target="_blank">{{ site }}</el-link>
             </p>
           </h1>
           <el-input 
             v-model="filterText" 
-            placeholder="Filter keyword" 
+            placeholder="Search region by id or label" 
             clearable
-            class="atlas-input m-b-8"
+            class="atlas-input m-b-8 m-t-16"
           />
           <div class="atlas-widget">
-            <el-scrollbar :max-height="500" class="tree-scroll">
+            <el-scrollbar 
+              :max-height="!(plugins?.bdf||plugins?.pcf) && selectedSegmentId ? 230: 500" 
+              class="tree-scroll"
+            >
               <el-tree
                 ref="treeRef"
                 :data="treeData"
@@ -27,43 +30,34 @@
                 :filter-node-method="filterNode"
                 :default-expanded-keys="['0']"
                 class="atlas-widget-inner"
-              />
+                :accordion="true"
+              >
+                <template #default="{node, data}">
+                  <el-tooltip 
+                    :content="`${node.label}, ID: ${data.id}`" 
+                    placement="right" 
+                    v-if="data.Acronym && data.id && node.label !== 'Whole Region'"
+                  >
+                    <span 
+                      style="overflow: hidden; text-overflow: ellipsis"
+                    >
+                      {{ `${data.Acronym}(ID: ${data.id})` }}
+                    </span>
+                  </el-tooltip>
+                  <el-tooltip 
+                    v-else
+                    :content="node.label"
+                    placement="right"
+                  >
+                    {{ node.label }}
+                  </el-tooltip>
+                </template>
+              </el-tree>
             </el-scrollbar>
           </div>
         </div>
-        <div class="bs-atlas-tooltip-box">
-          <div class="atlas-widget bs-atlas-tooltip" v-if="selectedSegmentId">
-            <h1>ID: {{ selectedSegmentId }}</h1>
-            <div v-for="key in ['Acronym', 'Description', 'Lobe', 'Gyrus']" :key="key">
-              <template v-if="selectedSegmentInfo[key]">
-                <p class="icon-label"><bs-icon-img icon="Memo"/><strong>{{key}}</strong></p>
-                <p class="description">{{selectedSegmentInfo[key]}}</p>
-              </template>
-            </div>
-          </div>
-          <div class="atlas-widget bs-atlas-tooltip" v-if="focusConnectivity?.id">
-            <h1>Connectivity</h1>
-            <p> 
-              <span class="label">
-                <span> {{ focusConnectivity.point1 }} </span>
-                <bs-icon-img icon="Right" v-if="focusConnectivity.opposite"/>
-                <bs-icon-img icon="Switch" v-else/>
-                <span> {{ focusConnectivity.point2 }}: </span> 
-              </span>
-              <span class="m-l-8 red">{{Number(focusConnectivity.value).toExponential()}}</span>
-            </p>
-            <p v-if="focusConnectivity.opposite && !selectedMode"> 
-              <span class="label">
-                <span> {{ focusConnectivity.point2 }} </span>
-                <bs-icon-img icon="Back" />
-                <span>{{ focusConnectivity.point1 }}: </span>
-              </span>
-              <span class="m-l-8 red">{{Number(focusConnectivity.opposite).toExponential()}}</span>
-            </p>
-          </div>
-        </div>
       </el-col>
-      <el-col :span="14" class="neuro" >
+      <el-col :span="neuroColSpan" class="neuro" >
         <vue-neuroglancer
           ref="neuroRef"
           :state="state"
@@ -72,19 +66,96 @@
           @focus-annotation-changed="handleFocusAnnotationChanged"
           @toggle-segment="handleToggleSegment"
         />
+        <div class="m-t-8" style="text-align: center" >
+          <el-radio-group v-model="layout" @change="handleLayoutChange">
+            <el-radio-button label="4panel">
+              <img style="height: 18px" :src="panel4"/>
+            </el-radio-button>
+            <el-radio-button label="3sliceT">
+              <img style="height: 18px" :src="sliceT"/>
+            </el-radio-button>
+            <el-radio-button label="3sliceR">
+              <img style="height: 18px" :src="sliceR"/>
+            </el-radio-button>
+            <el-radio-button label="3sliceB">
+              <img style="height: 18px" :src="sliceB"/>
+            </el-radio-button>
+            <el-radio-button label="3sliceL">
+              <img style="height: 18px" :src="sliceL"/>
+            </el-radio-button>
+            <el-radio-button label="xy-3d">
+              <img style="height: 18px" :src="xy3d"/>
+            </el-radio-button>
+            <el-radio-button label="yz-3d">
+              <img style="height: 18px" :src="xz3d"/>
+            </el-radio-button>
+            <el-radio-button label="xz-3d">
+              <img style="height: 18px" :src="yz3d"/>
+            </el-radio-button>
+            <el-radio-button label="3d">
+              3d<img style="height: 18px"/>
+            </el-radio-button>
+            <el-radio-button label="xy">
+              xy<img style="height: 18px"/>
+            </el-radio-button>
+            <el-radio-button label="xz">
+              xz<img style="height: 18px"/>
+            </el-radio-button>
+            <el-radio-button label="yz">
+              yz<img style="height: 18px"/>
+            </el-radio-button>
+          </el-radio-group>
+        </div>
       </el-col>
       <el-col :span="4" style="padding: 20px 8px 0px 0px">
-        <bs-atlas-bdf ref="bdfRef" v-if="plugins?.bdf" v-bind="bdfData" class="m-b-8"/>
-        <bs-atlas-pcf ref="pcfRef" v-if="plugins?.pcf" v-bind="pcfData" class="m-b-8"/>
-        <bs-atlas-setting 
-          :layers="Object.values(renderLayers)"
-          :plugins="plugins"
-          @change-layer-visible="handleLayerVisibleChanged"
-          @change-mesh-alpha="setMeshLayerAlpha"
-          @change-normalize="setNormalizedRange"
-        />
+        <bs-atlas-bdf ref="bdfRef" v-if="showBDF" v-bind="bdfData" class="m-b-8"/>
+        <bs-atlas-pcf ref="pcfRef" v-if="showPCF" v-bind="pcfData" class="m-b-8"/>
       </el-col>
     </el-row>
+    <bs-atlas-setting 
+      class="bs-atlas-setting"
+      :layers="Object.values(renderLayers)"
+      :plugins="plugins"
+      @change-render-visible="handleRenderVisibleChanged"
+      @change-mesh-alpha="setMeshLayerAlpha"
+      @change-normalize="setNormalizedRange"
+    />
+    <bs-atlas-fc-and-sc ref="fcRef" v-if="showFC" v-bind="fcData" type="FC" class="bs-atlas-fc"/>
+    <bs-atlas-fc-and-sc ref="scRef" v-if="showSC" v-bind="scData" type="SC" class="bs-atlas-sc"/>
+    <div :class="[
+        'bs-atlas-tooltip-box', 
+        (plugins?.bdf || plugins?.pcf) ? 'bs-atlas-tooltip-box-right':'bs-atlas-tooltip-box-left']" 
+    >
+      <div class="atlas-widget bs-atlas-tooltip" v-if="selectedSegmentId">
+        <h1>ID: {{ selectedSegmentId }}</h1>
+        <div v-for="key in ['Acronym', 'Description', 'Lobe', 'Gyrus']" :key="key">
+          <template v-if="selectedSegmentInfo[key]">
+            <p class="icon-label"><bs-icon-img icon="Memo"/><strong>{{key}}</strong></p>
+            <p class="description">{{selectedSegmentInfo[key]}}</p>
+          </template>
+        </div>
+      </div>
+      <div class="atlas-widget bs-atlas-tooltip" v-if="focusConnectivity?.id">
+        <h1>Connectivity</h1>
+        <p> 
+          <span class="label">
+            <span> {{ focusConnectivity.point1 }} </span>
+            <bs-icon-img icon="Right" v-if="focusConnectivity.opposite"/>
+            <bs-icon-img icon="Switch" v-else/>
+            <span> {{ focusConnectivity.point2 }} </span> 
+          </span>
+          <span class="m-l-8 red" v-if="focusConnectivity.value">{{Number(focusConnectivity.value).toExponential()}}</span>
+        </p>
+        <p v-if="focusConnectivity.opposite && !selectedMode"> 
+          <span class="label">
+            <span> {{ focusConnectivity.point2 }} </span>
+            <bs-icon-img icon="Back" />
+            <span>{{ focusConnectivity.point1 }}: </span>
+          </span>
+          <span class="m-l-8 red">{{Number(focusConnectivity.opposite).toExponential()}}</span>
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
@@ -99,6 +170,15 @@ import { useWholeBrainLayer, wholeBrainProps } from "@/compositions/atlas/useWho
 import { useAtlas } from "@/compositions/atlas/useAtlas";
 import { useBigBrainLayer } from "@/compositions/atlas/useBigBrainLayer";
 import { connectivityProps, useConnectivityLayer } from "@/compositions/atlas/useConnectivityLayer";
+import BsAtlasFcAndSc from "./BsAtlasFcAndSc.vue";
+import panel4 from "@/assets/img/4panel.png";
+import sliceT from "@/assets/img/3sliceT.png";
+import sliceR from "@/assets/img/3sliceR.png";
+import sliceB from "@/assets/img/3sliceB.png";
+import sliceL from "@/assets/img/3sliceL.png";
+import xy3d from "@/assets/img/xy3d.png";
+import xz3d from "@/assets/img/xz3d.png";
+import yz3d from "@/assets/img/yz3d.png";
 
 const { 
   neuroRef, 
@@ -124,10 +204,14 @@ const props = defineProps({
   plugins: Object,
   pcfData: Object,
   bdfData: Object,
+  fcData: Object,
+  scData: Object,
   ...segmentProps,    
   ...wholeBrainProps,
   ...connectivityProps
 })
+
+const emits = defineEmits(["segmentSelected"]);
 
 const baseUrl = `http://${window.location.host}/atlas_data/${props.name}`;
 
@@ -140,6 +224,8 @@ const {
 } = useSegmentLayer(neuroRef, baseUrl, props);
 
 
+
+
 //const treeRef = ref();
 const selectedSegmentId = ref();
 const selectedSegmentInfo = ref({});
@@ -147,19 +233,34 @@ const filterText = ref("");
 let labelIndices = {};
 const bdfRef = ref();
 const pcfRef = ref();
+const scRef = ref();
+const fcRef = ref();
 const focusConnectivity = ref();
 const showWhitchSide = ref("all");
 
-const showConnectivity = ref(false);
-const showWholeBrain = ref(true);
+const showFC = ref(!!props?.plugins?.fc);
+const showSC = ref(!!props?.plugins?.sc);
+const showBDF = ref(!!props?.plugins?.bdf);
+const showPCF = ref(!!props?.plugins?.pcf);
+
+const neuroColSpan = computed(() => {
+  const is15 = showBDF.value || showPCF.value;
+  const colSpan = is15 ? 15 : 19;
+  return colSpan
+})
+
+const otherDatasVisibleHandler = {
+  fc: (val) => showFC.value = val,
+  sc: (val) => showSC.value = val,
+  bdf: (val) => showBDF.value = val,
+  pcf: (val) => showPCF.value = val
+}
+
 let segmentsLayer = null;
 const selectedMode = ref(false);
 
 const segmentsLayerName = `${props.name}_segments`;
-const wholeLayerName = `${props.name}_whole`;
 const connectivity = `${props.name}_connectivity`;
-const connectivityEdgesLayerName = `${connectivity}_edges`;
-const connectivityEndpointsLayerName = `${connectivity}_endpoints`;
 
 //const layers = [segmentLayerSetting];
 const { setNormalizedRange } = useBigBrainLayer(neuroRef, baseUrl, props);
@@ -186,9 +287,12 @@ state.value = {
   ...props.atlasState
 }
 
+const layout = ref(state.value.layout);
+
 
 onMounted(() => {
   labelIndices = treeToIndices(props.treeData);
+
   if(props.defaultVisible === "all") {
     treeRef.value.setCheckedKeys(["0"]);
   } else if(props.defaultVisible.length){
@@ -218,30 +322,41 @@ const handleClickSegments = (segment) => {
   selectedMode.value = true;
   let key = segment;
   if(typeof(key) === "object") {
-     key = segment?.value?.key;
+     key = segment?.value?.key ?? segment.value;
   }
-  const info = labelIndices[key];
-  props.plugins?.bdf && bdfRef.value.handleSelect(key, info?.Acronym);
-  props.plugins?.pcf && pcfRef.value.handleSelect(key, info?.Acronym);
+  if(key && key !== "0") {
+    const info = labelIndices[key];
+    emits("segmentSelected", info)
+    props.plugins?.bdf && bdfRef.value.handleSelect(key, info?.Acronym);
+    props.plugins?.pcf && pcfRef.value.handleSelect(key, info?.Acronym);
+    props.plugins?.fc && fcRef.value.handleSelect(key, info?.Acronym);
+    props.plugins?.sc && scRef.value.handleSelect(key, info?.Acronym);
+  }
 }
 
 
-const handleLayerVisibleChanged = (layer, isRender) => {
-  let layers = layer.layers;
-  if(layer.key.endsWith("_connectivity")) {
-    segmentationLayer.value.layer.displayState.silhouetteRendering.value = Number(!!isRender);
-    if(typeof isRender === "string") {
-      setLayerVisible(layers, false);
-      layers = layers.filter(l => l.endsWith(`_${isRender}`))
-    }
-  } 
-  setLayerVisible(layers, isRender)
+const handleRenderVisibleChanged = (target, isRender) => {
+  if(typeof(target) === "string") {
+    const handler = otherDatasVisibleHandler[target];
+    handler(isRender);
+  } else {
+    let layers = target.layers;
+    console.log('target layer', target)
+    if(target.key.endsWith("_connectivity")) {
+      segmentationLayer.value.layer.displayState.silhouetteRendering.value = Number(!!isRender);
+      if(typeof isRender === "string") {
+        setLayerVisible(layers, false);
+        layers = layers.filter(l => l.endsWith(`_${isRender}`))
+      }
+    } 
+    setLayerVisible(layers, isRender)
+  }
 }
 
 
 const clickEventsHandler = {
-  "endpoints": handleClickEndpoints,
-  "edges": handleClickEdges,
+  "connectivity_endpoints_": handleClickEndpoints,
+  "connectivity_edges_": handleClickEdges,
   "segments": handleClickSegments
 }
 
@@ -249,10 +364,9 @@ const eventBindings = [{
     name: "selectValues",
     event: "click",
     callback: () => {
-      console.log('click')
       const selectedValues = neuroRef.value.getLayerSelectedValues();
       for(let [key, value] of Object.entries(selectedValues)) {
-        const type = key.split("_").pop();
+        const type = key.split(`${props.name}_`).pop();
         const handler = clickEventsHandler[type];
         if(handler) {
           handler(value);
@@ -260,6 +374,15 @@ const eventBindings = [{
       }
     }
 }]
+
+const handleLayoutChange = (layout) => {
+  const currentState = neuroRef.value.getViewerState();
+  currentState.restoreState({
+    ...currentState,
+    layout
+  })
+
+}
 
 
 
@@ -278,8 +401,8 @@ const handleFocusSegmentChanged = (segmentId, layer) => {
 }
 
 const handleFocusAnnotationChanged = (id, layer) => {
-  const annotationType = layer.name.split("_").pop();
-  if(annotationType === "endpoints") {
+  const annotationType = layer.name.split(`${props.name}_`).pop();
+  if(annotationType === "connectivity_endpoints_") {
     focusSegmentById(props.connectivityEndpoints[id]);
   } else {
     focusConnectivity.value = props.connectivityEdges[id];
@@ -337,6 +460,17 @@ const treeToIndices = (trees) => {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    position: absolute;
+    width: 16.6666666667%;
+  }
+  &-tooltip-box-right {
+    bottom: 10px;
+    right: 8px;
+  }
+  &-tooltip-box-left {
+    top: 45%;
+    left: 8px;
+
   }
   &-tooltip {
     h1 {
@@ -384,6 +518,7 @@ const treeToIndices = (trees) => {
       .tree-scroll {
         height: 80%;
         --el-fill-color-light: #000;
+        z-index: 999;
       }
     }
     &-left {
@@ -395,12 +530,16 @@ const treeToIndices = (trees) => {
       }
     }
     .neuro {
-      margin: 20px 20px 0;
+      margin-top: 20px;
       height: 92vh;
       :deep(.neuroglancer-panel:focus-within) {
         border:none;
       }
       :deep(.neuroglancer-layer-panel), :deep(.neuroglancer-viewer-top-row) {
+        display: none !important;
+      }
+
+      :deep(.neuroglancer-data-panel-layout-controls) {
         display: none !important;
       }
 
@@ -417,6 +556,32 @@ const treeToIndices = (trees) => {
       }
     }
 
+  }
+
+  &-setting {
+    position: absolute;
+    bottom: 10px;
+    left: 8px;
+    width: 16.6666666667%;
+  }
+
+  &-fc {
+    position: absolute;
+    top: 20px;
+    right: 8px;
+    width: 450px;
+    height: 450px;
+    z-index: 999;
+  }
+  &-sc {
+    position: absolute;
+    //bottom: 10px;
+    //right: 8px;
+    top:20px;
+    left: 20%;
+    z-index: 999;
+    width:450px;
+    height: 450px;
   }
 }
 

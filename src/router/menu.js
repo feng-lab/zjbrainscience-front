@@ -87,6 +87,14 @@ const menus = [{
       icon: "Check"
     }
   }, {
+    path: "macaque",
+    name: "macaque",
+    component: () => import("@/views/atlas/macaque/Macaque.vue"),
+    meta: {
+      icon: "Check"
+    }
+  }, {
+    path: "eeum",
     path: "eeum",
     name: "eeum",
     component: () => import("@/views/atlas/eeum/Eeum.vue"),

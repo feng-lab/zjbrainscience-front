@@ -17,10 +17,12 @@ import {
 
 import { useLine } from "./useLine";
 import { useSunburst } from "./useSunburst";
+import { useGraph } from "./useGraph";
 
 const chartHandler = {
   "line": useLine,
-  "sunburst": useSunburst
+  "sunburst": useSunburst,
+  "graph": useGraph
 };
 
 

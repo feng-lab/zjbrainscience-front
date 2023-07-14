@@ -7,8 +7,12 @@ export function useAtlas() {
     "showAxisLines": true,
     "showScaleBar": false,
     "showDefaultAnnotations": false,
-    "layout": "4panel",
-    "crossSectionBackgroundColor": "#262626",
+    "layout": "3sliceB",
+    "sliceViewCrossSectionBgColor": "#111a2c",
+    "sliceViewCrossSectionBgAlpha": 0.7,
+    //"crossSectionBackgroundColor": "#262626",
+    "crossSectionBackgroundColor": "#15325b",
+    "crossSectionBackgroundAlpha": 0.1,
     "layers" : [],
   })
   const addLayer = (layer, layerSetting) => {
@@ -26,12 +30,15 @@ export function useAtlas() {
     })
   } 
 
+  const supportPlugins = ["fc", "sc", "bdf", "pcf"];
+
 
   return {
     neuroRef,
     state,
     renderLayers,
     addLayer,
-    setLayerVisible
+    setLayerVisible,
+    supportPlugins
   }
 }

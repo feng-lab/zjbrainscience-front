@@ -11,6 +11,7 @@
     }"
     :connectivity-edges="connectivityEdges"
     :connectivity-endpoints="connectivityEndpoints"
+    :remove-octant="true"
   />
 </template>
 

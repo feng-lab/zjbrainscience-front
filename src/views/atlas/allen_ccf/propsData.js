@@ -2,9 +2,11 @@ export const atlasState = {
   "dimensions": {
     "x": [0.01, "m"], "y": [0.01, "m"], "z": [0.01, "m"]
   },
-  "position": [660, 400, 570],
-  "crossSectionScale": 3,
-  "projectionScale": 1848
+  "position": [660, 400, 580],
+  "crossSectionScale": 3.8,
+  "projectionScale": 1848,
+  "layout": "3sliceR"
+
 }
 
 export const segmentColors = {
