@@ -40,13 +40,13 @@ export function useSegmentLayer(neuroRef, baseUrl, atlasProps) {
     defaultShow: true
   };
 
-  onMounted(() => {
-    segmentationLayer.value = neuroRef.value.getManagedLayer(name);
-  })
+  //onMounted(() => {
+  //  segmentationLayer.value = neuroRef.value.getManagedLayer(name);
+  //})
 
   const setMeshLayerAlpha = (alpha) => {
-    console.log(segmentationLayer.value, alpha)
-    segmentationLayer.value.layer.displayState.selectedAlpha.value = alpha;
+    const segmentationLayer = neuroRef.value.getManagedLayer(name);
+    segmentationLayer.layer.displayState.selectedAlpha.value = alpha;
   }
 
 
@@ -55,7 +55,6 @@ export function useSegmentLayer(neuroRef, baseUrl, atlasProps) {
     name,
     layerSetting,
     layer,
-    segmentationLayer,
     setMeshLayerAlpha
   }
 

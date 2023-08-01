@@ -10,23 +10,31 @@
     :connectivity-endpoints="connectivityEndpoints"
     :remove-octant="true"
     :plugins="{
-      bdf: true,
-      pcf: true,
+      fc: {
+        spatial: true
+      },
+      sc: {
+        spatial: true
+      },
+      bdf: {
+        bdfData: {
+          bdfTree,
+          bdfTooltipInfo,
+          dataMap: bdfDataMap
+        }
+      },
+      pcf: {
+        pcfData: {
+          pcfTree,
+          pcfTooltipInfo,
+          dataMap: pcfDataMap
+        }
+      },
       connectivity: true,
       bigBrain: {
         metaData: bigBrainParam,
         normalizeRange: [0, 65535]
       } 
-    }"
-    :bdf-data="{
-      bdfTree,
-      bdfTooltipInfo,
-      dataMap: bdfDataMap
-    }"
-    :pcf-data="{
-      pcfTree,
-      pcfTooltipInfo,
-      dataMap: pcfDataMap
     }"
   />
 </template>

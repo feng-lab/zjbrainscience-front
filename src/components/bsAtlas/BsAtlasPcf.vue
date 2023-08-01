@@ -17,7 +17,10 @@ import BsCharts from "@/components/charts/BsCharts.vue";
 import { ref } from "vue";
 
 const props = defineProps({
-  pcfTree: Array,
+  pcfTree: {
+    type: Array,
+    default: []
+  },
   pcfTooltipInfo: Object,
   dataMap: Object
 })

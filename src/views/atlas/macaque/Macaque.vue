@@ -6,18 +6,22 @@
     whole-segment-id="305"
     :atlas-state="atlasState"
     :plugins="{
-      fc: true,
-      sc: true
-    }"
-    :sc-data="{
-      categories,
-      data: nodes, 
-      links: sclinks
-    }"
-    :fc-data="{
-      categories,
-      data: nodes,
-      links: fclinks
+      fc: {
+        graph: true,
+        fcData: {
+          categories,
+          data: nodes,
+          links: fclinks
+        }
+      },
+      sc: {
+        graph: true,
+        scData: {
+          categories,
+          data: nodes, 
+          links: sclinks
+        }
+      } 
     }"
     @segment-selected="handleSegmentSelected"
   />
