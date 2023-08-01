@@ -13,7 +13,7 @@
             v-model="filterText" 
             placeholder="Search region by id or label" 
             clearable
-            class="atlas-input m-b-8 m-t-16"
+            class="atlas-input m-b-8"
           />
           <div class="atlas-widget">
             <el-scrollbar 
