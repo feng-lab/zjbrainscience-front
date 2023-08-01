@@ -67,7 +67,7 @@
           @toggle-segment="handleToggleSegment"
         />
         <div class="m-t-8" style="text-align: center" >
-          <el-radio-group v-model="layout" @change="handleLayoutChange">
+          <el-radio-group v-model="segmentsLayout">
             <el-radio-button label="4panel">
               <img style="height: 18px" :src="panel4"/>
             </el-radio-button>
@@ -108,8 +108,8 @@
         </div>
       </el-col>
       <el-col :span="4" style="padding: 20px 8px 0px 0px">
-        <bs-atlas-bdf ref="bdfRef" v-if="showBDF" v-bind="bdfData" class="m-b-8"/>
-        <bs-atlas-pcf ref="pcfRef" v-if="showPCF" v-bind="pcfData" class="m-b-8"/>
+        <bs-atlas-bdf ref="bdfRef" v-if="showBDF" v-bind="plugins?.bdf?.bdfData" class="m-b-8"/>
+        <bs-atlas-pcf ref="pcfRef" v-if="showPCF" v-bind="plugins?.pcf?.pcfData" class="m-b-8"/>
       </el-col>
     </el-row>
     <bs-atlas-setting 
@@ -120,8 +120,8 @@
       @change-mesh-alpha="setMeshLayerAlpha"
       @change-normalize="setNormalizedRange"
     />
-    <bs-atlas-fc-and-sc ref="fcRef" v-if="showFC" v-bind="fcData" type="FC" class="bs-atlas-fc"/>
-    <bs-atlas-fc-and-sc ref="scRef" v-if="showSC" v-bind="scData" type="SC" class="bs-atlas-sc"/>
+    <bs-atlas-fc-and-sc ref="fcRef" v-if="showFC" v-bind="plugins?.fc?.fcData" type="FC" class="bs-atlas-fc"/>
+    <bs-atlas-fc-and-sc ref="scRef" v-if="showSC" v-bind="plugins?.sc?.scData" type="SC" class="bs-atlas-sc"/>
     <div :class="[
         'bs-atlas-tooltip-box', 
         (plugins?.bdf || plugins?.pcf) ? 'bs-atlas-tooltip-box-right':'bs-atlas-tooltip-box-left']" 
@@ -179,14 +179,9 @@ import sliceL from "@/assets/img/3sliceL.png";
 import xy3d from "@/assets/img/xy3d.png";
 import xz3d from "@/assets/img/xz3d.png";
 import yz3d from "@/assets/img/yz3d.png";
+import { useFcLayer } from "@/compositions/atlas/useFcLayer";
+import { useScLayer } from "@/compositions/atlas/useScLayer";
 
-const { 
-  neuroRef, 
-  renderLayers, 
-  addLayer, 
-  state,
-  setLayerVisible
-} = useAtlas();
 
 
 const props = defineProps({
@@ -202,22 +197,31 @@ const props = defineProps({
   title: String,
   site: String,
   plugins: Object,
-  pcfData: Object,
-  bdfData: Object,
-  fcData: Object,
-  scData: Object,
   ...segmentProps,    
   ...wholeBrainProps,
   ...connectivityProps
 })
+
 
 const emits = defineEmits(["segmentSelected"]);
 
 const baseUrl = `http://${window.location.host}/atlas_data/${props.name}`;
 
 const { 
+  neuroRef, 
+  renderLayers, 
+  addLayer, 
+  state,
+  setLayerVisible,
+  segmentsLayout,
+  segmentView,
+  scfcView,
+  showRegion
+} = useAtlas(props);
+
+const { 
+  name: segmentLayerName,
   treeRef, 
-  segmentationLayer, 
   layer:segmentLayer, 
   layerSetting:segmentLayerSetting,
   setMeshLayerAlpha
@@ -238,8 +242,8 @@ const fcRef = ref();
 const focusConnectivity = ref();
 const showWhitchSide = ref("all");
 
-const showFC = ref(!!props?.plugins?.fc);
-const showSC = ref(!!props?.plugins?.sc);
+const showFC = ref(!!props?.plugins?.fc?.graph);
+const showSC = ref(!!props?.plugins?.sc?.graph);
 const showBDF = ref(!!props?.plugins?.bdf);
 const showPCF = ref(!!props?.plugins?.pcf);
 
@@ -250,10 +254,38 @@ const neuroColSpan = computed(() => {
 })
 
 const otherDatasVisibleHandler = {
-  fc: (val) => showFC.value = val,
-  sc: (val) => showSC.value = val,
-  bdf: (val) => showBDF.value = val,
-  pcf: (val) => showPCF.value = val
+  fc: (val) => {
+    showFC.value = val;
+    if(showRegion.value?.id) {
+      nextTick(() => {
+        fcRef.value.handleSelect(showRegion.value.id, showRegion.value.acronym);
+      })
+    }
+  },
+  sc: (val) => {
+    showSC.value = val
+    if(showRegion.value?.id) {
+      nextTick(() => {
+        scRef.value.handleSelect(showRegion.value.id, showRegion.value.acronym);
+      })
+    }
+  },
+  bdf: (val) => {
+    showBDF.value = val;
+    if(showRegion.value?.id) {
+      nextTick(() => {
+        bdfRef.value.handleSelect(showRegion.value.id, showRegion.value.acronym);
+      })
+    }
+  },
+  pcf: (val) => {
+    showPCF.value = val
+    if(showRegion.value?.id) {
+      nextTick(() => {
+        pcfRef.value.handleSelect(showRegion.value.id, showRegion.value.acronym);
+      })
+    }
+  }
 }
 
 let segmentsLayer = null;
@@ -267,27 +299,31 @@ const { setNormalizedRange } = useBigBrainLayer(neuroRef, baseUrl, props);
 
 
 if(props.plugins?.bigBrain) {
-  const { layer: bigBrainLayer, layerSetting: bigBrainLayerSetting, setNormalizedRange } = useBigBrainLayer(neuroRef, baseUrl, props);
-  addLayer(bigBrainLayer, bigBrainLayerSetting);
+  const { layer, layerSetting, setNormalizedRange } = useBigBrainLayer(neuroRef, baseUrl, props);
+  addLayer(layer, layerSetting);
 }
 
 addLayer(segmentLayer, segmentLayerSetting);
 
 if(props.wholeSegmentId) {
-  const { layer: wholeBrainLayer, layerSetting: wholeBrainLayerSetting } = useWholeBrainLayer(baseUrl, props);
-  addLayer(wholeBrainLayer, wholeBrainLayerSetting);
+  const { layer, layerSetting } = useWholeBrainLayer(baseUrl, props);
+  addLayer(layer, layerSetting);
 }
 if(props.plugins?.connectivity) {
-  const { layer: connectivityLayer, layerSetting: connectivityLayerSetting } = useConnectivityLayer(baseUrl, props, segmentLayerSetting.key);
-  addLayer(connectivityLayer, connectivityLayerSetting);
+  const { layer, layerSetting } = useConnectivityLayer(baseUrl, props, segmentLayerSetting.key);
+  addLayer(layer, layerSetting);
 }
 
-state.value = {
-  ...state.value,
-  ...props.atlasState
+if(props.plugins?.fc?.spatial) {
+  const { layer, layerSetting } = useFcLayer(baseUrl, props)
+  addLayer(layer, layerSetting)
 }
 
-const layout = ref(state.value.layout);
+if(props.plugins?.sc?.spatial) {
+  const { layer, layerSetting } = useScLayer(baseUrl, props)
+  addLayer(layer, layerSetting)
+}
+
 
 
 onMounted(() => {
@@ -329,8 +365,17 @@ const handleClickSegments = (segment) => {
     emits("segmentSelected", info)
     props.plugins?.bdf && bdfRef.value.handleSelect(key, info?.Acronym);
     props.plugins?.pcf && pcfRef.value.handleSelect(key, info?.Acronym);
-    props.plugins?.fc && fcRef.value.handleSelect(key, info?.Acronym);
-    props.plugins?.sc && scRef.value.handleSelect(key, info?.Acronym);
+    props.plugins?.fc?.graph && fcRef.value.handleSelect(key, info?.Acronym);
+    props.plugins?.sc?.graph && scRef.value.handleSelect(key, info?.Acronym);
+    if(props.plugins?.fc?.spatial) {
+      neuroRef.value.setVisibleSegments(`${props.name}_fc`, [])
+      neuroRef.value.setVisibleSegments(`${props.name}_fc`, [key])
+    }
+    if(props.plugins?.sc?.spatial) {
+      neuroRef.value.setVisibleSegments(`${props.name}_sc`, [])
+      neuroRef.value.setVisibleSegments(`${props.name}_sc`, [key])
+    }
+    showRegion.value = { id: key, acronym: info?.Acronym };
   }
 }
 
@@ -341,15 +386,21 @@ const handleRenderVisibleChanged = (target, isRender) => {
     handler(isRender);
   } else {
     let layers = target.layers;
-    console.log('target layer', target)
     if(target.key.endsWith("_connectivity")) {
-      segmentationLayer.value.layer.displayState.silhouetteRendering.value = Number(!!isRender);
+      const segmentationLayer = neuroRef.value.getManagedLayer(segmentLayerName);
+      segmentationLayer.layer.displayState.silhouetteRendering.value = Number(!!isRender);
       if(typeof isRender === "string") {
         setLayerVisible(layers, false);
         layers = layers.filter(l => l.endsWith(`_${isRender}`))
       }
     } 
     setLayerVisible(layers, isRender)
+    if(target.key.endsWith("_fc") || target.key.endsWith("_sc")) {
+      scfcView.value[target.key] = isRender;
+      if(isRender && !showRegion.value?.id) {
+        handleClickSegments("1");
+      }
+    }
   }
 }
 
@@ -374,18 +425,6 @@ const eventBindings = [{
       }
     }
 }]
-
-const handleLayoutChange = (layout) => {
-  const currentState = neuroRef.value.getViewerState();
-  currentState.restoreState({
-    ...currentState,
-    layout
-  })
-
-}
-
-
-
 
 const handleTreeValue = () => {
   const ids = treeRef.value.getCheckedNodes(false, false)
@@ -532,9 +571,17 @@ const treeToIndices = (trees) => {
     .neuro {
       margin-top: 20px;
       height: 92vh;
+      &-region-label {
+        color: white;
+        font-weight: 800;
+        font-size: large;
+        text-align: end;
+        width: 100%;
+      }
       :deep(.neuroglancer-panel:focus-within) {
         border:none;
       }
+      
       :deep(.neuroglancer-layer-panel), :deep(.neuroglancer-viewer-top-row) {
         display: none !important;
       }
@@ -542,6 +589,26 @@ const treeToIndices = (trees) => {
       :deep(.neuroglancer-data-panel-layout-controls) {
         display: none !important;
       }
+
+      :deep(.neuroglancer-stack-layout-drop-placeholder) {
+        background-color: #1668dc;
+        background-clip:border-box;
+      }
+      :deep(.neuroglancer-stack-layout-column>.neuroglancer-stack-layout-drop-placeholder) {
+        padding: 1px 0 0 0;
+      }
+
+      :deep(.neuroglancer-stack-layout-row>.neuroglancer-stack-layout-drop-placeholder) {
+        padding: 1px 0 0 0;
+      }
+
+      :deep(.neuroglancer-layer-group-viewer-label-group) {
+        font-weight: 800;
+      }
+      :deep(.neuroglancer-layer-group-viewer-label-sub) {
+        color: #b7dcfa;
+      }
+
 
       .tool-box {
         display: flex;

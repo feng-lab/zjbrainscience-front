@@ -43,12 +43,12 @@
           <span>Paradigm Class</span>
           <el-switch v-model="dataSwitchArr['pcf']" @change="val => emits('changeRenderVisible', 'pcf', val)" />
         </div>
-        <div class="render-data" v-if="plugins?.fc">
-          <span>Functional Connectivity</span>
+        <div class="render-data" v-if="plugins?.fc?.graph">
+          <span>Functional Connectivity(Graph Chart)</span>
           <el-switch v-model="dataSwitchArr['fc']" @change="val => emits('changeRenderVisible', 'fc', val)" />
         </div>
-        <div class="render-data" v-if="plugins?.sc">
-          <span>Structural Connectivity</span>
+        <div class="render-data" v-if="plugins?.sc?.graph">
+          <span>Structural Connectivity(Graph Chart)</span>
           <el-switch v-model="dataSwitchArr['sc']" @change="val => emits('changeRenderVisible', 'sc', val)" />
         </div>
       </div>

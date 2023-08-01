@@ -27,6 +27,7 @@ export const atlasState = {
     0.48948967456817627
   ],
   "projectionScale": 300,
+  layout: "3sliceB"
 }
 export const categories = [
   {

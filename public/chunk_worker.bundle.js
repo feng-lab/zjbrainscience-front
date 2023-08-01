@@ -9001,6 +9001,20 @@ function require(x) { throw new Error('Cannot require ' + x) }
     }
     return verifyString(obj);
   }
+  function verifyOptionalBoolean(obj) {
+    if (obj === void 0) {
+      return void 0;
+    }
+    if (typeof obj === "boolean") {
+      return obj;
+    } else if (obj === "true") {
+      return true;
+    } else if (obj === "false") {
+      return false;
+    } else {
+      throw new Error(`Expected string or boolean but received: ${JSON.stringify(obj)}`);
+    }
+  }
   function verifyObjectProperty(obj, propertyName, validator) {
     let value = Object.prototype.hasOwnProperty.call(obj, propertyName) ? obj[propertyName] : void 0;
     try {
@@ -9008,6 +9022,9 @@ function require(x) { throw new Error('Cannot require ' + x) }
     } catch (parseError) {
       throw new Error(`Error parsing ${JSON.stringify(propertyName)} property: ${parseError.message}`);
     }
+  }
+  function verifyOptionalObjectProperty(obj, propertyName, validator, defaultValue) {
+    return verifyObjectProperty(obj, propertyName, (x) => x === void 0 ? defaultValue : validator(x));
   }
   function verifyEnumString(obj, enumType) {
     if (typeof obj === "string" && obj.match(/^[a-zA-Z]/) !== null) {
@@ -14998,6 +15015,7 @@ function require(x) { throw new Error('Cannot require ' + x) }
     constructor() {
       super();
       this.objectId = new Uint64();
+      this.customColor = false;
     }
     initializeManifestChunk(key, objectId) {
       super.initialize(key);
@@ -15005,10 +15023,12 @@ function require(x) { throw new Error('Cannot require ' + x) }
     }
     freeSystemMemory() {
       this.fragmentIds = null;
+      this.customColor = false;
     }
     serialize(msg, transfers) {
       super.serialize(msg, transfers);
       msg.fragmentIds = this.fragmentIds;
+      msg.customColor = this.customColor;
     }
     downloadSucceeded() {
       this.systemMemoryBytes = 100;
@@ -15030,6 +15050,13 @@ function require(x) { throw new Error('Cannot require ' + x) }
     msg["vertexNormals"] = vertexNormals;
     let vertexPositionsBuffer = vertexPositions.buffer;
     transfers.push(vertexPositionsBuffer);
+    if (data == null ? void 0 : data.colors) {
+      msg["colors"] = data.colors;
+      let colorBuffer = data.colors.buffer;
+      if (colorBuffer !== vertexPositionsBuffer) {
+        transfers.push(data.colors.buffer);
+      }
+    }
     let indicesBuffer = indices.buffer;
     if (indicesBuffer !== vertexPositionsBuffer) {
       transfers.push(indicesBuffer);
@@ -15038,7 +15065,11 @@ function require(x) { throw new Error('Cannot require ' + x) }
   }
   function getMeshDataSize(data) {
     let { vertexPositions, indices, vertexNormals } = data;
-    return vertexPositions.byteLength + indices.byteLength + vertexNormals.byteLength;
+    let size = vertexPositions.byteLength + indices.byteLength + vertexNormals.byteLength;
+    if (data == null ? void 0 : data.colors) {
+      size += data.colors.byteLength;
+    }
+    return size;
   }
   var FragmentChunk = class extends Chunk {
     constructor() {
@@ -15067,9 +15098,10 @@ function require(x) { throw new Error('Cannot require ' + x) }
       super.downloadSucceeded();
     }
   };
-  function decodeJsonManifestChunk(chunk, response, keysPropertyName) {
+  function decodeJsonManifestChunk(chunk, response, keysPropertyName, colorPropertyName) {
     verifyObject(response);
     chunk.fragmentIds = verifyObjectProperty(response, keysPropertyName, verifyStringArray);
+    chunk.customColor = verifyOptionalObjectProperty(response, colorPropertyName, verifyOptionalBoolean);
   }
   function computeVertexNormals(positions, indices) {
     const faceNormal = vec3_exports.create();
@@ -15139,8 +15171,30 @@ function require(x) { throw new Error('Cannot require ' + x) }
     convertEndian32(indices, endianness);
     return { vertexPositions, indices };
   }
+  function decodeVertexPositionsAndIndicesAndColor(verticesPerPrimitive, data, endianness, vertexByteOffset, numVertices, indexByteOffset, numPrimitives) {
+    let vertexPositions = new Float32Array(data, vertexByteOffset, numVertices * 3);
+    convertEndian32(vertexPositions, endianness);
+    let colors = new Float32Array(data, vertexByteOffset + 12 * numVertices, numVertices * 3);
+    convertEndian32(colors, endianness);
+    if (indexByteOffset === void 0) {
+      indexByteOffset = vertexByteOffset + 24 * numVertices;
+    }
+    let numIndices;
+    if (numPrimitives !== void 0) {
+      numIndices = numPrimitives * verticesPerPrimitive;
+    }
+    let indices = numIndices === void 0 ? new Uint32Array(data, indexByteOffset) : new Uint32Array(data, indexByteOffset, numIndices);
+    if (indices.length % verticesPerPrimitive !== 0) {
+      throw new Error(`Number of indices is not a multiple of ${verticesPerPrimitive}: ${indices.length}.`);
+    }
+    convertEndian32(indices, endianness);
+    return { vertexPositions, indices, colors };
+  }
   function decodeTriangleVertexPositionsAndIndices(data, endianness, vertexByteOffset, numVertices, indexByteOffset, numTriangles) {
     return decodeVertexPositionsAndIndices(3, data, endianness, vertexByteOffset, numVertices, indexByteOffset, numTriangles);
+  }
+  function decodeTriangleVertexPositionsAndIndicesAndColor(data, endianness, vertexByteOffset, numVertices, indexByteOffset, numTriangles) {
+    return decodeVertexPositionsAndIndicesAndColor(3, data, endianness, vertexByteOffset, numVertices, indexByteOffset, numTriangles);
   }
   var MeshSource = class extends ChunkSource {
     constructor(rpc2, options) {
@@ -15450,12 +15504,16 @@ function require(x) { throw new Error('Cannot require ' + x) }
     } else {
       encodedVertexPositions = data.vertexPositions;
     }
-    return {
+    const encodedRes = {
       vertexPositions: encodedVertexPositions,
       vertexNormals: encodedNormals,
       indices: encodedIndices,
       strips
     };
+    return (data == null ? void 0 : data.colors) ? {
+      ...encodedRes,
+      colors: data.colors
+    } : encodedRes;
   }
   function assignMeshFragmentData(chunk, data, vertexPositionFormat = VertexPositionFormat.float32) {
     chunk.meshData = convertMeshData(data, vertexPositionFormat);
@@ -16778,7 +16836,7 @@ function require(x) { throw new Error('Cannot require ' + x) }
     registerSharedObject()
   ], BossVolumeChunkSource);
   function decodeManifestChunk(chunk, response) {
-    return decodeJsonManifestChunk(chunk, response, "fragments");
+    return decodeJsonManifestChunk(chunk, response, "fragments", "customColor");
   }
   function decodeFragmentChunk(chunk, response) {
     let dv = new DataView(response);
@@ -17593,12 +17651,13 @@ function require(x) { throw new Error('Cannot require ' + x) }
     registerSharedObject()
   ], PrecomputedVolumeChunkSource);
   function decodeManifestChunk2(chunk, response) {
-    return decodeJsonManifestChunk(chunk, response, "fragments");
+    return decodeJsonManifestChunk(chunk, response, "fragments", "customColor");
   }
   function decodeFragmentChunk3(chunk, response) {
+    var _a;
     let dv = new DataView(response);
     let numVertices = dv.getUint32(0, true);
-    assignMeshFragmentData(chunk, decodeTriangleVertexPositionsAndIndices(response, Endianness.LITTLE, 4, numVertices));
+    assignMeshFragmentData(chunk, ((_a = chunk.manifestChunk) == null ? void 0 : _a.customColor) ? decodeTriangleVertexPositionsAndIndicesAndColor(response, Endianness.LITTLE, 4, numVertices) : decodeTriangleVertexPositionsAndIndices(response, Endianness.LITTLE, 4, numVertices));
   }
   var PrecomputedMeshSource = class extends WithParameters(WithSharedCredentialsProviderCounterpart()(MeshSource), MeshSourceParameters4) {
     async download(chunk, cancellationToken) {

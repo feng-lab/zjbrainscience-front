@@ -14,9 +14,18 @@ import { computed } from 'vue';
 import BsCharts from '../charts/BsCharts.vue';
 
 const props = defineProps({
-  data: Array,
-  links: Array,
-  categories: Array,
+  data: {
+    type: Array,
+    default: []
+  },
+  links: {
+    type: Array,
+    default: [] 
+  },
+  categories: {
+    type: Array,
+    default: []
+  },
   type: String
 })
 
