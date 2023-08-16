@@ -143,7 +143,10 @@ export default {
     brainnetome: "Brainnetome",
     eeum: "EEUM",
     lemur: "Lemur",
-    macaque: "Macaque"
+    macaque: "Macaque",
+    macaque_3d: "3D Brain",
+    macaque_nissl: "Nissl",
+    macaque_tracer: "Tracer"
   },
   loginInfoStorage: {
     title: "数据存储",

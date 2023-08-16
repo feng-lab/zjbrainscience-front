@@ -89,10 +89,22 @@ const menus = [{
   }, {
     path: "macaque",
     name: "macaque",
-    component: () => import("@/views/atlas/macaque/Macaque.vue"),
     meta: {
       icon: "Check"
-    }
+    },
+    children: [{
+      path: "macaque_3d",
+      name: "macaque_3d",
+      component: () => import("@/views/atlas/macaque/3d/Macaque.vue") 
+    }, {
+      path: "macaque_nissl",
+      name: "macaque_nissl",
+      component: () => import("@/views/atlas/macaque/nissl/Nissl.vue") 
+    }, {
+      path: "macaque_tracer",
+      name: "macaque_tracer",
+      component: () => import("@/views/atlas/macaque/tracer/Tracer.vue") 
+    }]
   }, {
     path: "eeum",
     path: "eeum",

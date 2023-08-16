@@ -100,6 +100,7 @@ export function useAtlas(props) {
     if(neuroRef.value) {
       const currentState = neuroRef.value.getViewerState();
       const currentStateJ = currentState.toJSON();
+      console.log('currentState', currentStateJ)
       if(!_projectionScale) {
         _projectionScale = currentStateJ.projectionScale;
       }
@@ -109,19 +110,19 @@ export function useAtlas(props) {
       const notGroupViewr = typeof newLayout === "string";
       const projectionScale = notGroupViewr ? _projectionScale: _projectionScale + 70;
       const crossSectionScale = notGroupViewr && newLayout.startsWith("3slice") ? _crossSectionScale + 0.2 : _crossSectionScale;
-      const layers = currentStateJ.layers.map(x => {
-        if(x.name.endsWith('_segments')) {
-          return {
-            ...x,
-            removeOctant: notGroupViewr
-          }
-        } else {
-          return x
-        }
-      })
+      //const layers = currentStateJ.layers.map(x => {
+      //  if(x.name.endsWith('_segments')) {
+      //    return {
+      //      ...x,
+      //      removeOctant: currentStateJ.removeOctant
+      //    }
+      //  } else {
+      //    return x
+      //  }
+      //})
       state.value = {
         ...currentStateJ,
-        layers,
+        //layers,
         crossSectionScale,
         projectionScale,
         layout: newLayout
@@ -157,6 +158,7 @@ export function useAtlas(props) {
       }
     }
   })
+
 
 
 

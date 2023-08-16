@@ -53,7 +53,7 @@
         </div>
       </div>
     </div>
-    <div class="atlas-setting-item" v-if="plugins?.bigBrain">
+    <div class="atlas-setting-item" v-if="plugins?.bigBrain || plugins?.template">
       <div class="atlas-setting-item-label">Mesh Slice View Alpha</div>
       <div class="atlas-setting-item-content">
         <el-slider 
@@ -138,7 +138,8 @@ props.layers.forEach(layer => {
 
 supportPlugins.forEach(plugin => {
   if(Object.keys(props?.plugins ?? []).includes(plugin)) {
-    dataSwitchArr.value[plugin] = true;
+    const { defaultVisible=true } = props.plugins[plugin];
+    dataSwitchArr.value[plugin] = defaultVisible;
   }
 })
 

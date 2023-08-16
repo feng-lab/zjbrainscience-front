@@ -14,12 +14,10 @@ export const atlasState = {
     ]
   },
   "position": [
-    102,
-    134,
-    107
+    97, 130, 86
   ],
   "crossSectionBackgroundAlpha": 0.3,
-  "crossSectionScale": 0.8,
+  "crossSectionScale": 0.85,
   "projectionOrientation": [
     -0.5143676400184631,
     0.5209823846817017,
@@ -27,7 +25,8 @@ export const atlasState = {
     0.48948967456817627
   ],
   "projectionScale": 300,
-  layout: "3sliceB"
+  "sliceViewCoordinate": "anatomy",
+  layout: "3sliceR"
 }
 export const categories = [
   {
