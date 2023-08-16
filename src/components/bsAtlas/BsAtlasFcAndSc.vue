@@ -10,7 +10,7 @@
   </div>
 </template>
 <script setup>
-import { computed } from 'vue';
+import { ref, watch } from 'vue';
 import BsCharts from '../charts/BsCharts.vue';
 
 const props = defineProps({
@@ -29,9 +29,7 @@ const props = defineProps({
   type: String
 })
 
-console.log(props)
-
-const chart_option = computed(() => ({
+const chart_option = ref({
   darkMode: true,
   legend: {
     show: false
@@ -54,10 +52,10 @@ const chart_option = computed(() => ({
       color: "#fff"
     }
   },
-}))
+})
 
-const chart_series = computed(() => ({
-  center: ["50%", "45%"],
+const chart_series = ref({
+  center: ["50%", "40%"],
   zoom: 0.8,
   layout: "circular",
   symbolSize: 6, 
@@ -72,7 +70,7 @@ const chart_series = computed(() => ({
       position: "right",
       margin: 8,
       textStyle: {
-        fontSize: 8
+        fontSize: 7
       }
   },
   lineStyle: {
@@ -94,14 +92,27 @@ const chart_series = computed(() => ({
       null
   ],
   edgeSymbolSize: 10,
-  data: props.data.map(node => ({...node, tooltip: {show: false}})),
-  links: props.links,
-  categories: props.categories
-}))
+  //data: props.data.map(node => ({...node, tooltip: {show: false}})),
+  //links: props.links,
+  //categories: props.categories
+})
 
 const handleSelect = (id, name) => {
+  console.log('id', id, 'name', name)
   chart_option.value.title.subtext = `Brain Region: ${name}(ID: ${id})`;
 }
+
+watch(props, (newProp) => {
+  chart_series.value = {
+    ...chart_series.value,
+    data: newProp.data.map(node => ({...node, tooltip: {show: false}})),
+    links: newProp.links,
+    categories: newProp.categories
+  }
+}, {
+  deep: true,
+  immediate: true
+})
 
 defineExpose({
   handleSelect

@@ -242,6 +242,37 @@ $dimensions: ('p': 'padding', 'm': 'margin');
 }
 
 /** brain atlas **/
+.neuroglancer {
+  .neuroglancer-panel:focus-within {
+    border:none;
+  }
+  .neuroglancer-layer-panel, .neuroglancer-viewer-top-row {
+    display: none !important;
+  }
+
+  .neuroglancer-data-panel-layout-controls {
+    display: none !important;
+  }
+
+  .neuroglancer-stack-layout-drop-placeholder {
+    background-color: #1668dc;
+    background-clip:border-box;
+  }
+  .neuroglancer-stack-layout-column>.neuroglancer-stack-layout-drop-placeholder {
+    padding: 1px 0 0 0;
+  }
+
+  .neuroglancer-stack-layout-row>.neuroglancer-stack-layout-drop-placeholder {
+    padding: 1px 0 0 0;
+  }
+
+  .neuroglancer-layer-group-viewer-label-group {
+    font-weight: 800;
+  }
+  .neuroglancer-layer-group-viewer-label-sub {
+    color: #b7dcfa;
+  }
+}
 .atlas-widget{
   //background-color: #111a2c !important;
   background-color: rgba(17, 26, 44, 0.7) !important;
@@ -258,6 +289,28 @@ $dimensions: ('p': 'padding', 'm': 'margin');
   }
 }
 
+.atlas-info {
+  h2 {
+    color: #52c41a;
+    margin-bottom: 8px;
+    &::before {
+      content: "";
+      border-left: 5px solid #fff;
+      margin-right: 8px;
+    }
+  }
+  &-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &-val {
+      color: #fff;
+    }
+  }
+
+}
+
 .atlas-input {
   --el-border-color: #002c8c;
   --el-fill-color-blank: #000;
@@ -265,6 +318,11 @@ $dimensions: ('p': 'padding', 'm': 'margin');
   .el-input__inner {
     color: #1668dc;
   }
+}
+
+.red {
+  color: red;
+  font-weight: bold;
 }
 
 

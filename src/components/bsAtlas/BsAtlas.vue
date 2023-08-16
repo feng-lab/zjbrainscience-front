@@ -1,23 +1,23 @@
 <template>
   <div class="bs-atlas">
     <el-row class="bs-atlas-visualize" justify="space-between">
-      <el-col :span="4" class="bs-atlas-visualize-left m-l-8">
+      <el-col :span="4" class="bs-atlas-visualize-left p-l-8">
         <div class="label">
           <h1 class="atlas-title"> 
             {{ title }} 
-            <p v-if="site">
-              <el-link :href="site" target="_blank">{{ site }}</el-link>
-            </p>
           </h1>
+          <p v-if="site">
+            <el-link :href="site" target="_blank">{{ site }}</el-link>
+          </p>
           <el-input 
             v-model="filterText" 
             placeholder="Search region by id or label" 
             clearable
-            class="atlas-input m-b-8"
+            class="atlas-input m-b-8 m-t-8"
           />
           <div class="atlas-widget">
             <el-scrollbar 
-              :max-height="!(plugins?.bdf||plugins?.pcf) && selectedSegmentId ? 230: 500" 
+              :max-height="!(plugins?.bdf||plugins?.pcf) && selectedSegmentId ? 120: 500" 
               class="tree-scroll"
             >
               <el-tree
@@ -57,7 +57,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="neuroColSpan" class="neuro" >
+      <el-col :span="neuroColSpan" class="neuro neuroglancer p-l-16 p-r-16" >
         <vue-neuroglancer
           ref="neuroRef"
           :state="state"
@@ -107,9 +107,11 @@
           </el-radio-group>
         </div>
       </el-col>
-      <el-col :span="4" style="padding: 20px 8px 0px 0px">
+      <el-col :span="infoSpan" style="padding: 20px 8px 0px 0px">
         <bs-atlas-bdf ref="bdfRef" v-if="showBDF" v-bind="plugins?.bdf?.bdfData" class="m-b-8"/>
         <bs-atlas-pcf ref="pcfRef" v-if="showPCF" v-bind="plugins?.pcf?.pcfData" class="m-b-8"/>
+        <bs-atlas-fc-and-sc ref="fcRef" v-if="showFC" v-bind="plugins?.fc?.fcData" type="FC" style="height: 400px"/>
+        <bs-atlas-fc-and-sc ref="scRef" v-if="showSC" v-bind="plugins?.sc?.scData" type="SC" style="height: 400px"/>
       </el-col>
     </el-row>
     <bs-atlas-setting 
@@ -120,21 +122,16 @@
       @change-mesh-alpha="setMeshLayerAlpha"
       @change-normalize="setNormalizedRange"
     />
-    <bs-atlas-fc-and-sc ref="fcRef" v-if="showFC" v-bind="plugins?.fc?.fcData" type="FC" class="bs-atlas-fc"/>
-    <bs-atlas-fc-and-sc ref="scRef" v-if="showSC" v-bind="plugins?.sc?.scData" type="SC" class="bs-atlas-sc"/>
     <div :class="[
         'bs-atlas-tooltip-box', 
         (plugins?.bdf || plugins?.pcf) ? 'bs-atlas-tooltip-box-right':'bs-atlas-tooltip-box-left']" 
     >
-      <div class="atlas-widget bs-atlas-tooltip" v-if="selectedSegmentId">
-        <h1>ID: {{ selectedSegmentId }}</h1>
-        <div v-for="key in ['Acronym', 'Description', 'Lobe', 'Gyrus']" :key="key">
-          <template v-if="selectedSegmentInfo[key]">
-            <p class="icon-label"><bs-icon-img icon="Memo"/><strong>{{key}}</strong></p>
-            <p class="description">{{selectedSegmentInfo[key]}}</p>
-          </template>
-        </div>
-      </div>
+      <bs-atlas-region-tooltip
+        v-if="selectedSegmentId"
+        :segment-id="selectedSegmentId"
+        :segment-info="selectedSegmentInfo"
+
+      />
       <div class="atlas-widget bs-atlas-tooltip" v-if="focusConnectivity?.id">
         <h1>Connectivity</h1>
         <p> 
@@ -181,6 +178,7 @@ import xz3d from "@/assets/img/xz3d.png";
 import yz3d from "@/assets/img/yz3d.png";
 import { useFcLayer } from "@/compositions/atlas/useFcLayer";
 import { useScLayer } from "@/compositions/atlas/useScLayer";
+import { useTemplateLayer } from "@/compositions/atlas/useTemplateLayer";
 
 
 
@@ -242,45 +240,85 @@ const fcRef = ref();
 const focusConnectivity = ref();
 const showWhitchSide = ref("all");
 
-const showFC = ref(!!props?.plugins?.fc?.graph);
-const showSC = ref(!!props?.plugins?.sc?.graph);
+const showFC = ref(!!props?.plugins?.fc?.graph && props?.plugins?.fc?.defaultVisible);
+const showSC = ref(!!props?.plugins?.sc?.graph && props?.plugins?.sc?.defaultVisible);
 const showBDF = ref(!!props?.plugins?.bdf);
 const showPCF = ref(!!props?.plugins?.pcf);
 
-const neuroColSpan = computed(() => {
-  const is15 = showBDF.value || showPCF.value;
-  const colSpan = is15 ? 15 : 19;
-  return colSpan
+const infoSpan = computed(() => {
+  if(showFC.value || showSC.value) {
+    return 6;
+  }
+  if(showBDF.value || showPCF.value) {
+    return 4;
+  }
+
+  return 0;
 })
 
+
+const neuroColSpan = computed(() => {
+  return 20 - infoSpan.value 
+})
+
+const otherDataReference = {
+  "fc": [showFC, fcRef],
+  "sc": [showSC, scRef],
+  "bdf": [showBDF, bdfRef],
+  "pcf": [showPCF, pcfRef]
+}
+
+const handleOtherDatasVisible = (type, isRender) => {
+  const [showCtrl, dataRef] = otherDataReference[type];
+  showCtrl.value = isRender;
+  if(isRender && showRegion.value?.id) {
+    nextTick(() => {
+      dataRef.value.handleSelect(showRegion.value.id, showRegion.value.acronym);
+    })
+  }
+  if(isRender && !showRegion.value) {
+    nextTick(() => {
+      handleClickSegments("1");
+    })
+  }
+
+}
+
 const otherDatasVisibleHandler = {
-  fc: (val) => {
-    showFC.value = val;
-    if(showRegion.value?.id) {
+  fc: (isRender) => {
+    showFC.value = isRender;
+    if(isRender && showRegion.value?.id) {
+      console.log('fc handler showRegion', showRegion.value.id, showRegion.value.acronym);
       nextTick(() => {
         fcRef.value.handleSelect(showRegion.value.id, showRegion.value.acronym);
       })
     }
   },
-  sc: (val) => {
-    showSC.value = val
-    if(showRegion.value?.id) {
+  sc: (isRender) => {
+    showSC.value = isRender
+    console.log('sc handler showRegion', showRegion.value)
+    if(isRender && showRegion.value?.id) {
       nextTick(() => {
         scRef.value.handleSelect(showRegion.value.id, showRegion.value.acronym);
       })
     }
+    if(isRender && !showRegion.value) {
+      nextTick(() => {
+      handleClickSegments("1");
+      })
+    }
   },
-  bdf: (val) => {
-    showBDF.value = val;
-    if(showRegion.value?.id) {
+  bdf: (isRender) => {
+    showBDF.value = isRender;
+    if(isRender && showRegion.value?.id) {
       nextTick(() => {
         bdfRef.value.handleSelect(showRegion.value.id, showRegion.value.acronym);
       })
     }
   },
-  pcf: (val) => {
-    showPCF.value = val
-    if(showRegion.value?.id) {
+  pcf: (isRender) => {
+    showPCF.value = isRender
+    if(isRender && showRegion.value?.id) {
       nextTick(() => {
         pcfRef.value.handleSelect(showRegion.value.id, showRegion.value.acronym);
       })
@@ -298,6 +336,10 @@ const connectivity = `${props.name}_connectivity`;
 const { setNormalizedRange } = useBigBrainLayer(neuroRef, baseUrl, props);
 
 
+if(props.plugins?.template) {
+  const { layer, layerSetting } = useTemplateLayer(neuroRef, baseUrl, props.name, props.plugins.template);
+  addLayer(layer, layerSetting)
+}
 if(props.plugins?.bigBrain) {
   const { layer, layerSetting, setNormalizedRange } = useBigBrainLayer(neuroRef, baseUrl, props);
   addLayer(layer, layerSetting);
@@ -334,6 +376,9 @@ onMounted(() => {
   } else if(props.defaultVisible.length){
     treeRef.value.setCheckedKeys(props.defaultVisible);
   }
+  if(props.plugins?.bdf || props.plugins?.pcf) {
+    handleClickSegments("1");
+  }
 })
 
 const handleClickEndpoints = (point) => {
@@ -350,7 +395,6 @@ const handleClickEdges = (edge) => {
   const { annotationId=null } = edge;
   if(annotationId) {
     const edgeInfo = props.connectivityEdges[annotationId];
-    console.log(edgeInfo);
   }
 }
 
@@ -362,11 +406,12 @@ const handleClickSegments = (segment) => {
   }
   if(key && key !== "0") {
     const info = labelIndices[key];
+    console.log(key, info)
     emits("segmentSelected", info)
-    props.plugins?.bdf && bdfRef.value.handleSelect(key, info?.Acronym);
-    props.plugins?.pcf && pcfRef.value.handleSelect(key, info?.Acronym);
-    props.plugins?.fc?.graph && fcRef.value.handleSelect(key, info?.Acronym);
-    props.plugins?.sc?.graph && scRef.value.handleSelect(key, info?.Acronym);
+    props.plugins?.bdf && bdfRef.value?.handleSelect(key, info?.Acronym);
+    props.plugins?.pcf && pcfRef.value?.handleSelect(key, info?.Acronym);
+    props.plugins?.fc?.graph && fcRef.value?.handleSelect(key, info?.Acronym);
+    props.plugins?.sc?.graph && scRef.value?.handleSelect(key, info?.Acronym);
     if(props.plugins?.fc?.spatial) {
       neuroRef.value.setVisibleSegments(`${props.name}_fc`, [])
       neuroRef.value.setVisibleSegments(`${props.name}_fc`, [key])
@@ -382,8 +427,9 @@ const handleClickSegments = (segment) => {
 
 const handleRenderVisibleChanged = (target, isRender) => {
   if(typeof(target) === "string") {
-    const handler = otherDatasVisibleHandler[target];
-    handler(isRender);
+    //const handler = otherDatasVisibleHandler[target];
+    //handler(isRender);
+    handleOtherDatasVisible(target, isRender);
   } else {
     let layers = target.layers;
     if(target.key.endsWith("_connectivity")) {
@@ -476,6 +522,12 @@ watch(filterText, (value) => {
   treeRef.value.filter(value);
 })
 
+watch(state, (s) => {
+  console.log('state', s)
+}, {
+  deep:true,
+  immediate: true
+})
 
 
 const treeToIndices = (trees) => {
@@ -500,14 +552,14 @@ const treeToIndices = (trees) => {
     flex-direction: column;
     gap: 8px;
     position: absolute;
-    width: 16.6666666667%;
+    width: calc(16.6666666667% - 8px);
   }
   &-tooltip-box-right {
     bottom: 10px;
     right: 8px;
   }
   &-tooltip-box-left {
-    top: 45%;
+    top: 32%;
     left: 8px;
 
   }
@@ -578,37 +630,7 @@ const treeToIndices = (trees) => {
         text-align: end;
         width: 100%;
       }
-      :deep(.neuroglancer-panel:focus-within) {
-        border:none;
-      }
       
-      :deep(.neuroglancer-layer-panel), :deep(.neuroglancer-viewer-top-row) {
-        display: none !important;
-      }
-
-      :deep(.neuroglancer-data-panel-layout-controls) {
-        display: none !important;
-      }
-
-      :deep(.neuroglancer-stack-layout-drop-placeholder) {
-        background-color: #1668dc;
-        background-clip:border-box;
-      }
-      :deep(.neuroglancer-stack-layout-column>.neuroglancer-stack-layout-drop-placeholder) {
-        padding: 1px 0 0 0;
-      }
-
-      :deep(.neuroglancer-stack-layout-row>.neuroglancer-stack-layout-drop-placeholder) {
-        padding: 1px 0 0 0;
-      }
-
-      :deep(.neuroglancer-layer-group-viewer-label-group) {
-        font-weight: 800;
-      }
-      :deep(.neuroglancer-layer-group-viewer-label-sub) {
-        color: #b7dcfa;
-      }
-
 
       .tool-box {
         display: flex;
@@ -629,7 +651,7 @@ const treeToIndices = (trees) => {
     position: absolute;
     bottom: 10px;
     left: 8px;
-    width: 16.6666666667%;
+    width: calc(16.6666666667% - 8px);
   }
 
   &-fc {
