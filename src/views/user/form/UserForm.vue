@@ -27,7 +27,7 @@
 </template>
 
 <script setup> 
-import BsDialogForm from '@/components/BsDialogForm.vue';
+import BsDialogForm from '@/components/form/BsDialogForm.vue';
 
 import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';

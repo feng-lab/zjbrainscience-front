@@ -198,7 +198,7 @@
   </bs-page-form>
 </template>
 <script setup>
-import BsPageForm from "@/components/BsPageForm.vue";
+import BsPageForm from "@/components/form/BsPageForm.vue";
 
 import { ref, computed, watch, nextTick } from "vue";
 import { newExApi, updateExApi, exDetailApi } from "@/api/experiments";

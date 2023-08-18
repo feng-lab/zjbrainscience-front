@@ -27,6 +27,7 @@
       } 
     }"
     @segment-selected="handleSegmentSelected"
+    :sub-page="SUB_PAGE"
   />
   
 </template>
@@ -35,6 +36,7 @@ import BsAtlas from "@/components/bsAtlas/BsAtlas.vue";
 import LABEL_TREE from "../labelTree";
 import { atlasState, categories, nodes } from "./propsData";
 import { ref } from "vue";
+import SUB_PAGE from "../subpage";
 
 const fclinks = ref([]);
 

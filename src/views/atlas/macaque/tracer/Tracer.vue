@@ -1,7 +1,7 @@
 <template>
 <el-row class="tracer">
-  <el-col :span="4">
-    <h1 style="color: #fff">Tracer Data</h1>
+  <el-col :span="4" class="p-t-20">
+    <h1 style="color: #fff">BNA Macaque </h1>
     <div class="atlas-widget atlas-info m-t-24">
       <h2>Select Injection Source</h2>
       <el-radio-group v-model="showRegion" class="select-radio-group">
@@ -26,40 +26,49 @@
       </p>
     </div>
   </el-col>
-  <el-col :span="16" class="p-l-16 p-r-16 neuroglancer">
-    <vue-neuroglancer
-      ref="neuroRef"
-      :state="state"
-      @focus-segment-changed="handleFocusRegion"
-      @focus-annotation-changed="handleFocusCellCnt"
+  <el-col :span="20">
+    <atlas-header
+      :sub-page="SUB_PAGE" 
+      :layout-change="false"
+      :atlas-props="{name: 'macaque_bna'}"
     />
-  </el-col>
-  <el-col :span="4" class="p-r-8">
-    <div class="atlas-widget atlas-info m-t-8" v-if="focusCellCnt">
-      <h2>Cell Count</h2>
-      <p class="atlas-info-item">
-        <strong>Count</strong>
-        <span class="atlas-info-item-val red">{{ focusCellCntInfo.cellCnt }}</span>
-      </p>
-      <p class="atlas-info-item" v-for="(dim, index) in ['X', 'Y', 'Z']" :key="dim">
-        <strong>{{ `Position-${dim}` }}</strong>
-        <span class="atlas-info-item-val">{{ focusCellCntInfo?.position[index]}}</span>
-      </p>
-      <p class="atlas-info-item">
-        <strong>Region ID</strong>
-        <span class="atlas-info-item-val">{{ focusCellCntInfo.regionId}}</span>
-      </p>
-      <p class="atlas-info-item">
-        <strong>Region Name</strong>
-        <span class="atlas-info-item-val">{{ focusCellCntInfo.region}}</span>
-      </p>
-    </div>
-    <bs-atlas-region-tooltip
-      class="m-t-8"
-      v-if="focusRegion"
-      :segment-id="focusRegion"
-      :segment-info="focusRegionInfo"
-    />
+    <el-row class="neuro">
+      <el-col :span="20" class="p-l-16 p-r-16 neuroglancer">
+        <vue-neuroglancer
+          ref="neuroRef"
+          :state="state"
+          @focus-segment-changed="handleFocusRegion"
+          @focus-annotation-changed="handleFocusCellCnt"
+        />
+      </el-col>
+      <el-col :span="4">
+        <div class="atlas-widget atlas-info m-t-8" v-if="focusCellCnt">
+          <h2>Cell Count</h2>
+          <p class="atlas-info-item">
+            <strong>Count</strong>
+            <span class="atlas-info-item-val red">{{ focusCellCntInfo.cellCnt }}</span>
+          </p>
+          <p class="atlas-info-item" v-for="(dim, index) in ['X', 'Y', 'Z']" :key="dim">
+            <strong>{{ `Position-${dim}` }}</strong>
+            <span class="atlas-info-item-val">{{ focusCellCntInfo?.position[index]}}</span>
+          </p>
+          <p class="atlas-info-item">
+            <strong>Region ID</strong>
+            <span class="atlas-info-item-val">{{ focusCellCntInfo.regionId}}</span>
+          </p>
+          <p class="atlas-info-item">
+            <strong>Region Name</strong>
+            <span class="atlas-info-item-val">{{ focusCellCntInfo.region}}</span>
+          </p>
+        </div>
+        <bs-atlas-region-tooltip
+          class="m-t-8"
+          v-if="focusRegion"
+          :segment-id="focusRegion"
+          :segment-info="focusRegionInfo"
+        />
+      </el-col>
+    </el-row>
   </el-col>
 
 </el-row>
@@ -72,6 +81,8 @@ import { ref, watch } from "vue";
 import { treeToIndices } from "../../utils";
 import LABEL_TREE from "../labelTree";
 import BsAtlasRegionTooltip from "@/components/bsAtlas/BsAtlasRegionTooltip.vue";
+import AtlasHeader from "../../AtlasHeader.vue";
+import SUB_PAGE from "../subpage";
 
 const baseUrl = `http://${window.location.host}/atlas_data/macaque_bna`;
 const surfaceUrl = `${baseUrl}/macaque_bna_flat_surface`;
@@ -161,7 +172,10 @@ watch(showRegion, async (region) => {
 <style lang="scss" scoped>
 .tracer {
   height: 98vh;
-  padding: 20px 8px;
+  padding: 0px 8px;
+  .neuro {
+    height: calc(100vh - 20px - 75px);
+  }
 }
 
 .select-radio-group {

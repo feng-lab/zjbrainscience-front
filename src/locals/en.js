@@ -146,7 +146,9 @@ export default {
     macaque: "Macaque",
     macaque_3d: "3D Brain",
     macaque_nissl: "Nissl",
-    macaque_tracer: "Tracer"
+    macaque_tracer: "Tracer",
+    atlashome: "Home",
+    atlasmanage: "Manage",
   },
   loginInfoStorage: {
     title: "Data Storage",
