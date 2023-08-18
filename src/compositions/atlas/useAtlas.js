@@ -1,5 +1,16 @@
-import { ref, computed, watch } from "vue";
-export function useAtlas(props) {
+import { ref, computed, watch, onMounted } from "vue";
+import panel4 from "@/assets/img/4panel.png";
+import sliceT from "@/assets/img/3sliceT.png";
+import sliceR from "@/assets/img/3sliceR.png";
+import sliceB from "@/assets/img/3sliceB.png";
+import sliceL from "@/assets/img/3sliceL.png";
+import xy3d from "@/assets/img/xy-3d.png";
+import xz3d from "@/assets/img/xz-3d.png";
+import yz3d from "@/assets/img/yz-3d.png";
+import { getAtlasByPage } from "@/api/atlas";
+import { useRouter } from "vue-router";
+
+export function useAtlas(props = {}) {
   const neuroRef = ref();
   const renderLayers = {};
 
@@ -7,6 +18,14 @@ export function useAtlas(props) {
   const scfcView = ref({});
   const segmentView = ref([]);
   const showRegion = ref();
+  const atlasUrl = `http://${window.location.host}/atlas_data/`;
+  const atlasList = ref([]);
+  const router = useRouter();
+
+
+
+
+
 
   const addLayer = (layer, layerSetting) => {
     state.value.layers = [
@@ -79,6 +98,21 @@ export function useAtlas(props) {
 
   const supportPlugins = ["fc", "sc", "bdf", "pcf"];
 
+  const supportLayout = [
+    { layout: "4panel", component: panel4, tooltip: "Display 3D view and three 2D cross-section views in four grids"},
+    { layout:"3sliceT", component: sliceT, tooltip: "Display 3D view with three 2D cross-section views on the top of it"},
+    { layout:"3sliceR", component: sliceR, tooltip: "Display 3D view with three 2D cross-section views on the right of it"},
+    { layout:"3sliceB", component: sliceB, tooltip: "Display 3D view with three 2D cross-section views on the bottom of it"},
+    { layout:"3sliceL", component: sliceL, tooltip: "Display 3D view with three 2D cross-section views on the left of it"},
+    { layout:"xy-3d", component: xy3d, tooltip: "Display 3D view and XY view" },
+    { layout:"xz-3d", component: xz3d, tooltip: "Display 3D view and XZ view" },
+    { layout:"yz-3d", component: yz3d, tooltip: "Display 3D view and YZ view" },
+    { layout:"3d", component: "3d", tooltip: "Display 3D view"},
+    { layout:"xy", component: "xy", tooltip: "Display XY view"},
+    { layout:"xz", component: "xz", tooltip: "Display XZ view"},
+    { layout:"yz", component: "yz", tooltip: "Display YZ view"}
+  ]
+
   const state = ref({
     "showAxisLines": true,
     "showScaleBar": false,
@@ -97,6 +131,7 @@ export function useAtlas(props) {
 
   watch([scfcView, segmentsLayout],  ([newScfc]) => {
     const newLayout = getLayout(newScfc);
+    console.log('layout change', newLayout)
     if(neuroRef.value) {
       const currentState = neuroRef.value.getViewerState();
       const currentStateJ = currentState.toJSON();
@@ -110,19 +145,8 @@ export function useAtlas(props) {
       const notGroupViewr = typeof newLayout === "string";
       const projectionScale = notGroupViewr ? _projectionScale: _projectionScale + 70;
       const crossSectionScale = notGroupViewr && newLayout.startsWith("3slice") ? _crossSectionScale + 0.2 : _crossSectionScale;
-      //const layers = currentStateJ.layers.map(x => {
-      //  if(x.name.endsWith('_segments')) {
-      //    return {
-      //      ...x,
-      //      removeOctant: currentStateJ.removeOctant
-      //    }
-      //  } else {
-      //    return x
-      //  }
-      //})
       state.value = {
         ...currentStateJ,
-        //layers,
         crossSectionScale,
         projectionScale,
         layout: newLayout
@@ -159,6 +183,15 @@ export function useAtlas(props) {
     }
   })
 
+  const handleViewAtlas = (atlas) => {
+    router.push(`/atlas/${atlas}`);
+  }
+
+  onMounted(async () => {
+    const { count, items } = await getAtlasByPage();
+    atlasList.value = items;
+  })
+
 
 
 
@@ -172,6 +205,10 @@ export function useAtlas(props) {
     segmentsLayout,
     segmentView,
     scfcView,
-    showRegion
+    showRegion,
+    supportLayout,
+    atlasList,
+    atlasUrl,
+    handleViewAtlas
   }
 }

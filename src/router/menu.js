@@ -73,6 +73,13 @@ const menus = [{
     icon: "Aim",
   },
   children: [{
+    path: "index",
+    name: "atlashome",
+    component: () => import("@/views/atlas/Home.vue"),
+    meta: {
+      icon: "HomeFilled",
+    }
+  }, {
     path: "allen_ccf",
     name: "allen_ccf",
     component: () => import("@/views/atlas/allen_ccf/AllenCCF.vue"),
@@ -80,28 +87,29 @@ const menus = [{
       icon: "Check"
     }
   }, {
-    path: "brainnetome",
+    path: "bn_atlas",
     name: "brainnetome",
     component: () => import("@/views/atlas/brainnetome/Brainnetome.vue"),
     meta: {
       icon: "Check"
     }
   }, {
-    path: "macaque",
+    path: "macaque_bna",
     name: "macaque",
     meta: {
       icon: "Check"
     },
+    redirect: "/atlas/macaque_bna/3d",
     children: [{
-      path: "macaque_3d",
+      path: "3d",
       name: "macaque_3d",
       component: () => import("@/views/atlas/macaque/3d/Macaque.vue") 
     }, {
-      path: "macaque_nissl",
+      path: "nissl",
       name: "macaque_nissl",
       component: () => import("@/views/atlas/macaque/nissl/Nissl.vue") 
     }, {
-      path: "macaque_tracer",
+      path: "tracer",
       name: "macaque_tracer",
       component: () => import("@/views/atlas/macaque/tracer/Tracer.vue") 
     }]
@@ -119,6 +127,14 @@ const menus = [{
     component: () => import("@/views/atlas/lemur/Lemur.vue"),
     meta: {
       icon: "Check",
+      level: 1000
+    }
+  }, {
+    path: "manage",
+    name: "atlasmanage",
+    component: () => import("@/views/atlas/Manage.vue"),
+    meta: {
+      icon: "Setting",
       level: 1000
     }
   }]

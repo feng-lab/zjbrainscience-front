@@ -47,7 +47,7 @@
 </template>
 <script setup>
 import { AdminTablePage } from "admin-table-page";
-import BsDialogForm from "@/components/BsDialogForm.vue";
+import BsDialogForm from "@/components/form/BsDialogForm.vue";
 
 import { ref, inject, computed } from "vue";
 import { useI18n } from "vue-i18n";

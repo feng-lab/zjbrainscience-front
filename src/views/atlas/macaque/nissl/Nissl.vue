@@ -1,7 +1,7 @@
 <template>
 <el-row class="nissl">
-  <el-col :span="4">
-    <h1 style="color: #fff">Nissl Data</h1>
+  <el-col :span="4" class="p-t-20">
+    <h1 style="color: #fff">BNA Macaque </h1>
     <el-scrollbar max-height="calc(100vh-150px)" class="thumbnail">
       <div 
         v-for="(nissl, index) in nisslList" 
@@ -19,50 +19,58 @@
       </div>
     </el-scrollbar>
   </el-col>
-  <el-col :span="16" class="p-l-16 p-r-16 neuroglancer">
-    <vue-neuroglancer
-      ref="neuroRef"
-      :state="state"
-      @focus-segment-changed="handleFocusRegion"
+  <el-col :span="20">
+    <atlas-header
+      :sub-page="SUB_PAGE" 
+      :layout-change="false"
+      :atlas-props="{name: 'macaque_bna'}"
     />
-  </el-col>
-  <el-col :span="4" class="p-r-8">
-    <div class="slice">
-      <img :src="`${baseUrl}/slice_sagittal.png`"/>
-      <canvas id="slice" width="201" height="148" class="slice-line"/>
-    </div>
-    <div class="atlas-widget nissl-setting">
-      <p class="nissl-setting-label">Render Datas</p>
-      <div class="nissl-setting-item">
-        <span>Brain Region</span>
-        <el-switch v-model="showRegion" @change="val=>handleLayerVisible('region', val)"/>
-      </div>
-      <div class="nissl-setting-item">
-        <span>Nissl Slice Image</span>
-        <el-switch v-model="showImage" @change="val=>handleLayerVisible('image', val)"/>
-      </div>
-      <p class="nissl-setting-label">Render Setting</p>
-      <div>
-        <span>Brain Region Opacity</span>
-        <el-slider 
-          :min="0" 
-          :max="1" 
-          :step="0.1" 
-          v-model="meshAlpha" 
-          show-input
-          :show-input-controls="false"
-          input-size="small"
-          @input="handleMeshAlpha"
+    <el-row class="neuro">
+      <el-col :span="20" class="p-l-16 p-r-16 neuroglancer">
+        <vue-neuroglancer
+          ref="neuroRef"
+          :state="state"
+          @focus-segment-changed="handleFocusRegion"
         />
-      </div>
-    </div>
-    <bs-atlas-region-tooltip
-      v-if="focusRegion"
-      :segment-id="focusRegion"
-      :segment-info="focusRegionInfo"
-    />
+      </el-col>
+      <el-col :span="4">
+        <div class="slice">
+          <img :src="`${baseUrl}/slice_sagittal.png`"/>
+          <canvas id="slice" width="201" height="148" class="slice-line"/>
+        </div>
+        <div class="atlas-widget nissl-setting">
+          <p class="nissl-setting-label">Render Datas</p>
+          <div class="nissl-setting-item">
+            <span>Brain Region</span>
+            <el-switch v-model="showRegion" @change="val=>handleLayerVisible('region', val)"/>
+          </div>
+          <div class="nissl-setting-item">
+            <span>Nissl Slice Image</span>
+            <el-switch v-model="showImage" @change="val=>handleLayerVisible('image', val)"/>
+          </div>
+          <p class="nissl-setting-label">Render Setting</p>
+          <div>
+            <span>Brain Region Opacity</span>
+            <el-slider 
+              :min="0" 
+              :max="1" 
+              :step="0.1" 
+              v-model="meshAlpha" 
+              show-input
+              :show-input-controls="false"
+              input-size="small"
+              @input="handleMeshAlpha"
+            />
+          </div>
+        </div>
+        <bs-atlas-region-tooltip
+          v-if="focusRegion"
+          :segment-id="focusRegion"
+          :segment-info="focusRegionInfo"
+        />
+      </el-col>
+    </el-row>
   </el-col>
-
 </el-row>
 </template>
 <script setup>
@@ -73,6 +81,8 @@ import { onMounted, ref } from "vue";
 import { treeToIndices } from "../../utils";
 import LABEL_TREE from "../labelTree";
 import BsAtlasRegionTooltip from "@/components/bsAtlas/BsAtlasRegionTooltip.vue";
+import AtlasHeader from "../../AtlasHeader.vue";
+import SUB_PAGE from "../subpage";
 
 const neuroRef = ref();
 const nisslList = ['R04_A_P08_N13', 'R04_A_P12_N13', 'R04_A_P15_N13', 'R04_B_P24_N01', 'R04_B_P14_N01', 'R04_B_P12_N01', 'R04_B_P09_N13' ];
@@ -179,7 +189,11 @@ const handleFocusRegion = (regionId) => {
 <style lang="scss" scoped>
 .nissl {
   height: 100vh;
-  padding: 20px 8px;
+  padding: 0px 8px;
+
+  .neuro {
+    height: calc(100vh - 20px - 75px);
+  }
   
   .thumbnail {
     margin-top: 32px;

@@ -57,61 +57,31 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="neuroColSpan" class="neuro neuroglancer p-l-16 p-r-16" >
-        <vue-neuroglancer
-          ref="neuroRef"
-          :state="state"
-          :event-bindings="eventBindings"
-          @focus-segment-changed="handleFocusSegmentChanged"
-          @focus-annotation-changed="handleFocusAnnotationChanged"
-          @toggle-segment="handleToggleSegment"
+      <el-col :span="20" class="p-l-8 p-r-8">
+        <atlas-header
+          :sub-page=subPage
+          :atlas-props="props"
+          :segments-layout="segmentsLayout"
+          @layout-change="(val) => segmentsLayout = val"
         />
-        <div class="m-t-8" style="text-align: center" >
-          <el-radio-group v-model="segmentsLayout">
-            <el-radio-button label="4panel">
-              <img style="height: 18px" :src="panel4"/>
-            </el-radio-button>
-            <el-radio-button label="3sliceT">
-              <img style="height: 18px" :src="sliceT"/>
-            </el-radio-button>
-            <el-radio-button label="3sliceR">
-              <img style="height: 18px" :src="sliceR"/>
-            </el-radio-button>
-            <el-radio-button label="3sliceB">
-              <img style="height: 18px" :src="sliceB"/>
-            </el-radio-button>
-            <el-radio-button label="3sliceL">
-              <img style="height: 18px" :src="sliceL"/>
-            </el-radio-button>
-            <el-radio-button label="xy-3d">
-              <img style="height: 18px" :src="xy3d"/>
-            </el-radio-button>
-            <el-radio-button label="yz-3d">
-              <img style="height: 18px" :src="xz3d"/>
-            </el-radio-button>
-            <el-radio-button label="xz-3d">
-              <img style="height: 18px" :src="yz3d"/>
-            </el-radio-button>
-            <el-radio-button label="3d">
-              3d<img style="height: 18px"/>
-            </el-radio-button>
-            <el-radio-button label="xy">
-              xy<img style="height: 18px"/>
-            </el-radio-button>
-            <el-radio-button label="xz">
-              xz<img style="height: 18px"/>
-            </el-radio-button>
-            <el-radio-button label="yz">
-              yz<img style="height: 18px"/>
-            </el-radio-button>
-          </el-radio-group>
-        </div>
-      </el-col>
-      <el-col :span="infoSpan" style="padding: 20px 8px 0px 0px">
-        <bs-atlas-bdf ref="bdfRef" v-if="showBDF" v-bind="plugins?.bdf?.bdfData" class="m-b-8"/>
-        <bs-atlas-pcf ref="pcfRef" v-if="showPCF" v-bind="plugins?.pcf?.pcfData" class="m-b-8"/>
-        <bs-atlas-fc-and-sc ref="fcRef" v-if="showFC" v-bind="plugins?.fc?.fcData" type="FC" style="height: 400px"/>
-        <bs-atlas-fc-and-sc ref="scRef" v-if="showSC" v-bind="plugins?.sc?.scData" type="SC" style="height: 400px"/>
+        <el-row class="">
+          <el-col :span="neuroColSpan" class="neuro neuroglancer p-r-8">
+            <vue-neuroglancer
+              ref="neuroRef"
+              :state="state"
+              :event-bindings="eventBindings"
+              @focus-segment-changed="handleFocusSegmentChanged"
+              @focus-annotation-changed="handleFocusAnnotationChanged"
+              @toggle-segment="handleToggleSegment"
+            />
+          </el-col>
+          <el-col :span="infoSpan">
+            <bs-atlas-bdf ref="bdfRef" v-if="showBDF" v-bind="plugins?.bdf?.bdfData" class="m-b-8"/>
+            <bs-atlas-pcf ref="pcfRef" v-if="showPCF" v-bind="plugins?.pcf?.pcfData" class="m-b-8"/>
+            <bs-atlas-fc-and-sc ref="fcRef" v-if="showFC" v-bind="plugins?.fc?.fcData" type="FC" style="height: 400px"/>
+            <bs-atlas-fc-and-sc ref="scRef" v-if="showSC" v-bind="plugins?.sc?.scData" type="SC" style="height: 400px"/>
+          </el-col>
+        </el-row>
       </el-col>
     </el-row>
     <bs-atlas-setting 
@@ -168,17 +138,11 @@ import { useAtlas } from "@/compositions/atlas/useAtlas";
 import { useBigBrainLayer } from "@/compositions/atlas/useBigBrainLayer";
 import { connectivityProps, useConnectivityLayer } from "@/compositions/atlas/useConnectivityLayer";
 import BsAtlasFcAndSc from "./BsAtlasFcAndSc.vue";
-import panel4 from "@/assets/img/4panel.png";
-import sliceT from "@/assets/img/3sliceT.png";
-import sliceR from "@/assets/img/3sliceR.png";
-import sliceB from "@/assets/img/3sliceB.png";
-import sliceL from "@/assets/img/3sliceL.png";
-import xy3d from "@/assets/img/xy3d.png";
-import xz3d from "@/assets/img/xz3d.png";
-import yz3d from "@/assets/img/yz3d.png";
 import { useFcLayer } from "@/compositions/atlas/useFcLayer";
 import { useScLayer } from "@/compositions/atlas/useScLayer";
 import { useTemplateLayer } from "@/compositions/atlas/useTemplateLayer";
+import { useRouter } from "vue-router";
+import AtlasHeader from "@/views/atlas/AtlasHeader.vue";
 
 
 
@@ -192,6 +156,7 @@ const props = defineProps({
     default: {},
     required: true
   },
+  subPage: Array,
   title: String,
   site: String,
   plugins: Object,
@@ -214,8 +179,13 @@ const {
   segmentsLayout,
   segmentView,
   scfcView,
-  showRegion
+  showRegion,
+  supportLayout,
+  atlasList,
+  atlasUrl,
+  handleViewAtlas
 } = useAtlas(props);
+
 
 const { 
   name: segmentLayerName,
@@ -245,12 +215,17 @@ const showSC = ref(!!props?.plugins?.sc?.graph && props?.plugins?.sc?.defaultVis
 const showBDF = ref(!!props?.plugins?.bdf);
 const showPCF = ref(!!props?.plugins?.pcf);
 
+const router = useRouter();
+const currSubPage = ref(router.currentRoute.value.name);
+
+const viewAtlas = ref();
+
 const infoSpan = computed(() => {
   if(showFC.value || showSC.value) {
-    return 6;
+    return 7;
   }
   if(showBDF.value || showPCF.value) {
-    return 4;
+    return 5;
   }
 
   return 0;
@@ -258,7 +233,7 @@ const infoSpan = computed(() => {
 
 
 const neuroColSpan = computed(() => {
-  return 20 - infoSpan.value 
+  return 24 - infoSpan.value 
 })
 
 const otherDataReference = {
@@ -512,6 +487,11 @@ const handleToggleSegment = (segment, layer) => {
   }
 }
 
+const handleChangeSubPage = (page_path) => {
+  router.push(page_path);
+}
+
+
 
 const filterNode = (value, data) => {
   if(!value) return true;
@@ -621,8 +601,7 @@ const treeToIndices = (trees) => {
       }
     }
     .neuro {
-      margin-top: 20px;
-      height: 92vh;
+      height: 90vh;
       &-region-label {
         color: white;
         font-weight: 800;

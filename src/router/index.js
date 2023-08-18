@@ -120,8 +120,12 @@ router.beforeEach(async (to, from) => {
     if(!user.value.username) {
       await getUserInfo();
     }
+    console.log('to', to, from)
     const level = to?.meta?.level ?? 0;
     if(level > user.value.access_level) {
+      if(from.path === "/" || from.name === "login") {
+        return { name: "atlashome" };
+      }
       return { name: "403"};
     }
   }

@@ -129,7 +129,7 @@
   </bs-dialog-form>
 </template>
 <script setup>
-import BsDialogForm from "@/components/BsDialogForm.vue";
+import BsDialogForm from "@/components/form/BsDialogForm.vue";
 
 import { ref, reactive } from "vue";
 import { 
