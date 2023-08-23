@@ -149,6 +149,7 @@ export default {
     macaque_tracer: "Tracer",
     atlashome: "Home",
     atlasmanage: "Manage",
+    fly: "Fly"
   },
   loginInfoStorage: {
     title: "Data Storage",

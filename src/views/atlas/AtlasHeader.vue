@@ -1,10 +1,5 @@
 <template>
   <div class="toolbar dark">
-    <el-radio-group v-model="currSubPage">
-      <el-radio-button v-for="p in subPage" :label="p.name" :key="p.title" @click="handleChangeSubPage(p.path)">
-        <span> {{  p.title  }} </span>
-      </el-radio-button>
-    </el-radio-group>
     <div style="text-align: center" v-if="layoutChange" >
       <el-radio-group v-model="layout">
         <el-radio-button v-for="l in supportLayout" :label="l.layout" :key="l.layout">
@@ -15,6 +10,11 @@
         </el-radio-button>
       </el-radio-group>
     </div>
+    <el-radio-group v-model="currSubPage" v-if="subPage.length">
+      <el-radio-button v-for="p in subPage" :label="p.name" :key="p.title" @click="handleChangeSubPage(p.path)">
+        <span> {{  p.title  }} </span>
+      </el-radio-button>
+    </el-radio-group>
     <div>
       <el-select
         placeholder="Switch brain atlas"

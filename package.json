@@ -37,6 +37,7 @@
     "unplugin-element-plus": "^0.4.1",
     "unplugin-vue-components": "^0.22.7",
     "vite": "^3.0.9",
-    "vite-plugin-mock": "^2.9.6"
+    "vite-plugin-mock": "^2.9.6",
+    "vite-plugin-static-copy": "^0.17.0"
   }
 }

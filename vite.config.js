@@ -8,6 +8,7 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import ElementPlus from "unplugin-element-plus/vite";
 import { viteMockServe } from "vite-plugin-mock";
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 // https://vitejs.dev/config/
 export default ({ command }) => {
@@ -25,6 +26,9 @@ export default ({ command }) => {
         }
       }
     },
+    build: {
+      sourcemap: "inline"
+    },
     plugins: [
       vue(),
       ElementPlus({useSource: true}),
@@ -38,6 +42,14 @@ export default ({ command }) => {
         mockPath: "mock",
         localEnabled: true,
         watchFiles: true
+      }),
+      viteStaticCopy({
+        targets: [
+          {
+            src: "../neuroglancer/dist/module/*.bundle.*",
+            dest: ''
+          }
+        ]
       })
     ],
     css: {
@@ -50,7 +62,8 @@ export default ({ command }) => {
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
-      }
+      },
+      dedupe: ['vue']
     }
   })
 }

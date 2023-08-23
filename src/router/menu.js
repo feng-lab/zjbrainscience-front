@@ -115,9 +115,15 @@ const menus = [{
     }]
   }, {
     path: "eeum",
-    path: "eeum",
     name: "eeum",
     component: () => import("@/views/atlas/eeum/Eeum.vue"),
+    meta: {
+      icon: "Check"
+    }
+  }, {
+    path: "fly",
+    name: "fly",
+    component: () => import("@/views/atlas/fly/Fly.vue"),
     meta: {
       icon: "Check"
     }
