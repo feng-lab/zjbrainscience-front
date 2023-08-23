@@ -8,6 +8,8 @@
         :key="nissl" 
         :class="['thumbnail-item', nissl === showNissl ? 'thumbnail-item-active':'']" 
         @click="handleShowNissl(nissl)"
+        @mouseover="handleFocusNissl(nissl)"
+        @mouseleave="handleLeaveNissl"
       >
         <div class="thumbnail-item-title"> 
           <span class="thumbnail-item-title-seq">{{ `${index+1}/${nisslList.length}` }}</span>
@@ -34,7 +36,7 @@
         />
       </el-col>
       <el-col :span="4">
-        <div class="slice">
+        <div class="slice atlas-widget">
           <img :src="`${baseUrl}/slice_sagittal.png`"/>
           <canvas id="slice" width="201" height="148" class="slice-line"/>
         </div>
@@ -85,16 +87,8 @@ import AtlasHeader from "../../AtlasHeader.vue";
 import SUB_PAGE from "../subpage";
 
 const neuroRef = ref();
-const nisslList = ['R04_A_P08_N13', 'R04_A_P12_N13', 'R04_A_P15_N13', 'R04_B_P24_N01', 'R04_B_P14_N01', 'R04_B_P12_N01', 'R04_B_P09_N13' ];
-const nisslX= {
-  'R04_A_P08_N13': 30,
- 'R04_A_P12_N13': 36,
- 'R04_A_P15_N13': 40,
- 'R04_B_P24_N01': 74,
- 'R04_B_P14_N01': 97,
- 'R04_B_P12_N01': 102,
- 'R04_B_P09_N13': 108
-};
+let nisslList = ref([]);
+let sagittalInfo = {};
 const baseUrl = `http://${window.location.host}/atlas_data/macaque_bna/macaque_bna_nissl`;
 const thumbnailUrl = `${baseUrl}/thumbnail` 
 const state = ref({});
@@ -112,21 +106,26 @@ const focusRegionInfo = ref({});
 let canvas_line;
 let ctx_line;
 
-
-onMounted(() => {
+onMounted(async () => {
   canvas_line = document.getElementById("slice");
   ctx_line = canvas_line.getContext("2d");
+
+  const sagittalR = await fetch(`${baseUrl}/sagittal.json`);
+  sagittalInfo = await sagittalR.json();
+  nisslList.value = Object.keys(sagittalInfo);
+
   fetch(`${baseUrl}/state.json`).then((response) => {
     return response.json();
   }).then(data => {
-    handleShowNissl(nisslList[0], data);
+    handleShowNissl(nisslList.value[0], data);
   })
 })
 
-const drawSliceLine = (nissl) => {
-  ctx_line.clearRect(0,0, 201, 148);
-  const x = nisslX[nissl];
-  ctx_line.strokeStyle = "#52c41a";
+const drawSliceLine = (nissl, color) => {
+  //ctx_line.clearRect(0,0, 201, 148);
+  //canvas_line.width = 201;
+  const x = sagittalInfo[nissl].sagittal_position;
+  ctx_line.strokeStyle = color;
   ctx_line.lineWidth = 2;
   ctx_line.beginPath();
   ctx_line.moveTo(x, 0);
@@ -135,7 +134,8 @@ const drawSliceLine = (nissl) => {
 }
 
 const handleShowNissl = (nissl, currState=state.value) => {
-  drawSliceLine(nissl);
+  clearCanvas();
+  drawSliceLine(nissl, "#52c41a");
   showNissl.value = nissl;
   const { layers: originLayers } = currState;
   const layerUrl = `${baseUrl}/${nissl}`
@@ -157,7 +157,8 @@ const handleShowNissl = (nissl, currState=state.value) => {
 
 
 const handleLayerVisible = (dataType, visible) => {
-  const { layers } = state.value;
+  const currentStateJ = neuroRef.value.getViewerState().toJSON();
+  const { layers } = currentStateJ;
   const layerType = dataType === "image" ? dataType : "segmentation";
   layers.forEach(l => {
     if(layerType === l.type) {
@@ -165,13 +166,23 @@ const handleLayerVisible = (dataType, visible) => {
     }
   });
   state.value = {
-    ...state.value,
+    ...currentStateJ,
     layers
   }
 }
 
+const clearCanvas = () => {
+  canvas_line.width = 201;
+}
+
 const handleMeshAlpha = (val) => {
-  state.value.layers[3].selectedAlpha = val;
+  const currentStateJ = neuroRef.value.getViewerState().toJSON();
+  const { layers } = currentStateJ;
+  layers[3].selectedAlpha = val;
+  state.value = {
+    ...currentStateJ,
+    layers
+  }
 }
 
 const handleFocusRegion = (regionId) => {
@@ -179,6 +190,20 @@ const handleFocusRegion = (regionId) => {
     focusRegion.value = regionId;
     focusRegionInfo.value = labelIndices[regionId];
   }
+}
+
+const handleFocusNissl = (nissl) => {
+  if(nissl !== showNissl.value) {
+    console.log('focus nissl', nissl)
+    clearCanvas();
+    drawSliceLine(showNissl.value, "#52c14a")
+    drawSliceLine(nissl, "#1668dc")
+  }
+}
+
+const handleLeaveNissl = () => {
+  clearCanvas();
+  drawSliceLine(showNissl.value, "#52c14a")
 }
 
 
@@ -235,10 +260,11 @@ const handleFocusRegion = (regionId) => {
 
   .slice {
     position: relative;
+    height: 180px;
     img, .slice-line {
       position:absolute;
-      top: 0;
-      left: 0;
+      top: calc(50% - 74px);
+      left: calc(50% - 105px);
     }
   }
 
