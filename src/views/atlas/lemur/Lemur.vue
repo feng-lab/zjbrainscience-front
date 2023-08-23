@@ -1,8 +1,8 @@
 <template>
   <h1 style="color: #fff" class="p-16">
-    Lemur Cell Detection
+    Cell Detection
   </h1>
-  <div style="height: 90vh; margin-top: 20px">
+  <div style="height: 90vh; margin-top: 20px" class="neuroglancer">
     <vue-neuroglancer
       :state=state
     />
@@ -50,7 +50,8 @@ const state = ref({
       "name": "NeuN_detection_sephere"
     },
   ],
-  "layout": "3d"
+  "layout": "3d",
+   "showSlices": false,
 })
 
 </script>

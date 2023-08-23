@@ -49,16 +49,26 @@
     &--primary {
       background-color: #185ec1;
       border-color: #1b519c;
+      .is-link {
+       background-color: transparent;
+      }
+    }
+
+  }
+  .el-link {
+    --el-link-text-color: rgba(229, 224, 216, 0.85);
+    .el-icon {
+      margin-right: 4px;
+    }
+    &--primary {
+      --el-link-text-color: var(--el-color-primary);
     }
   }
-  .el-link__inner {
-    color: rgba(229, 224, 216, 0.85)
-  }
+
   .el-tag--success {
     --el-tag-bg-color: #52c41a;
     --el-tag-border-color: #52c41a;
     color: #fff;
   }
-  .el-radio-button {
-  }
+
 }
