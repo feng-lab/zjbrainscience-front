@@ -9,6 +9,7 @@ export function useFcLayer(baseUrl, atlasProps) {
       "url": `precomputed://${baseUrl}/${name}`,
     },
     visible: false,
+    "disableResponseDblclick0Event": true,
     "tab": "source"
   }]
   const layerSetting = {
