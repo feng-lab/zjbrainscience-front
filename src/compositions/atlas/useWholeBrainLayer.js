@@ -15,7 +15,7 @@ export function useWholeBrainLayer(baseUrl, atlasProps) {
     "segmentDefaultColor": "#ffffff",
   }]
   const layerSetting = {
-    label: "Whole Brain",
+    label: "Whole Brain Silhouette",
     key: name,
     layers: [name],
     defaultShow: true
