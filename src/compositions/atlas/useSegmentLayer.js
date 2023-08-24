@@ -34,7 +34,7 @@ export function useSegmentLayer(neuroRef, baseUrl, atlasProps) {
     "selectedAlpha": 0.8
   }]
   const layerSetting = {
-    label: "Mesh",
+    label: "Brain Regions",
     key: name,
     layers: [name],
     defaultShow: true
