@@ -1,7 +1,7 @@
 <template>
   <el-drawer
     v-model="showDrawer"
-    direction="ltr"
+    direction="rtl"
     :size="240"
     :show-close="false"
     :with-header="false"

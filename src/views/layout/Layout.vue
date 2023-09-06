@@ -14,9 +14,9 @@
         </el-main>
       </el-container>
     </el-container>
-    <div v-else class="atlas"> 
+    <div v-else class="atlas dark"> 
       <el-button
-        class="menu-icon atlas-widget"
+        class="menu-icon"
         @click="toggleDrawer"
       >
         <template #icon>
@@ -40,7 +40,7 @@ import BsIconMenu from "@/components/icons/BsIconMenu.vue";
 import useGlobalStore from "@/stores/global";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
-import { computed } from "vue";
+import { computed, watch } from "vue";
 
 const globalStore = useGlobalStore();
 const { toggleDrawer } = globalStore;
@@ -48,8 +48,16 @@ const { asideWidth } = storeToRefs(globalStore);
 
 const layoutType = computed(() => {
   const route = useRoute();
-  return route.fullPath.startsWith("/atlas/") ? "atlas" : "common";
+  const type = route.fullPath.startsWith("/atlas/") ? "atlas" : "common";
+  document.body.className = type === "atlas" ? "dark": "";
+  return type;
 }) 
+
+//watch(layoutType, (lt) => {
+//  document.body.className = lt === "atlas" ? "dark" : "";
+//}, {
+//  immediate: true
+//})
 
 </script>
 <style scoped lang="scss">
@@ -100,13 +108,14 @@ const layoutType = computed(() => {
   .atlas {
     background-color: #000;
     min-height: 100vh;
+    padding: 0 8px;
     .menu-icon {
       z-index: 10;
       position: absolute;
-      top: 20px;
-      left: calc(17% - 40px);
-      height: 48px;
-      width: 40px;
+      top: 22px;
+      right: 8px;
+      height: 32px;
+      width: 28px;
     }
     :deep(.el-drawer) {
       background-color: #141414;

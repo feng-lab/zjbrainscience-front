@@ -1,33 +1,3 @@
-export const atlasState = {
-  "dimensions": {
-    "x": [
-      0.0003,
-      "m"
-    ],
-    "y": [
-      0.0003,
-      "m"
-    ],
-    "z": [
-      0.0003,
-      "m"
-    ]
-  },
-  "position": [
-    97, 130, 86
-  ],
-  "crossSectionBackgroundAlpha": 0.3,
-  "crossSectionScale": 0.85,
-  "projectionOrientation": [
-    -0.5143676400184631,
-    0.5209823846817017,
-    -0.4737120568752289,
-    0.48948967456817627
-  ],
-  "projectionScale": 300,
-  "sliceViewCoordinate": "anatomy",
-  layout: "3sliceR"
-}
 export const categories = [
   {
       "name":"FP"
