@@ -1,71 +1,103 @@
 <template>
-  <bs-atlas
-    :tree-data="LABEL_TREE"
-    title="Brainnetome"
-    name="bn_atlas"
-    site="http://www.brainnetome.org"
-    whole-segment-id="275"
-    :atlas-state="atlasState"
-    :connectivity-edges="connectivityEdges"
-    :connectivity-endpoints="connectivityEndpoints"
-    :remove-octant="true"
-    :plugins="{
-      fc: {
-        spatial: true
-      },
-      sc: {
-        spatial: true
-      },
-      bdf: {
-        bdfData: {
-          bdfTree,
-          bdfTooltipInfo,
-          dataMap: bdfDataMap
-        }
-      },
-      pcf: {
-        pcfData: {
-          pcfTree,
-          pcfTooltipInfo,
-          dataMap: pcfDataMap
-        }
-      },
-      connectivity: true,
-      bigBrain: {
-        metaData: bigBrainParam,
-        normalizeRange: [0, 65535]
-      } 
-    }"
-  />
+  <atlas-base
+    :atlas-id="1"
+    :neuroglancer-datas="neuroglancerDatas"
+    :chart-datas="chartDatas"
+  >
+    <template #bdf> 
+      <bs-sunburst-chart
+        ref="bdfRef"
+        title="Behaviorial Domains"
+        :fetch-tree-api="getBehavioralDomainTrees"
+        :fetch-detail-api="getRegionBehavioralDomain"
+        :atlas-id="1"
+      />
+    </template>
+    <template #pcf> 
+      <bs-sunburst-chart
+        ref="pcfRef"
+        title="Paradigm Class"
+        :fetch-tree-api="getParadigmClassTrees"
+        :fetch-detail-api="getRegionParadigmClass"
+        :graph-radius="['60%', '75%']"
+        :atlas-id="1"
+      />
+    </template>
+  </atlas-base>
 </template>
 
 <script setup>
-import LABEL_TREE from "./labelTree";
-import { atlasState, connectivityEdges, connectivityEndpoints } from "./propsData";
-import BsAtlas from "@/components/bsAtlas/BsAtlas.vue";
+import { ref } from "vue";
+import AtlasBase from '../AtlasBase.vue';
 
-import bdfTree from "@/atlas_data/BDF_tree";
-import bdfTooltipInfo from "@/atlas_data/exp_BehavioralDomain";
-import bdfDataMap from "@/atlas_data/BDf_FDR05";
+import { getBehavioralDomainTrees, getRegionBehavioralDomain } from "@/api/bdf";
+import { getParadigmClassTrees, getRegionParadigmClass } from "@/api/pcf";
+import BsSunburstChart from "@/components/bsAtlas/BsSunburstChart.vue";
 
-import pcfTree from "@/atlas_data/PCF_tree";
-import pcfTooltipInfo from "@/atlas_data/exp_ParadigmClass";
-import pcfDataMap from "@/atlas_data/PCf_FDR05";
+const bdfRef = ref();
+const pcfRef = ref();
 
-const bigBrainParam = {
-  "transform": {
-    "matrix": [
-      [ 0.0789, 0, 0, -3.5 ],
-      [ 0, 0.0789, 0, -5.5 ],
-      [ 0, 0, 0.0789, 0.5 ]
-    ],
-    "outputDimensions": {
-      "x": [ 0.00125, "m" ],
-      "y": [ 0.00125, "m" ],
-      "z": [ 0.00125, "m" ]
-    }
+const neuroglancerDatas = [{
+  name: "bigbrain",
+  label: "Big Brain",
+  type: "image", 
+  options: {
+    transform: {
+      "matrix": [
+        [ 0.0789, 0, 0, -3.5 ],
+        [ 0, 0.0789, 0, -5.5 ],
+        [ 0, 0, 0.0789, 0.5 ]
+      ],
+      "outputDimensions": {
+        "x": [ 0.00125, "m" ],
+        "y": [ 0.00125, "m" ],
+        "z": [ 0.00125, "m" ]
+      }
+    },
   },
-  "shader": "#uicontrol invlerp  toNormalized\nvoid main() {\n  uint16_t x = getDataValue();\n  if(float(x.value) > 65500.0) {\n    emitTransparent();\n  } else {\n    emitGrayscale(toNormalized(x));\n  }\n}\n"
-}
+  transCondition: "float(x.value) > 65500.0",
+  dataType: "uint16_t"
+}, {
+  type: "regions",
+  options: {
+    removeOctant: true
+  }
+}, {
+  type: "wholeBrain"
+}, {
+  name: "sc",
+  label: "Structural Connectivity",
+  type: "segmentation",
+  regionRelated: true,
+  defaultHidden: true,
+  options: {
+    disableResponseDblclick0Event: true,
+  }
+}, {
+  name: "fc",
+  label: "Functional Connectivity",
+  type: "segmentation",
+  regionRelated: true,
+  defaultHidden: true,
+  options: {
+    disableResponseDblclick0Event: true,
+  }
+}, {
+  type: "connectivity",
+  connectivityType: "whole",
+  defaultHidden: true
+}]
+
+const chartDatas = [{
+  name: "bdf",
+  label: "Behaviorial Domains",
+  regionRelated: true,
+  chartRef: bdfRef
+}, {
+  name: "pcf",
+  label: "Paradigm Class",
+  regionRelated: true,
+  chartRef: pcfRef,
+}]
 
 </script>

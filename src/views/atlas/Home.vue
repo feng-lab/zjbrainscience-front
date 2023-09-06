@@ -46,7 +46,7 @@
 <script setup>
 
 import { getAtlasByPage } from "@/api/atlas";
-import { useAtlas } from "@/compositions/atlas/useAtlas";
+import { useBsAtlas, useBsAtlasList } from "@/compositions/bsAtlas/useBsAtlas";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -58,11 +58,12 @@ const atlasType = {
   fly: "Fly"
 }
 
+const atlasUrl = `http://${window.location.host}/atlas_data`;
+
 const {
-  atlasUrl,
   atlasList,
   handleViewAtlas
-} = useAtlas();
+} = useBsAtlasList();
 
 
 
@@ -78,7 +79,7 @@ const {
 }
 .atlas-home {
   width: 80%;
-  height: 70vh;
+  height: 80vh;
   position: absolute;
   top: 0;
   left: 0;
@@ -99,6 +100,7 @@ const {
   border: 1px solid #65a9f3;
   border-radius: 8px;
   overflow: hidden;
+  max-width: 300px;
   img {
     width: 100%;
     height: 180px;

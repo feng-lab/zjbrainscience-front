@@ -1,5 +1,6 @@
 @use "./base.scss";
 @use "admin-table-page/style/index.scss";
+@use "sass:meta";
 
 :root {
   --el-color-blue: #1890ff;
@@ -20,6 +21,8 @@ $type: primary, success, warning, danger, error, info, blue;
 
 $direction : ('t': 'top', 'b': 'bottom', 'r': 'right', 'l': 'left');
 $dimensions: ('p': 'padding', 'm': 'margin');
+
+$breakpoint: 1024px, 768px, 425px, 375px; 
 
 @each $dim, $dimt in $dimensions {
   //@for $i from 4 through 24 {
@@ -81,21 +84,42 @@ $dimensions: ('p': 'padding', 'm': 'margin');
   color: var(--el-text-color-regular) !important;
 }
 
-.between-flex {
+/** flex **/
+@mixin flex-display($justify: center, $direction: row) {
   display: flex;
-  justify-content: space-between;
+  flex-direction: $direction;
+  justify-content: $justify;
   align-items: center;
-  @media only screen and (max-width: 426px) {
+}
+
+@mixin between-flex-media($width: 425px) {
+  @include flex-display(space-between);
+  @media only screen and (max-width: $width) {
     flex-direction: column;
     justify-content: center;
+    align-items: center;
   }
 }
 
-.center-flex {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@each $bk in $breakpoint {
+  .between-flex--#{$bk} {
+    @include between-flex-media($bk);
+  }
 }
+
+
+.center-flex {
+  @include flex-display()
+}
+
+.column-center-flex {
+  @include flex-display($direction: column)
+}
+
+.between-flex {
+  @include between-flex-media();
+}
+
 
 .button-line {
   display: flex;
@@ -276,9 +300,12 @@ $dimensions: ('p': 'padding', 'm': 'margin');
 .atlas-widget{
   //background-color: #111a2c !important;
   background-color: rgba(17, 26, 44, 0.7) !important;
-  color: #1668dc !important;
   border: 1px solid #002c8c;
-  border-radius: 8px;
+  //background-color: rgb(36, 37, 37);
+  //border: 1px solid rgb(69, 72, 71);
+
+  color: #1668dc !important;
+  border-radius: 4px;
   //--el-fill-color-light: #000;
   padding: 10px;
 
@@ -287,6 +314,12 @@ $dimensions: ('p': 'padding', 'm': 'margin');
     background-color: rgba(17, 26, 44, 0.7) !important;
     color: #1668dc !important;
   }
+}
+
+.atlas-widget-dark {
+  background-color: rgb(36, 37, 37);
+  border: 1px solid rgb(69, 72, 71);
+  color: rgba(229, 224, 216, 0.85);
 }
 
 .atlas-info {

@@ -1,15 +1,16 @@
 <template>
-  <bs-atlas
-    title="Eeum"
-    name="eeum"
-    site="https://eeum-brain.com"
-    :tree-data="LABEL_TREE"
-    :atlas-state="atlasState"
-    :segment-colors="segmentColors"
+  <atlas-base
+    :atlas-id="4"
+    :neuroglancer-datas="neuroglancerDatas"
   />
 </template>
 
 <script setup>
-import LABEL_TREE from './labelTree';
-import { atlasState, segmentColors } from './propsData';
+import AtlasBase from '../AtlasBase.vue';
+const neuroglancerDatas = [{
+  type: "regions",
+  options: {
+    removeOctant: false
+  }
+}]
 </script>
