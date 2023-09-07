@@ -179,4 +179,36 @@
     border: 1px solid var(--bs-elevated-bg-color);
   } 
 
+  .el-dropdown-menu {
+    background-color: var(--bs-elevated-bg-color);
+    color: var(--bs-text-color);
+    border-color: var(--bs-border-color);
+    &__item {
+      &:not(.is-disabled):focus {
+        background-color: var(--bs-bg-hover-color);
+        color: var(--bs-text-color);
+
+      }
+      .active {
+        background-color: var(--bs-bg-active-color);
+      }
+    }
+  }
+
+  .el-dropdown-menu__item.active {
+    background-color: var(--bs-bg-active-color);
+
+  }
+
+  .el-dropdown__popper.el-popper {
+    background-color: var(--bs-elevated-bg-color);
+    border-color: var(--bs-border-color);
+  }
+  
+  .el-popper__arrow::before {
+    background-color: var(--bs-elevated-bg-color) !important;
+    border-color: var(--bs-border-color) !important;
+  }
+
+
 }

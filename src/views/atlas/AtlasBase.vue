@@ -10,7 +10,7 @@
     @layout-change="(val) => handleLayoutChange(val)"
   />
   <el-row class="atlas-content">
-    <el-col :span= "4" class="atlas-content-left">
+    <el-col :xs="5" :sm="5" :lg="4" class="atlas-content-left">
       <slot name="left">
         <bs-widgets header="Select Brain Regions" v-if="showRegionLabel">
 
@@ -102,7 +102,7 @@
         </div>
       </slot>
     </el-col>
-    <el-col :span="4" class="atlas-content-setting p-l-8" v-if="showSettingPanel">
+    <el-col :xs="5" :sm="5" :lg="4" class="atlas-content-setting p-l-8" v-if="showSettingPanel">
       <bs-widgets header="Render Data" v-if="showRenderData" show-close @close="showRenderData = false">
         <div v-for="(rd, key) in renderDatas" :key="key" class="between-flex"> 
           <span> {{ rd.label }} </span>
@@ -149,6 +149,7 @@ import { storeToRefs } from 'pinia';
 import useAtlasStore from '@/stores/atlas';
 import { computed, nextTick, onMounted, provide, ref } from "vue";
 import AtlasRenderSetting from './AtlasRenderSetting.vue';
+import useMediaQuery from '@/stores/mediaQuery';
 
 const props = defineProps({
   atlasId: {
@@ -197,13 +198,23 @@ const {
 provide("neuroRef", neuroRef);
 provide("renderDatas", renderDatas);
 
+const { breakpoint } = storeToRefs(useMediaQuery());
+
 const chartSpan = computed(() => {
-  return Object.values(renderDatas.value).filter(rd => rd.type === "chart" && rd.show).length || props.rightCustom ? props.rightSpan : 0;
+  if(Object.values(renderDatas.value).filter(rd => rd.type === "chart" && rd.show).length || props.rightCustom) {
+    const isNarrowScreen = breakpoint.value !== "lg" && breakpoint.value !== "xl";
+    return props.rightSpan + !!isNarrowScreen;
+  } else {
+    return 0;
+  }
 })
 
 const neuroSpan = computed(() => {
-  const settingSpan = showSettingPanel.value ? 4 : 0;
-  return 20 - chartSpan.value - settingSpan;
+  const isNarrowScreen = breakpoint.value !== "lg" && breakpoint.value !== "xl";
+  console.log('narrow screen?', isNarrowScreen)
+  const initLen = isNarrowScreen ? 19 : 20;
+  const settingSpan = showSettingPanel.value ? 4 + !!isNarrowScreen : 0;
+  return initLen - chartSpan.value - settingSpan;
 })
 
 
@@ -349,9 +360,9 @@ const handleToggleSegment = (segmentInfo, layer) => {
     treeRef.value.setChecked(segment, visible);
   }
 }
+
 onMounted(() => {
   const showRelatedRegionInfoDefault = [...props.neuroglancerDatas, ...props.chartDatas].some(rd => rd.regionRelated && !rd?.defaultHidden);
-  console.log('show relatedRegion info ?', showRelatedRegionInfoDefault)
   if(showRelatedRegionInfoDefault) {
     handleSelectRegion("1", renderDatas, neuroRef);
   }
@@ -363,6 +374,9 @@ onMounted(() => {
 <style lang="scss" scoped>
 .atlas-content {
   height: calc(100vh - 83px);
+  @media only screen and (max-width: 1024px){
+    height: calc(100vh - 127px);
+  }
   &-left, &-right, &-setting {
     height: 100%;
     display: flex;

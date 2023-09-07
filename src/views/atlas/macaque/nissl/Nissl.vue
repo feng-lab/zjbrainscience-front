@@ -217,6 +217,7 @@ onMounted(async () => {
   height: 180px;
   width: 210px;
   border: 1px solid var(--bs-border-color);
+  background: #000;
   border-radius: 8px;
   img, .slice-line {
     position:absolute;
