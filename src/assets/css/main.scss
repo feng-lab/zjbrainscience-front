@@ -22,7 +22,7 @@ $type: primary, success, warning, danger, error, info, blue;
 $direction : ('t': 'top', 'b': 'bottom', 'r': 'right', 'l': 'left');
 $dimensions: ('p': 'padding', 'm': 'margin');
 
-$breakpoint: 1024px, 768px, 425px, 375px; 
+$breakpoint: 1920px, 1440px, 1024px, 768px, 425px, 375px; 
 
 @each $dim, $dimt in $dimensions {
   //@for $i from 4 through 24 {
