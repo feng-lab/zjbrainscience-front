@@ -6,6 +6,7 @@ import { ElMessage } from 'element-plus';
 import i18n from '@/locals';
 import useUserStore from "@/stores/user";
 import { storeToRefs } from 'pinia';
+import { useMediaQuery } from "@/compositions/useMediaQuery";
 
 const hasLogined = () => {
   const token = jsCookie.get("access_token");
@@ -13,6 +14,30 @@ const hasLogined = () => {
 }
 
 const checkedAuth = (to, access_level) => {
+}
+
+const checkBrowserSupport = () => {
+  const supportBrowser = [
+    ["Chrome",  51],
+    ["Firefox", 46],
+    ["Safari", 15]
+  ]
+
+  const { userAgent } = navigator;
+  let support = false;
+
+  for(let [browser, version] of supportBrowser) {
+    const reg = new RegExp(`${browser}\\/([\\d.]+)`);
+    const cv = userAgent.match(reg);
+    if(!cv) continue;
+    const currVersion = Number(cv[1].split('.')[0]);
+    if(currVersion >= version) {
+      support = true;
+      break;
+    }
+  }
+
+  return support;
 }
 
 const router = createRouter({
@@ -88,6 +113,11 @@ const router = createRouter({
           name: "404",
           component: () => import("@/views/error/Error404.vue")
         }, 
+        {
+          path: "atlas/notSupport",
+          name: "atlasNotSupport",
+          component: () => import("@/views/atlas/AtlasNotSupport.vue")
+        }
       ]
     },
     {
@@ -105,6 +135,13 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
+  if(to.path.startsWith("/atlas/") && to.name !== "atlasNotSupport") {
+    const { screenSizeComparison } = useMediaQuery();
+    const screenSupport = screenSizeComparison('width', 'min', 1024);
+    if(!screenSupport || !checkBrowserSupport()) {
+      return { name: "atlasNotSupport"};
+    }
+  }
   if(!hasLogined() && to.name !== "login") {
     ElMessage.error(i18n.global.t("label.needLogin"));
     return { 
@@ -120,7 +157,6 @@ router.beforeEach(async (to, from) => {
     if(!user.value.username) {
       await getUserInfo();
     }
-    console.log('to', to, from)
     const level = to?.meta?.level ?? 0;
     if(level > user.value.access_level) {
       if(from.path === "/" || from.name === "login") {
