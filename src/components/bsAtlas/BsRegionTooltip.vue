@@ -6,7 +6,6 @@
       <template v-if="focusRegion[key]">
         <p class="icon-label region-property">
           <bs-icon-img icon="Memo"/>
-          {{key}}
           <strong>{{key.charAt(0).toUpperCase() + key.slice(1)}}</strong>
         </p>
         <p class="m-b-8">{{focusRegion[key]}}</p>
