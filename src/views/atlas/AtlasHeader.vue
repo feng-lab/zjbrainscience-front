@@ -12,7 +12,7 @@
     </div>
     <div class="toolbar center-flex">
       <div style="text-align: center" v-if="layoutChange" >
-        <el-dropdown v-if="subPage.length || (breakpoint !== 'lg' && breakpoint !== 'xl')" @command="handleSetLayout">
+        <el-dropdown v-if="breakpoint !== 'lg' && breakpoint !== 'xl'" @command="handleSetLayout">
           <el-button >Panel Layout <bs-icon-img icon="ArrowDown" class="m-l-8"/></el-button>
           <template #dropdown>
             <el-dropdown-menu> 
@@ -40,20 +40,20 @@
           <span> {{  p.title  }} </span>
         </el-radio-button>
       </el-radio-group>
-      <div>
-        <el-select
-          placeholder="Switch brain atlas"
-          v-model="viewAtlas"
-          @change="handleViewAtlas"
-        >
-          <el-option 
-            v-for="atlas in atlasList"
-            :key="atlas.id"
-            :value="atlas.name"
-            :label="atlas.title"
-          />
-        </el-select>
-      </div>
+      <!-- <div> -->
+        <!-- <el-select -->
+          <!-- placeholder="Switch brain atlas" -->
+          <!-- v-model="viewAtlas" -->
+          <!-- @change="handleViewAtlas" -->
+        <!-- > -->
+          <!-- <el-option  -->
+            <!-- v-for="atlas in atlasList" -->
+            <!-- :key="atlas.id" -->
+            <!-- :value="atlas.name" -->
+            <!-- :label="atlas.title" -->
+          <!-- /> -->
+        <!-- </el-select> -->
+      <!-- </div> -->
       <el-tooltip content="Render Data" v-if="renderDataSetting">
         <el-button class="icon-button" icon="Grid" @click="showRenderData = !showRenderData" :class="{active: showRenderData}"/>
       </el-tooltip>

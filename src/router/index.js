@@ -47,62 +47,63 @@ const router = createRouter({
       path: '/',
       name: 'home',
       //redirect: "/management",
-      redirect: "/experiments/list",
+      //redirect: "/experiments/list",
+      redirect: "/atlas/macaque_bna/3d",
       component: HomeLayout,
       children: [
         ...menus,
-        {
-          path: "experiments/edit/:experiment_id",
-          name: "experiments-edit",
-          component: () => import("@/views/experiments/forms/FormExperiment.vue"),
-          meta: {
-            level: 100
-          },
-          props: true
-        },
-        {
-          path: "experiments/detail/:experiment_id",
-          name: "experiments-detail",
-          meta: {
-            level: 10
-          },
-          component: () => import("@/views/experiments/ExperimentsDetail.vue"),
-          props: true,
-          children: [{
-            path: "",
-            name: "default",
-            redirect: {name: "paradigm"}
-          }, {
-            path: "paradigm",
-            name: "paradigm",
-            component: () => import("@/views/experiments/detail/DetailParadigm.vue")
-          }, {
-            path: "file",
-            name: "file",
-            component: () => import("@/views/experiments/detail/DetailFiles.vue")
-          }, {
-            path: "subject",
-            name: "subject",
-            component: () => import("@/views/subject/SubjectList.vue")
-          }, {
-            path: "equipment",
-            name: "equipment",
-            component: () => import("@/views/equipment/EquipmentList.vue")
-          }, {
-            path: "assistant",
-            name: "assistant",
-            component: () => import("@/views/experiments/detail/DetailAssistants.vue")
-          }]
-        },
-        {
-          path: "task/:taskid",
-          name: "task-detail",
-          component: () => import("@/views/task/TaskDetail.vue"),
-          meta: {
-            level: 100
-          },
-          props: true
-        },
+        //{
+        //  path: "experiments/edit/:experiment_id",
+        //  name: "experiments-edit",
+        //  component: () => import("@/views/experiments/forms/FormExperiment.vue"),
+        //  meta: {
+        //    level: 100
+        //  },
+        //  props: true
+        //},
+        //{
+        //  path: "experiments/detail/:experiment_id",
+        //  name: "experiments-detail",
+        //  meta: {
+        //    level: 10
+        //  },
+        //  component: () => import("@/views/experiments/ExperimentsDetail.vue"),
+        //  props: true,
+        //  children: [{
+        //    path: "",
+        //    name: "default",
+        //    redirect: {name: "paradigm"}
+        //  }, {
+        //    path: "paradigm",
+        //    name: "paradigm",
+        //    component: () => import("@/views/experiments/detail/DetailParadigm.vue")
+        //  }, {
+        //    path: "file",
+        //    name: "file",
+        //    component: () => import("@/views/experiments/detail/DetailFiles.vue")
+        //  }, {
+        //    path: "subject",
+        //    name: "subject",
+        //    component: () => import("@/views/subject/SubjectList.vue")
+        //  }, {
+        //    path: "equipment",
+        //    name: "equipment",
+        //    component: () => import("@/views/equipment/EquipmentList.vue")
+        //  }, {
+        //    path: "assistant",
+        //    name: "assistant",
+        //    component: () => import("@/views/experiments/detail/DetailAssistants.vue")
+        //  }]
+        //},
+        //{
+        //  path: "task/:taskid",
+        //  name: "task-detail",
+        //  component: () => import("@/views/task/TaskDetail.vue"),
+        //  meta: {
+        //    level: 100
+        //  },
+        //  props: true
+        //},
         {
           path: "403",
           name: "403",
