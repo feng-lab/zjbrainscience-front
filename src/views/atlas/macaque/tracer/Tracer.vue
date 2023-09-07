@@ -184,5 +184,9 @@ onMounted(async () => {
   flex-direction: column;
   gap: 8px;
   width: 20%;
+
+  @media only screen and (max-width: 1200px) {
+    width: 30%;
+  }
 }
 </style>
