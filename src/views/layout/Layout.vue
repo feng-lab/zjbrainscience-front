@@ -12,6 +12,7 @@
         <el-main class="main">
           <layout-content/>
         </el-main>
+        <layout-footer :layout-type="layoutType"/>
       </el-container>
     </el-container>
     <div v-else class="atlas dark"> 
@@ -25,6 +26,7 @@
       </el-button>
       <layout-drawer-sidebar/>
       <router-view/>
+      <layout-footer :layout-type="layoutType"/>
     </div>
   </div>
 </template>
@@ -41,6 +43,7 @@ import useGlobalStore from "@/stores/global";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { computed, watch } from "vue";
+import LayoutFooter from "./LayoutFooter.vue";
 
 const globalStore = useGlobalStore();
 const { toggleDrawer } = globalStore;
@@ -52,6 +55,7 @@ const layoutType = computed(() => {
   document.body.className = type === "atlas" ? "dark": "";
   return type;
 }) 
+
 
 //watch(layoutType, (lt) => {
 //  document.body.className = lt === "atlas" ? "dark" : "";
@@ -107,7 +111,7 @@ const layoutType = computed(() => {
 
   .atlas {
     background-color: #000;
-    min-height: 100vh;
+    height: 100vh;
     padding: 0 8px;
     .menu-icon {
       z-index: 10;
@@ -143,5 +147,4 @@ const layoutType = computed(() => {
 .main {
   margin: 16px 8px;
 }
-
 </style>

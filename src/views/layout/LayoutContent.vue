@@ -22,7 +22,7 @@ const { user } = useUserStore();
 </script>
 <style scoped>
 .content {
-  min-height: 100%;
+  height: calc(100vh - 144px);
   padding: 0 8px;
 }
 </style>
