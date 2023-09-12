@@ -83,7 +83,7 @@ import AtlasBase from "../../AtlasBase.vue"
 import { onMounted, ref } from "vue";
 import { VueNeuroglancer } from "@feng-lab/vue-neuroglancer";
 import "@feng-lab/vue-neuroglancer/style/index.css";
-import SUB_PAGE from "../subpage.js";
+//import SUB_PAGE from "../subpage.js";
 import { storeToRefs } from "pinia";
 import useAtlasStore from '@/stores/atlas';
 import BsRegionTooltip from "@/components/bsAtlas/BsRegionTooltip.vue";
@@ -106,6 +106,21 @@ const meshAlpha = ref(0.5);
 
 let canvas_line;
 let ctx_line;
+
+const SUB_PAGE = [{
+  name: "macaque_3d",
+  title: "3D Atlas",
+  path: "/atlas/macaque_bna/3d"
+}, {
+  name: "macaque_nissl",
+  title: "Nissl",
+  path: "/atlas/macaque_bna/nissl"
+}, {
+  name: "macaque_tracer",
+  title: "Tracer",
+  path: "/atlas/macaque_bna/tracer"
+}]
+
 
 const handleShowNissl = (nissl, currState=state.value) => {
   clearCanvas();

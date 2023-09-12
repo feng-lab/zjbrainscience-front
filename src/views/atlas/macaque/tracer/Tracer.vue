@@ -79,7 +79,7 @@ import AtlasBase from '../../AtlasBase.vue';
 
 import { VueNeuroglancer } from "@feng-lab/vue-neuroglancer";
 import "@feng-lab/vue-neuroglancer/style/index.css";
-import SUB_PAGE from "../subpage.js";
+//import SUB_PAGE from "../subpage.js";
 import BsWidgets from '@/components/bsAtlas/BsWidgets.vue';
 
 import { onMounted, ref, computed } from "vue";
@@ -94,6 +94,21 @@ const neuroRef = ref();
 const baseUrl = `http://${window.location.host}/atlas_data/macaque_bna`;
 const surfaceUrl = `${baseUrl}/macaque_bna_flat_surface`;
 const cellCntUrl = `${baseUrl}/macaque_bna_tracer`;
+
+const SUB_PAGE = [{
+  name: "macaque_3d",
+  title: "3D Atlas",
+  path: "/atlas/macaque_bna/3d"
+}, {
+  name: "macaque_nissl",
+  title: "Nissl",
+  path: "/atlas/macaque_bna/nissl"
+}, {
+  name: "macaque_tracer",
+  title: "Tracer",
+  path: "/atlas/macaque_bna/tracer"
+}]
+
 
 const regionList = ref([]);
 const showRegion = ref();
