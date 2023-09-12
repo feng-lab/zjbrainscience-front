@@ -30,7 +30,7 @@ export default ({ command }) => {
     plugins: [
       splitVendorChunkPlugin(),
       viteCompression({
-        threshold: 500000
+        threshold: 102400
       }),
       vue(),
       ElementPlus({useSource: true}),
