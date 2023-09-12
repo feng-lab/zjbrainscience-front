@@ -59,7 +59,7 @@ $breakpoint: 1920px, 1440px, 1024px, 768px, 425px, 375px;
 }
 
 .main-content {
-  min-height: calc(100vh - 112px);
+  min-height: calc(100vh - 144px);
 }
 
 .el-date-editor {
@@ -85,11 +85,11 @@ $breakpoint: 1920px, 1440px, 1024px, 768px, 425px, 375px;
 }
 
 /** flex **/
-@mixin flex-display($justify: center, $direction: row) {
+@mixin flex-display($justify: center, $direction: row, $align: center) {
   display: flex;
   flex-direction: $direction;
   justify-content: $justify;
-  align-items: center;
+  align-items: $align;
 }
 
 @mixin between-flex-media($width: 425px) {

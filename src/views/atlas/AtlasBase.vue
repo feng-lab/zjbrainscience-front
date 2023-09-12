@@ -373,9 +373,9 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .atlas-content {
-  height: calc(100vh - 83px);
+  height: calc(100vh - 125px);
   @media only screen and (max-width: 1024px){
-    height: calc(100vh - 127px);
+    height: calc(100vh - 187px);
   }
   &-left, &-right, &-setting {
     height: 100%;
