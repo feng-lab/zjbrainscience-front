@@ -83,7 +83,7 @@ import AtlasBase from "../../AtlasBase.vue"
 import { onMounted, ref } from "vue";
 import { VueNeuroglancer } from "@feng-lab/vue-neuroglancer";
 import "@feng-lab/vue-neuroglancer/style/index.css";
-import SUB_PAGE from "../subpage";
+import SUB_PAGE from "../subpage.js";
 import { storeToRefs } from "pinia";
 import useAtlasStore from '@/stores/atlas';
 import BsRegionTooltip from "@/components/bsAtlas/BsRegionTooltip.vue";

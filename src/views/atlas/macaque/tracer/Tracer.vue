@@ -79,7 +79,7 @@ import AtlasBase from '../../AtlasBase.vue';
 
 import { VueNeuroglancer } from "@feng-lab/vue-neuroglancer";
 import "@feng-lab/vue-neuroglancer/style/index.css";
-import SUB_PAGE from "../subpage";
+import SUB_PAGE from "../subpage.js";
 import BsWidgets from '@/components/bsAtlas/BsWidgets.vue';
 
 import { onMounted, ref, computed } from "vue";

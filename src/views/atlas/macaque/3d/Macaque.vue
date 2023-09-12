@@ -34,7 +34,7 @@ import BsAtlasGraphChart from "@/components/bsAtlas/BsAtlasGraphChart.vue";
 
 import { categories, nodes } from "./propsData";
 import { ref } from "vue";
-import SUB_PAGE from "../subpage";
+import SUB_PAGE from "../subpage.js";
 
 const scRef = ref();
 const fcRef = ref();
