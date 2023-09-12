@@ -1,7 +1,8 @@
 import { fileURLToPath, URL } from "node:url";
 
-import { defineConfig } from "vite";
+import { defineConfig, splitVendorChunkPlugin } from "vite";
 import vue from "@vitejs/plugin-vue";
+import viteCompression from "vite-plugin-compression";
 
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import AutoImport from "unplugin-auto-import/vite";
@@ -10,9 +11,9 @@ import ElementPlus from "unplugin-element-plus/vite";
 import { viteMockServe } from "vite-plugin-mock";
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
+
 // https://vitejs.dev/config/
 export default ({ command }) => {
-  console.log('command', command)
   return defineConfig({
     envDir: "./env",
     server: {
@@ -26,10 +27,11 @@ export default ({ command }) => {
         }
       }
     },
-    build: {
-      sourcemap: "inline"
-    },
     plugins: [
+      splitVendorChunkPlugin(),
+      viteCompression({
+        threshold: 500000
+      }),
       vue(),
       ElementPlus({useSource: true}),
       AutoImport({

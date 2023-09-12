@@ -1,4 +1,4 @@
-const SUB_PAGE = [{
+export default [{
   name: "macaque_3d",
   title: "3D Atlas",
   path: "/atlas/macaque_bna/3d"
@@ -10,6 +10,5 @@ const SUB_PAGE = [{
   name: "macaque_tracer",
   title: "Tracer",
   path: "/atlas/macaque_bna/tracer"
-}]
 
-export default SUB_PAGE;
+}]
