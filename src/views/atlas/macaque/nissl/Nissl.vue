@@ -41,7 +41,7 @@
       <div class="right-panel">
         <div class="sagittal">
           <img :src="`${baseUrl}/slice_sagittal.png`"/>
-          <canvas id="slice" width="201" height="148" class="slice-line"/>
+          <canvas id="slice" width="355" height="225" class="slice-line"/>
         </div>
         <bs-widgets header="Render Setting">
           <div class="m-b-8">
@@ -143,7 +143,7 @@ const drawSliceLine = (nissl, color) => {
   ctx_line.lineWidth = 2;
   ctx_line.beginPath();
   ctx_line.moveTo(x, 0);
-  ctx_line.lineTo(x, 148);
+  ctx_line.lineTo(x, 225);
   ctx_line.stroke();
 }
 
@@ -154,7 +154,7 @@ const handleLeaveNissl = () => {
 
 
 const clearCanvas = () => {
-  canvas_line.width = 201;
+  canvas_line.width = 355;
 }
 
 const handleMeshAlpha = (val) => {
@@ -214,15 +214,15 @@ onMounted(async () => {
   top: 0px;
   right: 0px;
   z-index: 99;
-  height: 180px;
-  width: 210px;
+  height: 225px;
+  width: 355px;
   border: 1px solid var(--bs-border-color);
   background: #000;
   border-radius: 8px;
   img, .slice-line {
     position:absolute;
-    top: calc(50% - 74px);
-    left: calc(50% - 100px);
+    top: calc(50% - 112px);
+    left: calc(50% - 177px);
   }
 }
 
