@@ -149,7 +149,8 @@ export default {
     macaque_tracer: "Tracer",
     atlashome: "Home",
     atlasmanage: "Manage",
-    fly: "Fly"
+    fly: "Fly",
+    psoct: "Ps oct"
   },
   loginInfoStorage: {
     title: "数据存储",

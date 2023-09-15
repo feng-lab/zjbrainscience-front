@@ -217,6 +217,10 @@ watch(ctrlImage, (layerName) => {
     const { range, window } = trackable.value;
     imgDataWindow.value = window;
     imgDataRange.value = range;
+    if(range[0] > range[1]) {
+      imgDataRange.value = [range[1], range[0]];
+      invertNormalizedRange.value = true;
+    }
   }
 }, {
   immediate: true
