@@ -10,7 +10,7 @@
     @layout-change="(val) => handleLayoutChange(val)"
   />
   <el-row class="atlas-content">
-    <el-col :xs="5" :sm="5" :lg="4" class="atlas-content-left">
+    <el-col :span="leftSpan" class="atlas-content-left">
       <slot name="left">
         <bs-widgets header="Select Brain Regions" v-if="showRegionLabel">
 
@@ -147,7 +147,7 @@ import { useBrainAtlasLayout } from '@/compositions/bsAtlas/useBrainAtlasLayout'
 import { useRegionHandler } from '@/compositions/bsAtlas/useBrainRegionsLayer';
 import { storeToRefs } from 'pinia';
 import useAtlasStore from '@/stores/atlas';
-import { computed, nextTick, onMounted, provide, ref } from "vue";
+import { computed, nextTick, onMounted, provide, ref, useSlots } from "vue";
 import AtlasRenderSetting from './AtlasRenderSetting.vue';
 import useMediaQuery from '@/stores/mediaQuery';
 
@@ -174,14 +174,9 @@ const props = defineProps({
 })
 
 const showHelper = ref(false);
-const showRenderSetting = ref(false);
-const showRenderData = ref(false);
 
-provide('showHelper', showHelper);
-provide('showRenderSetting', showRenderSetting);
-provide('showRenderData', showRenderData);
 
-const showSettingPanel = computed(() => showHelper.value || showRenderSetting.value || showRenderData.value);
+const showRegionLabel = props.neuroglancerDatas.filter(d => d.type === "regions" && !d?.notShowLabelTree).length > 0;
 
 
 
@@ -195,26 +190,39 @@ const {
   layerFocusHandler
 } = useBsAtlas(props);
 
-provide("neuroRef", neuroRef);
-provide("renderDatas", renderDatas);
 
 const { breakpoint } = storeToRefs(useMediaQuery());
 
+//const slots = useSlots();
+
+const isNarrowScreen = () => {
+  return breakpoint.value !== "lg" && breakpoint.value !== "xl";
+}
+
+const leftSpan = computed(() => {
+  const slots = useSlots();
+  const { left = null } = slots;
+  if(!left && !showRegionLabel) {
+    return 0;
+  }
+  return isNarrowScreen() ? 5 : 4;
+})
+
+const showRenderData = ref(!leftSpan.value);
+const showRenderSetting = ref(false);
+const showSettingPanel = computed(() => showHelper.value || showRenderSetting.value || showRenderData.value);
+
 const chartSpan = computed(() => {
   if(Object.values(renderDatas.value).filter(rd => rd.type === "chart" && rd.show).length || props.rightCustom) {
-    const isNarrowScreen = breakpoint.value !== "lg" && breakpoint.value !== "xl";
-    return props.rightSpan + !!isNarrowScreen;
+    return props.rightSpan + !!isNarrowScreen();
   } else {
     return 0;
   }
 })
 
 const neuroSpan = computed(() => {
-  const isNarrowScreen = breakpoint.value !== "lg" && breakpoint.value !== "xl";
-  console.log('narrow screen?', isNarrowScreen)
-  const initLen = isNarrowScreen ? 19 : 20;
-  const settingSpan = showSettingPanel.value ? 4 + !!isNarrowScreen : 0;
-  return initLen - chartSpan.value - settingSpan;
+  const settingSpan = showSettingPanel.value ? 4 + !!isNarrowScreen() : 0;
+  return 24 - chartSpan.value - settingSpan - leftSpan.value;
 })
 
 
@@ -224,7 +232,6 @@ const {
   getAtlasLayout
 } = useBrainAtlasLayout();
 
-const showRegionLabel = props.neuroglancerDatas.filter(d => d.type === "regions" && !d?.notShowLabelTree).length > 0;
 
 const {
   treeRef,
@@ -360,6 +367,12 @@ const handleToggleSegment = (segmentInfo, layer) => {
     treeRef.value.setChecked(segment, visible);
   }
 }
+
+provide('showHelper', showHelper);
+provide('showRenderSetting', showRenderSetting);
+provide('showRenderData', showRenderData);
+provide("neuroRef", neuroRef);
+provide("renderDatas", renderDatas);
 
 onMounted(() => {
   const showRelatedRegionInfoDefault = [...props.neuroglancerDatas, ...props.chartDatas].some(rd => rd.regionRelated && !rd?.defaultHidden);

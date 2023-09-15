@@ -128,6 +128,13 @@ const menus = [{
       icon: "Check"
     }
   }, {
+    path: "ps_oct",
+    name: "psoct",
+    component: () => import("@/views/atlas/ps_oct/Psoct.vue"),
+    meta: {
+      icon: "Check"
+    }
+  }, {
     path: "lemur",
     name: "lemur",
     component: () => import("@/views/atlas/lemur/Lemur.vue"),
