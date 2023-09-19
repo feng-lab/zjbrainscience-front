@@ -3,18 +3,22 @@
     <div class="footer-title">Website Contact</div>
     <div class="column-center-flex" style="align-items: flex-start">
       <div class="lab-info center-flex"> 
-        <span><el-link style="font-size: 0.5rem; font-weight: bold" src="https://www.zhejianglab.com/person?pid=286&id=41&bannerId=191">Feng Lab</el-link></span>
-        <span>Hybrid Enhanced Intelligence Research Center</span>
-        <span>Research Institute of Artificial Intelligence</span>
-        <span>Zhejiang Lab</span>
+        <span><el-link style="font-size: 0.5rem; font-weight: bold" href="https://www.zhejianglab.com/person?pid=286&id=41&bannerId=191" target="_blank">Feng Lab</el-link></span>
+        <span> Research Center for Augmented Intelligence</span>
+        <span> Institute of Artificial Intelligence </span>
+        <span> Zhejiang Lab </span>
+        <span> Hangzhou </span>
+        <span> China</span>
       </div>
       <div class="contact"> 
         <div class="contact-item" v-for="user in contacts" :key="user.name">
           <span class="contact-item-name"> 
-            <el-icon><Message/></el-icon>
             <span>{{ user.name }}</span>
           </span>
-          <span class="contact-item-email"> {{ user.email }} </span>
+          <span class="contact-item-email"> 
+            <el-icon><Message/></el-icon>
+            <span>{{ user.email }}</span> 
+          </span>
         </div>
       </div>
     </div>
@@ -61,13 +65,12 @@ const contacts = [{
       align-items: flex-start;
     }
     &-name {
-      display: flex;
-      align-items: center;
-      justify-items: center;
-      gap: 2px;
       font-weight: 600;
     }
     &-email {
+      display: flex;
+      align-items: center;
+      gap: 2px;
       color: var(--bs-placeholder-text-color);
       @media only screen and (max-width: 1024px){
         margin-top: -10px;

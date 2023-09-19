@@ -23,7 +23,7 @@ export default ({ command }) => {
           target: "http://10.101.40.3:1919/"
         },
         "/atlas_data": {
-          target: "http://127.0.0.1/"
+          target: "http://10.11.140.35:2000/"
         }
       }
     },
