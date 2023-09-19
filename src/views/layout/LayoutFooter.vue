@@ -4,6 +4,8 @@
     <div class="column-center-flex" style="align-items: flex-start">
       <div class="lab-info center-flex"> 
         <span>Feng Lab</span>
+        <span> Hangzhou </span>
+        <span> China</span>
       </div>
       <div class="contact"> 
         <div class="contact-item" v-for="user in contacts" :key="user.name">
@@ -56,10 +58,6 @@ const contacts = [{
       align-items: flex-start;
     }
     &-name {
-      display: flex;
-      align-items: center;
-      justify-items: center;
-      gap: 2px;
       font-weight: 600;
     }
   }
