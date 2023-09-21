@@ -167,4 +167,16 @@ router.beforeEach(async (to, from) => {
     }
   }
 })
+
+router.onError((error, to, from) => {
+  const errMsg = error.message.toLowerCase();
+  if(/dynamically imported/.test(errMsg) || /importing.*module.*failed/.test(errMsg) ) {
+    if(to?.fullPath) {
+      window.location.href = to.fullPath;
+    } else {
+      window.location.reload();
+    }
+  }
+})
+
 export default router
