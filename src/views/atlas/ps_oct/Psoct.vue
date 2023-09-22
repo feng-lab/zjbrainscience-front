@@ -3,10 +3,12 @@
     :atlas-id="atlasId"
     :neuroglancer-datas="neuroglancerDatas"
   />
+  <el-image :src="ColorWheel" fit="fill" class="color-wheel"/>
 </template>
 
 <script setup>
 import AtlasBase from '../AtlasBase.vue';
+import ColorWheel from "@/assets/img/hsvColorWheel.png";
 
 const atlasId = 6;
 
@@ -35,3 +37,14 @@ const neuroglancerDatas = [{
 }]
 
 </script>
+
+<style lang="scss" scoped>
+.color-wheel {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  z-index: 99;
+  width: 150px;
+  height: 150px;
+}
+</style>

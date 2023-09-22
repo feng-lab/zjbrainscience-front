@@ -173,6 +173,8 @@ const props = defineProps({
   headerSetting: Object
 })
 
+const emits = defineEmits(["dataVisibleChange"])
+
 const showHelper = ref(false);
 
 
@@ -314,7 +316,7 @@ let _crossSectionScale = null;
 
 const handleDataVisibleChange = (renderData, isRender) => {
   const { name, type, regionRelated=false, subLayer=null } = renderData;
-  console.log('visible change', renderData)
+  emits("dataVisibleChange", renderData, isRender);
 
   if(regionRelated && isRender ) {
     nextTick(async()=> {

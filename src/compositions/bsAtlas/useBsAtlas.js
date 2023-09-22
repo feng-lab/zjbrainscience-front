@@ -41,7 +41,6 @@ export function useBsAtlas(props) {
 
   const state = ref({
     showAxisLines: true,
-    showScaleBar: false,
     showDefaultAnnotations: false,
     sliceViewCrossSectionBgColor: "#141414",
     //crossSectionBackgroundColor: "#3c89e8",
