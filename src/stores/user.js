@@ -5,8 +5,8 @@ import jsCookie from "js-cookie";
 import router from "@/router";
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
-import { useUtils } from "@/compositions/useUtils";
 import i18n from "@/locals";
+import { decodePwd, encodePwd } from "@/utils/password";
 
 const useUserStore = defineStore("user", () => {
   const user = ref({
@@ -16,7 +16,12 @@ const useUserStore = defineStore("user", () => {
   });
 
   const doLogin = async (userForm) => {
-    const res = await loginApi(userForm);
+    const { password } = userForm;
+    const pwd = encodePwd(password);
+    const res = await loginApi({
+      ...userForm,
+      password: pwd
+    });
     jsCookie.set("access_token", res.access_token);
     jsCookie.set("token_type", res.token_type);
     const { from="/" }= router.currentRoute.value.query;

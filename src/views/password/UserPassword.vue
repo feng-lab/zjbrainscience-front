@@ -34,6 +34,7 @@ import { ElMessage } from "element-plus";
 import useMediaQuery from "@/stores/mediaQuery";
 import { storeToRefs } from "pinia";
 import useUserStore from "@/stores/user";
+import { encodePwd } from "@/utils/password";
 
 const pwdFormRef = ref();
 const pwdForm = reactive({
@@ -89,8 +90,8 @@ const handleSubmit = (formRef) => {
       const { current, newPwd } = pwdForm;
       try{
         await updatePasswordApi({
-          old_password: current,
-          new_password: newPwd
+          old_password: encodePwd(current),
+          new_password: encodePwd(newPwd)
         });
         ElMessage.success(i18n.t("elmessage.updatePasswordSuccess"));
         doLogout();
