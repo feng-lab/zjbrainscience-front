@@ -33,6 +33,7 @@ import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ACCESS_LEVEL } from '@/utils/common';
 import { newUserApi } from '@/api/user';
+import { encodePwd } from '@/utils/password';
 
 
 const i18n = useI18n();
@@ -69,7 +70,7 @@ const handleSubmit = async () => {
     username, 
     staff_id,
     access_level,
-    password: `${username}#brain#${staff_id}` 
+    password: encodePwd(`${username}#brain#${staff_id}`) 
   })
 }
 
