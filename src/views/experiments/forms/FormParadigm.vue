@@ -1,12 +1,13 @@
 <template>
-  <bs-form-dialog
-    :title="title"
-    :do-form-submit="doFormSubmit"
-    :do-form-reset="handleReset"
-    :form-model="paradigmForm"
-    @open="handleOpen"
-    @closed="handleClose"
-    v-loading="loading"
+  <bs-dialog-form
+    :title="$t('paradigm.text')"
+    :form-submit-api="() => handleSubmit()"
+    :form-update-api="() => handleSubmit(true)"
+    :form-reset-api="handleReset"
+    :form-detail-api="handleDetail"
+    :onClose="handleClose"
+    @submit-success="handleSubmitSuccess"
+    v-model:form="paradigmForm"
   >
     <el-form-item :label="$t('paradigm.formlabel.image')">
       <el-upload
@@ -25,102 +26,116 @@
       <el-input 
         type="textarea"
         autosize
-        v-model="paradigmForm.desc"
+        v-model="paradigmForm.description"
       />
     </el-form-item>
     <el-dialog 
       v-model="dialogVisible" 
       width="80%"
+      append-to-body
     >
       <div class="preview">
         <img class="preview-image" :src="dialogImageUrl" alt="Preview Image" />
       </div>
     </el-dialog>
-
-  </bs-form-dialog>
+  </bs-dialog-form>
 </template>
 <script setup>
-import BsFormDialog from '@/components/BsFormDialog.vue';
+import BsDialogForm from '@/components/form/BsDialogForm.vue';
 
-import { computed, inject, ref, toRef } from "vue";
+import { inject, ref } from "vue";
 import { useUpload } from "@/compositions/useUpload";
-import { newParadigmApi, paradigmDetailApi } from "@/api/experiments";
-import { ElMessage } from "element-plus";
+import { newParadigmApi, paradigmDetailApi, updateParadigmApi } from "@/api/paradigm.js";
+import { deleteFileApi } from "@/api/files.js";
+import { getPreviewUrl } from '@/utils/common';
 import { useI18n } from "vue-i18n";
-
-const props = defineProps({
-  paradigmId: Number
-})
-
-const emits = defineEmits(["formClosed"]);
-const loading = ref(false);
+import { ElMessage } from 'element-plus';
 
 const i18n = useI18n();
-const type = ref("new");
-const title = computed(() => {
-  let res = `${i18n.t(`button.${type.value}`)}${i18n.t('paradigm.text')}`;
-  if(props.paradigmId) {
-    res += ` (ID: ${props.paradigmId})`
-  }
-  return res;
-})
 
 
-const experimentid = inject("exid");
-const filePath = inject("filePath");
+const experiment_id = inject("exid");
 
-const { files, options } = useUpload(experimentid);
+const { files, options } = useUpload(experiment_id);
 
 const paradigmForm = ref({
-  desc: "",
+  description: "",
+  experiment_id
 });
+
+const modelClosed = ref(false);
 
 
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 
-const doFormSubmit = () => {
-  const desc = paradigmForm.value.desc;
-  if( !desc && files.value.length === 0) {
+const handleSubmit = (update) => {
+  const { description } = paradigmForm.value;
+  if( !description && files.value.length === 0) {
     ElMessage.error(i18n.t("valid.newParadigm"));
     return Promise.reject();
   }
-  const imgUrl = files.value.map(file => `${filePath}${file.name}`);
-  return newParadigmApi(
-    imgUrl,
-    paradigmForm.value.desc,
-    experimentid
-  ).then(() => {
-    emits("formclosed", true);
-  })
-}
-const handlePictureCardPreview = (uploadFile) => {
-  dialogImageUrl.value = uploadFile.url
-  dialogVisible.value = true
-}
-
-const handleOpen = async () => {
-  const { paradigmId } = props;
-  if(paradigmId) {
-    loading.value = true;
-    const res = await paradigmDetailApi(experimentid, paradigmId);
-    loading.value = false;
-    files.value = res.imgUrl.map(url => ({ url }))
-    paradigmForm.value.desc = res.desc;
-    type.value = "edit";
+  const images = files.value.map(file => file.id);
+  let params = { 
+    images,
+    ...paradigmForm.value,
+  }
+  if(update) {
+    const { creator } = paradigmForm.value; 
+    return updateParadigmApi({
+      ...params,
+      creator: creator.id
+    });
+  } else {
+    return newParadigmApi(params);
   }
 }
 
-const handleClose = () => {
-  console.log('close the dialog')
-  type.value = "new";
-  handleReset();
-  emits("formclosed");
+const handlePictureCardPreview = (uploadFile) => {
+  dialogImageUrl.value = getPreviewUrl(uploadFile.id);
+  dialogVisible.value = true;
 }
 
-const handleReset = () => {
+const handleDetail = async (id) => {
+  const { images, ...paradigm } = await paradigmDetailApi(id);
+  files.value = images.map(id => ({id, url: getPreviewUrl(id) }));
+  return Promise.resolve(paradigm);
+}
+
+const handleSubmitSuccess = (res) => {
+  const { id } = paradigmForm.value;
+  if(!id && res) {
+    paradigmForm.value.id = res;
+  } 
+}
+
+const clearUploadedFiles = () => {
+  console.log('files: ', files.value)
+  console.log('need delete files')
+  files.value.forEach(async (file) => {
+    await deleteFileApi(file.id);
+  })
+}
+
+const handleClose = () => {
+  const { id } = paradigmForm.value;
+  console.log('paradigm id: ', id, files.value.length && !id)
+  if(files.value.length && !id ) {
+    clearUploadedFiles();
+  }
+}
+
+
+const handleReset = (afterClose) => {
+  console.log('reset after close ? ', afterClose)
+  if(!afterClose) {
+    clearUploadedFiles();
+  }
+  paradigmForm.value= {
+    ...paradigmForm.value,
+    description: ""
+  };
   files.value = [];
-  paradigmForm.value.desc = "";
 }
 
 </script>

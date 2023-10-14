@@ -1,26 +1,36 @@
 <template>
   <el-row class="m-b-16">
     <el-col :span="24">
-      <el-button type="primary" icon="Plus" @click="addParadigm">{{ $t("button.newParadigm") }}</el-button>
+      <el-button 
+        type="primary" 
+        icon="Plus" 
+        @click="() => handleShowForm()" 
+        v-if="user.access_level > 10"
+      >{{ $t("button.newParadigm") }}</el-button>
     </el-col>
   </el-row>
-  <el-empty v-if="!paradigmList.length"/>
-  <el-scrollbar height="580px" v-else>  
     <el-card 
-      :header="showDetail ? '实验范式列表': ''" 
-      :shadow="showDetail ? 'always' : 'never'"
-      :class="showDetail ? '': 'list'"
-      :body-style="showDetail ? {}: {padding: 0}"
+      shadow="never"
+      class="list"
+      :body-style="{padding: 0}"
     >
+      <bs-load-more 
+        ref="loadMoreRef"
+        height="600px"
+        :limit="6"
+        :load-method="paradigmsByExApi"
+        v-model="paradigmList"
+        :query="query"
+      >
       <bs-list>
         <bs-list-item
           v-for="paradigm in paradigmList"
           :key="paradigm.id"
           :title="`${$t('paradigm.text')} - ${paradigm.id}`"
-          :description="paradigm.desc"
+          :description="paradigm.description"
           :actions="[{
             text: $t('button.edit'),
-            onClick: () => handleEdit(paradigm.id)
+            onClick: () => handleShowForm(paradigm.id)
           }, {
             text: $t('button.delete'),
             onClick: () => handleDelete(paradigm.id)
@@ -30,78 +40,66 @@
             <el-icon color="#faad14"><Histogram/></el-icon>
           </template>
           <bs-list-item-content
-            title="创建人"
-            content="wynne"
+            :title="$t('paradigm.creator')"
+            :content="paradigm.creator.username"
           />
           <bs-list-item-content
-            title="创建时间"
-            content="2022-10-20 15:00:00"
+            :title="$t('paradigm.createTime')"
+            :content="paradigm.gmt_create"
           />
         </bs-list-item>
       </bs-list>
+      </bs-load-more>
     </el-card>
-  </el-scrollbar>
   <form-paradigm
-    v-model="showParadigm" 
-    :paradigm-id="editParadigm"
-    @form-closed="handleClose"
+    v-model="showForm" 
+    v-model:cu-id="itemId"
+    @submit-success="handleSubmitSuccess"
   />
 </template>
 <script setup>
 import BsList, { BsListItem, BsListItemContent } from "@/components/list";
 import FormParadigm from "../forms/FormParadigm.vue";
+import BsLoadMore from "@/components/BsLoadMore.vue";
 
-import { inject, onMounted, ref } from "vue";
-import { paradigmsByExApi, deleteParadigmApi } from "@/api/experiments";
+import { inject, ref } from "vue";
+import { paradigmsByExApi, deleteParadigmApi } from "@/api/paradigm.js";
 import { useUtils } from "@/compositions/useUtils";
 import { useI18n } from "vue-i18n";
 import { ElMessage } from "element-plus";
+import useUserStore from "@/stores/user";
+import { useShowForm } from "@/compositions/useShowForm";
 
 const paradigmList = ref([]);
 
-const activeParadigm = ref([]);
 const experimentid = inject("exid");
-const editParadigm = ref();
+const { user } = useUserStore();
+const loadMoreRef = ref();
+const query = {
+  experiment_id: experimentid
+}
 const { systemConfirm } = useUtils();
-const showDetail = ref(false);
+const { showForm, itemId, handleShowForm } = useShowForm();
 
 const i18n = useI18n();
-onMounted(() => {
-  loadParadigms();
-})
 
 const loadParadigms = async () => {
   paradigmList.value = await paradigmsByExApi(experimentid);
-}
-
-const showParadigm = ref(false);
-
-const addParadigm = () => {
-  showParadigm.value = true;
-}
-
-const handleEdit = (id) => {
-  showParadigm.value = true;
-  editParadigm.value = id;
-}
-
-const handleClose = (reload) => {
-  editParadigm.value = null;
-  if(reload) {
-    loadParadigms();
-  }
 }
 
 const handleDelete = (id) => {
   systemConfirm(
     i18n.t("paradigm.deleteConfirm", { id }),
     async () => {
-      await deleteParadigmApi(experimentid, id);
-      ElMessage.success(`${i18n.t("button.delete")}${i18n.t("status.success")}`);
-      loadParadigms();
+      await deleteParadigmApi(id);
+      ElMessage.success(i18n.t("elmessage.deleteSuccess"));
+      loadMoreRef.value.handleLoadMore();
     }
   )
+}
 
+const handleSubmitSuccess = () => {
+  loadMoreRef.value.handleLoadMore();
 }
 
 </script>

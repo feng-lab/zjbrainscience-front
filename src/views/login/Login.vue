@@ -16,22 +16,23 @@
             :model="loginForm"
             :rules="rules"
           >
-            <el-form-item prop="account">
+            <el-form-item prop="username">
               <template #label>
                 <span class="hidden-xs-only">
-                  {{ $t("label.account") }} {{ $t("colon") }}
+                  {{ $t("user.staff_id") }}{{$t("colon")}}
                 </span>
               </template>
               <el-input 
                 prefix-icon="UserFilled"
-                :placeholder="$t('placeholder.input', { info: $t('label.account') })"
-                v-model="loginForm.account"
+                :placeholder="$t('placeholder.input', { info: $t('user.staff_id') })"
+                v-model="loginForm.username"
+                clearable
               />
             </el-form-item>
             <el-form-item prop="password">
               <template #label>
                 <span class="hidden-xs-only">
-                  {{ $t("label.password") }} {{ $t("colon") }}
+                  {{ $t("label.password") }}{{$t("colon")}} 
                 </span>
               </template>
               <el-input
@@ -41,6 +42,7 @@
                 prefix-icon="Lock"
                 :placeholder="$t('placeholder.input', { info: $t('label.password') })"
                 v-model="loginForm.password"
+                clearable
               />
             </el-form-item>
             <el-form-item>
@@ -89,22 +91,22 @@ import { useI18n } from 'vue-i18n';
 import useUserStore from "@/stores/user";
 
 const loginFormRef = ref();
+const { doLogin, user } = useUserStore();
 const loginForm = ref({
-  account: "",
+  username: user.staff_id,
   password: ""
 });
 
 const { resetForm } = useUtils();
 
-const { doLogin } = useUserStore();
 
 
 const i18n = useI18n();
 
 const rules = computed(() => ({
-  account: [{ 
+  username: [{ 
     required: true, 
-    message: i18n.t("valid.require", {field: i18n.t("label.account"), action: i18n.t("action.input")}),
+    message: i18n.t("valid.require", {field: i18n.t("user.staff_id"), action: i18n.t("action.input")}),
     trigger: "blur" 
   }],
   password: [{ 

@@ -1,23 +1,51 @@
 import request from "@/utils/request";
 
+/**
+ * 新增实验
+ * @param { Object } data 
+ * @returns 
+ */
 export function newExApi(data) {
   return request({
-    url: "/api/addExperiments",
+    url: "/api/createExperiment",
     method: "POST",
     data
   })
 }
 
-export function deleteExApi(experimentsid) {
+/**
+ * 更新实验
+ * @param { Object } data 
+ * @returns 
+ */
+export function updateExApi(data) {
   return request({
-    url: "/api/deleteExperiments",
+    url: "/api/updateExperiment",
+    method: "POST",
+    data
+  })
+}
+
+/**
+ * 删除实验
+ * @param { Number } id - 实验ID
+ * @returns 
+ */
+export function deleteExApi(id) {
+  return request({
+    url: "/api/deleteExperiment",
     method: "DELETE",
     data: {
-      experimentsid
+      id
     }
   })
 }
 
+/**
+ * 分页获取实验列表
+ * @param { Object } params 
+ * @returns 
+ */
 export function allExByPageApi(params) {
   return request({
     url: "/api/getExperimentsByPage",
@@ -26,56 +54,17 @@ export function allExByPageApi(params) {
   })
 }
 
-export function exDetailApi(experimentsid) {
+/**
+ * 获取实验详情
+ * @param {*} experiment_id 
+ * @returns 
+ */
+export function exDetailApi(experiment_id) {
   return request({
-    url: "/api/getExperimentsById",
+    url: "/api/getExperimentInfo",
     method: "GET",
     params: {
-      experimentsid
-    }
-  })
-}
-
-export function newParadigmApi(imgUrl, desc, experimentsid) {
-  return request({
-    url: "/api/addParadigms",
-    method: "POST",
-    data: {
-      imgUrl,
-      desc,
-      experimentsid
-    }
-  })
-}
-
-export function paradigmsByExApi(experimentsid) {
-  return request({
-    url: "/api/getParadigms",
-    method: "GET",
-    params: {
-      experimentsid
-    }
-  })
-}
-
-export function paradigmDetailApi(experimentsid, id) {
-  return request({
-    url: "/api/getParadigmById",
-    method: "GET",
-    params: {
-      experimentsid,
-      id
-    }
-  })
-}
-
-export function deleteParadigmApi(experimentsid, id) {
-  return request({
-    url: "/api/deleteParadigms",
-    method: "DELETE",
-    params: {
-      experimentsid,
-      id
+      experiment_id
     }
   })
 }

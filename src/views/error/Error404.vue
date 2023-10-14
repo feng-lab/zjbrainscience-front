@@ -1,7 +1,7 @@
 <template>
   <bs-error-page
     code="404"
-    info="抱歉，您当前访问的页面不存在！"
+    :info="$t('errorPage.notFound')"
     :img-src="ImgSrc"
   />
 </template>

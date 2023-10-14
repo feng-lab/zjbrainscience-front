@@ -3,7 +3,7 @@ export default [{
   method: "GET",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       data: {
         "total|0-100": 1,
         "list|10": [{
@@ -29,7 +29,7 @@ export default [{
   response: ({ query }) => {
     const { subjectid } = query;
     return {
-      code: 1,
+      code: 0,
       data: {
           subjectid,
           "gender|1": ["女", "男"],
@@ -51,7 +51,7 @@ export default [{
   method: "POST",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       message: "新增人类被试成功"
     }
   }
@@ -60,7 +60,7 @@ export default [{
   method: "POST",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       message: "更新人类被试成功"
     }
   }
@@ -69,7 +69,7 @@ export default [{
   method: "Delete",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       message: "删除人类被试成功"
     }
   }

@@ -6,7 +6,7 @@
 </template>
 <script setup>
 const props = defineProps({
-  icon: String,
+  icon: [String, Object],
   iconColor: String,
   imgSrc: String,
   size: {
@@ -25,5 +25,4 @@ const props = defineProps({
   }
 })
 
-console.log('bs icon img', props)
 </script>
