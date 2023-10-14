@@ -60,29 +60,42 @@
       </el-card>
     </el-col>
     <el-col :xs="24" :sm="24" :md="16">
-      <el-card shadow="hover">
-        <template #header>
-          <div class="between-flex data-growth-header">
-            <span>{{ $t('home.charts.dataGrowth') }}</span>
-            <span class="extra">
+      <el-card shadow="hover" :header="$t('home.charts.dataGrowth')">
+        <el-row :gutter="12">
+          <el-col :xs="24" :sm="12" :lg="7" :xl="{span: 4, offset: 8}" >
+            <el-button class="date-control-button" @click="getDate['week']">{{ $t("datepicker.week")}}</el-button>
+            <el-button class="date-control-button" @click="getDate['month']">{{ $t("datepicker.month")}}</el-button>
+          </el-col>
+          <el-col :xs="24" :sm="12" :lg="7" :xl="4" >
+            <el-button class="date-control-button" @click="getDate['halfofyear']">{{ $t("datepicker.halfofyear")}}</el-button>
+            <el-button class="date-control-button" @click="getDate['year']">{{ $t("datepicker.year")}}</el-button>
+          </el-col>
+          <el-col :xs="24" :sm="12" :lg="5" :xl="4">
             <el-date-picker
-              size="small"
-              v-model="viewCycle"
-              type="daterange"
-              unlink-panels
+              v-model="start"
+              type="date"
+              style="width: 100%"
               value-format="YYYY-MM-DD"
-              range-separator="-"
-              :start-placeholder="$t('label.startTime')"
-              :end-placeholder="$t('label.endTime')"
-              :shortcuts="shortcuts"
-              @change="getDataGrowth"
+              :placeholder="$t('label.startTime')"
+              :prefix-icon="BsIconStarttime"
+              :disabled-date="(time) => time.getTime() > Date.now()"
             />
-            </span>
-          </div>
-        </template>
+          </el-col>
+          <el-col :xs="24" :sm="12" :lg="5" :xl="4">
+            <el-date-picker
+              type="date"
+              v-model="end"
+              style="width: 100%"
+              value-format="YYYY-MM-DD"
+              :placeholder="$t('label.endTime')"
+              :prefix-icon="BsIconEndtime"
+              :disabled-date="(time) => time.getTime() > Date.now()"
+            />
+          </el-col>
+        </el-row>
 
         <bs-charts-line
-          style="height: 300px" 
+          style="height: 258px" 
           area
           :option="{
             xAxis: {
@@ -136,8 +149,10 @@ import BsChartsPie from "@/components/charts/BsChartsPie.vue";
 import BsChartsBar from "@/components/charts/BsChartsBar.vue";
 import BsChartsLine from "@/components/charts/BsChartsLine.vue";
 import BsChartsLiquid from "@/components/charts/BsChartsLiquid.vue";
+import BsIconStarttime from "@/components/icons/BsIconStarttime.vue";
+import BsIconEndtime from "@/components/icons/BsIconEndtime.vue";
 
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useShortcuts } from "@/compositions/useShortcuts";
 import { 
   statisticApi, 
@@ -148,7 +163,7 @@ import {
   dataGrowthApi
 } from "@/api/home";
 
-const { shortcuts } = useShortcuts();
+const { start, end, getDate } = useShortcuts();
 const getDataSet = (data) => {
   const dataset = {
     dimensions: [],
@@ -161,7 +176,6 @@ const getDataSet = (data) => {
   return dataset;
 }
 
-const viewCycle = ref(shortcuts.value[0].value());
 
 const statistic = ref({
   experiments: 0,
@@ -216,53 +230,24 @@ const getSick = async () => {
   sickInfo.value = getDataSet(res);
 }
 
+watch([start, end], () => {
+  getDataGrowth()
+})
+
 const getDataGrowth = async () => {
-  const [ start, end ] = viewCycle.value;
-  dataGrowth.value = await dataGrowthApi(start, end);
-}
-
-const data1 = ref([
-  { value: 335, name: "Direct" },
-  { value: 310, name: "Email" },
-  { value: 234, name: "Ad Networks" },
-  { value: 135, name: "Video Ads" },
-  { value: 1548, name: "Search Engines" }
-])
-
-const dataset = {
-  dimensions: ["sex", "30岁以下", "30岁到60岁之间", "60岁以上"],
-  source: [
-    {sex: "男性", "30岁以下": 5, "30岁到60岁之间": 5, "60岁以上": 3},
-    {sex: "女性", "30岁以下": 9, "30岁到60岁之间": 2, "60岁以上": 7}
-  ]
-}
-
-let base = +new Date(1988, 9, 3);
-let oneDay = 24 * 3600 * 1000;
-let data2 = [[base, Math.random() * 300]];
-for (let i = 1; i < 20000; i++) {
-  let now = new Date((base += oneDay));
-  data2.push([+now, Math.round((Math.random() - 0.5) * 20 + data2[i - 1][1])]);
-}
-
-const data3 = [150, 230, 224, 218, 135, 147, 260];
-const dataset2 = {
-  dimensions: ["sick", "单位1", "单位2", "单位3"],
-  source: [
-    {sick: "癫痫", "单位1": 107, "单位2": 133, "单位3": 93},
-    {sick: "睡眠障碍", "单位1": 31, "单位2": 156, "单位3": 14},
-    {sick: "老年痴呆", "单位1": 5, "单位2": 92, "单位3": 454},
-    {sick: "中风", "单位1": 23, "单位2": 48, "单位3": 32},
-    {sick: "其他", "单位1": 2, "单位2": 6, "单位3": 34},
-  ]
-
-}
-</script>
-<style lang="scss" scoped>
-.data-growth-header {
-  @media only screen and (max-width: 767px) {
-    flex-direction: column;
-    justify-content: center;
+  if(start.value && end.value) {
+    if(start.value < end.value) {
+      dataGrowth.value = await dataGrowthApi(start.value, end.value);
+    } else {
+      end.value = null;
+    }
   }
 }
+
+
+</script>
+<style lang="scss" scoped>
+  .date-control-button {
+    width: calc(50% - 6px);
+  }
 </style>

@@ -1,75 +1,148 @@
 <template>
   <el-card class="main-content">
     <el-descriptions 
-      :title="exForm.experimenttitle" 
-      :column="3"
+      :column="column[breakpoint]"
+      :title="`${exForm.name} (ID: ${exForm.id})`"
       border
       class="m-b-24"
     >
       <template #extra>
-        <bs-route-link path="/experiments" type="danger">
+        <bs-route-link :path="`/experiments/edit/${exForm.id}`" icon="Edit">
+          {{ $t("button.edit") }}
+        </bs-route-link>
+        <bs-route-link path="/experiments/list" type="danger">
           <el-icon><CaretLeft /></el-icon>
           {{ $t("button.back") }}
         </bs-route-link>
       </template>
-      <el-descriptions-item :label="$t('experiments.detail.exId')" align="center">
-        {{ experimentid }}
+      <el-descriptions-item :label="$t('experiments.detail.type')" align="center">
+        {{ EXPERIMENT_TYPE[exForm.type] }}
       </el-descriptions-item>
-      <el-descriptions-item :label="$t('experiments.detail.exType')" align="center">
-        {{ exForm.experimentstype }}
+      <el-descriptions-item :label="$t('experiments.detail.main_operator')" align="center">
+        {{ `${exForm?.main_operator.username}(${exForm?.main_operator.staff_id})`}}
       </el-descriptions-item>
       <el-descriptions-item :label="$t('label.startTime')" align="center">
-        {{ exForm.startdate }}
-      </el-descriptions-item>
-      <el-descriptions-item :label="$t('experiments.detail.subjectType')" align="center">
-        {{ exForm.subjectstype }}
-      </el-descriptions-item>
-      <el-descriptions-item :label="$t('experiments.detail.subjectCnt')" align="center">
-        {{ exForm.numberofsubjects }}
+        {{ exForm.start_at }}
       </el-descriptions-item>
       <el-descriptions-item :label="$t('label.endTime')" align="center">
-        {{ exForm.enddate }}
+        {{ exForm.end_at }}
       </el-descriptions-item>
-      <el-descriptions-item :label="$t('experiments.detail.exLocal')" label-align="center">
-        {{ exForm.location}}
-      </el-descriptions-item>
-      <el-descriptions-item :label="$t('experiments.detail.exDesc')" label-align="center">
-        {{ exForm.description }}
-      </el-descriptions-item>
+        <el-descriptions-item :label="$t('experiments.detail.tags')" label-align="center">
+          <el-tag
+            v-for="tag in exForm.tags"
+            :key="tag"
+            class="m-l-8"
+            effect="dark"
+          >
+            {{ tag}}
+          </el-tag>
+        </el-descriptions-item>
+      <template v-if="showMore">
+        <el-descriptions-item :label="$t('experiments.detail.subject_type')" align="center">
+          {{ $t(`subject.category.${exForm.subject_type}`) }}
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('experiments.detail.subject_num')" align="center">
+          {{ exForm.subject_num }}
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('experiments.detail.session_num')" align="center">
+          {{ exForm.session_num }}
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('experiments.detail.trail_num')" align="center">
+          {{ exForm.trail_num }}
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('experiments.detail.neuron_source')" align="center">
+          {{ exForm.neuron_source }}
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('experiments.detail.stimulation_type')" align="center">
+          {{ exForm.stimulation_type }}
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('experiments.detail.experiment_id')" align="center">
+          {{ experiment_id }}
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('experiments.detail.is_non_invasive')" align="center">
+          {{ YES_OR_NO[exForm.is_non_invasive] }}
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('experiments.detail.is_shared')" align="center">
+          {{ YES_OR_NO[exForm.is_shared] }}
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('experiments.detail.location')" label-align="center">
+          {{ exForm.location }}
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('experiments.detail.description')" label-align="center">
+          {{ exForm.description }}
+        </el-descriptions-item>
+      </template>
     </el-descriptions>
-    <el-tabs v-model="activeName">
-      <el-tab-pane :label="$t('experiments.tab.paradigm')" name="paradigm"><DetailParadigm /></el-tab-pane>
-      <el-tab-pane :label="$t('term.file')" name="file"><DetailFiles /></el-tab-pane>
-      <el-tab-pane :label="$t('subject.text')" name="subject"><DetailSubject /></el-tab-pane>
-      <el-tab-pane :label="$t('experiments.tab.device')" name="equipment"><DetailEquipment /></el-tab-pane>
-    </el-tabs>
+    <div style="overflow:hidden">
+      <el-button class="right" link size="small" type="primary" v-if="showMore" @click="showMore=false"> 
+        {{ $t("button.collapse") }}
+        <el-icon><arrow-up/></el-icon>
+      </el-button>
+      <el-button class="right" link size="small" type="primary" v-else @click="showMore=true"> 
+        {{ $t("button.moreDetails") }}
+        <el-icon><arrow-down/></el-icon>
+      </el-button>
+    </div>
+    <el-menu
+      :default-active="activeName"
+      mode="horizontal"
+      router
+    >
+      <el-menu-item :index="`${routePrefix}paradigm`">{{$t('experiments.tab.paradigm')}}</el-menu-item>
+      <el-menu-item :index="`${routePrefix}file`">{{$t('term.file')}}</el-menu-item>
+      <el-menu-item :index="`${routePrefix}subject`">{{$t('subject.text')}}</el-menu-item>
+      <el-menu-item :index="`${routePrefix}equipment`">{{$t('experiments.tab.equipment')}}</el-menu-item>
+      <el-menu-item :index="`${routePrefix}assistant`">{{$t('experiments.tab.assistant')}}</el-menu-item>
+    </el-menu>
+    <div class="m-t-16">
+      <router-view/>
+    </div>
   </el-card>
   
 </template>
 <script setup>
-import DetailParadigm from "./detail/DetailParadigm.vue";
-import DetailFiles from "./detail/DetailFiles.vue";
-import DetailSubject from "./detail/DetailSubject.vue";
-import DetailEquipment from "./detail/DetailEquipment.vue";
 import BsRouteLink from "@/components/BsRouteLink.vue";
 
-import { ref, provide, onMounted } from "vue";
+import { ref, provide, onMounted, computed } from "vue";
 import { exDetailApi } from "@/api/experiments";
+import { storeToRefs } from "pinia";
+import useMediaQuery from "@/stores/mediaQuery";
+import { useRoute } from "vue-router";
+import { useUtils } from "@/compositions/useUtils";
+import { EXPERIMENT_TYPE, SUBJECT_TYPE } from "@/utils/common";
 
 const props = defineProps({
-  experimentid: String
+  experiment_id: String 
 });
 const exForm = ref({
-  datapath: ""
+  datapath: "",
+  main_operator: {
+    username: "",
+    staff_id: ""
+  }
 });
 
-provide('exid', props.experimentid);
-provide('filePath', exForm.value.datapath);
+const routePrefix = `/experiments/detail/${props.experiment_id}/`;
 
-const activeName = ref("paradigm");
+const column = {
+  "xl": 4,
+  "lg": 4,
+  "md": 2,
+  "sm": 2,
+  "xs": 1
+}
+const { breakpoint } = storeToRefs(useMediaQuery()); 
+
+const showMore = ref(false);
+const route = useRoute();
+
+const activeName = computed(() => route.fullPath); 
+const { YES_OR_NO } = useUtils();
+
+provide('exid', Number(props.experiment_id));
 
 onMounted(async () => {
-  exForm.value = await exDetailApi(props.experimentid);
+  exForm.value = await exDetailApi(props.experiment_id);
 })
 
 

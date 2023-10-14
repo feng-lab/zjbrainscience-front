@@ -7,7 +7,7 @@
       <div class="error-page--desc--code">{{ code }}!</div>
       <div class="error-page--desc--info">{{ info }}</div>
       <div>
-        <el-button type="primary" @click="backToHome">返回首页</el-button>
+        <el-button type="primary" @click="backToHome">{{ $t("button.backHome") }}</el-button>
       </div>
     </el-col>
   </el-row>

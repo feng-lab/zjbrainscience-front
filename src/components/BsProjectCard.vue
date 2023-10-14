@@ -17,15 +17,19 @@
       <slot/>
     </div>
     <div class="project-card-footer">
-      <span 
+      <template
         v-for="btn in buttons"
-        :key="btn.text"
-        @click="btn.onClick"
-        class="project-card-footer--action center-flex"
       >
-        <bs-icon-img :icon="btn.icon"/> 
-        <span class="m-l-4">{{ btn.text }}</span>
-      </span>
+        <span 
+          :key="btn.text"
+          @click="btn.onClick"
+          v-if="!btn.hide"
+          class="project-card-footer--action center-flex"
+        >
+          <bs-icon-img :icon="btn.icon"/> 
+          <span class="m-l-4">{{ btn.text }}</span>
+        </span>
+      </template>
     </div>
   </div>
 </template>
@@ -34,7 +38,7 @@ import BsIconImg from "@/components/BsIconImg.vue";
 
 defineProps({
   icon: {
-    type: String,
+    type: [String, Object],
     default: "Histogram"
   },
   iconColor: {
@@ -50,6 +54,7 @@ defineProps({
 </script>
 <style lang="scss" scoped>
 .project-card {
+  margin: 4px 8px;
   &-header {
     padding: 12px 20px;
     &--title {

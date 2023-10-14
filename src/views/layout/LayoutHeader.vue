@@ -15,15 +15,16 @@
       </el-icon>
     </div>
     <div class="header-content--right">
-      <div class="action">
+      <div class="action" v-if="user.access_level">
         <el-dropdown
           :hide-on-click="false"
           trigger="click"
+          @visible-change="handleVisibleNotify"
         >
           <el-badge 
-            :max="10" 
-            :value="messageCnt"
-            :hidden="!messageCnt"
+            :max="100" 
+            :value="unReadCount"
+            :hidden="!unReadCount"
             class="m-r-16 m-t-4 action-badge"
           >
             <el-icon><Message/></el-icon>
@@ -32,24 +33,24 @@
               <div class="p-8 message-header">
                 <span>{{ $t("label.notice") }}</span>
               </div>
-              <el-empty v-if="nodata" class="message-nodata" :image-size="32"/>
+              <el-empty v-if="!msgList.length" class="message-nodata" :image-size="32"/>
               <template v-else>
                 <bs-notice-msg
                   v-for="(message, index) in msgList"
-                  @click="handleClickMsg(message.id, index, message.status)"
+                  @click="handleClickMsg(message, index)"
                   :key="message.id"
                   :message="message"
                 />
               </template>
               <div class="message-button">
-                <el-button link :disabled="nodata" @click="markAll">
-                  <el-icon><bs-icon-clear/></el-icon>
-                  {{ $t("button.read") }}
+                <el-button link :disabled="!unReadCount" @click="markAll">
+                  <el-icon class="m-r-4"><bs-icon-clear/></el-icon>
+                  {{ $t("notify.action.allMark") }}
                 </el-button>
                 <el-divider direction="vertical"/>
-                <el-button link :disabled="nodata">
-                {{ $t("button.more") }}
-                <el-icon><DArrowRight/></el-icon>
+                <el-button link @click="goToNotification">
+                  {{ $t("button.more") }}
+                <el-icon class="m-l-4"><DArrowRight/></el-icon>
                 </el-button>
               </div>
           </template>
@@ -61,11 +62,17 @@
             <el-icon>
               <bs-icon-avatar/>
             </el-icon>
-            {{ user.name }} 
+            {{ user.username }} 
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item icon="switch-button" @click="doLogout">{{ $t('button.logout') }}</el-dropdown-item>
+              <el-dropdown-item icon="postcard">
+                <el-tooltip :content="$t('label.changeAccessLevel')" placement="top">
+                  <el-tag>{{$t(`auth.${user.access_level}`)}}</el-tag>
+                </el-tooltip>
+              </el-dropdown-item>
+              <el-dropdown-item icon="lock" @click="goToPassword" divided>{{ $t('menus.password') }}</el-dropdown-item>
+              <el-dropdown-item icon="switch-button" @click="()=>doLogout(false)">{{ $t('button.logout') }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown> 
@@ -82,33 +89,36 @@ import BsLangChange from "@/components/BsLangChange.vue";
 import BsIconAvatar from "@/components/icons/BsIconAvatar.vue";
 import BsIconClear from "@/components/icons/BsIconClear.vue";
 
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import useGlobalStore from "@/stores/global";
 import useUserStore from "@/stores/user";
 import { storeToRefs } from "pinia";
-import jsCookie from "js-cookie";
-import { unReadMsgApi, markMsgApi } from "@/api/common"; 
+import { unReadNotifyCountApi, unReadNotifyListApi } from "@/api/notification";
+import { useNotification } from "@/compositions/useNotification";
 
 const router = useRouter();
 const globalStore = useGlobalStore();
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
-const { doLogout } = userStore;
-const account = jsCookie.get("account");
-if(!user.value.name) {
-  user.value.name = account;
-}
+const { doLogout, getUserInfo } = userStore;
+
+//getUserInfo();
+
 const { isCollapse } = storeToRefs(globalStore);
 const { toggleCollapse, toggleDrawer } = globalStore;
+const { handleViewNotify, handleMarkNotify } = useNotification();
 
-const nodata = computed(() => msgList.value.length === 0)
 let timer = null;
 
 const msgList = ref([]);
+const unReadCount = ref(0);
+
 onMounted(async () => {
-  getUnReadMsg();
-  timer = setInterval(getUnReadMsg, 60 * 5 * 1000)
+  if(user.value.access_level) {
+    getUnReadMsgCnt();
+    timer = setInterval(getUnReadMsgCnt, 60 * 5 * 1000)
+  }
 })
 
 onUnmounted(() => {
@@ -116,24 +126,40 @@ onUnmounted(() => {
 })
 
 const getUnReadMsg = async () => {
-  msgList.value = await unReadMsgApi();
+  msgList.value = await unReadNotifyListApi(10);
 }
 
-const messageCnt = computed(() => {
-  return msgList.value.filter(msg => !msg.status).length
-})
+const getUnReadMsgCnt = async () => {
+  unReadCount.value = await unReadNotifyCountApi();
+}
 
-const handleClickMsg = async (id, index, status) => {
-  if(!status) {
-    await markMsgApi(account, id);
-    msgList.value[index].status = 1;
+
+const handleClickMsg = async (message, index) => {
+  unReadCount.value -= 1;
+  const { id, type, status } = message;
+  if(status === "unread") {
+    await handleMarkNotify("mark", [id], false);
+    msgList.value[index].status = "read";
   }
-  router.push(`/task/${id}`);
+  handleViewNotify(message);
 }
 
 const markAll = async () => {
-  msgList.value.forEach(msg => msg.status = 1);
-  await markMsgApi(account, "all")
+  unReadCount.value = 0;
+  msgList.value.forEach(msg => msg.status = "read");
+  handleMarkNotify("allMark", [], false);
+}
+
+const goToPassword = () => {
+  router.push("/password");
+}
+
+const handleVisibleNotify = (visible) => {
+  visible && getUnReadMsg();
+}
+
+const goToNotification = () => {
+  router.push("/notification")
 }
 </script>
 <style scoped lang="scss">

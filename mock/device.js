@@ -4,7 +4,7 @@ export default [{
   response: ({query}) => {
     const { experimentsid } = query;
     return {
-      code: 1,
+      code: 0,
       data: {
         "total|0-100": 2,
         "list|10": [{
@@ -24,7 +24,7 @@ export default [{
   response: ({ query })=> {
     const {experimentsid, equipmentid} = query;
     return {
-      code: 1,
+      code: 0,
       data: {
           experimentsid,
           "brand|1":["笔记本", "扫描仪", "滤波器"],
@@ -41,7 +41,7 @@ export default [{
   method: "POST",
   response: ()=> {
     return {
-      code: 1,
+      code: 0,
       message: "新增设备成功"
     }
   }
@@ -50,7 +50,7 @@ export default [{
   method: "POST",
   response: ()=> {
     return {
-      code: 1,
+      code: 0,
       message: "更新设备成功"
     }
   }
@@ -59,7 +59,7 @@ export default [{
   method: "DELETE",
   response: ()=> {
     return {
-      code: 1,
+      code: 0,
       message: "删除设备成功"
     }
   }

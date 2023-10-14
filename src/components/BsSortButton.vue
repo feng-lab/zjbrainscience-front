@@ -38,7 +38,7 @@ const props=defineProps({
     top: 4px;
   }
 }
-.desc .el-icon.desc-icon, .asce .el-icon.asce-icon {
+.desc .el-icon.desc-icon, .asc .el-icon.asce-icon {
   color: var(--el-color-primary);
 }
 </style>

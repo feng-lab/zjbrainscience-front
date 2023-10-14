@@ -24,19 +24,12 @@ const props = defineProps({
   area: Boolean,
 });
 
-const chartRef = ref();
 
-const { initOption } = useCharts(
+const { chartRef, initOption, chartFunctions} = useCharts(
   props.title, 
   [LineChart, GridComponent, DataZoomComponent]
 );
 const i18n = useI18n();
-initOption.value.toolbox.feature['dataZoom'] = {
-  title: {
-    zoom: i18n.t("label.chartZoom"),
-    back: i18n.t("label.chartZoomBack"),
-  }
-}
 let series = {
   type: "line",
   ...props.series
@@ -64,6 +57,16 @@ if(props.area) {
 }
 
 const option = computed(() => {
+  const feature = {
+    ...initOption.value.toolbox.feature,
+    dataZoom: {
+      title: {
+        zoom: i18n.t("label.chartZoom"),
+        back: i18n.t("label.chartZoomBack"),
+      }
+    },
+    ...props.option?.toolbox.feature,
+  }
   const o = {
     ...initOption.value,
     tooltip: {
@@ -72,24 +75,26 @@ const option = computed(() => {
     xAxis: {},
     yAxis: {},
     series: series,
-    ...props.option
+    ...props.option,
+    toolbox: {
+      ...initOption.value.toolbox,
+      ...props.option?.toolbox,
+      feature,
+    }
   }
   if(props.dataset) {
     o["dataset"] = props.dataset
   }
   if(props.data) {
-    console.log(o.series)
     o.series.data = props.data
   }
   return o;
 })
 
-const getHeight = () => {
-  return chartRef.value.getHeight();
-}
 
-defineExpose({
-  getHeight
+defineExpose({ 
+  clear: () => chartRef.value.clear(),
+  dispatchAction: (param) => chartRef.value.dispatchAction(param)
 });
 
 

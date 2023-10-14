@@ -3,42 +3,32 @@ import jsCookie from "js-cookie";
 import { ElMessage } from "element-plus";
 import router from "@/router";
 import i18n from "@/locals";
-console.log('i18n', i18n)
 
 
 
 const request = axios.create({
   //baseURL: import.meta.env.VITE_APP_API,
-  timeout: 6000,
+  timeout: 60000,
   withCredentials: true
 });
 
-const errorMsg = {
-  "404": "当前请求接口不存在!",
-  "502": "后端服务器异常!"
+const codeObj = {
+  "1": { type: "error"},
+  "2": { type: "error", msg: i18n.global.t("httpErrorMsg.expire")},
+  "3": { type: "warning", msg: i18n.global.t("httpErrorMsg.relogin")},
 }
 
+const errorHandle = {
+  "401": (error) => {
+    const { code, message } = error;
+    let type = code === 4 ? "warning" : "error";
 
-
-request.interceptors.request.use(config => {
-  const { url } = config;
-  if(url !== "/api/login") {
-    config.headers["X-CSRFToken"] = jsCookie.get("csrftoken")
-  }
-  return config;
-})
-
-request.interceptors.response.use(response => {
-  const { code, message, data="" } = response.data;
-  console.log(code, message, data)
-  if(code === 0) {
-    ElMessage.error(message);
-    return Promise.reject(response);
-  } else if(code === 2) {
-    //会话过期
+    ElMessage({
+      type, 
+      message
+    });
     const { fullPath, name } = router.currentRoute.value;
-    if(name !== "login") {
-      ElMessage.warning(i18n.global.t("sessionExpire"));
+    if(name !== "login" && code !== 1) {
       router.push({
         name: "login",
         query: {
@@ -46,14 +36,49 @@ request.interceptors.response.use(response => {
         }
       })
     }
-    return Promise.reject(response);
+  },
+  "400": (error) => {
+    ElMessage.error(
+      error.message
+    )
+  }
+}
+
+
+
+request.interceptors.request.use(config => {
+  const { url } = config;
+  config.headers["Content-Language"] = i18n.global.locale.value === "zhCn" ? "zh-CN" : "en-US";
+  if(url !== "/api/login") {
+    const access_token = jsCookie.get("access_token");
+    const token_type = jsCookie.get("token_type");
+    config.headers["Authorization"] = `${token_type} ${access_token}`;
+  }
+  return config;
+})
+
+request.interceptors.response.use(response => {
+  const { url } = response.config;
+  if(url === "/api/login") {
+    return Promise.resolve(response.data);
   } else {
-    return Promise.resolve(data);
+    const { code, message, data="" } = response.data;
+    if(code) {
+      //后端处理失败
+      ElMessage.error(message);
+      return Promise.reject(response);
+    } else {
+      //后端处理成功
+      return Promise.resolve(data);
+    }
   }
 }, error => {
-  const { status, statusText, config } = error.response;
-  const msg = i18n.global.t(`netErrMsg.${status}`) ?? i18n.global.t("netErrMsg.default");
-  ElMessage.error(`${status}!\t ${config.url}, ${msg}`)
+  const { status, statusText, config, data } = error.response;
+  if(errorHandle[status]) {
+    errorHandle[status](data);
+  } else {
+    ElMessage.error(`${status}!\t ${config.url}, ${statusText}`)
+  }
   return Promise.reject(error);
 })
 

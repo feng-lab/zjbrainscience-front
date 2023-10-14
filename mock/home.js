@@ -6,7 +6,7 @@ export default [{
   method: "get",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       data: {
         "experiments|0-200": 7, //实验数量
         "files|0-300": 8,         //文件数量
@@ -21,7 +21,7 @@ export default [{
   method: "get",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       data: [{
         name: "EEG",
         "value|0-100": 100
@@ -46,7 +46,7 @@ export default [{
   method: "get",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       data: [{ 
         type: "男性",
         "30岁以下|1-5": 5,
@@ -66,7 +66,7 @@ export default [{
   method: "get",
   response: () => {
     return {
-      code: 1,
+      code: 0,
       "data|0-99.2": 60,
     }
   }
@@ -78,7 +78,7 @@ export default [{
     const days = (new Date(end) - new Date(start)) /(3600 * 1000 * 24);
     console.log('days', days)
     return {
-      code: 1,
+      code: 0,
       "data": function () {
         const res = new Array(days);
         for(let i=0;i<days;i++) {
@@ -93,7 +93,7 @@ export default [{
   method: "get",
   response: ({query}) => {
     return {
-      code: 1,
+      code: 0,
       "data":[
         { sick: "癫痫", "单位1|0-29": 107, "单位2|0-30": 133, "单位3|0-40": 93},
         { sick: "睡眠障碍", "单位1|0-29": 107, "单位2|0-30": 133, "单位3|0-40": 93},

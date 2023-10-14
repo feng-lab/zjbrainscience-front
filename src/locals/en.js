@@ -1,13 +1,13 @@
 export default {
   colon: ":",
   label: {
-    account: "Account",
+    username: "Username",
     password: "Password",
     remember: "Remember Me",
     startTime: "Start Time",
     endTime: "End Time",
-    channel: "Channel:",
-    window: "Window:",
+    channel: "Channel",
+    window: "Window",
     yes: "Yes",
     no: "No",
     female: "Female",
@@ -18,23 +18,31 @@ export default {
     chartZoomBack: "Reset zoom",
     notice: "New Notification",
     selected: "Selected",
-    targetFile: "Target Data Files"
+    targetFile: "Target Data Files",
+    nofile: "No file! please select one from online EEG files or upload new file",
+    currentPage: "Page",
+    operation: "Operations",
+    needLogin: "Please log in first!",
+    clickToDetail: "Click for details!",
+    loading: "Loading...",
+    changeAccessLevel: "Please contact the administrator to modify your permissions!",
+    unmarried: "Unmarried",
+    married: "Married",
   },
   confirm: {
     resetform: "Are you sure to reset the form? All fields will be cleared!",
     delFile: "Are you sure to delete the file {file} ?"
   },
-  msgTitle: "Task - {id}",
-  msg: "{name}'s status has changed to {status}. Click for details!",
   placeholder: {
     input: "{info}",
     search: "Search {content}",
-    select: "Select {content}"
+    select: "Select {content}",
+    userSearch: "Please enter the user's system ID"
   },
   sessionExpire: "Your session has expired, please log in again!",
   valid: {
     require: "Please {action} {field}",
-    checked: "Please select at least one",
+    checked: "Please select one at least",
     newParadigm: "Please upload pictures or input the description!",
     taskstep: "Please add at least one step"
   },
@@ -57,29 +65,92 @@ export default {
     all: "ALL",
     view: "View",
     newSubject: "New Subject",
-    newDevice: "New Device",
+    newEquipment: "New Equipment",
     download: "Download",
     upload: "Upload",
-    online: "Online Choose",
-    search: "Go Search",
+    online: "Online Files",
+    search: "Search",
     select: "Click To Select",
     newFilter: "New Filter Step",
     newAnalysis: "New Analysis Step",
     more: "More",
-    read: "Mark all as Read",
     delete: "Delete",
     edit: "Edit",
     new: "New",
     ok: "OK",
     cancel: "Cancel",
     checkall: "Check all",
-    load: "Load"
+    load: "Load",
+    prev: "Prev",
+    next: "Next",
+    bulkUpload: "Bulk Upload",
+    channel: "Channel",
+    expand: "Expand",
+    collapse: "Collapse",
+    clear: "Clear",
+    backHome: "Back to home",
+    newUser: "New User",
+    modify: "Modify",
+    loadMore: "Load more",
+    newAssistants: "New Assistants",
+    batchDelete: "Batch Delete",
+    filter: "Filter",
+    changePassword: "Click to change!",
+    linkToExperiment: "Link to experiment",
+    moreDetails: "More details",
+    batchDisassociate: "Batch Disassociates",
+    disassociate: "Disassociates",
+    copy: "Copy",
+  },
+  elmessage: {
+    uploadSuccess: "Upload success!",
+    uploadFail: "Upload failed!",
+    deleteSuccess: "Delete success!",
+    deleteFail: "Delete failed!",
+    submitSuccess: "Submit success!",
+    submitFail: "Submit failed!",
+    handleSuccess: "Handle success!",
+    handleFail: "Handle failed!",
+    updateSuccess: "Update success!",
+    updateFail: "Update failed!",
+    copySuccess: "Copy success!",
+    newSuccess: "Add success!",
+    newFail: "Add failed!",
+    markNotifySuccess: "Mark as read success!",
+    markNotifyFail: "Mark as read failed!",
+    associateSuccess: "Associate to experiment success!",
+    associateFail: "Associate to experiment failed!",
+    disassociateSuccess: "Disassociate from experiment success!",
+    disassociateFail: "Disassociate from experiment failed!",
+    updatePasswordSuccess: "Update Password success! Please log in again with the new password!",
+    updatePassword: "Welcome to your first login! The current password is the initial password, you can change it first!",
+    getUserInfoFail: "Get current user info failed!"
   },
   menus: {
     management: "Home",
     experiments: "Experiments",
+    newExperiment: "New Experiment",
+    experimentList: "Experiments",
     task: "TaskList",
-    search: "SignalSearch"
+    search: "SignalSearch",
+    equipmentList: "Equipments",
+    subjectList: "Subjects",
+    notification: "Notification",
+    password: "Modify Password",
+    user: "User Management",
+    atlas: "Brain Atlas",
+    allen_ccf: "Allen CCF",
+    brainnetome: "Brainnetome",
+    eeum: "EEUM",
+    lemur: "Lemur",
+    macaque: "Macaque",
+    macaque_3d: "3D Brain",
+    macaque_nissl: "Nissl",
+    macaque_tracer: "Tracer",
+    atlashome: "Home",
+    atlasmanage: "Manage",
+    fly: "Fly",
+    psoct: "Ps oct"
   },
   loginInfoStorage: {
     title: "Data Storage",
@@ -103,26 +174,37 @@ export default {
     }
   },
   experiments: {
-    searchField: {
-      name: "Experiment Name"
+    action: {
+      new: "New Experiment",
+      edit: "Edit Experiment"
     },
     detail: {
-      exId: "ID",
-      exType: "Type",
-      subjectType: "Subject Type",
-      subjectCnt: "Subject Count",
-      exLocal: "Location",
-      exDesc: "Description",
-      exName: "Name:",
-      noninvasive: "Non-invasive:",
-      date: "Date:",
-      isopen: "Public:",
+      experiment_id: "ID",
+      type: "Type",
+      subject_type: "Subject Type",
+      subject_num: "Number of Subject",
+      location: "Location",
+      description: "Description",
+      name: "Name",
+      is_non_invasive: "Non-invasive",
+      date: "Date",
+      is_shared: "Public",
+      main_operator: "Main Operator",
+      assistants: "Assistants",
+      neuron_source: "Neuron Source",
+      stimulation_type: "Stimulation",
+      session_num: "Number of Session",
+      trail_num: "Number of Trail",
+      tags: "Tags"
     },
     tab: {
       paradigm: "Paradigm",
-      device: "Device",
+      equipment: "Equipment",
+      assistant: "Assistants"
     },
-    deleteConfirm: "Are you sure to delete the experiment (ID: {id})?"
+    deleteConfirm: "Are you sure to delete the experiment (ID: {id})?",
+    tagsTooltip: "You can tag the experiment with customize label, such as 'patient', etc., which used to filter experiments and manage experiments with customized category",
+    tagBtn: "New Tag"
   },
   paradigm: {
     text: "Paradigm",
@@ -130,48 +212,77 @@ export default {
     formlabel: {
       image: "Images",
       description: "Description"
-    }
+    },
+    creator: "Creator",
+    createTime: "Create Time"
   },
   term: {
     file: "Files",
     subject: "Subjects",
     experiment: "Experiments",
     task: "Tasks",
-    operation: "Operations",
     systemremind: "Syetem Remind",
   },
   subject: {
+    name: "Name",
+    namePlaceholder: "Name or acronym for name",
     text: "Human Subject",
-    id: "ID",
+    user_id: "ID",
+    username: "Username",
+    staff_id: "System ID",
+    loginTips: "Click to copy the login account information of the subject {user}",
+    copyAccountInfo: "Created a system account for the subject automatically. Copy the account information used to log in the system!",
+    copyAccountTitle: "Login account",
     gender: "Gender",
     type: "Type",
     birthdate: "BirthDate",
-    blood: "ABO Blood",
-    birth: "Date Of Birth",
-    death: "Date Of Death",
+    abo_blood_type: "ABO Blood",
+    death_date: "Date Of Death",
     education: "Education",
     occupation: "Occupation",
-    phone: "Phone",
+    phone_number: "Phone",
     email: "Email",
-    marriage: "Married",
-    lefthand: "Left-Handed",
+    marital_status: "Married",
+    is_left_handed: "Left-Handed",
     address: "Address",
     category: {
       human: "Human",
       macaque: "Macaque",
       dog: "Puppy",
-      pig: "Swine"
+      pig: "Swine",
+      other: "Other"
     },
-    deleteConfirm: "Are you sure to delete the subject(ID: {id}) from the current experiment?"
   },
-  device: {
+  equipment: {
     text: "Equipment",
     id: "ID",
     name: "Name",
-    type: "Type",
+    brand: "Brand",
     purpose: "Purpose",
     index: "Index",
-    deleteConfirm: "Are you sure to delete the device(ID: {id}) from the current experiment?"
+  },
+  associate: {
+    selectFromTips: "Select one or more {item} from the table and click the <Link to experiment> button to associate with the experiment with ID {id}",
+    inputExId: "Please input the {item}'s ID:",
+    confirm: {
+      delete: "Are you sure to delete the selected {item} from the system?",
+      disassociate: "Are you sure to disassociate the selected {item} from the experiment?The selected {item} won't be deleted however"
+    },
+    newfrom: {
+      select: "Select an existing {item}",
+      add: "Add new {item}"
+    },
+  },
+  assistants: {
+    deleteConfirm: "Are you sure to delete the assistants?"
+  },
+  eeg: {
+    window: {
+      1: "1 second",
+      2: "2 seconds",
+      5: "5 seconds",
+      10: "10 seconds",
+    }
   },
   task: {
     deleteConfirm: "Are you sure to delete task: {name}(ID:{id})",
@@ -228,11 +339,6 @@ export default {
       result: "Result"
     }
   },
-  netErrMsg: {
-    "404": "Not Found",
-    "502": "The server has something wrong",
-    default: "Network Error"
-  },
   datepicker: {
     week: "Last Week",
     month: "Last Month",
@@ -246,6 +352,79 @@ export default {
   file: {
     name: "File Name",
     type: "File Type",
-    experiment: "Association Experiment"
+    list: "File List",
+    eeg: "EEG",
+    video: "Video",
+    allTypes: "All file types",
+    experiment: "Association Experiment",
+    deleteConfirm: "Are you sure to delete the file {name}?",
+    uploadTooltip: "Please pack multiple files about one NEV data into a Zip archive with *.nev.zip as the file extension when uploading Neural spike data",
+    notSupport: "The current file type does not support online parsing and viewing"
+  },
+  httpErrorMsg: {
+    expire: "Session expired, please log in again",
+    paramsErr: "Request parameter error",
+    relogin: "This operation need you to log in",
+    "404": "Not Found",
+    "502": "The server has something wrong",
+    default: "Network Error"
+  },
+  user: {
+    text: "User",
+    id: "User ID",
+    username: "User Name",
+    staff_id: "System ID",
+    accessLevel: "Access Level",
+    lastLogin: "Last Login Time",
+    deleteConfirm: "Are you sure to delete User {user}?",
+    updateRole: "Modify User Access Level",
+    currentAl: "Current Access Level",
+    currentUser: "Current User",
+  },
+  errorPage: {
+    notFound: "Sorry, the page you visited does not exist!",
+    noAuth: "Sorry, you don't have access to this page!"
+  },
+  auth: {
+    "0": "Custom",
+    "10": "Subject",
+    "100": "Researcher",
+    "1000": "Administrator"
+  },
+  password: {
+    current: "Current Password",
+    new: "New Password",
+    confirm: "Confirm New Password",
+    valid: {
+      currentRequire: "Please input current password",
+      newRequire: "Please input new password",
+      confirmRequire: "Please input new password again",
+      confirmWrong: "Two inputs don't match"
+    }
+  },
+  notify: {
+    type: {
+      text: "Interactive Message",
+      task_step_status: "Task Status Notification"
+    }, 
+    content: {
+      task_step_status: "Task {name}(ID:{id})'s status has changed to {status}." 
+    },
+    list: {
+      type: "Type",
+      content: "Content",
+      status: "Status",
+      gmt_create: "Send Time",
+      creator_name: "Creator"
+    },
+    status: {
+      read: "Readed",
+      unread: "Unread"
+    },
+    action: {
+      mark: "Mark as Readed",
+      batchMark: "Batch Mark as Read",
+      allMark: "Mark all as read"
+    }
   }
 }

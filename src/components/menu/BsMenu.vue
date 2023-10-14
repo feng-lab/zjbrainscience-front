@@ -3,8 +3,6 @@
     class="aside"
     router
     :default-active="activeMenu"
-    :background-color="showDrawer? '#fff' : '#303133'"
-    :text-color="showDrawer ? '#606266' : '#fff'"
     :collapse="isCollapse"
     :collapse-transition="false"
     @select="closeDrawer"
