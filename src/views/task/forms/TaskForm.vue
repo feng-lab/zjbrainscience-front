@@ -1,16 +1,16 @@
 <template>
   <bs-dialog-form
+    v-model:form="taskForm"
     :form-model="taskForm"
     :title="$t('button.newTask')"
-    :do-form-submit="handleSubmit"
-    :do-form-reset="handleReset"
+    :form-submit-api="handleSubmit"
+    :form-reset-api="handleReset"
     :form-rules="rules"
-    :validator="validator"
+    :form-valid-api="validator"
     @open="loadSource"
-    @close="handleClose"
   >
-    <el-form-item :label="$t('task.detail.name')" prop="taskname">
-      <el-input v-model="taskForm.taskname"/>
+    <el-form-item :label="$t('task.detail.name')" prop="name">
+      <el-input v-model="taskForm.name"/>
     </el-form-item>
     <el-form-item :label="$t('task.detail.desc')" prop="description">
       <el-input v-model="taskForm.description"/>
@@ -21,18 +21,18 @@
         {{ $t("valid.checked") }}
       </span>
     </el-form-item>
-    <el-form-item v-if="selectFiles.length">
-        <span>
-          {{ $t("label.selected") }}
-          {{ $t("colon") }}
-        </span>
+    <el-form-item v-if="selectFiles.length" :label="$t('label.selected') ">
         <el-tag 
           class="m-r-4"
           v-for="file in selectFiles" 
           :key="file.fileid"
         > 
-          {{ `${file.filename}.${file.filetype}` }}
-          <bs-icon-img icon="Check"/>
+          <span class="between-flex">
+            <span class="m-r-8">
+              {{ `${file.filename}.${file.filetype}` }}
+            </span>
+            <bs-icon-img icon="Check"/>
+          </span>
         </el-tag>
     </el-form-item>
     <el-form-item :label="$t('task.card.step')" required>
@@ -67,8 +67,8 @@
               <el-icon color="#ff4d4f" @click="deleteStep(index)"><Delete /></el-icon>
             </el-tooltip>
           </div>
-
         </template>
+
         <template #description>
           <div style="padding: 8px 0">
             <StepWaveFilterForm v-if="step.type === 'filter'" :params="step"/>
@@ -98,6 +98,7 @@ import { computed, ref } from "vue";
 import { newTaskApi } from "@/api/task";
 import { useTargetFiles } from "@/compositions/useTargetFiles";
 import { useI18n } from "vue-i18n";
+import useTask from '@/stores/task';
 
 const { source, visible, selectFiles, loadSource } = useTargetFiles();
 
@@ -107,10 +108,12 @@ const targetFileRef = ref();
 const validating = ref(false);
 const i18n = useI18n();
 
+const { newTask, addTask } = useTask();
+
 const emit = defineEmits("reloadTask");
 
 const rules = computed(() => ({
-  taskname: [
+  name: [
     { required: true, message: i18n.t("valid.require", { field: i18n.t("task.detail.name"), action: i18n.t("action.input")}), trigger: "blur" }
   ],
   description: [
@@ -119,15 +122,19 @@ const rules = computed(() => ({
 }))
 
 const addWaveFilterStep = () => {
+  if(!taskForm.value.tasktype instanceof Set) {
+    taskForm.value.tasktype = new Set();
+  }
+  taskForm.value.tasktype.add("Filter")
   stepList.value.push({
     type: "filter",
     name: `wavefilter${stepList.value.length}`,
     form: ref({
       L_freq: 0,
       H_freq: 1024, 
-      CH_picks: "",
+      CH_picks: "auto",
       Methods: "IIR", 
-      Params: "xxx", 
+      Params: "auto", 
       Length: "auto", 
       Window: "hanmming", 
       Design: "firwin", 
@@ -140,15 +147,26 @@ const addWaveFilterStep = () => {
 }
 
 const taskForm = ref({
-  taskname: "",
-  description: ""
+  name: "",
+  description: "",
+  tasktype: new Set() 
 })
 
 const addAnalysisStep = () => {
+  if(!taskForm.value.tasktype instanceof Set) {
+    taskForm.value.tasktype = new Set();
+  }
+  taskForm.value.tasktype.add("Analysis")
   stepList.value.push({
     type: "analysis",
     name: `analysis${stepList.value.length}`,
-    form: ref([]),
+    form: ref({
+      methods: [],
+      topomap: {
+        totalImages: 10,
+        interval: 2
+      }
+    }),
     warning: ref(false)
   })
 }
@@ -158,12 +176,13 @@ const deleteStep = (index) => {
 
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
     const postParams = taskForm.value;
-    postParams['checkedfile'] = selectFiles.value.map(({filename, filetype, fileid}) => ({
+    postParams['checkedfile'] = selectFiles.value.map(({filename, filetype, id, size}) => ({
       filename,
       filetype,
-      fileid
+      fileid: id,
+      size
     }))
     postParams['taskSteps'] = stepList.value.map(({ type, form}) => {
       return type === 'filter' ? {
@@ -173,9 +192,12 @@ const handleSubmit = () => {
         'analysis-list': form
       }
     });
-    return newTaskApi(postParams).then(() => {
+    //return newTaskApi(postParams).then(() => {
+    //  emit("reloadTask");
+    //});
+    return addTask(postParams).then(() => {
       emit("reloadTask");
-    });
+    })
 }
 
 const validator = async () => {
@@ -185,7 +207,7 @@ const validator = async () => {
   if(!stepList.value.length) Promise.reject("No Task Step");
   for(let i=0; i < stepList.value.length; i++) {
     const step = stepList.value[i];
-    if(step.type === 'analysis' && !step.form.length) {
+    if(step.type === 'analysis' && !step.form.methods.length) {
       Promise.reject("analysis step");
       break;
     } 
@@ -201,6 +223,7 @@ const handleReset = () => {
   stepList.value = [];
   targetFileRef.value.clearSelect();
   validating.value = false;
+  taskForm.value.tasktype = new Set();
 }
 
 

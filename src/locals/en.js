@@ -317,9 +317,9 @@ export default {
       fa: "Filter/Analysis"
     },
     type: {
-      filter: "Filter",
-      analysis: "Analysis",
-      fa: "Filter/Analysis"
+      Filter: "Filter",
+      Analysis: "Analysis",
+      'Filter/Analysis': "Filter/Analysis"
     },
     stepResult: {
       "0": {

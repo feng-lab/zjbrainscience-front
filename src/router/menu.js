@@ -49,15 +49,15 @@ const menus = [{
     }
   }]
 }, {
-  /*
   path: "task",
   name: "task",
   component: () => import("@/views/task/Task.vue"),
   meta: {
     icon: "List",
-    level: 100 //研究员以上
+    level: 1000 //研究员以上
   }
 }, {
+  /*
   path: "search",
   name: "search",
   component: () => import("@/views/search/Search.vue"),

@@ -2,7 +2,7 @@
   <el-card class="m-b-16">
     <template #header>
       <div class="between-flex">
-        <span>{{ taskinfo.taskname }}</span>
+        <span>{{ taskinfo.name}}</span>
       <bs-route-link path="/task" type="danger">
         <el-icon><caret-left/></el-icon>
         {{ $t("button.back") }}
@@ -55,7 +55,10 @@
       >
         <template #title> 
           <div class="task-step--title">
+            <!--
           {{`Step ${step.executeindex}: ${step.operationtype}`}}
+          -->
+          {{ `Step ${step.operationid + 1}: ${step.operationtype}`}}
           </div>
         </template>
         <template #icon> 
@@ -63,7 +66,7 @@
             :icon="STEP_INFO[step.status].icon"
             :iconColor="STEP_INFO[step.status].color"
             :size="24"
-            :loading="step.status === '2'"
+            :loading="step.status === 2"
           />
         </template>
       </el-step>
@@ -73,15 +76,15 @@
     <template #header>
       <div class="between-flex">
         <span>{{ $t("task.card.result") }} 
-          <span v-if="displayStep && displayStep.status === 1">{{ ` - Step ${displayStep.executeindex} ${displayStep.operationname} `}}</span>
+          <span v-if="displayStep && displayStep.status === 1">{{ ` - Step ${displayStep.operationid+1} ${displayStep.operationtype} `}}</span>
         </span>
         <el-button type="primary" link v-if="displayStep?.operationtype === '数据分析'">{{ $t("button.download") }}</el-button>
       </div>
     </template>
     <template v-if="displayStep">
-      <task-result-error v-if="displayStep.status === '0'"/>
-      <task-result-success v-if="displayStep.status === '1'" :step="displayStep" :taskid="taskid"/>
-      <task-result-process v-if="displayStep.status === '2'"/>
+      <task-result-error v-if="displayStep.status === 0"/>
+      <task-result-success v-if="displayStep.status === 1" :step="displayStep" :taskid="taskid"/>
+      <task-result-process v-if="displayStep.status === 2"/>
     </template>
     <template v-else> 
       <el-empty/>
@@ -96,16 +99,24 @@ import TaskResultProcess from './results/TaskResultProcess.vue';
 import TaskResultError from './results/TaskResultError.vue';
 import BsRouteLink from "@/components/BsRouteLink.vue";
 import { STEP_INFO } from '@/utils/common';
+import moment from "moment";
 
 import { onMounted, ref } from 'vue';
 import { onBeforeRouteUpdate } from "vue-router";
 import { 
   taskDetailApi,
  } from '@/api/task';
+import useTask from '@/stores/task';
 
 const props = defineProps({
   taskid: String
 })
+
+
+const { taskStepList, taskList } = useTask();
+console.log(props.taskid)
+console.log(taskList)
+console.log(taskStepList)
 
 
 
@@ -132,16 +143,27 @@ const taskSteps = ref([]);
 
 const displayStep = ref();
 
-onMounted(() => {
-  getTask();
+onMounted(async () => {
+  await getTask(props.taskid);
+  setTimeout(() => {
+    taskSteps.value.forEach(x => x.status = 1);
+    const endtime = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+    const index = Number(props.taskid) - 1;
+    taskinfo.value.endtime = endtime;
+    taskStepList[index].endtime = endtime;
+    taskList[index].endtime = endtime;
+    taskList[index].status = 2;
+    displayStep.value.status = 1;
+  }, (Math.random()+1) * 2000);
 })
 
 const getTask = async (id) => {
-  console.log(props.taskid)
-  const { master, stepList } = await taskDetailApi(id ?? props.taskid);
+  const {master, stepList }= taskStepList[Number(id) - 1];
+  //const { master, stepList } = await taskDetailApi(id ?? props.taskid);
   taskinfo.value = master;
+  taskinfo.value.size = master.checkedfile.map(e => e.size).reduce((pre=0, curr) => pre += curr);
   taskSteps.value = stepList;
-  displayStep.value = stepList[0];
+  displayStep.value = stepList[stepList.length-1];
 }
 
 const handleClickStep = (step) => {
