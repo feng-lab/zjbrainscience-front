@@ -65,7 +65,7 @@ const option = computed(() => {
         back: i18n.t("label.chartZoomBack"),
       }
     },
-    ...props.option?.toolbox.feature,
+    ...props.option?.toolbox?.feature,
   }
   const o = {
     ...initOption.value,

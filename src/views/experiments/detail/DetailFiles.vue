@@ -65,7 +65,7 @@
             />
           </div>
           <template #file="{file}"> 
-            <div v-if="viewFile || viewMp4" :class="['text-item', file.id === viewFile?.id || file.id === viewMp4?.id ? 'viewing' : '']">
+            <div v-if="viewFile || viewMp4" :class="['text-item', {'viewing': file.id === viewFile?.id || file.id === viewMp4?.id }]">
               <div class="text-item--name" @click="handlePreview(file)"> 
                 <el-icon class="text-item--name--icon m-r-4"><Document/></el-icon>
                 <span>{{ file.name }}</span>

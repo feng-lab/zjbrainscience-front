@@ -14,15 +14,16 @@ export function useTargetFiles() {
         for(let exp of exps) {
             const { id:experiment_id } = exp;
             const { items } = await filesByPageApi({ experiment_id, limit: 30});
-            items.forEach(file => {
-                source.value.push({
-                    id: file.id,
-                    filename: file.name,
-                    filetype: file.file_type,
-                    experimentsid: experiment_id,
-                    size: file.size
-                })
-            })
+            source.value = [...source.value, ...items.filter(x => x.file_type === "bdf" || x.file_type === "edf")];
+            //items.forEach(file => {
+            //    source.value.push({
+            //        id: file.id,
+            //        filename: file.name,
+            //        filetype: file.file_type,
+            //        experimentsid: experiment_id,
+            //        size: file.size
+            //    })
+            //})
         }
     }
 

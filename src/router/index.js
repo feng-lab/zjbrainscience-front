@@ -104,6 +104,24 @@ const router = createRouter({
           props: true
         },
         {
+          path: "visualize/atlas/:atlasId/detail",
+          name: "atlas-detail",
+          component: () => import("@/views/visualization/VisualAtlasDetail.vue"),
+          props: true
+        },
+        {
+          path: "atlas/display/:atlasId",
+          name: "atlas-display",
+          component: () => import("@/views/visualization/VisualAtlasDisplay.vue"),
+          props: true
+        },
+        {
+          path: "visualize/atlas/:atlasId/subpage/:subpageId/newData",
+          name: "atlas-new-data",
+          component: () => import("@/views/visualization/forms/VisualNewDataForm.vue"),
+          props: true
+        },
+        {
           path: "403",
           name: "403",
           component: () => import("@/views/error/Error403.vue")

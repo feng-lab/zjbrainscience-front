@@ -1,5 +1,6 @@
+import BsIconBrain from "@/components/icons/BsIconBrain.vue";
+import { markRaw } from "vue";
 const menus = [{
-  /*
   path: "management",
   name: "management",
   component: () => import("@/views/home/Home.vue"),
@@ -8,7 +9,6 @@ const menus = [{
     //未设置level,即默认最低权限，所有人可见
   }
 }, {
-  */
   path: "experiments",
   name: "experiments",
   meta: {
@@ -49,6 +49,7 @@ const menus = [{
     }
   }]
 }, {
+  /*
   path: "task",
   name: "task",
   component: () => import("@/views/task/Task.vue"),
@@ -57,7 +58,6 @@ const menus = [{
     level: 1000 //研究员以上
   }
 }, {
-  /*
   path: "search",
   name: "search",
   component: () => import("@/views/search/Search.vue"),
@@ -70,7 +70,7 @@ const menus = [{
   path: "atlas",
   name: "atlas",
   meta: {
-    icon: "Aim",
+    icon: markRaw(BsIconBrain)
   },
   children: [{
     path: "index",
@@ -152,6 +152,19 @@ const menus = [{
     }
   }]
 }, {
+  /*
+  path: "visualize",
+  name: "visualize",
+  meta: {
+    icon: markRaw(BsIconBrain)
+  },
+  children: [{
+    path: "workplace",
+    name: "workplace",
+    component: () => import("@/views/visualization/VisualWorkplace.vue")
+  }]
+}, {
+  */
   path: "notification",
   name: "notification",
   component: () => import("@/views/notification/Notification.vue"),
