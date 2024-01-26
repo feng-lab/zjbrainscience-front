@@ -28,6 +28,8 @@ export default {
     changeAccessLevel: "如果需要修改权限，请联系管理员！",
     unmarried: "未婚",
     married: "已婚",
+    basicInfo: "基础信息",
+    default: "默认"
   },
   confirm: {
     resetform: "确定要重置表单吗？所有字段数据将会被清除！",
@@ -101,6 +103,8 @@ export default {
     batchDisassociate: "批量取消关联",
     disassociate: "取消关联",
     copy: "复制",
+    move: "移动",
+    retry: "重试"
   },
   elmessage: {
     uploadSuccess: "上传成功！",
@@ -150,7 +154,9 @@ export default {
     atlashome: "Home",
     atlasmanage: "Manage",
     fly: "Fly",
-    psoct: "Ps oct"
+    psoct: "Ps oct",
+    visualize: "脑图谱",
+    workplace: "工作台"
   },
   loginInfoStorage: {
     title: "数据存储",
@@ -425,6 +431,84 @@ export default {
       mark: "标记已读",
       batchMark: "批量标记已读",
       allMark: "全标已读"
+    }
+  },
+  visualization: {
+    tooltip: {
+      name: "图谱文件存储的根目录名称",
+      title: "页面展示的图谱名称",
+      specy: "物种的英文名，首字母大写，如Human, Mouse",
+      preview: "可以在图谱可视化展示页面截图并上传图谱的预览效果"
+    },
+    properties: {
+      name: "存储目录",
+      title: "图谱名称",
+      specy: "图谱物种",
+      public: "公开访问",
+      url: "官网地址",
+      team: "研究团队",
+      teamLeader: "研究团队负责人",
+      creator: "创建者",
+      createTime: "创建时间"
+    },
+    label: {
+      atlas: "图谱"
+    },
+    statistic: {
+      create: "我创建的",
+      owner: "被授权的",
+      processing: "正在转换",
+      public: "我公开的"
+    },
+    action: {
+      new: "新增图谱",
+      showAll: "所有图谱",
+      download: "下载数据",
+      addData: "添加数据",
+      newSubpage: "新增子页面",
+      convert: " 数据转换"
+    },
+    module: {
+      atlasList: "图谱列表",
+      taskList: "数据转换任务",
+      subpage: "子页面",
+      data: "图谱数据"
+    }, 
+    subpage: {
+      name: "存储目录",
+      title: "子页面显示名称",
+      resolution: "分辨率(nm)",
+      deleteConfirm: "确定删除子页面 {title} 吗？该操作会删除整个子页面，包括页面内所有的数据文件"
+    },
+    data: {
+      name: "存储目录",
+      label: "数据显示名称",
+      url: "Neuroglancer数据源URL",
+      sourceFile: "源数据文件",
+      downloadable: "共享下载",
+      shader: "Shader代码",
+      options: "其他Neuroglancer配置参数",
+      regionRelated: "关联脑区",
+      inputDesc: "输入文件要求",
+      referData: "引用数据",
+      isRefer: "是否引用已有数据",
+      tooltip: {
+        regionRelated: "选择脑区时，仅渲染与该脑区对应的部分数据",
+        url: "完整的Neuroglancer数据源地址，如: precomputed://gs://neuroglancer-janelia-flyem-hemibrain/v1.0/segmentation",
+        converting: "数据正在转换，请稍等"
+      },
+      confirm: {
+        delete: "确定删除数据 {label} 吗？",
+        openDownloadable: "确定要共享数据 {label} 吗？共享后平台所有用户将拥有数据的查看和下载权限",
+        closeDownloadable: "确定取消数据 {label} 的共享吗？",
+        copyOrMove: "请选择是需要将数据复制还是移动到子页面 {subpage}"
+      },
+      renderingEffect: "预期渲染效果",
+      dataFormat: {
+        label: "数据格式",
+        formatted: "Neuroglancer",
+        unformatted: "非Neuroglancer格式"
+      }
     }
   }
 }

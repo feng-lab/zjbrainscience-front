@@ -1,6 +1,6 @@
 <template>
   <bs-icon-img icon="Camera" class="screen-shot" @click="captureScreen"/>
-  <div :class="['count-down', count ? 'active' : '']" v-if="count" >{{ count }}</div>
+  <div :class="['count-down', { 'active': count }]" v-if="count" >{{ count }}</div>
 </template>
 <script setup>
 import html2canvas from "html2canvas";

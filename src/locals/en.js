@@ -28,6 +28,8 @@ export default {
     changeAccessLevel: "Please contact the administrator to modify your permissions!",
     unmarried: "Unmarried",
     married: "Married",
+    basicInfo: "Basic Information",
+    default: "Default"
   },
   confirm: {
     resetform: "Are you sure to reset the form? All fields will be cleared!",
@@ -101,6 +103,8 @@ export default {
     batchDisassociate: "Batch Disassociates",
     disassociate: "Disassociates",
     copy: "Copy",
+    move: "Move",
+    retry: "Retry"
   },
   elmessage: {
     uploadSuccess: "Upload success!",
@@ -150,7 +154,9 @@ export default {
     atlashome: "Home",
     atlasmanage: "Manage",
     fly: "Fly",
-    psoct: "Ps oct"
+    psoct: "Ps oct",
+    visualize: "Atlas Visualization",
+    workplace: "Workplace"
   },
   loginInfoStorage: {
     title: "Data Storage",
@@ -425,6 +431,84 @@ export default {
       mark: "Mark as Readed",
       batchMark: "Batch Mark as Read",
       allMark: "Mark all as read"
+    }
+  },
+  visualization: {
+    tooltip: {
+      name: "The name of the root directory where the files of atlas is stored",
+      title: "The name of the atlas displayed on the page",
+      specy: "The specy in English with the first letter capitalized. For example, Human",
+      preview: "You can take screenshots on the atlas visualization display page and upload the preview image."
+    },
+    properties: {
+      name: "Directory",
+      title: "Name",
+      specy: "Specy",
+      public: "Public Access",
+      url: "URL",
+      team: "Research Team",
+      teamLeader: "Leader",
+      creator: "Creator",
+      createTime: "Create Time"
+    },
+    label: {
+      atlas: "Atlas"
+    },
+    statistic: {
+      create: "Created",
+      owner: "Authorized",
+      processing: "Converting",
+      public: "Public"
+    },
+    action: {
+      new: "New atlas",
+      showAll: "All atlases",
+      download: "Dowanload datas",
+      addData: "Add data",
+      newSubpage: "New subpage",
+      convert: "Data conversion"
+    },
+    module: {
+      atlasList: "Atlas",
+      taskList: "Convertion Task",
+      subpage: "Subpage",
+      data: "Datas of the atlas"
+    },
+    subpage: {
+      name: "Directory",
+      title: "Name",
+      resolution: "Resolution(nm)",
+      deleteConfirm: "Are you sure to delete subpage {title} which will delete all the datas of the subpage? ",
+    },
+    data: {
+      name: "Directory",
+      label: "Name",
+      url: "Neuroglancer Data Source URL",
+      sourceFile: "Source Files",
+      downloadable: "Downloadable",
+      shader: "Shader Codes",
+      options: "Neuroglancer options of layer",
+      regionRelated: "Related to region",
+      inputDesc: "Requirements of the input files",
+      referData: "Reference data",
+      isRefer: "Using existing data",
+      tooltip: {
+        regionRelated: "When selecting a brain region, only part of the data corresponding to that brain region will be rendered",
+        url: "Complete url of the Neuroglancer data source, for example, precomputed://gs://neuroglancer-janelia-flyem-hemibrain/v1.0/segmentation",
+        converting: "Data is being converted"
+      },
+      confirm: {
+        delete: "Are you sure to delete data {label}?",
+        openDownloadable: "Are you sure to share data {label}? After sharing, all users of the platform will have permission to view and download the data",
+        closeDownloadable: "Are you sure you want to cancel the sharing of data {label}?",
+        copyOrMove: "Please select whether the data needs to be copied or moved to the subpage {subpage}"
+      },
+      renderingEffect: "Rendering Effect",
+      dataFormat: {
+        label: "Data Format",
+        formatted: "Neuroglancer",
+        unformatted: "Non-Neuroglancer"
+      }
     }
   }
 }

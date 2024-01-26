@@ -103,12 +103,16 @@
           @input="handleImageNormalize"
         />
       </div>
-      <div class="between-flex"> 
+      <div class="between-flex m-b-16"> 
         <span class="item-label">Invert Range</span>
         <el-switch 
           v-model="invertNormalizedRange"
           @change="handleImageNormalize"
         />
+      </div>
+      <div class="between-flex"> 
+        <span class="item-label">Shader</span>
+        <el-input type="textarea" v-model="shader" autosize/>
       </div>
     </div>
     
@@ -139,6 +143,7 @@ const imgDataRange = ref([0,0]);
 
 const crossSectionScale = ref();
 const projectionScale = ref();
+const shader = ref("");
 
 const emits = defineEmits(["updateState", "visibleChange"])
 

@@ -104,8 +104,8 @@
     </el-col>
     <el-col :xs="5" :sm="5" :lg="4" class="atlas-content-setting p-l-8" v-if="showSettingPanel">
       <bs-widgets header="Render Data" v-if="showRenderData" show-close @close="showRenderData = false">
-        <div v-for="(rd, key) in renderDatas" :key="key" class="between-flex"> 
-          <span> {{ rd.label }} </span>
+        <div v-for="(rd, key) in renderDatas" :key="key" class="between-flex">
+          <span draggable="true"> {{ rd.label }} </span>
           <el-select 
             class="right"
             style="width: 45%"
@@ -179,8 +179,6 @@ const showHelper = ref(false);
 
 
 const showRegionLabel = props.neuroglancerDatas.filter(d => d.type === "regions" && !d?.notShowLabelTree).length > 0;
-
-
 
 const {
   neuroRef,
