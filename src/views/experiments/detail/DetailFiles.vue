@@ -8,184 +8,101 @@
         :body-style="cardShow ? {} : {padding: 0}"
       >
         <el-scrollbar max-height="50vh" class="m-b-16">
-        <el-upload
-          ref="uploadRef"
-          v-model:file-list="files"
-          v-bind="options"
-          :style="{minHeight: files.length ? '50vh' : 0}"
-          :class="['bs-upload', cardShow ? 'text-upload' : 'picture']"
-        >
-          <template #trigger> 
-            <el-button  
-              class="m-b-8 m-t-4" 
-              type="primary" 
-              icon="Upload" 
-              v-if="user.access_level > 10"
-              @mouseover="showUploadTitle = true"
-              @mouseout="showUploadTitle = false"
-            >
-              {{ $t("button.bulkUpload")}}
-            </el-button>
-            <!--
-            <el-button type="primary" @click="handleZipUpload" icon="UploadFilled">压缩上传</el-button>
-            -->
-          </template>
-          <el-radio-group class="m-b-8 type-options right" v-model="query.file_type" @change="handleTypeChange" v-if="fileTypeList.length && fileTypeList.length < 4">
-            <el-radio-button size="small" label="">{{ $t("button.all") }}</el-radio-button>
-            <el-radio-button 
-              v-for="type in fileTypeList"
-              :key="type"
-              :label="type"
-              size="small"
-            >
-              {{ type.toUpperCase() }}
-            </el-radio-button>
-          </el-radio-group>
-          <span class="right" v-if="fileTypeList.length >= 4">
-            <el-select v-model="query.file_type" clearable>
-              <el-option
-                value=""
-                :label="$t('file.allTypes')"
-              />
-              <el-option
+          <el-upload
+            ref="uploadRef"
+            v-model:file-list="files"
+            v-bind="options"
+            :style="{minHeight: files.length ? '50vh' : 0}"
+            :class="['bs-upload', cardShow ? 'text-upload' : 'picture']"
+          >
+            <template #trigger> 
+              <el-button  
+                class="m-b-8 m-t-4" 
+                type="primary" 
+                icon="Upload" 
+                v-if="user.access_level > 10"
+                @mouseover="showUploadTitle = true"
+                @mouseout="showUploadTitle = false"
+              >
+                {{ $t("button.bulkUpload")}}
+              </el-button>
+            </template>
+
+            <el-radio-group class="m-b-8 type-options right" v-model="query.file_type" @change="handleTypeChange" v-if="fileTypeList.length && fileTypeList.length < 4">
+              <el-radio-button size="small" label="">{{ $t("button.all") }}</el-radio-button>
+              <el-radio-button 
                 v-for="type in fileTypeList"
                 :key="type"
-                :label="type.toUpperCase()"
-                :value="type"
-              />
-            </el-select>
+                :label="type"
+                size="small"
+              >
+                {{ type.toUpperCase() }}
+              </el-radio-button>
+            </el-radio-group>
 
-          </span>
-          <div class="m-b-8" v-if="showUploadTitle">
-            <el-alert 
-              type="warning" 
-              show-icon 
-              :title="$t('file.uploadTooltip')" 
-              :closable="false"
-            />
-          </div>
-          <template #file="{file}"> 
-            <div v-if="viewFile || viewMp4" :class="['text-item', file.id === viewFile?.id || file.id === viewMp4?.id ? 'viewing' : '']">
-              <div class="text-item--name" @click="handlePreview(file)"> 
-                <el-icon class="text-item--name--icon m-r-4"><Document/></el-icon>
-                <span>{{ file.name }}</span>
-              </div>
-              <div class="text-item--percent"> 
-                <el-progress :percentage="file.percentage ?? 100" :status="file.status"/>
-              </div>
-              <div class="text-item--actions"> 
-                <el-button-group>
-                  <el-button size="small">
-                    <el-link :underline="false" :download="file.name" :href="getPreviewUrl(file.id)" icon="Download"></el-link> 
-                  </el-button>
-                  <el-button icon="Delete" size="small" type="danger" @click="handleDelete(file)"></el-button>
-                </el-button-group>
-              </div>
+            <span class="right" v-if="fileTypeList.length >= 4">
+              <el-select v-model="query.file_type" clearable>
+                <el-option
+                  value=""
+                  :label="$t('file.allTypes')"
+                />
+                <el-option
+                  v-for="type in fileTypeList"
+                  :key="type"
+                  :label="type.toUpperCase()"
+                  :value="type"
+                />
+              </el-select>
+            </span>
+
+            <div class="m-b-8" v-if="showUploadTitle">
+              <el-alert 
+                type="warning" 
+                show-icon 
+                :title="$t('file.uploadTooltip')" 
+                :closable="false"
+              />
             </div>
-            <div v-else class="picture-item"> 
-              <div class="picture-item--thumbnail m-b-8 m-r-8">
-                <img :src="getThumbnail(file)"/>
-              </div>
-              <div>
-                {{ file.name }}
-              </div>
-              <span class="picture-item--actions">
-                <span @click="handlePreview(file)"><el-icon><View /></el-icon></span>
-                <span>
-                  <a :underline="false" :download="file.name" :href="getPreviewUrl(file.id)">
-                    <el-icon><Download/></el-icon>
-                  </a>
+
+            <template #file="{file}"> 
+              <div class="picture-item"> 
+
+                <div class="picture-item--thumbnail m-b-8 m-r-8">
+                  <img :src="getThumbnail(file)"/>
+                </div>
+
+                <div>
+                  {{ file.name }}
+                </div>
+
+                <span class="picture-item--actions">
+                  <span>
+                    <a :underline="false" :download="file.name" :href="getPreviewUrl(file.id)">
+                      <el-icon><Download/></el-icon>
+                    </a>
+                  </span>
+                  <span @click="handleDelete(file)"><el-icon><Delete /></el-icon></span>
                 </span>
-                <span @click="handleDelete(file)"><el-icon><Delete /></el-icon></span>
-              </span>
-            </div>
-          </template>
-        </el-upload>
+              </div>
+            </template>
+          </el-upload>
         </el-scrollbar>
-          <bs-load-more
-            v-model="files"
-            ref="loadMoreRef"
-            :load-method="filesByPageApi"
-            :limit="10"
-            :height="50"
-            :query="query"
-            @load-completed="() => unCompleted = false"
-          />
+
+
+        <bs-load-more
+          v-model="files"
+          ref="loadMoreRef"
+          :load-method="filesByPageApi"
+          :limit="10"
+          :height="50"
+          :query="query"
+          @load-completed="() => unCompleted = false"
+        />
+
       </el-card>
     </el-col>
-    <el-col :lg="16" :xs="24" v-if="viewFile||viewMp4">
-      <el-scrollbar max-height="700px" ref="scrollRef">
-        <el-card class="m-b-16" v-if="viewFile" :header="$t('file.eeg')">
-          <bs-eeg-view
-            @close-preview="handleClosePreview"
-            :file="viewFile"
-            :chart-height="500"
-            :file-type="viewFileType"
-            multiple
-          />
-        </el-card>
-        <el-card :header="`${$t('file.video')}- ${viewMp4.name}`" v-if="viewMp4">
-          <div style="text-align: center;" id="videoPlay">
-            <video style="width: 100%" :src="viewMp4.url" controls/>
-          </div>
-        </el-card>
-      </el-scrollbar>
-    </el-col>
   </el-row>
-  <el-dialog 
-    v-model="previewImg" 
-    :title="previewImgFile.name"
-    width="80%"
-  >
-    <div class="preview">
-      <img class="preview-image" :src="previewImgFile.url" alt="Preview Image" />
-    </div>
-  </el-dialog>
-  <el-dialog
-    v-model="previewJson"
-    :title="previewJsonFile.name"
-    :destroy-on-close="true"
-  >
-    <vue-json-pretty 
-      :deep="1"
-      :data="previewJsonFile.data"
-      :showLength="true"
-      :showLineNumber="true"
-      :showIcon="false"
-      :virtual="true"
-    />
-  </el-dialog>
-  <!--
-  <el-dialog 
-    v-model="showFileSelect" 
-    title="选择压缩包中的文件"
-    @closed="initSelect"
-  >
-    <el-checkbox 
-      v-model="checkAll"
-      :indeterminate="isIndeterminate"
-      @change="handleCheckAllChange"
-    >
-      {{ $t("button.checkall") }}
-    </el-checkbox>
-    <el-checkbox-group 
-      v-model="selectedFile" 
-      @change="handleFileSelectChange"
-    >
-      <el-checkbox
-        v-for="file in forSelectFile"
-        :key="file.name"
-        :label="file"
-      >
-        {{ file.name }}
-      </el-checkbox>
-    </el-checkbox-group>
-    <template #footer> 
-      <el-button @click="showFileSelect = false">{{$t("button.cancel")}}</el-button>
-      <el-button type="primary" @click="handleConfirm">{{$t("button.upload")}}</el-button>
-    </template>
-  </el-dialog>
-  -->
+
   
 </template>
 <script setup>
@@ -202,7 +119,7 @@ import { useUtils } from "@/compositions/useUtils";
 import { useI18n } from "vue-i18n";
 import { useUpload } from "@/compositions/useUpload";
 import { ElMessage } from "element-plus";
-import { filesByPageApi, fileTypesApi } from "@/api/files";
+import { filesByPageApi, fileTypesApi } from "@/api/datasetFiles";
 import { eegDisplayApi } from "@/api/eeg";
 import { getFileData, getPreviewUrl } from "@/utils/common";
 import BsLoadMore from "@/components/BsLoadMore.vue";
@@ -282,6 +199,10 @@ const handleTypeChange = () => {
 
 const getFileTypes = async () => {
   fileTypeList.value = await fileTypesApi(experiment_id);
+  // fileTypeList.value = [
+  //   "7z",
+  //   "cnt"
+  // ]
 }
 
 
@@ -327,48 +248,9 @@ const handleSuccess = (response, uploadFile) => {
 }
 options["on-success"] = handleSuccess;
 
-/*
-const handleZipUpload = () => {
-  accept.value = "application/zip";
-}
-
-const handleBatchUpload = () => {
-  accept.value = "";
-}
-
-
-const handleChange = (uploadFile, uploadFiles) => {
-  if(!accept.value) {
-    uploadRef.value.submit();
-    return;
-  } 
-  uploadRef.value.handleRemove(uploadFile);
-  if(accept.value !== uploadFile.raw.type ) {
-    ElMessage.error("请上传zip文件")
-    return;
-  }
-  if(uploadFile.raw.type === "application/zip") {
-    accept.value = "";
-    zipTool.loadAsync(uploadFile.raw)
-    .then((zip) => {
-      showFileSelect.value = true;
-      zip.forEach(async (relativePath, zipEntry) => {
-        const blob = await zip.file(zipEntry.name).async("blob");
-        const file = new File([blob], zipEntry.name)
-        forSelectFile.value.push(file);
-      })
-    })
-  }
-}
-*/
-
-
-
 const handleEEGFileView = (file) => {
   viewFile.value = file.id === viewFile.value?.id ? null : file
 }
-
-
 
 const viewFileOp = {
   "mp4": (file) => {
@@ -436,6 +318,20 @@ const handleConfirm = () => {
   showFileSelect.value = false;
 }
 
+// import request from "@/utils/request";
+// const filesByPageApi = ({ experiment_id=14, name="", file_type="", offset=0, limit=10 }) => {
+//   return request({
+//     url: "/api1/getFilesByPage",
+//     method: "GET",
+//     params: {
+//       experiment_id,
+//       name,
+//       file_type,
+//       offset,
+//       limit
+//     }
+//   })
+// }
 
 </script>
 

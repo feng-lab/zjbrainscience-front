@@ -11,12 +11,13 @@
       :highlight-current-row="!multiple"
       @current-change="handleCurrentChange"
     >
-      <el-table-column type="selection" v-if="multiple"></el-table-column>
-      <el-table-column property="filename" :label="$t('file.name')" />
-      <el-table-column property="filetype" :label="$t('file.type')" />
+      <el-table-column align="center" type="selection" v-if="multiple"></el-table-column>
+      <el-table-column align="center" property="name" :label="$t('file.name')" />
+      <el-table-column align="center" property="file_type" :label="$t('file.type')" />
       <el-table-column
-        property="experimentsid"
-        :label="$t('file.experiment')"
+        align="center"
+        property="experiment_id"
+        :label="$t('file.experiment')+ 'ID'"
       />
     </el-table>
     </el-scrollbar>

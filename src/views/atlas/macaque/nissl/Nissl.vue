@@ -14,7 +14,7 @@
       <div 
         v-for="(nissl, index) in nisslList" 
         :key="nissl" 
-        :class="['thumbnail-item', nissl === showNissl ? 'thumbnail-item-active':'']" 
+        :class="['thumbnail-item', {'thumbnail-item-active': nissl === showNissl}]" 
         @click="handleShowNissl(nissl)"
         @mouseover="handleFocusNissl(nissl)"
         @mouseleave="handleLeaveNissl"

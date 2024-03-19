@@ -1,0 +1,48 @@
+DELETE http://127.0.0.1:8090/api/deleteDataset
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzEwOTE4Mjk5fQ.pBVX2hSuor9ODqZyGIHkHXmcCLetFWL7Bs55iDu_aCw
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzEwOTE4Mjk5fQ.pBVX2hSuor9ODqZyGIHkHXmcCLetFWL7Bs55iDu_aCw; token_type=bearer
+
+{   
+ "dataset_id" : 1
+}
+
+###
+
+GET http://10.11.140.35/api/getAtlasRegionInfo?atlas_id=4&region_id=997
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzA4OTE4NDMyfQ.4Y5r9hVBtdJD9Bc1jPFrk4hhfSlNOdwAx999vo9CXzM
+Cookie: token_type=bearer; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzA4OTE4NDMyfQ.4Y5r9hVBtdJD9Bc1jPFrk4hhfSlNOdwAx999vo9CXzM
+
+
+###
+http://10.11.140.35/api/getFileTypes?experiment_id=14
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzEwOTE4Mjk5fQ.pBVX2hSuor9ODqZyGIHkHXmcCLetFWL7Bs55iDu_aCw
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzEwOTE4Mjk5fQ.pBVX2hSuor9ODqZyGIHkHXmcCLetFWL7Bs55iDu_aCw; token_type=bearer
+
+{
+    "experiment_id": 14
+}
+
+
+###
+http://10.11.140.35/api/getFilesByPage?experiment_id=14&name=&file_type=&offset=0&limit=10
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzEwOTE4Mjk5fQ.pBVX2hSuor9ODqZyGIHkHXmcCLetFWL7Bs55iDu_aCw
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzEwOTE4Mjk5fQ.pBVX2hSuor9ODqZyGIHkHXmcCLetFWL7Bs55iDu_aCw; token_type=bearer
+
+{
+    "experiment_id": 14
+}
+
+
+###
+http://127.0.0.1:8090/api/getFileTypes?experiment_id=14
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzEwOTE4Mjk5fQ.pBVX2hSuor9ODqZyGIHkHXmcCLetFWL7Bs55iDu_aCw
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzEwOTE4Mjk5fQ.pBVX2hSuor9ODqZyGIHkHXmcCLetFWL7Bs55iDu_aCw; token_type=bearer
+
+{
+    "experiment_id": 14
+}

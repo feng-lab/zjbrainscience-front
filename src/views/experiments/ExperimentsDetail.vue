@@ -2,7 +2,7 @@
   <el-card class="main-content">
     <el-descriptions 
       :column="column[breakpoint]"
-      :title="`${exForm.name} (ID: ${exForm.id})`"
+      :title="`${exForm.species} (ID: ${exForm.id})`"
       border
       class="m-b-24"
     >
@@ -15,64 +15,80 @@
           {{ $t("button.back") }}
         </bs-route-link>
       </template>
-      <el-descriptions-item :label="$t('experiments.detail.type')" align="center">
-        {{ EXPERIMENT_TYPE[exForm.type] }}
+
+      <el-descriptions-item :label="$t('datasetManagement.detail.development_stage')" align="center">
+        {{ exForm.development_stage }}
       </el-descriptions-item>
-      <el-descriptions-item :label="$t('experiments.detail.main_operator')" align="center">
-        {{ `${exForm?.main_operator.username}(${exForm?.main_operator.staff_id})`}}
+
+      <el-descriptions-item :label="$t('datasetManagement.detail.organ')" align="center">
+        {{ exForm.organ }}
       </el-descriptions-item>
-      <el-descriptions-item :label="$t('label.startTime')" align="center">
-        {{ exForm.start_at }}
+
+      <el-descriptions-item :label="$t('datasetManagement.detail.cell_count')" align="center">
+        {{ exForm.cell_count }}
       </el-descriptions-item>
-      <el-descriptions-item :label="$t('label.endTime')" align="center">
-        {{ exForm.end_at }}
+
+      <el-descriptions-item :label="$t('datasetManagement.detail.data_type')" align="center">
+        {{ exForm.data_type }}
       </el-descriptions-item>
-        <el-descriptions-item :label="$t('experiments.detail.tags')" label-align="center">
-          <el-tag
-            v-for="tag in exForm.tags"
-            :key="tag"
-            class="m-l-8"
-            effect="dark"
-          >
-            {{ tag}}
-          </el-tag>
-        </el-descriptions-item>
+
+      <el-descriptions-item :label="$t('datasetManagement.detail.file_format')" align="center">
+        {{ exForm.file_format }}
+      </el-descriptions-item>
+
+
       <template v-if="showMore">
-        <el-descriptions-item :label="$t('experiments.detail.subject_type')" align="center">
-          {{ $t(`subject.category.${exForm.subject_type}`) }}
+        <el-descriptions-item :label="$t('datasetManagement.detail.sample_count')" align="center">
+          {{ exForm.sample_count }}
         </el-descriptions-item>
-        <el-descriptions-item :label="$t('experiments.detail.subject_num')" align="center">
-          {{ exForm.subject_num }}
+
+        <el-descriptions-item :label="$t('datasetManagement.detail.data_publisher')" align="center">
+          {{ exForm.data_publisher }}
         </el-descriptions-item>
-        <el-descriptions-item :label="$t('experiments.detail.session_num')" align="center">
-          {{ exForm.session_num }}
+
+        <el-descriptions-item :label="$t('datasetManagement.detail.data_update_year')" align="center">
+          {{ exForm.data_update_year }}
         </el-descriptions-item>
-        <el-descriptions-item :label="$t('experiments.detail.trail_num')" align="center">
-          {{ exForm.trail_num }}
+
+        <el-descriptions-item :label="$t('datasetManagement.detail.file_count')" align="center">
+          {{ exForm.file_count }}
         </el-descriptions-item>
-        <el-descriptions-item :label="$t('experiments.detail.neuron_source')" align="center">
-          {{ exForm.neuron_source }}
+
+        <el-descriptions-item :label="$t('datasetManagement.detail.file_total_size_gb')" align="center">
+          {{ exForm.file_total_size_gb }}
         </el-descriptions-item>
-        <el-descriptions-item :label="$t('experiments.detail.stimulation_type')" align="center">
-          {{ exForm.stimulation_type }}
+
+        <el-descriptions-item :label="$t('datasetManagement.detail.file_acquired_size_gb')" align="center">
+          {{ exForm.file_acquired_size_gb }}
         </el-descriptions-item>
-        <el-descriptions-item :label="$t('experiments.detail.experiment_id')" align="center">
-          {{ experiment_id }}
+
+        <el-descriptions-item :label="$t('datasetManagement.detail.associated_diseases')" align="center">
+          {{ exForm.associated_diseases }}
         </el-descriptions-item>
-        <el-descriptions-item :label="$t('experiments.detail.is_non_invasive')" align="center">
-          {{ YES_OR_NO[exForm.is_non_invasive] }}
+
+        <el-descriptions-item :label="$t('datasetManagement.detail.experiment_platform')" align="center">
+          {{ exForm.experiment_platform }}
         </el-descriptions-item>
-        <el-descriptions-item :label="$t('experiments.detail.is_shared')" align="center">
-          {{ YES_OR_NO[exForm.is_shared] }}
+
+        <el-descriptions-item :label="$t('datasetManagement.detail.fetch_url')" align="center">
+          {{ exForm.fetch_url }}
         </el-descriptions-item>
-        <el-descriptions-item :label="$t('experiments.detail.location')" label-align="center">
-          {{ exForm.location }}
+
+        <el-descriptions-item :label="$t('datasetManagement.detail.project')" align="center">
+          {{ exForm.project }}
         </el-descriptions-item>
-        <el-descriptions-item :label="$t('experiments.detail.description')" label-align="center">
-          {{ exForm.description }}
+
+        <el-descriptions-item :label="$t('datasetManagement.detail.paper_doi')" align="center">
+          {{ exForm.paper_doi }}
         </el-descriptions-item>
+
+        <el-descriptions-item :label="$t('datasetManagement.detail.paper_title')" align="center">
+          {{ exForm.paper_title }}
+        </el-descriptions-item>
+
       </template>
     </el-descriptions>
+
     <div style="overflow:hidden">
       <el-button class="right" link size="small" type="primary" v-if="showMore" @click="showMore=false"> 
         {{ $t("button.collapse") }}
@@ -83,16 +99,17 @@
         <el-icon><arrow-down/></el-icon>
       </el-button>
     </div>
+
     <el-menu
       :default-active="activeName"
       mode="horizontal"
       router
     >
-      <el-menu-item :index="`${routePrefix}paradigm`">{{$t('experiments.tab.paradigm')}}</el-menu-item>
+      <!-- <el-menu-item :index="`${routePrefix}paradigm`">{{$t('experiments.tab.paradigm')}}</el-menu-item> -->
       <el-menu-item :index="`${routePrefix}file`">{{$t('term.file')}}</el-menu-item>
-      <el-menu-item :index="`${routePrefix}subject`">{{$t('subject.text')}}</el-menu-item>
+      <!-- <el-menu-item :index="`${routePrefix}subject`">{{$t('subject.text')}}</el-menu-item>
       <el-menu-item :index="`${routePrefix}equipment`">{{$t('experiments.tab.equipment')}}</el-menu-item>
-      <el-menu-item :index="`${routePrefix}assistant`">{{$t('experiments.tab.assistant')}}</el-menu-item>
+      <el-menu-item :index="`${routePrefix}assistant`">{{$t('experiments.tab.assistant')}}</el-menu-item> -->
     </el-menu>
     <div class="m-t-16">
       <router-view/>
@@ -103,8 +120,8 @@
 <script setup>
 import BsRouteLink from "@/components/BsRouteLink.vue";
 
-import { ref, provide, onMounted, computed } from "vue";
-import { exDetailApi } from "@/api/experiments";
+import { ref, provide, onMounted, computed, watchEffect } from "vue";
+import { exDetailApi } from "@/api/datasetManagement";
 import { storeToRefs } from "pinia";
 import useMediaQuery from "@/stores/mediaQuery";
 import { useRoute } from "vue-router";
@@ -114,13 +131,29 @@ import { EXPERIMENT_TYPE, SUBJECT_TYPE } from "@/utils/common";
 const props = defineProps({
   experiment_id: String 
 });
+
 const exForm = ref({
-  datapath: "",
-  main_operator: {
-    username: "",
-    staff_id: ""
-  }
-});
+  experiment_id: "",
+  description: "",
+  species: "",
+  paper_title: "",
+  paper_doi: "",
+  development_stage: "",
+  file_format: "",
+  sample_count: null,
+  data_publisher: "",
+  data_update_year: null,
+  file_count: null,
+  file_total_size_gb:null,
+  file_acquired_size_gb:null,
+  associated_diseases:"",
+  organ:"",
+  cell_count:null,
+  data_type:"",
+  experiment_platform:"",
+  fetch_url:"",
+  project:""
+})
 
 const routePrefix = `/experiments/detail/${props.experiment_id}/`;
 
@@ -134,9 +167,15 @@ const column = {
 const { breakpoint } = storeToRefs(useMediaQuery()); 
 
 const showMore = ref(false);
-const route = useRoute();
 
-const activeName = computed(() => route.fullPath); 
+
+const activeName = ref()
+const route = useRoute()
+watchEffect(() => {
+  activeName.value = route.fullPath
+})
+
+
 const { YES_OR_NO } = useUtils();
 
 provide('exid', Number(props.experiment_id));

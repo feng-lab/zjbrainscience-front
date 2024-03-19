@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import { Vue } from "vue-demi";
+// import { Vue } from "vue-demi";
 
 /**
  * 创建用户

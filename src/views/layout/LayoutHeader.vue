@@ -15,7 +15,7 @@
       </el-icon>
     </div>
     <div class="header-content--right">
-      <div class="action" v-if="user.access_level">
+      <div class="action" v-if="user.access_level>1001">
         <el-dropdown
           :hide-on-click="false"
           trigger="click"

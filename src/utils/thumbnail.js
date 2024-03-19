@@ -8,6 +8,7 @@ import THUMBNAIL_SVG from "@/assets/img/thumbnail/pic.svg";
 import THUMBNAIL_XLS from "@/assets/img/thumbnail/xls.svg";
 import THUMBNAIL_RAR from "@/assets/img/thumbnail/zip.svg";
 import THUMBNAIL_UNKNOWN from "@/assets/img/thumbnail/unknown.svg";
+import THUMBNAIL_FOLDER from "@/assets/img/thumbnail/folder.jpg";
 
 const Thumbnail = {
   pdf: THUMBNAIL_PDF,
@@ -19,7 +20,8 @@ const Thumbnail = {
   svg: THUMBNAIL_SVG,
   dpt: THUMBNAIL_DPT,
   xls: THUMBNAIL_XLS,
-  unknown: THUMBNAIL_UNKNOWN
+  unknown: THUMBNAIL_UNKNOWN,
+  folder: THUMBNAIL_FOLDER
 };
 
 export default Thumbnail;

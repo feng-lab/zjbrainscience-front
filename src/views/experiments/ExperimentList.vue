@@ -1,52 +1,4 @@
 <template>
-  <el-card class="m-b-16">
-    <el-row :gutter="12" class="multiple-line-row">
-      <el-col :xs="24" :lg="9" :xl="12">
-        <div class="button-line">
-          <bs-route-link path="/experiments/new" type="primary" v-if="user.access_level > 10">
-            <el-icon><Plus/></el-icon>
-            {{ $t("experiments.action.new") }}
-          </bs-route-link>
-          <bs-sort-button
-            :text="$t('button.sortByType')"
-            :order="query.sort_by === 'type' && query.sort_order"
-            @click.prevent="setSortBy('type')"
-          />
-          <bs-sort-button
-            :text="$t('button.sortByTime')"
-            :order="query.sort_by === 'start_time' && query.sort_order"
-            @click="setSortBy('start_time')"
-          />
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="8" :lg="5" :xl="4">
-        <el-select v-model="query.type" style="width: 100%" clearable :placeholder="$t('experiments.detail.type')">
-          <el-option 
-            v-for="(label, value) in EXPERIMENT_TYPE"
-            :key="value"
-            :value="value"
-            :label="label"
-          />
-        </el-select>
-      </el-col>
-      <el-col :xs="24" :sm="8" :lg="5" :xl="4">
-        <el-input
-          clearable
-          v-model="query.tag"
-          :placeholder="$t('placeholder.search', { content: $t('experiments.detail.tags')})"
-          prefix-icon="Search"
-        />
-      </el-col>
-      <el-col :xs="24" :sm="8" :lg="5" :xl="4">
-        <el-input 
-          clearable
-          v-model="query.name"
-          :placeholder="$t('placeholder.search', { content: $t('experiments.detail.name')})"
-          prefix-icon="Search"
-        />
-      </el-col>
-    </el-row>
-  </el-card>
   <el-card body-style="min-height: calc(100vh - 200px)">
     <bs-load-more 
       :height="720"
@@ -65,7 +17,7 @@
           :xl="6"
         >
           <bs-project-card
-            :title="ex.name"
+            :title="ex.species"
             icon-color="#faad14"
             :icon="BsIconExperiment"
             :content-style="{
@@ -92,44 +44,35 @@
                 {{ `ID: ${ex.id}`}} 
               </el-tag>
             </template>
-            <template #extra> 
-              <el-tag :type="statusTag[ex.type.toLowerCase()]"> 
-                {{ EXPERIMENT_TYPE[ex.type] }} 
-              </el-tag>
-            </template>
             <div class="m-b-8">
               <div>{{ ex.description }}</div>
             </div>
             <table>
               <tbody>
-                <bs-tr icon="User" icon-color="#52c41a" :label="'Session' + $t('colon')">
-                  {{ ex.session_num }} 
+                <bs-tr icon="Location" icon-color="#52c41a" :label="$t('datasetManagement.detail.development_stage') + $t('colon')">
+                  {{ ex.development_stage }} 
                 </bs-tr>
-                <bs-tr icon="FolderOpened" icon-color="#52c41a" :label="'Trails' + $t('colon')">
-                  {{ ex.trail_num }} 
+                <bs-tr icon="Collection" icon-color="#52c41a" :label="$t('datasetManagement.detail.organ') + $t('colon')">
+                  {{ ex.organ}} 
                 </bs-tr>
-                <bs-tr icon="Clock" icon-color="#52c41a" :label="$t('label.startTime') + $t('colon')">
-                  {{ ex.start_at}} 
+                <bs-tr icon="Document" icon-color="#52c41a" :label="$t('datasetManagement.detail.cell_count') + $t('colon')">
+                  {{ ex.cell_count}} 
                 </bs-tr>
-                <bs-tr icon="Clock" icon-color="#52c41a" :label="$t('label.endTime') + $t('colon')">
-                  {{ ex.end_at}} 
+                <bs-tr icon="Help" icon-color="#52c41a" :label="$t('datasetManagement.detail.data_type') + $t('colon')">
+                  {{ ex.data_type}} 
+                </bs-tr>
+                <bs-tr icon="Postcard" icon-color="#52c41a" :label="$t('datasetManagement.detail.file_format') + $t('colon')">
+                  {{ ex.file_format }} 
                 </bs-tr>
               </tbody>
             </table>
-            <el-tag
-              v-for="tag in ex.tags"
-              :key="tag"
-              class="m-r-8 m-t-8"
-              effect="dark"
-            >
-              {{ tag }}
-            </el-tag>
           </bs-project-card>
         </el-col>
       </el-row>
     </bs-load-more>
   </el-card>
 </template>
+
 <script setup>
 import BsIconExperiment from "@/components/icons/BsIconExperiment.vue";
 import BsTr from "@/components/BsTr.vue";
@@ -140,12 +83,13 @@ import BsLoadMore from "@/components/BsLoadMore.vue";
 
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { allExByPageApi, deleteExApi } from "@/api/experiments";
+import { allExByPageApi, deleteExApi } from "@/api/datasetManagement";
 import { useI18n } from "vue-i18n";
 import { useUtils } from "@/compositions/useUtils";
 import { ElMessage } from "element-plus";
 import useUserStore from "@/stores/user";
 import { EXPERIMENT_TYPE } from "@/utils/common.js";
+
 
 const router = useRouter();
 const i18n = useI18n();
@@ -154,20 +98,15 @@ const { systemConfirm } = useUtils();
 const exList = ref([]);
 const { user } = useUserStore();
 
-const statusTag = {
-  "mi": "success",
-  "ssvep": "warning",
-  "others": "danger",
-  "neuron": "blue",
-  "p300": "purple"
-}
-
 const query = ref({
-  name: "",
-  sort_by: "start_time",
-  sort_order: "desc",
+  data_publisher: "",
+  experiment_platform: "",
+  project: "",
   type: "",
-  tag: ""
+  user_id: user.id,
+  data_update_year:"",
+  offset:"",
+  include_deleted:""
 })
 
 const loadRef = ref();
@@ -191,20 +130,6 @@ const handleEdit = (id) => {
   router.push(`/experiments/edit/${id}`);
 }
 
-const setSortBy = (byLable) => {
-  let _sortOrder;
-  const { sort_by, sort_order } = query.value;
-  if( sort_by === byLable) {
-    _sortOrder =  sort_order === "asc" ? "desc" : "asc";
-  } else {
-    _sortOrder = "desc";
-  }
-  query.value = {
-    ...query.value,
-    sort_by: byLable,
-    sort_order: _sortOrder
-  }
-}
 </script>
 
 <style scoped lang="scss">
