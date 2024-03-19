@@ -28,6 +28,10 @@ export function useUtils() {
     router.push("/");
   }
 
+  function goToPath(path) {
+    router.push(path)
+  }
+
   function systemConfirm(message, callback, errorHandle) {
     return ElMessageBox.confirm(
       message, 
@@ -65,6 +69,7 @@ export function useUtils() {
     backToHome,
     systemConfirm,
     resetForm,
-    copyText
+    copyText,
+    goToPath
   }
 }

@@ -5,28 +5,42 @@ import { useBrainRegionsLayer } from "./useBrainRegionsLayer";
 import { useWholeBrainLayer } from "./useWholeBrainLayer";
 import { useSegmentationLayer } from "./useSegmentationLayer";
 import { useConnectivityLayer } from "./useConnectivityLayer";
-import { useBsImage } from "./useBsImage";
+import { getImageLayerShader, useBsImage } from "./useBsImage";
 import { useRouter } from "vue-router";
 import { useAnnotationLayer } from "./useAnnotationLayer";
+import useAtlasStore from "@/stores/atlas";
 
 export function useBsAtlasBaseUrl(atlasName) {
   return {
-    baseUrl: `http://${window.location.host}/atlas_data/${atlasName}`
+    baseUrl: `http://${window.location.host}/atlas_data/eeum_test2/` //${atlasName}
   }
 }
 
+
 export function useBsAtlasList() {
-  const atlasList = ref([]);
+  const atlasList = ref([
+    {
+      "id": 4,
+      "gmt_create": "2023-09-01 15:46:17",
+      "gmt_modified": "2023-09-01 15:46:17",
+      "is_deleted": false,
+      "name": "eeum",
+      "url": "https://eeum-brain.com",
+      "title": "Eeum",
+      "whole_segment_id": 997
+   }
+  ]);
+
   const router = useRouter();
 
   const handleViewAtlas = (atlas) => {
     router.push(`/atlas/${atlas}`);
   }
 
-  onMounted(async () => {
-    const { count, items } = await getAtlasByPage();
-    atlasList.value = items;
-  })
+  // onMounted(async () => {
+  //   const { count, items } = await getAtlasByPage();
+  //   atlasList.value = items;
+  // })
 
   return {
     atlasList,
@@ -35,9 +49,19 @@ export function useBsAtlasList() {
 
 }
 
+
 export function useBsAtlas(props) {
   const neuroRef = ref();
-  const atlasInfo = ref({})
+  const atlasInfo = ref({
+    "id": 4,
+    "gmt_create": "2023-09-01 15:46:17",
+    "gmt_modified": "2023-09-01 15:46:17",
+    "is_deleted": false,
+    "name": "eeum",
+    "url": "https://eeum-brain.com",
+    "title": "Eeum",
+    "whole_segment_id": 997
+})
 
   const state = ref({
     showAxisLines: true,
@@ -51,87 +75,44 @@ export function useBsAtlas(props) {
 
   const layerFocusHandler = ref({});
   const renderDatas = ref({});
+  const Layers = ref([]);
 
 
+  if (props.chartDatas && props.chartDatas.layers && props.chartDatas.layers.length > 0) {
+    props.chartDatas.layers.forEach(l => {
+      renderDatas.value[l.name] = {
+        ...l,
+        type: "chart",
+        show: ref(!l.defaultHidden)
+      }
+    })
+  }
 
-
-  props.chartDatas.forEach(l => {
-    renderDatas.value[l.name] = {
-      ...l,
-      type: "chart",
-      show: ref(!l.defaultHidden)
-    }
-  })
-
-
-  const getAtlasLayers = async (baseUrl) => {
-    const { name:atlasName, whole_segment_id } = atlasInfo.value;
-
-    let atlasLayers = [];
-    props.neuroglancerDatas.forEach((nl, index) => {
+  if (props.neuroglancerDatas && props.neuroglancerDatas.layers && props.neuroglancerDatas.layers.length > 0) {
+    props.neuroglancerDatas.layers.forEach((nl) => {
       const renderInfo = {
         ...nl,
         type: "neuroglancer",
-        show: ref(nl?.connectivityType === "lr" ? 0 : !nl.defaultHidden)
+        show: ref(nl?.visible === false? false : true)
       }
-
-      let layers;
-      renderInfo.name = nl?.name ? `${atlasName}_${nl.name}` : "";
-      const { options={} } = nl;
-
-      switch(nl.type) {
-        case "regions":
-          layers = useBrainRegionsLayer(atlasName, options, layerFocusHandler);
-          break;
-        case "wholeBrain":
-          layers = useWholeBrainLayer(atlasName, whole_segment_id, options);
-          break;
-        case "connectivity":
-          renderInfo.name = `${atlasName}_connectivity`;
-          layers = useConnectivityLayer(baseUrl, atlasName, nl, layerFocusHandler);
-          break;
-        case "image": 
-          layers = useBsImage(nl, atlasName);
-          break;
-        case "segmentation":
-          layers = useSegmentationLayer(baseUrl, atlasName, nl);
-          break;
-        case "annotation": 
-          layers = useAnnotationLayer(baseUrl, atlasName, nl);
-          break;
-      }
-      layers = layers.layers;
-
-      renderInfo.label = layers[0].label;
-      renderInfo.neuroType = layers[0].type;
-
-      if(layers.length > 1) {
-        renderInfo.subLayer = layers.map(l => l.name);
-        atlasLayers = [
-          ...atlasLayers,
-          ...layers.map(l => ({ ...l, visible: !nl.defaultHidden}))
-        ]
-      } else {
-        renderInfo.name = layers[0].name;
-        atlasLayers.push({
-          ...layers[0],
-          visible: !nl.defaultHidden
-        })
-      }
+      renderInfo.label = nl.name;
+      renderInfo.neuroType = nl.type;
+      renderInfo.name = nl.name;
       renderDatas.value[renderInfo.name] = renderInfo;
-      axios.get(`${baseUrl}/${renderInfo.name}/state.json`)
-      .then(res => {
-        const { data } = res;
-        const layer = state.value.layers[index];
-        state.value.layers[index] = {
-          ...layer,
-          ...data
-        }
-      })
-      .catch(e => {
-      })
+
+      if (nl.type === "segmentation"){
+        const { getFocusRegion } = useAtlasStore();
+        layerFocusHandler.value[nl.name] = getFocusRegion;
+      }
+      let shader = ""
+      if (nl.type === "image" && nl.shaderControls && nl.shaderControls.color){
+        shader = getImageLayerShader("","","",nl.shaderControls.color,"emitRGB" )
+        Layers.value.push({...nl, shader: shader})
+      } else {
+        Layers.value.push(nl)
+      }
+
     })
-    return atlasLayers;
   }
 
   const updateState = (newState) => {
@@ -149,23 +130,11 @@ export function useBsAtlas(props) {
     })
   } 
 
-
-
   onMounted(async () => {
-    atlasInfo.value = await getAtlasInfo(props.atlasId);
-    const { name: atlasName } = atlasInfo.value;
-    const { baseUrl } = useBsAtlasBaseUrl(atlasName);
-    const { data: atlasState } = await axios.get(`${baseUrl}/state.json`)
-                                  .catch(e => { return { data: {} }});
-    const layers = await getAtlasLayers(baseUrl);
-    if(layers.length) {
-      updateState({
-        ...atlasState,
-        layers
-      })
+    if(Layers.value.length) {
+      updateState({...props.neuroglancerDatas, layers: Layers.value})
     }
   })
-
 
   return {
     neuroRef,

@@ -8,8 +8,9 @@ import xy3d from "@/assets/img/xy-3d.png";
 import xz3d from "@/assets/img/xz-3d.png";
 import yz3d from "@/assets/img/yz-3d.png";
 
-export function useBrainAtlasLayout() {
-  const regionLayout = ref("4panel");
+export function useBrainAtlasLayout(layout="4panel") {
+  const regionLayout = ref("")
+  regionLayout.value = layout
 
   const supportLayout = [
     { layout: "4panel", component: panel4, tooltip: "Display 3D view and three 2D cross-section views in four grids"},

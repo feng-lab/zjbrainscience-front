@@ -36,6 +36,7 @@ export function useUpload(experiment_id, is_original=false) {
   }
 
   const handleSuccess = (response, uploadFile) => {
+    console.log('xx')
     uploadFile.id = response.data;
   }
 

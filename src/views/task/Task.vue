@@ -52,13 +52,13 @@
           prefix-icon="Search"
           @change="getTaskList"
           :placeholder="$t('placeholder.search', { content: $t('task.searchField.name') })"
-          v-model="taskQuery.taskname"
+          v-model="taskQuery.name"
         />
       </el-col>
     </el-row>
   </el-card>
   <el-card>
-    <el-scrollbar height="780px">
+    <el-scrollbar height="780px" v-if="taskList.length">
       <el-row :gutter="32">
         <el-col
           v-for="task in taskList"
@@ -69,10 +69,13 @@
           :xl="4"
         >
           <bs-project-card
-            :title="task.taskname"
+            :title="task.name"
             :description="task.starttime"
             icon-color="#faad14"
             icon="SetUp"
+            :descStyle="{
+              textAlign: 'center'
+            }"
             :buttons="[{
               text: $t('button.detail'),
               icon: 'View',
@@ -91,10 +94,10 @@
             </template>
             <div>
               <div class="type-icon">
-                <el-icon v-if="task.tasktype.includes('预处理')" :color="statusTag[task.status].color">
+                <el-icon v-if="task.tasktype.includes('Filter')" :color="statusTag[task.status].color">
                   <bs-icon-filter/>
                 </el-icon>
-                <el-icon v-if="task.tasktype.includes('数据分析')" :color="statusTag[task.status].color">
+                <el-icon v-if="task.tasktype.includes('Analysis')" :color="statusTag[task.status].color">
                   <bs-icon-analysis/>
                 </el-icon>
               </div>
@@ -109,6 +112,7 @@
           <el-button type="danger" @click="getTaskList('more')" :loading="loading">{{$t("button.load")}}{{$t("button.more")}}</el-button>
       </div>
     </el-scrollbar>
+    <el-empty v-else/>
     <task-form v-model="showTaskForm" @reload-task="getTaskList"/>
   </el-card>
 </template>
@@ -124,9 +128,9 @@ import { taskByPageApi, deleteTaskApi } from '@/api/task';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 import { useUtils } from '@/compositions/useUtils';
+import useTask from "@/stores/task";
 
 const router = useRouter();
-console.log('router', router)
 
 const showTaskForm = ref(false);
 const i18n = useI18n();
@@ -141,9 +145,9 @@ const loadmore = ref(true);
 const loading = ref(false);
 
 const taskType = {
-  filter: "滤波",
-  analysis: "数据分析",
-  fa: "滤波/数据分析"
+  Filter: "Filter",
+  Analysis: "Analysis",
+  'Filter/Analysis': "Filter/Analysis"
 }
 
 const taskList = ref([]);
@@ -167,7 +171,8 @@ const getTaskList = async (more) => {
   if(more) {
     taskQuery.value.offset = taskList.value.length;
   }
-  const res = await taskByPageApi(taskQuery.value);
+  //const res = await taskByPageApi(taskQuery.value);
+  const { taskList:res } = useTask();
   loading.value = false;
   taskList.value = res;
   if(res.length < taskQuery.value.limit) {
@@ -226,6 +231,7 @@ const showForm = () => {
     background: var(--el-color-info);
   }
 }
+
 
 
 </style>

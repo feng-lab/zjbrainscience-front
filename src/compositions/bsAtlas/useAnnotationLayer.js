@@ -6,7 +6,7 @@ export function useAnnotationLayer(baseUrl, atlasName, layerInfo) {
       name,
       label,
       type: "annotation",
-      source: `precomputed://${baseUrl}/${name}`,
+      source: `precomputed://${baseUrl}${name}`,
       ...options
     }]
   }

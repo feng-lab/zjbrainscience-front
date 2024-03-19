@@ -103,12 +103,16 @@
           @input="handleImageNormalize"
         />
       </div>
-      <div class="between-flex"> 
+      <div class="between-flex m-b-16"> 
         <span class="item-label">Invert Range</span>
         <el-switch 
           v-model="invertNormalizedRange"
           @change="handleImageNormalize"
         />
+      </div>
+      <div class="between-flex"> 
+        <span class="item-label">Shader</span>
+        <el-input type="textarea" v-model="shader" autosize/>
       </div>
     </div>
     
@@ -139,6 +143,7 @@ const imgDataRange = ref([0,0]);
 
 const crossSectionScale = ref();
 const projectionScale = ref();
+const shader = ref("");
 
 const emits = defineEmits(["updateState", "visibleChange"])
 
@@ -213,8 +218,19 @@ watch(ctrlSegmentation, (layerName) => {
 watch(ctrlImage, (layerName) => {
   if(layerName) {
     const { layer } = neuroRef.value.getManagedLayer(layerName);
-    const { trackable } = layer.shaderControlState.value.get("toNormalized");
-    const { range, window } = trackable.value;
+    let trackable, trackable_
+    try {
+      trackable_ = JSON.parse(JSON.stringify(layer.shaderControlState.value.get("toNormalized")))
+      trackable = {range: trackable_.control.default.range, window: trackable_.control.default.window}
+    } catch {
+      try{
+        trackable_ = JSON.parse(JSON.stringify(layer.shaderControlState.value.get("normalized")))
+        trackable = {range: trackable_.trackable.range, window: trackable_.control.default.window}
+      } catch {
+        trackable = {range: [0, 65535], window: [0, 65535]}
+      }
+    }
+    const { range, window } = trackable;
     imgDataWindow.value = window;
     imgDataRange.value = range;
     if(range[0] > range[1]) {
@@ -228,10 +244,21 @@ watch(ctrlImage, (layerName) => {
 
 const handleImageNormalize = () => {
   const { layer } = neuroRef.value.getManagedLayer(ctrlImage.value);
-  const { trackable } = layer.shaderControlState.value.get("toNormalized");
-  trackable.value.range = invertNormalizedRange.value ?  
-    [imgDataRange.value[1], imgDataRange.value[0]] : imgDataRange.value;
-  trackable.changed.dispatch();
+  try {
+    const { trackable } = layer.shaderControlState.value.get("toNormalized");
+    trackable.value.range = invertNormalizedRange.value ? [imgDataRange.value[1], imgDataRange.value[0]] : imgDataRange.value
+    trackable.changed.dispatch();
+  } catch {
+    try {
+      const { trackable } = layer.shaderControlState.value.get("normalized");
+      trackable.value.range = invertNormalizedRange.value ? [imgDataRange.value[1], imgDataRange.value[0]] : imgDataRange.value
+      trackable.changed.dispatch();
+    } catch {
+      let trackable = {}
+      trackable.value.range = invertNormalizedRange.value ? [imgDataRange.value[1], imgDataRange.value[0]] : imgDataRange.value
+      trackable.changed.dispatch();
+    }
+  }
 }
 
 </script>

@@ -44,10 +44,17 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/login/Login.vue'),
+      meta: {
+        level: 1001,//未设置
+      }
+    },
+    {
       path: '/',
       name: 'home',
-      //redirect: "/management",
-      redirect: "/experiments/list",
+      redirect: "/atlas/eeum-Lemur",//"/experiments/list"
       component: HomeLayout,
       children: [
         ...menus,
@@ -56,7 +63,7 @@ const router = createRouter({
           name: "experiments-edit",
           component: () => import("@/views/experiments/forms/FormExperiment.vue"),
           meta: {
-            level: 100
+            level: 1001//level: 100
           },
           props: true
         },
@@ -64,34 +71,52 @@ const router = createRouter({
           path: "experiments/detail/:experiment_id",
           name: "experiments-detail",
           meta: {
-            level: 10
+            level: 1001//level: 10
           },
           component: () => import("@/views/experiments/ExperimentsDetail.vue"),
           props: true,
           children: [{
             path: "",
             name: "default",
-            redirect: {name: "paradigm"}
+            redirect: {name: "paradigm"},
+            meta: {
+              level: 1001,//未设置
+            }
           }, {
             path: "paradigm",
             name: "paradigm",
-            component: () => import("@/views/experiments/detail/DetailParadigm.vue")
+            component: () => import("@/views/experiments/detail/DetailParadigm.vue"),
+            meta: {
+              level: 1001,//未设置
+            }
           }, {
             path: "file",
             name: "file",
-            component: () => import("@/views/experiments/detail/DetailFiles.vue")
+            component: () => import("@/views/experiments/detail/DetailFiles.vue"),
+            meta: {
+              level: 1001,//未设置
+            }
           }, {
             path: "subject",
             name: "subject",
-            component: () => import("@/views/subject/SubjectList.vue")
+            component: () => import("@/views/subject/SubjectList.vue"),
+            meta: {
+              level: 1001,//未设置
+            }
           }, {
             path: "equipment",
             name: "equipment",
-            component: () => import("@/views/equipment/EquipmentList.vue")
+            component: () => import("@/views/equipment/EquipmentList.vue"),
+            meta: {
+              level: 1001,//未设置
+            }
           }, {
             path: "assistant",
             name: "assistant",
-            component: () => import("@/views/experiments/detail/DetailAssistants.vue")
+            component: () => import("@/views/experiments/detail/DetailAssistants.vue"),
+            meta: {
+              level: 1001,//未设置
+            }
           }]
         },
         {
@@ -99,9 +124,36 @@ const router = createRouter({
           name: "task-detail",
           component: () => import("@/views/task/TaskDetail.vue"),
           meta: {
-            level: 100
+            level: 1001//level: 100
           },
           props: true
+        },
+        {
+          path: "visualize/atlas/:atlasId/detail",
+          name: "atlas-detail",
+          component: () => import("@/views/visualization/VisualAtlasDetail.vue"),
+          props: true,
+          meta: {
+            level: 1001,//未设置
+          }
+        },
+        {
+          path: "atlas/display/:atlasId",
+          name: "atlas-display",
+          component: () => import("@/views/visualization/VisualAtlasDisplay.vue"),
+          props: true,
+          meta: {
+            level: 1001,//未设置
+          }
+        },
+        {
+          path: "visualize/atlas/:atlasId/subpage/:subpageId/newData",
+          name: "atlas-new-data",
+          component: () => import("@/views/visualization/forms/VisualNewDataForm.vue"),
+          props: true,
+          meta: {
+            level: 1001,//未设置
+          }
         },
         {
           path: "403",
@@ -119,12 +171,7 @@ const router = createRouter({
           component: () => import("@/views/atlas/AtlasNotSupport.vue")
         }
       ]
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('@/views/login/Login.vue')
-    },
+    }
     /*
     {
       path: "/:patchMatch(.*)*",
@@ -134,36 +181,38 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach(async (to, from) => {
-  if(to.path.startsWith("/atlas/") && to.name !== "atlasNotSupport") {
+router.beforeEach(async (to, from, next) => {
+  // console.log('to:', to, '\nfrom:', from, '\nnext:', next)
+  let level
+  if (to.meta.level) {
+    level = to.meta.level
+  } else {
+    level = 0
+  }
+  if(to.path.startsWith("/atlas/")) {
     const { screenSizeComparison } = useMediaQuery();
     const screenSupport = screenSizeComparison('width', 'min', 1024);
-    if(!screenSupport || !checkBrowserSupport()) {
-      return { name: "atlasNotSupport"};
-    }
-  }
-  if(!hasLogined() && to.name !== "login") {
-    ElMessage.error(i18n.global.t("label.needLogin"));
-    return { 
-      name: "login", 
-      query: { 
-        from: to.fullPath
+    if (to.name !== "atlasNotSupport") {
+      if(!screenSupport || !checkBrowserSupport()) {
+        next({path: '/atlas/notSupport', query: { from: to.fullPath }})
+      } else {
+        if(level && level < 1000) {
+          next()
+        } else {
+          next({path: '/403'})
+        }
+      }
+    } else {
+      if(!screenSupport || !checkBrowserSupport()) {
+        next()
+      } else {
+        next({path: to.query.from})
       }
     }
-  } else if(to.name !== "login") {
-    const userStore = useUserStore();
-    const { user }  = storeToRefs(userStore);
-    const { getUserInfo } = userStore;
-    if(!user.value.username) {
-      await getUserInfo();
-    }
-    const level = to?.meta?.level ?? 0;
-    if(level > user.value.access_level) {
-      if(from.path === "/" || from.name === "login") {
-        return { name: "atlashome" };
-      }
-      return { name: "403"};
-    }
+  } else if (to.path === '/403') {
+    next()
+  } else {
+    next({path: '/403'})
   }
 })
 

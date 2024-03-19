@@ -1,5 +1,6 @@
 import { onMounted, ref, watch } from "vue";
 import { getAtlasRegionTrees } from '@/api/atlas';
+import {eeum_region} from '@/locals/eeum_region'
 
 export function useRegionsLabelTree(neuroRef, atlasInfo, atlasId, showLabelTree) {
   const treeRef = ref();
@@ -10,9 +11,8 @@ export function useRegionsLabelTree(neuroRef, atlasInfo, atlasId, showLabelTree)
     const ids = treeRef.value.getCheckedNodes(false, false)
                             .filter(node => Number(node.region_id))
                             .map(node => node.region_id);
-    const regionLayerName = `${atlasInfo.value.name}_regions`;                  
-    console.log('region layer name', regionLayerName)
-    neuroRef.value.setVisibleSegments(regionLayerName, ids);
+    const regionLayerName = `${atlasInfo.value.name}`;                  
+    neuroRef.value.setVisibleSegments("Atlas", ids);
   }
 
   const filterTreeNode = (value, data) => {
@@ -22,7 +22,11 @@ export function useRegionsLabelTree(neuroRef, atlasInfo, atlasId, showLabelTree)
 
   onMounted(async ()=> {
     if(showLabelTree) {
-      regionsLabelTree.value = await getAtlasRegionTrees(atlasId);
+      if (atlasId === 4) {
+        regionsLabelTree.value = eeum_region;
+      } else {
+        regionsLabelTree.value = await getAtlasRegionTrees(atlasId); // label tree
+      }
       console.log('region label tree', regionsLabelTree.value)
     }
   })
@@ -30,7 +34,6 @@ export function useRegionsLabelTree(neuroRef, atlasInfo, atlasId, showLabelTree)
   watch(filterText, (value) => {
     treeRef.value.filter(value);
   })
-
   return {
     treeRef,
     regionsLabelTree,

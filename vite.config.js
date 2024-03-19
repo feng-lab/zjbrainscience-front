@@ -17,14 +17,14 @@ export default ({ command }) => {
     envDir: "./env",
     server: {
       host: "127.0.0.1",
-      proxy: {
-        "/api": {
-          target: "http://10.101.40.3:1919/"
-        },
-        "/atlas_data": {
-          target: "http://10.11.140.35:2000/"
-        }
-      }
+      // proxy: {
+      //   "/api": {
+      //     target: "http://10.11.140.35:1919/"
+      //   },
+      //   "/atlas_data": {
+      //     target: "http://10.11.140.35:2000/"
+      //   }
+      // }
     },
     build: {
       sourcemap: "inline"
@@ -46,7 +46,15 @@ export default ({ command }) => {
       viteStaticCopy({
         targets: [
           {
-            src: "../neuroglancer/dist/module/*.bundle.*",
+            src: "../neuroglancer/dist/min/async_computation.bundle.js",
+            dest: ''
+          },
+          {
+            src: "../neuroglancer/dist/min/chunk_worker.bundle.css",
+            dest: ''
+          },
+          {
+            src: "../neuroglancer/dist/min/chunk_worker.bundle.js",
             dest: ''
           }
         ]

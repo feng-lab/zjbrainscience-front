@@ -58,6 +58,7 @@ request.interceptors.request.use(config => {
 })
 
 request.interceptors.response.use(response => {
+ 
   const { url } = response.config;
   if(url === "/api/login") {
     return Promise.resolve(response.data);

@@ -1,9 +1,8 @@
 <template>
   <bs-widgets header="Render Data">
-    <div v-for="layer in neuroglancerDatas" :key="layer.name"> 
+    <div v-for="layer in neuroglancerDatas.layers" :key="layer.name" draggable="true"> 
       <span>{{ layer.label }}</span>
       <el-select></el-select>
-
     </div>
 
   </bs-widgets>
@@ -12,4 +11,3 @@
 import BsWidgets from '@/components/bsAtlas/BsWidgets.vue';
 
 </script>
-

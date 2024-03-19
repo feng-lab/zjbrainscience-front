@@ -7,14 +7,16 @@ const channelColorMap = {
   "blue": "vec3(0.0, 0.0, 1.0)"
 }
 
-const getImageLayerShader = (
-  dtype, 
-  customMainShader="",
-  transCondition, 
-  defaultColor="", 
-  colorMap="emitGrayscale"
-) => {
-  let colorShader = transCondition ? `
+export function getImageLayerShader(
+  dtype = "uint16_t", 
+  customMainShader = "",
+  transCondition = "", 
+  defaultColor = "white", 
+  colorMap = "emitGrayscale"
+){
+  let colorShader = ""
+  if (colorMap === "emitGrayscale") {
+    colorShader = transCondition ? `
     if( ${transCondition} ) {
       emitTransparent();
     } else {
@@ -24,6 +26,7 @@ const getImageLayerShader = (
 
   return `
     #uicontrol invlerp toNormalized
+
     void main() {
       ${dtype} x = getDataValue();
       ${colorShader}
@@ -31,13 +34,41 @@ const getImageLayerShader = (
     }
 
   `
+  } else if (colorMap === "emitRGB") {
+    return `
+      #uicontrol invlerp normalized
+      #uicontrol vec3 color color(default="${defaultColor}")
+      #uicontrol float brightness slider(default=0, min=-1, max=1, step=0.1)
+      #uicontrol float contrast slider(default=0, min=-3, max=3, step=0.1)
+      
+      void main() {
+        emitRGB(
+          color * vec3(normalized() + brightness) * exp(contrast));
+      }
+
+  `
+  } else {
+    return `
+      #uicontrol invlerp normalized
+      #uicontrol vec3 color color(default="${defaultColor}")
+      #uicontrol float brightness slider(default=0, min=-1, max=1, step=0.1)
+      #uicontrol float contrast slider(default=0, min=-3, max=3, step=0.1)
+      
+      void main() {
+        emitRGB(
+          color * vec3(normalized() + brightness) * exp(contrast));
+      }
+
+  `
+  }
+
 
 }
 
 //export async function useBsImage(imageInfo, atlasName) {
 export function useBsImage(imageInfo, atlasName) {
   const { baseUrl } = useBsAtlasBaseUrl(atlasName);
-  const { name, label, channels=[], dataType, transCondition="", customMainShader="", options={}} = imageInfo;
+  const { name, label, channels=[], dataType, transCondition, customMainShader, colorMap, defaultColor, options={}} = imageInfo;
   const { transform={}, ...otherOptions } = options;
 
   //const { data: imageOptions } = await axios.get(`${baseUrl}/${atlasName}_${name}/state.json`)
@@ -66,11 +97,12 @@ export function useBsImage(imageInfo, atlasName) {
       label,
       name: `${atlasName}_${name}`,
       source: {
-        url: `precomputed://${baseUrl}/${atlasName}_${name}`,
+        // url: `precomputed://${baseUrl}/${atlasName}_${name}`,
+        url: `precomputed://https://eeum-brain.com/static/neuroglancer_data/181005_Lemur-Hotsauce_SMI99_VGluT2_NeuN/${label}`,
         transform,
       },
       shader: getImageLayerShader(
-        dataType, customMainShader, transCondition),
+        dataType, customMainShader, transCondition, defaultColor, colorMap),
       ...otherOptions,
       //...imageOptions
     })
