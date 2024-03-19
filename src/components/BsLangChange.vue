@@ -8,7 +8,7 @@
         <el-dropdown-item 
           v-for="lang in supportLang"
           :key="lang.locale"
-          :class="lang.locale === locale ? 'active' : ''"
+          :class="{'active': lang.locale === locale}"
           @click="setLocale(lang.locale)">{{ lang.desc }}</el-dropdown-item>
       </el-dropdown-menu>
     </template>

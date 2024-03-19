@@ -96,7 +96,8 @@ const chart_series = ref({
 })
 
 const handleSelect = async (id, name) => {
-  const { name:atlasName }= await getAtlasInfo(props.atlasId);
+  // const { name:atlasName }= await getAtlasInfo(props.atlasId);
+  const { atlasName }= 'eeum';
   const { baseUrl } = useBsAtlasBaseUrl(atlasName);
   const linkDataPath = `${baseUrl}/${atlasName}_${props.linkDataDir}`;
   const { data } = await axios.get(`${linkDataPath}/${name}_data.json`);

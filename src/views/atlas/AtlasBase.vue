@@ -28,7 +28,7 @@
               show-checkbox
               @check="checkTreeNode"
               :filter-node-method="filterTreeNode"
-              :default-expanded-keys="[0]"
+              :default-expanded-keys="[315]"
               class="atlas-widget-"
               :accordion="true"
             >
@@ -83,7 +83,7 @@
     <el-col :span= "neuroSpan" class="atlas-content-neuro neuroglancer p-l-8 p-r-8">
       <slot name="neuro">
         <vue-neuroglancer
-          v-if="neuroglancerDatas.length"
+          v-if="neuroglancerDatas.layers.length"
           ref="neuroRef"
           :state="state"
           :event-bindings="eventBindings"
@@ -104,8 +104,8 @@
     </el-col>
     <el-col :xs="5" :sm="5" :lg="4" class="atlas-content-setting p-l-8" v-if="showSettingPanel">
       <bs-widgets header="Render Data" v-if="showRenderData" show-close @close="showRenderData = false">
-        <div v-for="(rd, key) in renderDatas" :key="key" class="between-flex"> 
-          <span> {{ rd.label }} </span>
+        <div v-for="(rd, key) in renderDatas" :key="key" class="between-flex">
+          <span draggable="true"> {{ rd.label }} </span>
           <el-select 
             class="right"
             style="width: 45%"
@@ -158,12 +158,12 @@ const props = defineProps({
   },
   subPage: Array,
   chartDatas: {
-    type: Array,
-    default: []
+    type: Object,
+    default: {}
   }, 
   neuroglancerDatas: {
-    type: Array,
-    default: []
+    type: Object,
+    default: {}
   },
   rightSpan: {
     type: Number,
@@ -178,8 +178,7 @@ const emits = defineEmits(["dataVisibleChange"])
 const showHelper = ref(false);
 
 
-const showRegionLabel = props.neuroglancerDatas.filter(d => d.type === "regions" && !d?.notShowLabelTree).length > 0;
-
+const showRegionLabel = props.neuroglancerDatas.layers.filter(d => d.type === "segmentation" && !d?.notShowLabelTree).length > 0;
 
 
 const {
@@ -232,7 +231,7 @@ const neuroSpan = computed(() => {
 const {
   regionLayout,
   getAtlasLayout
-} = useBrainAtlasLayout();
+} = useBrainAtlasLayout(props.neuroglancerDatas.layout?props.neuroglancerDatas.layout:"4panel");
 
 
 const {
@@ -254,7 +253,7 @@ const handleClickEndpoints = (point) => {
     const checkedKeys = treeRef.value.getCheckedKeys();
     checkedKeys.forEach(k => treeRef.value.setChecked(k, false));
     treeRef.value.setChecked(annotationId, true);
-    neuroRef.value.setVisibleSegments(`${atlasInfo.value.name}_regions`, [annotationId]);
+    neuroRef.value.setVisibleSegments(`${atlasInfo.value.name}`, [annotationId]);
     handleSelectRegion(sid);
   }
 }
@@ -376,8 +375,18 @@ provide('showRenderData', showRenderData);
 provide("neuroRef", neuroRef);
 provide("renderDatas", renderDatas);
 
+
 onMounted(() => {
-  const showRelatedRegionInfoDefault = [...props.neuroglancerDatas, ...props.chartDatas].some(rd => rd.regionRelated && !rd?.defaultHidden);
+
+  let showRelatedRegionInfoDefault = false
+  if (props.neuroglancerDatas && props.neuroglancerDatas.layers){
+    if (props.chartDatas && props.chartDatas.layers) {
+      showRelatedRegionInfoDefault = [...props.neuroglancerDatas.layers, ...props.chartDatas.layers].some(rd => rd.regionRelated && !rd?.defaultHidden);
+    } else {
+      showRelatedRegionInfoDefault = props.neuroglancerDatas.layers.some(rd => rd.regionRelated && !rd?.defaultHidden);
+    }
+  }
+
   if(showRelatedRegionInfoDefault) {
     handleSelectRegion("1", renderDatas, neuroRef);
   }

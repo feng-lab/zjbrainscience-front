@@ -1,0 +1,403 @@
+export const eeum_neuroglancerDatas = {
+    "dimensions": {
+      "x": [
+        6.52761e-7,
+        "m"
+      ],
+      "y": [
+        6.52761e-7,
+        "m"
+      ],
+      "z": [
+        0.0001,
+        "m"
+      ]
+    },
+    "position": [
+      13827.6611328125,
+      9749.599609375,
+      55.5
+    ],
+    "crossSectionScale": 19.00295362184689,
+    "projectionOrientation": [
+      -0.09480839222669601,
+      -0.439311683177948,
+      -0.0034661958925426006,
+      0.8933110237121582
+    ],
+    "projectionScale": 50764.49878262887,
+    "layers": [
+      {
+        "type": "image",
+        "source": "precomputed://https://eeum-brain.com/static/neuroglancer_data/181005_Lemur-Hotsauce_SMI99_VGluT2_NeuN/Brightfield",
+        "tab": "source",
+        "opacity": 1,
+        "blend": "additive",
+        "name": "Brightfield",
+        "visible": false
+      },
+      {
+        "type": "image",
+        "source": {
+          "url": "precomputed://https://eeum-brain.com/static/neuroglancer_data/181005_Lemur-Hotsauce_SMI99_VGluT2_NeuN/DAPI",
+          "subsources": {
+            "default": true
+          },
+          "enableDefaultSubsources": false
+        },
+        "tab": "source",
+        "opacity": 1,
+        "blend": "additive",
+        "shaderControls": {
+          "normalized": {
+            "range": [
+              1000,
+              35000
+            ]
+          }
+        },
+        "name": "DAPI",
+        "visible": false
+      },
+      {
+        "type": "image",
+        "source": {
+          "url": "precomputed://https://eeum-brain.com/static/neuroglancer_data/181005_Lemur-Hotsauce_SMI99_VGluT2_NeuN/SMI99",
+          "subsources": {
+            "default": true
+          },
+          "enableDefaultSubsources": false
+        },
+        "tab": "source",
+        "opacity": 1,
+        "blend": "additive",
+        "shaderControls": {
+          "normalized": {
+            "range": [
+              1500,
+              12500
+            ]
+          },
+          "color": "#0008ff"
+        },
+        "name": "SMI99",
+        "visible": true
+      },
+      {
+        "type": "image",
+        "source": {
+          "url": "precomputed://https://eeum-brain.com/static/neuroglancer_data/181005_Lemur-Hotsauce_SMI99_VGluT2_NeuN/VGluT2",
+          "subsources": {
+            "default": true
+          },
+          "enableDefaultSubsources": false
+        },
+        "tab": "source",
+        "opacity": 1,
+        "blend": "additive",
+        "shaderControls": {
+          "normalized": {
+            "range": [
+              2500,
+              15000
+            ]
+          },
+          "color": "#1eff00"
+        },
+        "name": "VGluT2",
+        "visible": true
+      },
+      {
+        "type": "image",
+        "source": {
+          "url": "precomputed://https://eeum-brain.com/static/neuroglancer_data/181005_Lemur-Hotsauce_SMI99_VGluT2_NeuN/NeuN",
+          "subsources": {
+            "default": true
+          },
+          "enableDefaultSubsources": false
+        },
+        "tab": "source",
+        "opacity": 1,
+        "blend": "additive",
+        "shaderControls": {
+          "normalized": {
+            "range": [
+              1500,
+              7500
+            ]
+          },
+          "color": "#ff0000"
+        },
+        "name": "NeuN",
+        "visible": true
+      },
+      {
+        "type": "segmentation",
+        "source": {
+          // "url": "precomputed://https://eeum-brain.com/static/neuroglancer_data/Atlas/annotation",
+          "url": "precomputed://https://eeum-brain.com/static/neuroglancer_data/181005_Lemur-Hotsauce_SMI99_VGluT2_NeuN/annotation",
+          "subsources": {
+            "default": true,
+            "properties": true,
+            "mesh": true
+          },
+          "enableDefaultSubsources": false
+        },
+        "tab": "segments",
+        "segments": [
+          "1009",
+          "10841",
+          "10842",
+          "10843",
+          "10844",
+          "10845",
+          "1097",
+          "1841",
+          "1842",
+          "1843",
+          "1844",
+          "1845",
+          "1929",
+          "1939",
+          "1949",
+          "1959",
+          "1969",
+          "1979",
+          "221",
+          "222",
+          "223",
+          "224",
+          "225",
+          "2541",
+          "2542",
+          "2543",
+          "2544",
+          "2545",
+          "3111",
+          "313",
+          "315",
+          "3221",
+          "3222",
+          "3223",
+          "3224",
+          "3225",
+          "354",
+          "3781",
+          "3782",
+          "3783",
+          "3784",
+          "3785",
+          "3851",
+          "3852",
+          "3853",
+          "3854",
+          "3855",
+          "391",
+          "392",
+          "393",
+          "394",
+          "395",
+          "477",
+          "4773",
+          "4774",
+          "4775",
+          "4776",
+          "4777",
+          "4778",
+          "4779",
+          "481",
+          "482",
+          "483",
+          "484",
+          "485",
+          "512",
+          "549",
+          "6691",
+          "6692",
+          "6693",
+          "6694",
+          "6695",
+          "771",
+          "803",
+          "8361",
+          "8362",
+          "8363",
+          "8364",
+          "8365",
+          "8941",
+          "8942",
+          "8943",
+          "8944",
+          "8945",
+          "8951",
+          "8952",
+          "8953",
+          "8954",
+          "8955",
+          "9091",
+          "9092",
+          "9093",
+          "9094",
+          "9095",
+          "9101",
+          "9102",
+          "9103",
+          "951",
+          "952",
+          "953",
+          "954",
+          "955",
+          "961",
+          "962",
+          "963",
+          "964",
+          "965",
+          "9721",
+          "9722",
+          "9723",
+          "9724",
+          "9725",
+          "9851",
+          "9852",
+          "9853",
+          "9854",
+          "9855",
+          "9931",
+          "9932",
+          "9933",
+          "9934",
+          "9935"
+        ],
+        "segmentColors": {
+          "221": "#5ea46c",
+          "222": "#5ea46c",
+          "223": "#5ea46c",
+          "224": "#5ea46c",
+          "225": "#5ea46c",
+          "313": "#ff65ff",
+          "315": "#70fe70",
+          "354": "#fe9acc",
+          "391": "#5da36c",
+          "392": "#5da36c",
+          "393": "#5da36c",
+          "394": "#5da36c",
+          "395": "#5da36c",
+          "477": "#7ecced",
+          "481": "#5da46c",
+          "482": "#5da46c",
+          "483": "#5da46c",
+          "484": "#5da46c",
+          "485": "#5da46c",
+          "512": "#f0f07f",
+          "549": "#f45b71",
+          "771": "#f98575",
+          "803": "#8599cc",
+          "951": "#4b966a",
+          "952": "#4b966a",
+          "953": "#4b966a",
+          "954": "#4b966a",
+          "955": "#4b966a",
+          "961": "#4fa498",
+          "962": "#4fa498",
+          "963": "#4fa498",
+          "964": "#4fa498",
+          "965": "#4fa498",
+          "1009": "#cbcccc",
+          "1097": "#e64339",
+          "1841": "#61c561",
+          "1842": "#61c561",
+          "1843": "#61c561",
+          "1844": "#61c561",
+          "1845": "#61c561",
+          "1929": "#2fb924",
+          "1939": "#7ecf4a",
+          "1949": "#7ed04c",
+          "1959": "#4fc144",
+          "1969": "#59b946",
+          "1979": "#5358fc",
+          "2541": "#4fa498",
+          "2542": "#4fa498",
+          "2543": "#4fa498",
+          "2544": "#4fa498",
+          "2545": "#4fa498",
+          "3111": "#39b54a",
+          "3221": "#3b7a63",
+          "3222": "#3b7a63",
+          "3223": "#3b7a63",
+          "3224": "#3b7a63",
+          "3225": "#3b7a63",
+          "3781": "#3d7e66",
+          "3782": "#3d7e66",
+          "3783": "#3d7e66",
+          "3784": "#3d7e66",
+          "3785": "#3d7e66",
+          "3851": "#3c838a",
+          "3852": "#3c838a",
+          "3853": "#3c838a",
+          "3854": "#3c838a",
+          "3855": "#3c838a",
+          "4773": "#ff65ff",
+          "4774": "#ff65ff",
+          "4775": "#e64339",
+          "4776": "#8599cc",
+          "4777": "#8599cc",
+          "4778": "#98d6f9",
+          "4779": "#98d6f9",
+          "6691": "#3c838a",
+          "6692": "#3c838a",
+          "6693": "#3c838a",
+          "6694": "#3c838a",
+          "6695": "#3c838a",
+          "8361": "#52adb1",
+          "8362": "#52adb1",
+          "8363": "#52adb1",
+          "8364": "#52adb1",
+          "8365": "#52adb1",
+          "8941": "#4fa498",
+          "8942": "#4fa498",
+          "8943": "#4fa498",
+          "8944": "#4fa498",
+          "8945": "#4fa498",
+          "8951": "#52adb1",
+          "8952": "#52adb1",
+          "8953": "#52adb1",
+          "8954": "#52adb1",
+          "8955": "#52adb1",
+          "9091": "#5fb541",
+          "9092": "#5fb541",
+          "9093": "#5fb541",
+          "9094": "#5fb541",
+          "9095": "#5fb541",
+          "9101": "#046f12",
+          "9102": "#97fee8",
+          "9103": "#fd79ab",
+          "9721": "#5da46c",
+          "9722": "#5da46c",
+          "9723": "#5da46c",
+          "9724": "#5da46c",
+          "9725": "#5da46c",
+          "9851": "#4c9b60",
+          "9852": "#4c9b60",
+          "9853": "#4c9b60",
+          "9854": "#4c9b60",
+          "9855": "#4c9b60",
+          "9931": "#468e58",
+          "9932": "#468e58",
+          "9933": "#468e58",
+          "9934": "#468e58",
+          "9935": "#468e58",
+          "10841": "#73b757",
+          "10842": "#73b757",
+          "10843": "#73b757",
+          "10844": "#73b757",
+          "10845": "#73b757"
+        },
+        "name": "Atlas"
+      }
+    ],
+    "selectedLayer": {
+      "visible": false,
+      "layer": "Atlas"
+    },
+    "layout": "xy"
+  }

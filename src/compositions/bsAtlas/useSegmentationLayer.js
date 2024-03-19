@@ -11,7 +11,8 @@ export function useSegmentationLayer(baseUrl, atlasName, layerInfo) {
     name: layerName,
     label,
     type: "segmentation",
-    source: `precomputed://${baseUrl}/${layerName}`,
+    source: `precomputed://https://eeum-brain.com/static/neuroglancer_data/Atlas/annotation/`,
+    // source: `precomputed://${baseUrl}/${layerName}`,
     ...options,
     //...layerOption
   }

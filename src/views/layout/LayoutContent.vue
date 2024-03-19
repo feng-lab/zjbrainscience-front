@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <el-alert 
+    <!-- <el-alert 
       type="warning" 
       show-icon 
       v-if="!user.last_logout_time" 
@@ -11,7 +11,7 @@
         <span class="m-b-8">{{ $t("elmessage.updatePassword")}}</span>
         <el-link href="/password" type="primary" style="margin-top:-3px"> {{ $t("button.changePassword") }}</el-link>
       </template>
-    </el-alert>
+    </el-alert> -->
     <router-view/>
   </div>
 </template>

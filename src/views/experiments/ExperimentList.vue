@@ -93,7 +93,7 @@
               </el-tag>
             </template>
             <template #extra> 
-              <el-tag :type="statusTag[ex.type.toLowerCase()]"> 
+              <el-tag :type="statusTag[ex.type?.toLowerCase()]"> 
                 {{ EXPERIMENT_TYPE[ex.type] }} 
               </el-tag>
             </template>

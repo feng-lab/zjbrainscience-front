@@ -1,21 +1,21 @@
 <template>
   <div class="bs-layout">
     <el-container v-if="layoutType === 'common'" class="common">
-      <el-aside :width="asideWidth" class="hidden-sm-and-down aside">
+      <!-- <el-aside :width="asideWidth" class="hidden-sm-and-down aside">
         <layout-siderbar/>
       </el-aside>
-      <layout-drawer-sidebar/>
+      <layout-drawer-sidebar/> -->
       <el-container>
-        <el-header class="header" height="64px">
+        <!-- <el-header class="header" height="64px">
           <layout-header/>
-        </el-header>
+        </el-header> -->
         <el-main class="main">
           <layout-content/>
         </el-main>
       </el-container>
     </el-container>
     <div v-else class="atlas dark"> 
-      <el-button
+      <!-- <el-button
         class="menu-icon"
         @click="toggleDrawer"
       >
@@ -23,7 +23,7 @@
           <bs-icon-menu/>
         </template>
       </el-button>
-      <layout-drawer-sidebar/>
+      <layout-drawer-sidebar/> -->
       <router-view/>
     </div>
   </div>

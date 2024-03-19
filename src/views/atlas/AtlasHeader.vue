@@ -40,7 +40,7 @@
           <span> {{  p.title  }} </span>
         </el-radio-button>
       </el-radio-group>
-      <div>
+      <!-- <div>
         <el-select
           placeholder="Switch brain atlas"
           v-model="viewAtlas"
@@ -53,7 +53,7 @@
             :label="atlas.title"
           />
         </el-select>
-      </div>
+      </div> -->
       <el-tooltip content="Render Data" v-if="renderDataSetting">
         <el-button class="icon-button" icon="Grid" @click="showRenderData = !showRenderData" :class="{active: showRenderData}"/>
       </el-tooltip>
@@ -149,7 +149,7 @@ const handleSetLayout = (l) => {
 
 <style lang="scss" scoped>
 .atlas-header {
-  padding-right: 48px;
+  padding-right: 8px;
   .title {
     font-size: 2.0rem;
     font-weight: bold;
