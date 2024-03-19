@@ -16,11 +16,19 @@ export default ({ command }) => {
   return defineConfig({
     envDir: "./env",
     server: {
-      host: "127.0.0.1",
+      host: "10.11.40.228",
+      port: 8090,
       proxy: {
         "/api": {
-          target: "http://10.101.40.3:1919/"
+          target: "http://10.108.8.2:1919/"
         },
+        // "/api": {
+        //   target: "http://10.11.140.35/",
+        //   rewrite: (path) => path.replace(/^\/api1/, '/'), // 路径重写
+        //   changeOrigin: true
+        //   // secure: true, // target是否https接口
+        //   // ws: true, // target是否代理websockets   
+        // },
         "/atlas_data": {
           target: "http://10.11.140.35:2000/"
         }

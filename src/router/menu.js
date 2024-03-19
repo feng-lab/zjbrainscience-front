@@ -1,14 +1,14 @@
+import BsIconBrain from "@/components/icons/BsIconBrain.vue";
+import { markRaw } from "vue";
 const menus = [{
-  /*
   path: "management",
   name: "management",
   component: () => import("@/views/home/Home.vue"),
   meta: {
     icon: "HomeFilled",
-    //未设置level,即默认最低权限，所有人可见
+    level: 1001
   }
 }, {
-  */
   path: "experiments",
   name: "experiments",
   meta: {
@@ -28,7 +28,8 @@ const menus = [{
     name: "experimentList",
     component: () => import("@/views/experiments/ExperimentList.vue"),
     meta: {
-      icon: "List"
+      icon: "List",
+      level: 1
     }
   }, {
     path: "equipment",
@@ -37,7 +38,7 @@ const menus = [{
     component: () => import("@/views/equipment/EquipmentList.vue"),
     meta: {
       icon: "Monitor",
-      level: 100
+      level: 1001
     }
   }, {
     path: "subject",
@@ -45,32 +46,15 @@ const menus = [{
     component: () => import("@/views/subject/SubjectList.vue"),
     meta: {
       icon: "Coin",
-      level: 100
+      level: 1001
     }
   }]
 }, {
-  /*
-  path: "task",
-  name: "task",
-  component: () => import("@/views/task/Task.vue"),
-  meta: {
-    icon: "List",
-    level: 100 //研究员以上
-  }
-}, {
-  path: "search",
-  name: "search",
-  component: () => import("@/views/search/Search.vue"),
-  meta: {
-    icon: "Aim",
-    level: 100 //研究员以上
-  },
-}, {
-  */
   path: "atlas",
   name: "atlas",
   meta: {
-    icon: "Aim",
+    icon: markRaw(BsIconBrain),
+    level: 1001
   },
   children: [{
     path: "index",
@@ -78,61 +62,77 @@ const menus = [{
     component: () => import("@/views/atlas/Home.vue"),
     meta: {
       icon: "HomeFilled",
+      level: 1001
     }
   }, {
     path: "allen_ccf",
     name: "allen_ccf",
     component: () => import("@/views/atlas/allen_ccf/AllenCCF.vue"),
     meta: {
-      icon: "Check"
+      icon: "Check",
+      level: 1001
     }
   }, {
     path: "bn_atlas",
     name: "brainnetome",
     component: () => import("@/views/atlas/brainnetome/Brainnetome.vue"),
     meta: {
-      icon: "Check"
+      icon: "Check",
+      level: 1001
     }
   }, {
     path: "macaque_bna",
     name: "macaque",
     meta: {
-      icon: "Check"
+      icon: "Check",
+      level: 1001
     },
     redirect: "/atlas/macaque_bna/3d",
     children: [{
       path: "3d",
       name: "macaque_3d",
-      component: () => import("@/views/atlas/macaque/3d/Macaque.vue") 
+      component: () => import("@/views/atlas/macaque/3d/Macaque.vue"),
+      meta: {
+        level: 1001
+      }
     }, {
       path: "nissl",
       name: "macaque_nissl",
-      component: () => import("@/views/atlas/macaque/nissl/Nissl.vue") 
+      component: () => import("@/views/atlas/macaque/nissl/Nissl.vue"),
+      meta: {
+        level: 1001
+      }
     }, {
       path: "tracer",
       name: "macaque_tracer",
-      component: () => import("@/views/atlas/macaque/tracer/Tracer.vue") 
+      component: () => import("@/views/atlas/macaque/tracer/Tracer.vue"),
+      meta: {
+        level: 1001
+      }
     }]
   }, {
     path: "eeum",
     name: "eeum",
     component: () => import("@/views/atlas/eeum/Eeum.vue"),
     meta: {
-      icon: "Check"
+      icon: "Check",
+      level: 1001
     }
   }, {
     path: "fly",
     name: "fly",
     component: () => import("@/views/atlas/fly/Fly.vue"),
     meta: {
-      icon: "Check"
+      icon: "Check",
+      level: 1001
     }
   }, {
     path: "ps_oct",
     name: "psoct",
     component: () => import("@/views/atlas/ps_oct/Psoct.vue"),
     meta: {
-      icon: "Check"
+      icon: "Check",
+      level: 1001
     }
   }, {
     path: "lemur",
@@ -140,7 +140,7 @@ const menus = [{
     component: () => import("@/views/atlas/lemur/Lemur.vue"),
     meta: {
       icon: "Check",
-      level: 1000
+      level: 1001
     }
   }, {
     path: "manage",
@@ -148,7 +148,7 @@ const menus = [{
     component: () => import("@/views/atlas/Manage.vue"),
     meta: {
       icon: "Setting",
-      level: 1000
+      level: 1001
     }
   }]
 }, {
@@ -157,14 +157,15 @@ const menus = [{
   component: () => import("@/views/notification/Notification.vue"),
   meta: {
     icon: "Message",
-    level: 10
+    level: 1001
   }
 }, {
   path: "password",
   name: "password",
   component: () => import("@/views/password/UserPassword.vue"),
   meta: {
-    icon: "Lock"
+    icon: "Lock",
+    level: 1
   }
 }, {
   path: "user",

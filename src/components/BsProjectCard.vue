@@ -9,7 +9,7 @@
         </span>
         <slot name="extra"></slot>
       </div>
-      <div class="project-card-header--desc">
+      <div class="project-card-header--desc" :style="descStyle">
         <span>{{ description }}</span>
       </div>
     </div>
@@ -48,7 +48,8 @@ defineProps({
   title: String,
   buttons: Array,
   description: String,
-  contentStyle: Object
+  contentStyle: Object,
+  descStyle: Object
 })
 
 </script>

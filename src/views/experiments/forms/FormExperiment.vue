@@ -1,199 +1,189 @@
 <template>
   <bs-page-form
     ref="experimentFormRef"
-    :header="$t(`experiments.action.${type}`)"
+    :header="$t(`datasetManagement.action.${type}`)"
     :form-model="exForm"
     :form-rules="rules"
     :do-form-submit="doFormSubmit"
     :do-cancel="handleCancel"
-    label-width="180px"
+    label-width="200px"
   >
-    <el-form-item :label="$t('experiments.detail.name')" prop="name">
-      <el-input 
-        v-model="exForm.name"
-      />
-    </el-form-item>
-    <el-form-item :label="$t('experiments.detail.type')" prop="type">
-      <el-select v-model="exForm.type" style="width: 100%" clearable>
-        <el-option 
-          v-for="(label, value) in EXPERIMENT_TYPE"
-          :key="value"
-          :value="value"
-          :label="label"
-        />
-      </el-select>
-    </el-form-item>
-    <el-form-item :label="$t('experiments.detail.description')" prop="description">
+    <el-form-item :label="$t('datasetManagement.detail.description')" prop="description">
       <el-input 
         type="textarea"
         autosize
         v-model="exForm.description"
       />
     </el-form-item>
-    <el-form-item :label="$t('experiments.detail.location')" prop="location">
-      <el-input 
-        type="textarea"
-        autosize
-        v-model="exForm.location"
-      />
-    </el-form-item>
-    <el-form-item :label="$t('experiments.detail.date')" required>
-      <el-col :xs=24 :sm="11">
-        <el-form-item prop="start_at">
-          <el-date-picker
-            clearable
-            :placeholder="$t('label.startTime')"
-            type="datetime"
-            style="width: 100%"
-            value-format="YYYY-MM-DD HH:mm:ss"
-            :disabled-date="startDisabledDate"
-            v-model="exForm.start_at"
-          />
-        </el-form-item>
-      </el-col>
-      <el-col :span="2" class="text-center">
-        <span>-</span>
-      </el-col>
-      <el-col :xs="24" :sm="11">
-        <el-form-item prop="end_at">
-          <el-date-picker
-            clearable
-            :placeholder="$t('label.endTime')"
-            type="datetime"
-            style="width: 100%"
-            :disabled-date="endDisabledDate"
-            value-format="YYYY-MM-DD HH:mm:ss"
-            v-model="exForm.end_at"
-          />
-        </el-form-item>
-      </el-col>
-    </el-form-item>
-    <el-form-item :label="$t('experiments.detail.main_operator')" prop="main_operator"> 
-      <el-select
-        style="width: 100%"
-        clearable
-        v-model="exForm.main_operator"
-        remote
-        filterable
-        :remote-method="handleMainOperatorSearch"
-        :loading="mpLoading"
-        :placeholder="$t('placeholder.userSearch')"
-      >
-        <el-option
-          v-for="option in mainOperatorOptions"
-          :key="option.value"
-          v-bind="option"
-        />
-      </el-select>
-    </el-form-item>
-    <el-form-item :label="$t('experiments.detail.assistants')" prop="assistants" v-if="type === 'new'"> 
-      <el-select
-        style="width: 100%"
-        clearable
-        multiple
-        v-model="exForm.assistants"
-        remote
-        filterable
-        :remote-method="handleAssistantsSearch"
-        :loading="assistantLoading"
-        :placeholder="$t('placeholder.userSearch')"
-      >
-        <el-option
-          v-for="option in assistantsOptions"
-          :key="option.value"
-          v-bind="option"
-        />
-      </el-select>
-    </el-form-item>
-    <el-form-item :label="$t('experiments.detail.neuron_source')" prop="neuron_source"> 
-      <el-input
-        v-model="exForm.neuron_source"
-      />
-    </el-form-item>
-    <el-form-item :label="$t('experiments.detail.stimulation_type')" prop="stimulation_type"> 
-      <el-input
-        v-model="exForm.stimulation_type"
-      />
-    </el-form-item>
-    <el-row :gutter="16">
-      <el-col :xs=24 :sm="12">
-        <el-form-item :label="$t('experiments.detail.subject_type')" prop="subject_type">
-          <el-radio-group v-model="exForm.subject_type">
-            <el-radio
-              v-for="stype in SUBJECT_TYPE"
-              :key="stype"
-              :label="stype"
-            >
-              {{ $t(`subject.category.${stype}`) }}
-            </el-radio>
-          </el-radio-group>
-        </el-form-item>
-      </el-col>
-      <el-col :xs="24" :sm="12">
-        <el-form-item :label="$t('experiments.detail.subject_num')" prop="subject_num">
-          <el-input-number 
-            :min="1" 
-            v-model="exForm.subject_num"
-          />
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-form-item :label="$t('experiments.detail.session_num')" prop="session_num"> 
-      <el-input-number
-        :min="0" 
-        v-model="exForm.session_num"
-      />
-    </el-form-item>
-    <el-form-item :label="$t('experiments.detail.trail_num')" prop="trail_num"> 
-      <el-input-number
-        :min="0" 
-        v-model="exForm.trail_num"
-      />
-    </el-form-item>
-    <el-form-item :label="$t('experiments.detail.is_non_invasive')" prop="is_non_invasive">
-      <el-radio-group v-model="exForm.is_non_invasive">
-        <el-radio :label="true"> {{ $t("label.yes") }} </el-radio>
-        <el-radio :label="false"> {{ $t("label.no") }} </el-radio>
-      </el-radio-group>
-    </el-form-item>
-    <el-form-item :label="$t('experiments.detail.is_shared')" prop="is_shared">
-      <el-radio-group v-model="exForm.is_shared">
-        <el-radio :label="true">{{ $t("label.yes") }}</el-radio>
-        <el-radio :label="false">{{ $t("label.no") }}</el-radio>
-      </el-radio-group>
-    </el-form-item>
-    <el-form-item prop="tags">
-      <template #label>
-        <span class="icon-label">
-          {{ $t('experiments.detail.tags')}}
-          <el-tooltip :content="$t('experiments.tagsTooltip')">
-            <bs-icon-img icon="QuestionFilled"/>
-          </el-tooltip>
-          {{ $t('colon')}}
-        </span>
-      </template>
-      <el-tag
-        v-for="tag in exForm.tags"
-        :key="tag"
-        closable
-        class="m-r-8"
-        @close="handleTagClose(tag)"
-      >
-        {{ tag }}
-      </el-tag>
-      <el-input
-        v-if="inputTagVisible"
-        ref="InputRef"
-        v-model="inputValue"
-        size="small"
-        style="width: 20em"
-        @keyup.enter="handleInputTagConfirm"
-        @blur="handleInputTagConfirm"
-      />
-      <el-button v-else size="small" @click="showInputTag" icon="Plus">
-        {{ $t('experiments.tagBtn') }}
-      </el-button>
 
+    <el-form-item :label="$t('datasetManagement.detail.species')" prop="species">
+      <el-input 
+        v-model="exForm.species"
+        :placeholder="$t('datasetManagement.placeholder.species')"
+        clearable
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.paper_title')" prop="paper_title">
+      <el-input 
+        v-model="exForm.paper_title"
+        clearable
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.paper_doi')" prop="paper_doi">
+      <el-input 
+        v-model="exForm.paper_doi"
+        clearable
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.development_stage')" prop="development_stage">
+      <el-input 
+        v-model="exForm.development_stage"
+        :placeholder="$t('datasetManagement.placeholder.development_stage')"
+        clearable
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.file_format')" prop="file_format">
+      <el-input 
+        v-model="exForm.file_format"
+        clearable
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.sample_count')" prop="sample_count">
+      <el-input 
+        v-model="exForm.sample_count"
+        :placeholder="$t('datasetManagement.placeholder.sample_count')"
+        onkeyup="
+          if( value>18446744073709551615 ) {
+            value=18446744073709551615
+          } 
+          else if ( value<0 ) {
+            value=0
+          } else {
+            value=value.replace(/^0+(\d)|[^\d]+/g,'')
+          }"
+        clearable
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.data_publisher')" prop="data_publisher">
+      <el-input 
+        v-model="exForm.data_publisher"
+        clearable
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.data_update_year')" prop="data_update_year">
+      <el-date-picker
+        clearable
+        :placeholder="$t('datasetManagement.placeholder.data_update_year')"
+        type="date"
+        style="width: 50%"
+        value-format="YYYY-MM-DD"
+        v-model="exForm.data_update_year"
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.file_count')" prop="file_count">
+      <el-input 
+        v-model="exForm.file_count"
+        :placeholder="$t('datasetManagement.placeholder.sample_count')"
+        onkeyup="
+          if( value>18446744073709551615 ) {
+            value=18446744073709551615
+          }else {
+            value=value.replace(/^0+(\d)|[^\d]+/g,'')
+          }
+        "
+        clearable
+        maxlength="20"
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.file_total_size_gb')" prop="file_total_size_gb">
+      <el-input
+        class="numberrule"
+        type="number"
+        :min="0" 
+        v-model="exForm.file_total_size_gb"
+        oninput=" if(value.length>1 && value[0] === '0' && value[1] !== '.') {value=value.slice(1)}" 
+        clearable
+        :placeholder="$t('datasetManagement.placeholder.file_total_size_gb')"
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.file_acquired_size_gb')" prop="file_acquired_size_gb">
+      <el-input
+        class="numberrule"
+        type="number"
+        :min="0" 
+        v-model="exForm.file_acquired_size_gb"
+        oninput=" if(value.length>1 && value[0] === '0' && value[1] !== '.') {value=value.slice(1)}" 
+        clearable
+        :placeholder="$t('datasetManagement.placeholder.file_total_size_gb')"
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.associated_diseases')" prop="associated_diseases">
+      <el-input 
+        v-model="exForm.associated_diseases"
+        clearable
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.organ')" prop="organ">
+      <el-input 
+        v-model="exForm.organ"
+        clearable
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.cell_count')" prop="cell_count">
+      <el-input 
+        v-model="exForm.cell_count"
+        :placeholder="$t('datasetManagement.placeholder.sample_count')"
+        onkeyup="
+          if( value>18446744073709551615 ) {
+            value=18446744073709551615
+          }else {
+            value=value.replace(/^0+(\d)|[^\d]+/g,'')
+          }
+        "
+        clearable
+        maxlength="20"
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.data_type')" prop="data_type">
+      <el-input 
+        v-model="exForm.data_type"
+        clearable
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.experiment_platform')" prop="experiment_platform">
+      <el-input 
+        v-model="exForm.experiment_platform"
+        clearable
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.fetch_url')" prop="fetch_url">
+      <el-input 
+        v-model="exForm.fetch_url"
+        clearable
+      />
+    </el-form-item>
+
+    <el-form-item :label="$t('datasetManagement.detail.project')" prop="project">
+      <el-input 
+        v-model="exForm.project"
+        clearable
+      />
     </el-form-item>
   </bs-page-form>
 </template>
@@ -201,12 +191,16 @@
 import BsPageForm from "@/components/form/BsPageForm.vue";
 
 import { ref, computed, watch, nextTick } from "vue";
-import { newExApi, updateExApi, exDetailApi } from "@/api/experiments";
+import { newExApi, updateExApi, exDetailApi } from "@/api/datasetManagement";
 import { onBeforeRouteLeave, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useUserSearch } from "@/compositions/useUserSearch";
 import { EXPERIMENT_TYPE, SUBJECT_TYPE } from "@/utils/common.js";
 import BsIconImg from "@/components/BsIconImg.vue";
+import useUserStore from "@/stores/user";
+
+const { user } = useUserStore();
+
 
 const props = defineProps({
   experiment_id: null
@@ -214,23 +208,27 @@ const props = defineProps({
 
 
 const exForm = ref({
-  name: "",
+  user_id: user.id,
+  experiment_id: "",
   description: "",
-  type: "SSVEP",
-  is_non_invasive: true,
-  location: "",
-  start_at: "",
-  end_at: "",
-  subject_type: "human",
-  subject_num: 1,
-  is_shared: true,
-  main_operator: null,
-  assistants: [],
-  neuron_source: "",
-  stimulation_type: "",
-  session_num: 0,
-  trail_num: 0,
-  tags: new Set()
+  species: "",
+  paper_title: "",
+  paper_doi: "",
+  development_stage: "",
+  file_format: "",
+  sample_count: null,
+  data_publisher: "",
+  data_update_year: null,
+  file_count: null,
+  file_total_size_gb:null,
+  file_acquired_size_gb:null,
+  associated_diseases:"",
+  organ:"",
+  cell_count:null,
+  data_type:"",
+  experiment_platform:"",
+  fetch_url:"",
+  project:""
 })
 
 const experimentFormRef = ref();
@@ -254,16 +252,7 @@ const type = computed(() => {
 
 const i18n = useI18n();
 
-
 const rules = computed(() => ({
-  name: [{
-    required: true,
-    message: i18n.t("valid.require", {
-      action: i18n.t("action.input"),
-      field: i18n.t("experiments.detail.name")
-    }),
-    trigger: "blur"
-  }],
   description: [{
     required: true,
     message: i18n.t("valid.require", {
@@ -271,65 +260,15 @@ const rules = computed(() => ({
       field: i18n.t("experiments.detail.description")
     }),
     trigger: "blur"
-  }],
-  type: [{
-    required: true,
-    message: i18n.t("valid.require", {
-      action: i18n.t("action.input"),
-      field: i18n.t("experiments.detail.type")
-    }),
-    trigger: "change"
-  }],
-  location: [{
-    required: true,
-    message: i18n.t("valid.require", {
-      action: i18n.t("action.input"),
-      field: i18n.t("experiments.detail.location")
-    }),
-    trigger: "blur"
-  }],
-  start_at: [{
-    required: true,
-    message: i18n.t("valid.require", {
-      action: i18n.t("action.select"),
-      field: i18n.t("label.startTime")
-    }),
-    trigger: "change"
-  }],
-  end_at: [{
-    required: true,
-    message: i18n.t("valid.require", {
-      action: i18n.t("action.select"),
-      field: i18n.t("label.endTime")
-    }),
-    trigger: "change"
-  }],
-  main_operator: [{
-    required: true,
-    message: i18n.t("valid.require", {
-      action: i18n.t("action.input"),
-      field: i18n.t("experiments.detail.main_operator")
-    }),
-    trigger: "change"
-  }],
+  }]
 }))
-
-const endDisabledDate = (time) => {
-  return time.getTime() < new Date(exForm.value.start_at).getTime();
-}
-
-const startDisabledDate = (time) => {
-  return time.getTime() > new Date(exForm.value.end_at).getTime();
-}
 
 const doFormSubmit = async () => {
   const remoteFunc = type.value === "new" ? newExApi : updateExApi;
-  const id = await remoteFunc({
-    ...exForm.value,
-    tags: [...exForm.value.tags]
-  });
-  const exId = id ?? props.experiment_id;
-  router.push(`/experiments/detail/${exId}`)
+  await remoteFunc(exForm.value);
+  // const id = await remoteFunc(exForm.value);
+  // const exId = id ?? props.experiment_id;
+  // router.push(`/experiments/detail/${exId}`)
 }
 
 const handleCancel = () => {
@@ -342,19 +281,8 @@ const handleCancel = () => {
 watch(() => props.experiment_id, async (experiment_id) => {
   if(props.experiment_id) {
     try {
-
       const res = await exDetailApi(experiment_id);
-      const { main_operator, tags } = res;
-      exForm.value = {
-        ...res,
-        main_operator: main_operator.id,
-        assistants: [],
-        tags: new Set(tags) 
-      }
-      mainOperatorOptions.value.push({
-        value: main_operator.id,
-        label: `${main_operator.username}(${main_operator.staff_id})`
-      })
+      exForm.value = res
     } catch(e) {
       router.push("/experiments/list");
     }
@@ -369,23 +297,17 @@ onBeforeRouteLeave((to, from) => {
   }
 })
 
-const handleTagClose = (tag) => {
-  exForm.value.tags.delete(tag);
-}
-
-const showInputTag = () => {
-  inputTagVisible.value = true;
-  nextTick(() => {
-    InputRef.value?.input?.focus()
-  })
-}
-
-const handleInputTagConfirm = () => {
-  if(inputValue.value) {
-    exForm.value.tags.add(inputValue.value);
-  }
-  inputTagVisible.value = false;
-  inputValue.value = "";
-}
-
 </script>
+
+
+<style lang="css" scoped>
+
+.numberrule :deep(input::-webkit-outer-spin-button),
+.numberrule :deep(input::-webkit-inner-spin-button) {
+    -webkit-appearance: none!important;
+  }
+.numberrule :deep(input[type="number"]) {
+    -moz-appearance: textfield;
+  }
+
+  </style>

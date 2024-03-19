@@ -7,7 +7,7 @@
   >
     <el-form
       ref="formRef"
-      label-width="auto"
+      :label-width="labelWidth"
       :label-suffix="$t('colon')"
       :model="form"
       :rules="formRules"
@@ -35,6 +35,10 @@ const props = defineProps({
   title: {
     type: String ,
     default: ""
+  },
+  labelWidth: {
+    type: String,
+    default: "auto"
   },
   formSubmitApi: Function,
   formUpdateApi: Function,
