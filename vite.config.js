@@ -20,10 +20,10 @@ export default ({ command }) => {
       host: "127.0.0.1",
       proxy: {
         "/api": {
-          target: "http://10.101.40.3:1919/"
+          target: "http://8.210.254.154:1919/"
         },
         "/atlas_data": {
-          target: "http://10.11.140.35:2000/"
+          target: "http://8.210.254.154:2000/"
         }
       }
     },

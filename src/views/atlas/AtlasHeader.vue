@@ -149,7 +149,7 @@ const handleSetLayout = (l) => {
 
 <style lang="scss" scoped>
 .atlas-header {
-  padding-right: 48px;
+  // padding-right: 48px;
   .title {
     font-size: 2.0rem;
     font-weight: bold;

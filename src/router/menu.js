@@ -71,19 +71,29 @@ const menus = [{
   name: "atlas",
   meta: {
     icon: "Aim",
+    level: 1
   },
   children: [{
     path: "macaque_bna/3d",
     name: "macaque_3d",
-    component: () => import("@/views/atlas/macaque/3d/Macaque.vue") 
+    component: () => import("@/views/atlas/macaque/3d/Macaque.vue"),
+    meta: {
+      level: 1
+    }
   }, {
     path: "macaque_bna/nissl",
     name: "macaque_nissl",
-    component: () => import("@/views/atlas/macaque/nissl/Nissl.vue") 
+    component: () => import("@/views/atlas/macaque/nissl/Nissl.vue"),
+    meta: {
+      level: 1
+    }
   }, {
     path: "macaque_bna/tracer",
     name: "macaque_tracer",
-    component: () => import("@/views/atlas/macaque/tracer/Tracer.vue") 
+    component: () => import("@/views/atlas/macaque/tracer/Tracer.vue"),
+    meta: {
+      level: 1
+    }
   }]
   //children: [{
   //  path: "index",
@@ -170,7 +180,8 @@ const menus = [{
   name: "password",
   component: () => import("@/views/password/UserPassword.vue"),
   meta: {
-    icon: "Lock"
+    icon: "Lock",
+    level: 1000
   }
 }, {
   path: "user",
@@ -178,7 +189,7 @@ const menus = [{
   component: () => import("@/views/user/User.vue"),
   meta: {
     icon: "User",
-    level: 1000 //管理员以上
+    level: 1001 //管理员以上
   }
 }]
 
