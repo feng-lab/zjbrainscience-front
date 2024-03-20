@@ -1,13 +1,13 @@
 <template>
   <div class="bs-layout">
     <el-container v-if="layoutType === 'common'" class="common">
-      <el-aside :width="asideWidth" class="hidden-sm-and-down aside">
+      <!-- <el-aside :width="asideWidth" class="hidden-sm-and-down aside">
         <layout-siderbar/>
-      </el-aside>
-      <layout-drawer-sidebar/>
+      </el-aside> -->
+      <!-- <layout-drawer-sidebar/> -->
       <el-container>
         <el-header class="header" height="64px">
-          <layout-header/>
+          <!-- <layout-header/> -->
         </el-header>
         <el-main class="main">
           <layout-content/>
@@ -16,14 +16,14 @@
       </el-container>
     </el-container>
     <div v-else class="atlas dark"> 
-      <el-button
+      <!-- <el-button
         class="menu-icon"
         @click="toggleDrawer"
       >
         <template #icon>
           <bs-icon-menu/>
         </template>
-      </el-button>
+      </el-button> -->
       <layout-drawer-sidebar/>
       <router-view/>
       <layout-footer :layout-type="layoutType"/>

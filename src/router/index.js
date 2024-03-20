@@ -46,8 +46,6 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      //redirect: "/management",
-      //redirect: "/experiments/list",
       redirect: "/atlas/macaque_bna/3d",
       component: HomeLayout,
       children: [
@@ -107,25 +105,37 @@ const router = createRouter({
         {
           path: "403",
           name: "403",
-          component: () => import("@/views/error/Error403.vue")
+          component: () => import("@/views/error/Error403.vue"),
+          meta: {
+            level: 1
+          }
         },
         {
           path: "404",
           name: "404",
-          component: () => import("@/views/error/Error404.vue")
+          component: () => import("@/views/error/Error404.vue"),
+          meta: {
+            level: 1
+          }
         }, 
         {
           path: "atlas/notSupport",
           name: "atlasNotSupport",
-          component: () => import("@/views/atlas/AtlasNotSupport.vue")
+          component: () => import("@/views/atlas/AtlasNotSupport.vue"),
+          meta: {
+            level: 1
+          }
         }
       ]
     },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('@/views/login/Login.vue')
-    },
+    // {
+    //   path: '/login',
+    //   name: 'login',
+    //   component: () => import('@/views/login/Login.vue'),
+    //   meta: {
+    //     level: 1
+    //   }
+    // }
     /*
     {
       path: "/:patchMatch(.*)*",
@@ -135,36 +145,38 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach(async (to, from) => {
-  if(to.path.startsWith("/atlas/") && to.name !== "atlasNotSupport") {
+router.beforeEach(async (to, from, next) => {
+  // console.log('to:', to, '\nfrom:', from, '\nnext:', next)
+  let level
+  if (to.meta.level) {
+    level = to.meta.level
+  } else {
+    level = 0
+  }
+  if(to.path.startsWith("/atlas/")) {
     const { screenSizeComparison } = useMediaQuery();
     const screenSupport = screenSizeComparison('width', 'min', 1024);
-    if(!screenSupport || !checkBrowserSupport()) {
-      return { name: "atlasNotSupport"};
-    }
-  }
-  if(!hasLogined() && to.name !== "login") {
-    ElMessage.error(i18n.global.t("label.needLogin"));
-    return { 
-      name: "login", 
-      query: { 
-        from: to.fullPath
+    if (to.name !== "atlasNotSupport") {
+      if(!screenSupport || !checkBrowserSupport()) {
+        next({path: '/atlas/notSupport', query: { from: to.fullPath }})
+      } else {
+        if(level && level < 1000) {
+          next()
+        } else {
+          next({path: '/403'})
+        }
+      }
+    } else {
+      if(!screenSupport || !checkBrowserSupport()) {
+        next()
+      } else {
+        next({path: to.query.from})
       }
     }
-  } else if(to.name !== "login") {
-    const userStore = useUserStore();
-    const { user }  = storeToRefs(userStore);
-    const { getUserInfo } = userStore;
-    if(!user.value.username) {
-      await getUserInfo();
-    }
-    const level = to?.meta?.level ?? 0;
-    if(level > user.value.access_level) {
-      if(from.path === "/" || from.name === "login") {
-        return { name: "atlashome" };
-      }
-      return { name: "403"};
-    }
+  } else if (to.path === '/403') {
+    next()
+  } else {
+    next({path: '/403'})
   }
 })
 
