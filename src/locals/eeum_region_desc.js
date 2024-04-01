@@ -1023,7 +1023,7 @@ export const eeum_region_desc = {
         "description": "",
         "hemisphere_id": 3,
         "acronym": "BA30",
-        "label": "Area 03"
+        "label": "Area 30"
     },
     "2541": {
         "parent_id": 254,
@@ -1032,7 +1032,7 @@ export const eeum_region_desc = {
         "description": "",
         "hemisphere_id": 3,
         "acronym": "BA30L1",
-        "label": "Area 03, Layer1"
+        "label": "Area 30, Layer1"
     },
     "2542": {
         "parent_id": 254,
@@ -1041,7 +1041,7 @@ export const eeum_region_desc = {
         "description": "",
         "hemisphere_id": 3,
         "acronym": "BA30L2/3",
-        "label": "Area 03, Layer2/3"
+        "label": "Area 30, Layer2/3"
     },
     "2543": {
         "parent_id": 254,
@@ -1050,7 +1050,7 @@ export const eeum_region_desc = {
         "description": "",
         "hemisphere_id": 3,
         "acronym": "BA30L4",
-        "label": "Area 03, Layer4"
+        "label": "Area 30, Layer4"
     },
     "2544": {
         "parent_id": 254,
@@ -1059,7 +1059,7 @@ export const eeum_region_desc = {
         "description": "",
         "hemisphere_id": 3,
         "acronym": "BA30L5",
-        "label": "Area 03, Layer5"
+        "label": "Area 30, Layer5"
     },
     "2545": {
         "parent_id": 254,
@@ -1068,7 +1068,7 @@ export const eeum_region_desc = {
         "description": "",
         "hemisphere_id": 3,
         "acronym": "BA30L6",
-        "label": "Area 03, Layer6"
+        "label": "Area 30, Layer6"
     },
     "3111": {
         "parent_id": 688,
