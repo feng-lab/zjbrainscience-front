@@ -8,7 +8,8 @@ const menus = [{
     icon: "HomeFilled",
     level: 1001//未设置level,即默认最低权限，所有人可见
   }
-}, {
+},
+{
   path: "experiments",
   name: "experiments",
   meta: {
@@ -49,7 +50,8 @@ const menus = [{
       level: 1001
     }
   }]
-}, {
+},
+{
   path: "atlas",
   name: "atlas",
   meta: {
@@ -201,7 +203,8 @@ const menus = [{
       level: 1001//level: 1000
     }
   }]
-}, {
+},
+{
   path: "notification",
   name: "notification",
   component: () => import("@/views/notification/Notification.vue"),
@@ -209,7 +212,8 @@ const menus = [{
     icon: "Message",
     level: 1001//level: 10
   }
-}, {
+},
+{
   path: "password",
   name: "password",
   component: () => import("@/views/password/UserPassword.vue"),
@@ -217,7 +221,8 @@ const menus = [{
     icon: "Lock",
     level: 1001//未设置level
   }
-}, {
+},
+{
   path: "user",
   name: "user",
   component: () => import("@/views/user/User.vue"),

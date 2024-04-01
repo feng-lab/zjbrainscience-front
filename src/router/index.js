@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import HomeLayout from "@/views/layout/Layout.vue";
 import menus from "./menu";
 import jsCookie from "js-cookie";
@@ -18,7 +18,7 @@ const checkedAuth = (to, access_level) => {
 
 const checkBrowserSupport = () => {
   const supportBrowser = [
-    ["Chrome",  51],
+    ["Chrome", 51],
     ["Firefox", 46],
     ["Safari", 15]
   ]
@@ -26,12 +26,12 @@ const checkBrowserSupport = () => {
   const { userAgent } = navigator;
   let support = false;
 
-  for(let [browser, version] of supportBrowser) {
+  for (let [browser, version] of supportBrowser) {
     const reg = new RegExp(`${browser}\\/([\\d.]+)`);
     const cv = userAgent.match(reg);
-    if(!cv) continue;
+    if (!cv) continue;
     const currVersion = Number(cv[1].split('.')[0]);
-    if(currVersion >= version) {
+    if (currVersion >= version) {
       support = true;
       break;
     }
@@ -41,7 +41,8 @@ const checkBrowserSupport = () => {
 }
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
+  // history: createWebHistory('/nv2/'),
   routes: [
     {
       path: '/login',
@@ -78,7 +79,7 @@ const router = createRouter({
           children: [{
             path: "",
             name: "default",
-            redirect: {name: "paradigm"},
+            redirect: { name: "paradigm" },
             meta: {
               level: 1001,//未设置
             }
@@ -164,7 +165,7 @@ const router = createRouter({
           path: "404",
           name: "404",
           component: () => import("@/views/error/Error404.vue")
-        }, 
+        },
         {
           path: "atlas/notSupport",
           name: "atlasNotSupport",
@@ -189,37 +190,37 @@ router.beforeEach(async (to, from, next) => {
   } else {
     level = 0
   }
-  if(to.path.startsWith("/atlas/")) {
+  if (to.path.startsWith("/atlas/")) {
     const { screenSizeComparison } = useMediaQuery();
     const screenSupport = screenSizeComparison('width', 'min', 1024);
     if (to.name !== "atlasNotSupport") {
-      if(!screenSupport || !checkBrowserSupport()) {
-        next({path: '/atlas/notSupport', query: { from: to.fullPath }})
+      if (!screenSupport || !checkBrowserSupport()) {
+        next({ path: '/atlas/notSupport', query: { from: to.fullPath } })
       } else {
-        if(level && level < 1000) {
+        if (level && level < 1000) {
           next()
         } else {
-          next({path: '/403'})
+          next({ path: '/403' })
         }
       }
     } else {
-      if(!screenSupport || !checkBrowserSupport()) {
+      if (!screenSupport || !checkBrowserSupport()) {
         next()
       } else {
-        next({path: to.query.from})
+        next({ path: to.query.from })
       }
     }
   } else if (to.path === '/403') {
     next()
   } else {
-    next({path: '/403'})
+    next({ path: '/403' })
   }
 })
 
 router.onError((error, to, from) => {
   const errMsg = error.message.toLowerCase();
-  if(/dynamically imported/.test(errMsg) || /importing.*module.*failed/.test(errMsg) ) {
-    if(to?.fullPath) {
+  if (/dynamically imported/.test(errMsg) || /importing.*module.*failed/.test(errMsg)) {
+    if (to?.fullPath) {
       window.location.href = to.fullPath;
     } else {
       window.location.reload();

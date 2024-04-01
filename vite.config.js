@@ -15,8 +15,9 @@ export default ({ command }) => {
   console.log('command', command)
   return defineConfig({
     envDir: "./env",
+    base: './',
     server: {
-      host: "127.0.0.1",
+      host: "10.15.56.149",
       // proxy: {
       //   "/api": {
       //     target: "http://10.11.140.35:1919/"
@@ -31,7 +32,7 @@ export default ({ command }) => {
     },
     plugins: [
       vue(),
-      ElementPlus({useSource: true}),
+      ElementPlus({ useSource: true }),
       AutoImport({
         resolvers: [ElementPlusResolver()],
       }),
@@ -63,7 +64,7 @@ export default ({ command }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "@/assets/css/theme.scss" as *;`, 
+          additionalData: `@use "@/assets/css/theme.scss" as *;`,
         },
       },
     },

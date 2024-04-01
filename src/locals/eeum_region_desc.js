@@ -1,1361 +1,1666 @@
 export const eeum_region_desc = {
-    "997": {
-        "parent_id": null,
-        "region_id": 997,
-        "atlas_id": -1,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "root",
-        "label": "root"
-    },
-    "8": {
-        "parent_id": 997,
-        "region_id": 8,
-        "atlas_id": 0,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "grey",
-        "label": "Grey matter"
-    },
-    "567": {
-        "parent_id": 8,
-        "region_id": 567,
-        "atlas_id": 70,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "CH",
-        "label": "Cerebrum"
-    },
-    "688": {
-        "parent_id": 567,
-        "region_id": 688,
-        "atlas_id": 85,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "Cx",
-        "label": "Cerebral cortex"
-    },
-    "315": {
-        "parent_id": 688,
-        "region_id": 315,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "NCx",
-        "label": "Neocortex"
-    },
-    "322": {
-        "parent_id": 315,
-        "region_id": 322,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA1-3",
-        "label": "Area 1-3"
-    },
-    "3221": {
-        "parent_id": 322,
-        "region_id": 3221,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA1-3L1",
-        "label": "Area 1-3, Layer1"
-    },
-    "3222": {
-        "parent_id": 322,
-        "region_id": 3222,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA1-3L2/3",
-        "label": "Area 1-3, Layer2/3"
-    },
-    "3223": {
-        "parent_id": 322,
-        "region_id": 3223,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA1-3L4",
-        "label": "Area 1-3, Layer4"
-    },
-    "3224": {
-        "parent_id": 322,
-        "region_id": 3224,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA1-3L5",
-        "label": "Area 1-3, Layer5"
-    },
-    "3225": {
-        "parent_id": 322,
-        "region_id": 3225,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA1-3L6",
-        "label": "Area 1-3, Layer6"
-    },
-    "985": {
-        "parent_id": 315,
-        "region_id": 985,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA4",
-        "label": "Area 4"
-    },
-    "9851": {
-        "parent_id": 985,
-        "region_id": 9851,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA4L1",
-        "label": "Area 4, Layer1"
-    },
-    "9852": {
-        "parent_id": 985,
-        "region_id": 9852,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA4L2/3",
-        "label": "Area 4, Layer2/3"
-    },
-    "9853": {
-        "parent_id": 985,
-        "region_id": 9853,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA4L4",
-        "label": "Area 4, Layer4"
-    },
-    "9854": {
-        "parent_id": 985,
-        "region_id": 9854,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA4L5",
-        "label": "Area 4, Layer5"
-    },
-    "9855": {
-        "parent_id": 985,
-        "region_id": 9855,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA4L6",
-        "label": "Area 4, Layer6"
-    },
-    "993": {
-        "parent_id": 315,
-        "region_id": 993,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA6",
-        "label": "Area 6"
-    },
-    "9931": {
-        "parent_id": 993,
-        "region_id": 9931,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA6L1",
-        "label": "Area 6, Layer1"
-    },
-    "9932": {
-        "parent_id": 993,
-        "region_id": 9932,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA6L2/3",
-        "label": "Area 6, Layer2/3"
-    },
-    "9933": {
-        "parent_id": 993,
-        "region_id": 9933,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA6L4",
-        "label": "Area 6, Layer4"
-    },
-    "9934": {
-        "parent_id": 993,
-        "region_id": 9934,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA6L5",
-        "label": "Area 6, Layer5"
-    },
-    "9935": {
-        "parent_id": 993,
-        "region_id": 9935,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA6L6",
-        "label": "Area 6, Layer6"
-    },
-    "184": {
-        "parent_id": 315,
-        "region_id": 184,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA8",
-        "label": "Area 8"
-    },
-    "1841": {
-        "parent_id": 184,
-        "region_id": 1841,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA8L1",
-        "label": "Area 8, Layer1"
-    },
-    "1842": {
-        "parent_id": 184,
-        "region_id": 1842,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA8L2/3",
-        "label": "Area 8, Layer2/3"
-    },
-    "1843": {
-        "parent_id": 184,
-        "region_id": 1843,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA8L4",
-        "label": "Area 8, Layer4"
-    },
-    "1844": {
-        "parent_id": 184,
-        "region_id": 1844,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA8L5",
-        "label": "Area 8, Layer5"
-    },
-    "1845": {
-        "parent_id": 184,
-        "region_id": 1845,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA8L6",
-        "label": "Area 8, Layer6"
-    },
-    "39": {
-        "parent_id": 315,
-        "region_id": 39,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA24",
-        "label": "Area 24"
-    },
-    "391": {
-        "parent_id": 39,
-        "region_id": 391,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA24L1",
-        "label": "Area 24, Layer1"
-    },
-    "392": {
-        "parent_id": 39,
-        "region_id": 392,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA24L2/3",
-        "label": "Area 24, Layer2/3"
-    },
-    "393": {
-        "parent_id": 39,
-        "region_id": 393,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA24L4",
-        "label": "Area 24, Layer4"
-    },
-    "394": {
-        "parent_id": 39,
-        "region_id": 394,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA24L5",
-        "label": "Area 24, Layer5"
-    },
-    "395": {
-        "parent_id": 39,
-        "region_id": 395,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA24L6",
-        "label": "Area 24, Layer6"
-    },
-    "972": {
-        "parent_id": 315,
-        "region_id": 972,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA25",
-        "label": "Area 25"
-    },
-    "9721": {
-        "parent_id": 972,
-        "region_id": 9721,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA25L1",
-        "label": "Area 25, Layer1"
-    },
-    "9722": {
-        "parent_id": 972,
-        "region_id": 9722,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA25L2/3",
-        "label": "Area 25, Layer2/3"
-    },
-    "9723": {
-        "parent_id": 972,
-        "region_id": 9723,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA25L4",
-        "label": "Area 25, Layer4"
-    },
-    "9724": {
-        "parent_id": 972,
-        "region_id": 9724,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA25L5",
-        "label": "Area 25, Layer5"
-    },
-    "9725": {
-        "parent_id": 972,
-        "region_id": 9725,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA25L6",
-        "label": "Area 25, Layer6"
-    },
-    "378": {
-        "parent_id": 315,
-        "region_id": 378,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA5",
-        "label": "Area 5"
-    },
-    "3781": {
-        "parent_id": 378,
-        "region_id": 3781,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA5L1",
-        "label": "Area 5, Layer1"
-    },
-    "3782": {
-        "parent_id": 378,
-        "region_id": 3782,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA5L2/3",
-        "label": "Area 5, Layer2/3"
-    },
-    "3783": {
-        "parent_id": 378,
-        "region_id": 3783,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA5L4",
-        "label": "Area 5, Layer4"
-    },
-    "3784": {
-        "parent_id": 378,
-        "region_id": 3784,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA5L5",
-        "label": "Area 5, Layer5"
-    },
-    "3785": {
-        "parent_id": 378,
-        "region_id": 3785,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA5L6",
-        "label": "Area 5, Layer6"
-    },
-    "22": {
-        "parent_id": 315,
-        "region_id": 22,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA7",
-        "label": "Area 7"
-    },
-    "221": {
-        "parent_id": 22,
-        "region_id": 221,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA7L1",
-        "label": "Area 7, Layer1"
-    },
-    "222": {
-        "parent_id": 22,
-        "region_id": 222,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA7L2/3",
-        "label": "Area 7, Layer2/3"
-    },
-    "223": {
-        "parent_id": 22,
-        "region_id": 223,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA7L4",
-        "label": "Area 7, Layer4"
-    },
-    "224": {
-        "parent_id": 22,
-        "region_id": 224,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA7L5",
-        "label": "Area 7, Layer5"
-    },
-    "225": {
-        "parent_id": 22,
-        "region_id": 225,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA7L6",
-        "label": "Area 7, Layer6"
-    },
-    "48": {
-        "parent_id": 315,
-        "region_id": 48,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA23",
-        "label": "Area 23"
-    },
-    "481": {
-        "parent_id": 48,
-        "region_id": 481,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA23L1",
-        "label": "Area 23, Layer1"
-    },
-    "482": {
-        "parent_id": 48,
-        "region_id": 482,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA23L2/3",
-        "label": "Area 23, Layer2/3"
-    },
-    "483": {
-        "parent_id": 48,
-        "region_id": 483,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA23L4",
-        "label": "Area 23, Layer4"
-    },
-    "484": {
-        "parent_id": 48,
-        "region_id": 484,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA23L5",
-        "label": "Area 23, Layer5"
-    },
-    "485": {
-        "parent_id": 48,
-        "region_id": 485,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA23L6",
-        "label": "Area 23, Layer6"
-    },
-    "836": {
-        "parent_id": 315,
-        "region_id": 836,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA20",
-        "label": "Area 20"
-    },
-    "8361": {
-        "parent_id": 836,
-        "region_id": 8361,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA20L1",
-        "label": "Area 20, Layer1"
-    },
-    "8362": {
-        "parent_id": 836,
-        "region_id": 8362,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA20L2/3",
-        "label": "Area 20, Layer2/3"
-    },
-    "8363": {
-        "parent_id": 836,
-        "region_id": 8363,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA20L4",
-        "label": "Area 20, Layer4"
-    },
-    "8364": {
-        "parent_id": 836,
-        "region_id": 8364,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA20L5",
-        "label": "Area 20, Layer5"
-    },
-    "8365": {
-        "parent_id": 836,
-        "region_id": 8365,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA20L6",
-        "label": "Area 20, Layer6"
-    },
-    "895": {
-        "parent_id": 315,
-        "region_id": 895,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA21",
-        "label": "Area 21"
-    },
-    "8951": {
-        "parent_id": 895,
-        "region_id": 8951,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA21L1",
-        "label": "Area 21, Layer1"
-    },
-    "8952": {
-        "parent_id": 895,
-        "region_id": 8952,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA21L2/3",
-        "label": "Area 21, Layer2/3"
-    },
-    "8953": {
-        "parent_id": 895,
-        "region_id": 8953,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA21L4",
-        "label": "Area 21, Layer4"
-    },
-    "8954": {
-        "parent_id": 895,
-        "region_id": 8954,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA21L5",
-        "label": "Area 21, Layer5"
-    },
-    "8955": {
-        "parent_id": 895,
-        "region_id": 8955,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA21L6",
-        "label": "Area 21, Layer6"
-    },
-    "96": {
-        "parent_id": 315,
-        "region_id": 96,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA22",
-        "label": "Area 22"
-    },
-    "961": {
-        "parent_id": 96,
-        "region_id": 961,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA22L1",
-        "label": "Area 22, Layer1"
-    },
-    "962": {
-        "parent_id": 96,
-        "region_id": 962,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA22L2/3",
-        "label": "Area 22, Layer2/3"
-    },
-    "963": {
-        "parent_id": 96,
-        "region_id": 963,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA22L4",
-        "label": "Area 22, Layer4"
-    },
-    "964": {
-        "parent_id": 96,
-        "region_id": 964,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA22L5",
-        "label": "Area 22, Layer5"
-    },
-    "965": {
-        "parent_id": 96,
-        "region_id": 965,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA22L6",
-        "label": "Area 22, Layer6"
-    },
-    "1084": {
-        "parent_id": 315,
-        "region_id": 1084,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA27",
-        "label": "Area 27"
-    },
-    "10841": {
-        "parent_id": 1084,
-        "region_id": 10841,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA27L1",
-        "label": "Area 27, Layer1"
-    },
-    "10842": {
-        "parent_id": 1084,
-        "region_id": 10842,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA27L2/3",
-        "label": "Area 27, Layer2/3"
-    },
-    "10843": {
-        "parent_id": 1084,
-        "region_id": 10843,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA27L4",
-        "label": "Area 27, Layer4"
-    },
-    "10844": {
-        "parent_id": 1084,
-        "region_id": 10844,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA27L5",
-        "label": "Area 27, Layer5"
-    },
-    "10845": {
-        "parent_id": 1084,
-        "region_id": 10845,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA27L6",
-        "label": "Area 27, Layer6"
-    },
-    "909": {
-        "parent_id": 315,
-        "region_id": 909,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA28",
-        "label": "Area 28"
-    },
-    "9091": {
-        "parent_id": 909,
-        "region_id": 9091,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA28L1",
-        "label": "Area 28, Layer1"
-    },
-    "9092": {
-        "parent_id": 909,
-        "region_id": 9092,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA28L2/3",
-        "label": "Area 28, Layer2/3"
-    },
-    "9093": {
-        "parent_id": 909,
-        "region_id": 9093,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA28L4",
-        "label": "Area 28, Layer4"
-    },
-    "9094": {
-        "parent_id": 909,
-        "region_id": 9094,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA28L5",
-        "label": "Area 28, Layer5"
-    },
-    "9095": {
-        "parent_id": 909,
-        "region_id": 9095,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA28L6",
-        "label": "Area 28, Layer6"
-    },
-    "385": {
-        "parent_id": 315,
-        "region_id": 385,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA17",
-        "label": "Area 17"
-    },
-    "3851": {
-        "parent_id": 385,
-        "region_id": 3851,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA17L1",
-        "label": "Area 17, Layer1"
-    },
-    "3852": {
-        "parent_id": 385,
-        "region_id": 3852,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA17L2/3",
-        "label": "Area 17, Layer2/3"
-    },
-    "3853": {
-        "parent_id": 385,
-        "region_id": 3853,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA17L4",
-        "label": "Area 17, Layer4"
-    },
-    "3854": {
-        "parent_id": 385,
-        "region_id": 3854,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA17L5",
-        "label": "Area 17, Layer5"
-    },
-    "3855": {
-        "parent_id": 385,
-        "region_id": 3855,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA17L6",
-        "label": "Area 17, Layer6"
-    },
-    "669": {
-        "parent_id": 315,
-        "region_id": 669,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA18",
-        "label": "Area 18"
-    },
-    "6691": {
-        "parent_id": 669,
-        "region_id": 6691,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA18L1",
-        "label": "Area 18, Layer1"
-    },
-    "6692": {
-        "parent_id": 669,
-        "region_id": 6692,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA18L2/3",
-        "label": "Area 18, Layer2/3"
-    },
-    "6693": {
-        "parent_id": 669,
-        "region_id": 6693,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA18L4",
-        "label": "Area 18, Layer4"
-    },
-    "6694": {
-        "parent_id": 669,
-        "region_id": 6694,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA18L5",
-        "label": "Area 18, Layer5"
-    },
-    "6695": {
-        "parent_id": 669,
-        "region_id": 6695,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA18L6",
-        "label": "Area 18, Layer6"
-    },
-    "95": {
-        "parent_id": 315,
-        "region_id": 95,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA13-16",
-        "label": "Area 13-16"
-    },
-    "951": {
-        "parent_id": 95,
-        "region_id": 951,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA13-16L1",
-        "label": "Area 13-16, Layer1"
-    },
-    "952": {
-        "parent_id": 95,
-        "region_id": 952,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA13-16L2/3",
-        "label": "Area 13-16, Layer2/3"
-    },
-    "953": {
-        "parent_id": 95,
-        "region_id": 953,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA13-16L4",
-        "label": "Area 13-16, Layer4"
-    },
-    "954": {
-        "parent_id": 95,
-        "region_id": 954,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA13-16L5",
-        "label": "Area 13-16, Layer5"
-    },
-    "955": {
-        "parent_id": 95,
-        "region_id": 955,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA13-16L6",
-        "label": "Area 13-16, Layer6"
-    },
-    "894": {
-        "parent_id": 315,
-        "region_id": 894,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA26-29",
-        "label": "Area 26-29"
-    },
-    "8941": {
-        "parent_id": 894,
-        "region_id": 8941,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA26-29L1",
-        "label": "Area 26-29, Layer1"
-    },
-    "8942": {
-        "parent_id": 894,
-        "region_id": 8942,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA26-29L2/3",
-        "label": "Area 26-29, Layer2/3"
-    },
-    "8943": {
-        "parent_id": 894,
-        "region_id": 8943,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA26-29L4",
-        "label": "Area 26-29, Layer4"
-    },
-    "8944": {
-        "parent_id": 894,
-        "region_id": 8944,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA26-29L5",
-        "label": "Area 26-29, Layer5"
-    },
-    "8945": {
-        "parent_id": 894,
-        "region_id": 8945,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA26-29L6",
-        "label": "Area 26-29, Layer6"
-    },
-    "254": {
-        "parent_id": 315,
-        "region_id": 254,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA30",
-        "label": "Area 03"
-    },
-    "2541": {
-        "parent_id": 254,
-        "region_id": 2541,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA30L1",
-        "label": "Area 03, Layer1"
-    },
-    "2542": {
-        "parent_id": 254,
-        "region_id": 2542,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA30L2/3",
-        "label": "Area 03, Layer2/3"
-    },
-    "2543": {
-        "parent_id": 254,
-        "region_id": 2543,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA30L4",
-        "label": "Area 03, Layer4"
-    },
-    "2544": {
-        "parent_id": 254,
-        "region_id": 2544,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA30L5",
-        "label": "Area 03, Layer5"
-    },
-    "2545": {
-        "parent_id": 254,
-        "region_id": 2545,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "BA30L6",
-        "label": "Area 03, Layer6"
-    },
-    "3111": {
-        "parent_id": 688,
-        "region_id": 3111,
-        "atlas_id": 746,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "R",
-        "label": "Remaining region"
-    },
-    "1089": {
-        "parent_id": 567,
-        "region_id": 1089,
-        "atlas_id": 135,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "HiF",
-        "label": "Hippocampal formation"
-    },
-    "1929": {
-        "parent_id": 1089,
-        "region_id": 1929,
-        "atlas_id": 135,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "Ent",
-        "label": "Entorhinal area"
-    },
-    "1939": {
-        "parent_id": 1089,
-        "region_id": 1939,
-        "atlas_id": 135,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "CAs",
-        "label": "CA fields"
-    },
-    "1949": {
-        "parent_id": 1089,
-        "region_id": 1949,
-        "atlas_id": 135,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "DG",
-        "label": "Dentate Gyrus"
-    },
-    "1959": {
-        "parent_id": 1089,
-        "region_id": 1959,
-        "atlas_id": 135,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "S",
-        "label": "Subiculum"
-    },
-    "1969": {
-        "parent_id": 1089,
-        "region_id": 1969,
-        "atlas_id": 135,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "PrS",
-        "label": "Presubiculum"
-    },
-    "1979": {
-        "parent_id": 1089,
-        "region_id": 1979,
-        "atlas_id": 135,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "IG",
-        "label": "Indusium Griseum"
-    },
-    "623": {
-        "parent_id": 567,
-        "region_id": 623,
-        "atlas_id": 77,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "CNu",
-        "label": "Cerebral nuclei"
-    },
-    "477": {
-        "parent_id": 623,
-        "region_id": 477,
-        "atlas_id": 342,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "Str",
-        "label": "Striatum"
-    },
-    "4779": {
-        "parent_id": 477,
-        "region_id": 4779,
-        "atlas_id": 342,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "Cd",
-        "label": "Caudate Nucleus"
-    },
-    "4778": {
-        "parent_id": 477,
-        "region_id": 4778,
-        "atlas_id": 342,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "Pu",
-        "label": "Putamen"
-    },
-    "803": {
-        "parent_id": 623,
-        "region_id": 803,
-        "atlas_id": 241,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "Pal",
-        "label": "extended Pallidum"
-    },
-    "4777": {
-        "parent_id": 803,
-        "region_id": 4777,
-        "atlas_id": 342,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "LPG",
-        "label": "Lateral Globus Pallidus"
-    },
-    "4776": {
-        "parent_id": 803,
-        "region_id": 4776,
-        "atlas_id": 342,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "MGP",
-        "label": "Medial Globus Pallidus"
-    },
-    "343": {
-        "parent_id": 8,
-        "region_id": 343,
-        "atlas_id": 42,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "Bs",
-        "label": "Brainstem"
-    },
-    "1129": {
-        "parent_id": 343,
-        "region_id": 1129,
-        "atlas_id": 140,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "IBr",
-        "label": "Interbrain"
-    },
-    "549": {
-        "parent_id": 1129,
-        "region_id": 549,
-        "atlas_id": 351,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "Th",
-        "label": "Thalamus"
-    },
-    "1097": {
-        "parent_id": 1129,
-        "region_id": 1097,
-        "atlas_id": 136,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "Hy",
-        "label": "Hypothalamus"
-    },
-    "4775": {
-        "parent_id": 1097,
-        "region_id": 4775,
-        "atlas_id": 342,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "STh",
-        "label": "Subthalamic Nucleus"
-    },
-    "313": {
-        "parent_id": 343,
-        "region_id": 313,
-        "atlas_id": 180,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "MBr",
-        "label": "Midbrain"
-    },
-    "4774": {
-        "parent_id": 313,
-        "region_id": 4774,
-        "atlas_id": 342,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "SNC",
-        "label": "Pars Compacta"
-    },
-    "4773": {
-        "parent_id": 313,
-        "region_id": 4773,
-        "atlas_id": 342,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "SNR",
-        "label": "Pars Reticulata"
-    },
-    "1065": {
-        "parent_id": 343,
-        "region_id": 1065,
-        "atlas_id": 132,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "HBr",
-        "label": "Hindbrain"
-    },
-    "771": {
-        "parent_id": 1065,
-        "region_id": 771,
-        "atlas_id": 237,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "Pons",
-        "label": "Pons"
-    },
-    "354": {
-        "parent_id": 1065,
-        "region_id": 354,
-        "atlas_id": 185,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "MO",
-        "label": "Medulla"
-    },
-    "512": {
-        "parent_id": 8,
-        "region_id": 512,
-        "atlas_id": 63,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "Cb",
-        "label": "Cerebellum"
-    },
-    "1009": {
-        "parent_id": 997,
-        "region_id": 1009,
-        "atlas_id": 691,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "fiber tracts",
-        "label": "fiber tracts"
-    },
-    "73": {
-        "parent_id": 997,
-        "region_id": 73,
-        "atlas_id": 716,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "VS",
-        "label": "ventricular systems"
-    },
-    "9101": {
-        "parent_id": 73,
-        "region_id": 9101,
-        "atlas_id": 716,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "LV",
-        "label": "lateral ventricle"
-    },
-    "9102": {
-        "parent_id": 73,
-        "region_id": 9102,
-        "atlas_id": 716,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "3V",
-        "label": "third ventricle"
-    },
-    "9103": {
-        "parent_id": 73,
-        "region_id": 9103,
-        "atlas_id": 716,
-        "description": "",
-        "hemisphere_id": 3,
-        "acronym": "4V",
-        "label": "fourth ventricle"
-    }
+  "8": {
+    "id": 8,
+    "name": "Grey matter",
+    "parent_structure_id": 997,
+    "acronym": "grey",
+    "color_hex_triplet": "BFDAE3",
+    "children": [567, 343, 512],
+    "DAPI density (# / um^3)": 0.0001829771,
+    "NeuN density (# / um^3)": 0.0001240763,
+    "PV density (# / um^3)": 0.0000077533
+  },
+  "22": {
+    "id": 22,
+    "name": "Area 7",
+    "parent_structure_id": 315,
+    "acronym": "BA7",
+    "color_hex_triplet": "5EA46C",
+    "children": [221, 222, 223, 224, 225],
+    "DAPI density (# / um^3)": 0.0002040882,
+    "NeuN density (# / um^3)": 0.0001611508,
+    "PV density (# / um^3)": 0.0000109722
+  },
+  "39": {
+    "id": 39,
+    "name": "Area 24",
+    "parent_structure_id": 315,
+    "acronym": "BA24",
+    "color_hex_triplet": "5DA36C",
+    "children": [391, 392, 393, 394, 395],
+    "DAPI density (# / um^3)": 0.0001814789,
+    "NeuN density (# / um^3)": 0.0001329435,
+    "PV density (# / um^3)": 0.0000086657
+  },
+  "48": {
+    "id": 48,
+    "name": "Area 23",
+    "parent_structure_id": 315,
+    "acronym": "BA23",
+    "color_hex_triplet": "5DA46C",
+    "children": [481, 482, 483, 484, 485],
+    "DAPI density (# / um^3)": 0.0001966592,
+    "NeuN density (# / um^3)": 0.0001498373,
+    "PV density (# / um^3)": 0.0000115937
+  },
+  "73": {
+    "id": 73,
+    "name": "ventricular systems",
+    "parent_structure_id": 997,
+    "acronym": "VS",
+    "color_hex_triplet": "AAAAAA",
+    "children": [9101, 9102, 9103],
+    "DAPI density (# / um^3)": 0.0001476693,
+    "NeuN density (# / um^3)": 0.000043408,
+    "PV density (# / um^3)": 0.0000034385
+  },
+  "95": {
+    "id": 95,
+    "name": "Area 13-16",
+    "parent_structure_id": 315,
+    "acronym": "BA13-16",
+    "color_hex_triplet": "4B966A",
+    "children": [951, 952, 953, 954, 955],
+    "DAPI density (# / um^3)": 0.0001499112,
+    "NeuN density (# / um^3)": 0.0001238563,
+    "PV density (# / um^3)": 0.0000059192
+  },
+  "96": {
+    "id": 96,
+    "name": "Area 22",
+    "parent_structure_id": 315,
+    "acronym": "BA22",
+    "color_hex_triplet": "4FA498",
+    "children": [961, 962, 963, 964, 965],
+    "DAPI density (# / um^3)": 0.0001949546,
+    "NeuN density (# / um^3)": 0.0001543048,
+    "PV density (# / um^3)": 0.0000084214
+  },
+  "184": {
+    "id": 184,
+    "name": "Area 8",
+    "parent_structure_id": 315,
+    "acronym": "BA8",
+    "color_hex_triplet": "61C561",
+    "children": [1841, 1842, 1843, 1844, 1845],
+    "DAPI density (# / um^3)": 0.0001774231,
+    "NeuN density (# / um^3)": 0.0001445882,
+    "PV density (# / um^3)": 0.0000072526
+  },
+  "221": {
+    "id": 221,
+    "name": "Area 7, Layer1",
+    "parent_structure_id": 22,
+    "acronym": "BA7L1",
+    "color_hex_triplet": "5EA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.000112782,
+    "NeuN density (# / um^3)": 0.0000595195,
+    "PV density (# / um^3)": 0.0000025552
+  },
+  "222": {
+    "id": 222,
+    "name": "Area 7, Layer2/3",
+    "parent_structure_id": 22,
+    "acronym": "BA7L2/3",
+    "color_hex_triplet": "5EA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001987319,
+    "NeuN density (# / um^3)": 0.0001544377,
+    "PV density (# / um^3)": 0.0000112555
+  },
+  "223": {
+    "id": 223,
+    "name": "Area 7, Layer4",
+    "parent_structure_id": 22,
+    "acronym": "BA7L4",
+    "color_hex_triplet": "5EA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002363988,
+    "NeuN density (# / um^3)": 0.0001940788,
+    "PV density (# / um^3)": 0.0000164542
+  },
+  "224": {
+    "id": 224,
+    "name": "Area 7, Layer5",
+    "parent_structure_id": 22,
+    "acronym": "BA7L5",
+    "color_hex_triplet": "5EA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002308383,
+    "NeuN density (# / um^3)": 0.0001936824,
+    "PV density (# / um^3)": 0.0000153832
+  },
+  "225": {
+    "id": 225,
+    "name": "Area 7, Layer6",
+    "parent_structure_id": 22,
+    "acronym": "BA7L6",
+    "color_hex_triplet": "5EA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002059287,
+    "NeuN density (# / um^3)": 0.000162726,
+    "PV density (# / um^3)": 0.0000071951
+  },
+  "254": {
+    "id": 254,
+    "name": "Area 03",
+    "parent_structure_id": 315,
+    "acronym": "BA30",
+    "color_hex_triplet": "4FA498",
+    "children": [2541, 2542, 2543, 2544, 2545],
+    "DAPI density (# / um^3)": 0.0002364589,
+    "NeuN density (# / um^3)": 0.0001865063,
+    "PV density (# / um^3)": 0.0000130388
+  },
+  "313": {
+    "id": 313,
+    "name": "Midbrain",
+    "parent_structure_id": 343,
+    "acronym": "MBr",
+    "color_hex_triplet": "FF65FF",
+    "children": [4774, 4773],
+    "DAPI density (# / um^3)": 0.0001759657,
+    "NeuN density (# / um^3)": 0.0000881534,
+    "PV density (# / um^3)": 0.0000066544
+  },
+  "315": {
+    "id": 315,
+    "name": "Neocortex",
+    "parent_structure_id": 688,
+    "acronym": "NCx",
+    "color_hex_triplet": "70FE70",
+    "children": [
+      322, 985, 993, 184, 39, 972, 378, 22, 48, 836, 895, 96, 1084, 909, 385,
+      669, 95, 894, 254
+    ],
+    "DAPI density (# / um^3)": 0.0002027585,
+    "NeuN density (# / um^3)": 0.0001601375,
+    "PV density (# / um^3)": 0.0000096262
+  },
+  "322": {
+    "id": 322,
+    "name": "Area 1-3",
+    "parent_structure_id": 315,
+    "acronym": "BA1-3",
+    "color_hex_triplet": "3B7A63",
+    "children": [3221, 3222, 3223, 3224, 3225],
+    "DAPI density (# / um^3)": 0.0001859064,
+    "NeuN density (# / um^3)": 0.0001467977,
+    "PV density (# / um^3)": 0.000008908
+  },
+  "343": {
+    "id": 343,
+    "name": "Brainstem",
+    "parent_structure_id": 8,
+    "acronym": "Bs",
+    "color_hex_triplet": "C97080",
+    "children": [1129, 313, 1065],
+    "DAPI density (# / um^3)": 0.000166816,
+    "NeuN density (# / um^3)": 0.0000799324,
+    "PV density (# / um^3)": 0.0000058945
+  },
+  "354": {
+    "id": 354,
+    "name": "Medulla",
+    "parent_structure_id": 1065,
+    "acronym": "MO",
+    "color_hex_triplet": "FE9ACC",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001482173,
+    "NeuN density (# / um^3)": 0.000069322,
+    "PV density (# / um^3)": 0.0000060075
+  },
+  "378": {
+    "id": 378,
+    "name": "Area 5",
+    "parent_structure_id": 315,
+    "acronym": "BA5",
+    "color_hex_triplet": "3D7E66",
+    "children": [3781, 3782, 3783, 3784, 3785],
+    "DAPI density (# / um^3)": 0.0002020075,
+    "NeuN density (# / um^3)": 0.0001588602,
+    "PV density (# / um^3)": 0.0000111383
+  },
+  "385": {
+    "id": 385,
+    "name": "Area 17",
+    "parent_structure_id": 315,
+    "acronym": "BA17",
+    "color_hex_triplet": "3C838A",
+    "children": [3851, 3852, 3853, 3854, 3855],
+    "DAPI density (# / um^3)": 0.0002364365,
+    "NeuN density (# / um^3)": 0.0001911592,
+    "PV density (# / um^3)": 0.0000118918
+  },
+  "391": {
+    "id": 391,
+    "name": "Area 24, Layer1",
+    "parent_structure_id": 39,
+    "acronym": "BA24L1",
+    "color_hex_triplet": "5DA36C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001291779,
+    "NeuN density (# / um^3)": 0.0000608391,
+    "PV density (# / um^3)": 0.000002953
+  },
+  "392": {
+    "id": 392,
+    "name": "Area 24, Layer2/3",
+    "parent_structure_id": 39,
+    "acronym": "BA24L2/3",
+    "color_hex_triplet": "5DA36C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001890595,
+    "NeuN density (# / um^3)": 0.0001542798,
+    "PV density (# / um^3)": 0.0000092035
+  },
+  "393": {
+    "id": 393,
+    "name": "Area 24, Layer4",
+    "parent_structure_id": 39,
+    "acronym": "BA24L4",
+    "color_hex_triplet": "5DA36C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001902253,
+    "NeuN density (# / um^3)": 0.0001534522,
+    "PV density (# / um^3)": 0.000012844
+  },
+  "394": {
+    "id": 394,
+    "name": "Area 24, Layer5",
+    "parent_structure_id": 39,
+    "acronym": "BA24L5",
+    "color_hex_triplet": "5DA36C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001949906,
+    "NeuN density (# / um^3)": 0.0001512764,
+    "PV density (# / um^3)": 0.0000117984
+  },
+  "395": {
+    "id": 395,
+    "name": "Area 24, Layer6",
+    "parent_structure_id": 39,
+    "acronym": "BA24L6",
+    "color_hex_triplet": "5DA36C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002013682,
+    "NeuN density (# / um^3)": 0.000140355,
+    "PV density (# / um^3)": 0.0000053457
+  },
+  "477": {
+    "id": 477,
+    "name": "Striatum",
+    "parent_structure_id": 623,
+    "acronym": "Str",
+    "color_hex_triplet": "7ECCED",
+    "children": [4779, 4778],
+    "DAPI density (# / um^3)": 0.0001888599,
+    "NeuN density (# / um^3)": 0.0001459909,
+    "PV density (# / um^3)": 0.0000048027
+  },
+  "481": {
+    "id": 481,
+    "name": "Area 23, Layer1",
+    "parent_structure_id": 48,
+    "acronym": "BA23L1",
+    "color_hex_triplet": "5DA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001591206,
+    "NeuN density (# / um^3)": 0.0000893636,
+    "PV density (# / um^3)": 0.0000049815
+  },
+  "482": {
+    "id": 482,
+    "name": "Area 23, Layer2/3",
+    "parent_structure_id": 48,
+    "acronym": "BA23L2/3",
+    "color_hex_triplet": "5DA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001988801,
+    "NeuN density (# / um^3)": 0.0001603557,
+    "PV density (# / um^3)": 0.0000125091
+  },
+  "483": {
+    "id": 483,
+    "name": "Area 23, Layer4",
+    "parent_structure_id": 48,
+    "acronym": "BA23L4",
+    "color_hex_triplet": "5DA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002059932,
+    "NeuN density (# / um^3)": 0.0001614896,
+    "PV density (# / um^3)": 0.0000162352
+  },
+  "484": {
+    "id": 484,
+    "name": "Area 23, Layer5",
+    "parent_structure_id": 48,
+    "acronym": "BA23L5",
+    "color_hex_triplet": "5DA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002047897,
+    "NeuN density (# / um^3)": 0.0001613251,
+    "PV density (# / um^3)": 0.0000148349
+  },
+  "485": {
+    "id": 485,
+    "name": "Area 23, Layer6",
+    "parent_structure_id": 48,
+    "acronym": "BA23L6",
+    "color_hex_triplet": "5DA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002089377,
+    "NeuN density (# / um^3)": 0.0001615999,
+    "PV density (# / um^3)": 0.0000089759
+  },
+  "512": {
+    "id": 512,
+    "name": "Cerebellum",
+    "parent_structure_id": 8,
+    "acronym": "Cb",
+    "color_hex_triplet": "F0F07F",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001929426,
+    "NeuN density (# / um^3)": 0.000108463,
+    "PV density (# / um^3)": 0.0000128464
+  },
+  "549": {
+    "id": 549,
+    "name": "Thalamus",
+    "parent_structure_id": 1129,
+    "acronym": "Th",
+    "color_hex_triplet": "F45B71",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001687108,
+    "NeuN density (# / um^3)": 0.0000739444,
+    "PV density (# / um^3)": 0.0000044784
+  },
+  "567": {
+    "id": 567,
+    "name": "Cerebrum",
+    "parent_structure_id": 8,
+    "acronym": "CH",
+    "color_hex_triplet": "AFF0FF",
+    "children": [688, 1089, 623],
+    "DAPI density (# / um^3)": 0.0001872004,
+    "NeuN density (# / um^3)": 0.0001400732,
+    "PV density (# / um^3)": 0.000007828
+  },
+  "623": {
+    "id": 623,
+    "name": "Cerebral nuclei",
+    "parent_structure_id": 567,
+    "acronym": "CNu",
+    "color_hex_triplet": "96D6FA",
+    "children": [477, 803],
+    "DAPI density (# / um^3)": 0.0001844296,
+    "NeuN density (# / um^3)": 0.0001298166,
+    "PV density (# / um^3)": 0.0000052501
+  },
+  "669": {
+    "id": 669,
+    "name": "Area 18",
+    "parent_structure_id": 315,
+    "acronym": "BA18",
+    "color_hex_triplet": "3C838A",
+    "children": [6691, 6692, 6693, 6694, 6695],
+    "DAPI density (# / um^3)": 0.0002164327,
+    "NeuN density (# / um^3)": 0.0001712561,
+    "PV density (# / um^3)": 0.0000102282
+  },
+  "688": {
+    "id": 688,
+    "name": "Cerebral cortex",
+    "parent_structure_id": 567,
+    "acronym": "Cx",
+    "color_hex_triplet": "B1FEB9",
+    "children": [315, 3111],
+    "DAPI density (# / um^3)": 0.0001978689,
+    "NeuN density (# / um^3)": 0.0001549142,
+    "PV density (# / um^3)": 0.0000091852
+  },
+  "771": {
+    "id": 771,
+    "name": "Pons",
+    "parent_structure_id": 1065,
+    "acronym": "Pons",
+    "color_hex_triplet": "F98575",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001476502,
+    "NeuN density (# / um^3)": 0.0000684366,
+    "PV density (# / um^3)": 0.0000081891
+  },
+  "803": {
+    "id": 803,
+    "name": "extended Pallidum",
+    "parent_structure_id": 623,
+    "acronym": "Pal",
+    "color_hex_triplet": "8599CC",
+    "children": [4777, 4776],
+    "DAPI density (# / um^3)": 0.0001685504,
+    "NeuN density (# / um^3)": 0.0000718442,
+    "PV density (# / um^3)": 0.0000068538
+  },
+  "836": {
+    "id": 836,
+    "name": "Area 20",
+    "parent_structure_id": 315,
+    "acronym": "BA20",
+    "color_hex_triplet": "52ADB1",
+    "children": [8361, 8362, 8363, 8364, 8365],
+    "DAPI density (# / um^3)": 0.0001643641,
+    "NeuN density (# / um^3)": 0.0001230227,
+    "PV density (# / um^3)": 0.0000064391
+  },
+  "894": {
+    "id": 894,
+    "name": "Area 26-29",
+    "parent_structure_id": 315,
+    "acronym": "BA26-29",
+    "color_hex_triplet": "4FA498",
+    "children": [8941, 8942, 8943, 8944, 8945],
+    "DAPI density (# / um^3)": 0.0002211017,
+    "NeuN density (# / um^3)": 0.0001708691,
+    "PV density (# / um^3)": 0.0000126505
+  },
+  "895": {
+    "id": 895,
+    "name": "Area 21",
+    "parent_structure_id": 315,
+    "acronym": "BA21",
+    "color_hex_triplet": "52ADB1",
+    "children": [8951, 8952, 8953, 8954, 8955],
+    "DAPI density (# / um^3)": 0.0001871924,
+    "NeuN density (# / um^3)": 0.0001512972,
+    "PV density (# / um^3)": 0.0000079387
+  },
+  "909": {
+    "id": 909,
+    "name": "Area 28",
+    "parent_structure_id": 315,
+    "acronym": "BA28",
+    "color_hex_triplet": "5FB541",
+    "children": [9091, 9092, 9093, 9094, 9095],
+    "DAPI density (# / um^3)": 0.0001662817,
+    "NeuN density (# / um^3)": 0.0001256845,
+    "PV density (# / um^3)": 0.0000056999
+  },
+  "951": {
+    "id": 951,
+    "name": "Area 13-16, Layer1",
+    "parent_structure_id": 95,
+    "acronym": "BA13-16L1",
+    "color_hex_triplet": "4B966A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001181203,
+    "NeuN density (# / um^3)": 0.0000744997,
+    "PV density (# / um^3)": 0.0000021243
+  },
+  "952": {
+    "id": 952,
+    "name": "Area 13-16, Layer2/3",
+    "parent_structure_id": 95,
+    "acronym": "BA13-16L2/3",
+    "color_hex_triplet": "4B966A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001507638,
+    "NeuN density (# / um^3)": 0.0001329376,
+    "PV density (# / um^3)": 0.0000056367
+  },
+  "953": {
+    "id": 953,
+    "name": "Area 13-16, Layer4",
+    "parent_structure_id": 95,
+    "acronym": "BA13-16L4",
+    "color_hex_triplet": "4B966A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001591686,
+    "NeuN density (# / um^3)": 0.0001385551,
+    "PV density (# / um^3)": 0.0000073961
+  },
+  "954": {
+    "id": 954,
+    "name": "Area 13-16, Layer5",
+    "parent_structure_id": 95,
+    "acronym": "BA13-16L5",
+    "color_hex_triplet": "4B966A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001640174,
+    "NeuN density (# / um^3)": 0.0001416981,
+    "PV density (# / um^3)": 0.0000083952
+  },
+  "955": {
+    "id": 955,
+    "name": "Area 13-16, Layer6",
+    "parent_structure_id": 95,
+    "acronym": "BA13-16L6",
+    "color_hex_triplet": "4B966A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001652034,
+    "NeuN density (# / um^3)": 0.0001354135,
+    "PV density (# / um^3)": 0.0000072611
+  },
+  "961": {
+    "id": 961,
+    "name": "Area 22, Layer1",
+    "parent_structure_id": 96,
+    "acronym": "BA22L1",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001262258,
+    "NeuN density (# / um^3)": 0.0000792813,
+    "PV density (# / um^3)": 0.0000029075
+  },
+  "962": {
+    "id": 962,
+    "name": "Area 22, Layer2/3",
+    "parent_structure_id": 96,
+    "acronym": "BA22L2/3",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001918781,
+    "NeuN density (# / um^3)": 0.0001558584,
+    "PV density (# / um^3)": 0.0000087445
+  },
+  "963": {
+    "id": 963,
+    "name": "Area 22, Layer4",
+    "parent_structure_id": 96,
+    "acronym": "BA22L4",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002228932,
+    "NeuN density (# / um^3)": 0.0001865992,
+    "PV density (# / um^3)": 0.0000120124
+  },
+  "964": {
+    "id": 964,
+    "name": "Area 22, Layer5",
+    "parent_structure_id": 96,
+    "acronym": "BA22L5",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002191252,
+    "NeuN density (# / um^3)": 0.0001837735,
+    "PV density (# / um^3)": 0.0000116915
+  },
+  "965": {
+    "id": 965,
+    "name": "Area 22, Layer6",
+    "parent_structure_id": 96,
+    "acronym": "BA22L6",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001993557,
+    "NeuN density (# / um^3)": 0.0001471241,
+    "PV density (# / um^3)": 0.0000056359
+  },
+  "972": {
+    "id": 972,
+    "name": "Area 25",
+    "parent_structure_id": 315,
+    "acronym": "BA25",
+    "color_hex_triplet": "5DA46C",
+    "children": [9721, 9722, 9723, 9724, 9725],
+    "DAPI density (# / um^3)": 0.0001764499,
+    "NeuN density (# / um^3)": 0.0001102625,
+    "PV density (# / um^3)": 0.0000044465
+  },
+  "985": {
+    "id": 985,
+    "name": "Area 4",
+    "parent_structure_id": 315,
+    "acronym": "BA4",
+    "color_hex_triplet": "4C9B60",
+    "children": [9851, 9852, 9853, 9854, 9855],
+    "DAPI density (# / um^3)": 0.0001936755,
+    "NeuN density (# / um^3)": 0.0001456926,
+    "PV density (# / um^3)": 0.0000085988
+  },
+  "993": {
+    "id": 993,
+    "name": "Area 6",
+    "parent_structure_id": 315,
+    "acronym": "BA6",
+    "color_hex_triplet": "468E58",
+    "children": [9931, 9932, 9933, 9934, 9935],
+    "DAPI density (# / um^3)": 0.0001783078,
+    "NeuN density (# / um^3)": 0.0001381449,
+    "PV density (# / um^3)": 0.000006767
+  },
+  "997": {
+    "id": 997,
+    "name": "root",
+    "parent_structure_id": "null",
+    "acronym": "root",
+    "color_hex_triplet": "FFFFFF",
+    "children": [8, 1009, 73],
+    "DAPI density (# / um^3)": 0.0001830165,
+    "NeuN density (# / um^3)": 0.0001159231,
+    "PV density (# / um^3)": 0.0000072425
+  },
+  "1009": {
+    "id": 1009,
+    "name": "fiber tracts",
+    "parent_structure_id": 997,
+    "acronym": "fiber tracts",
+    "color_hex_triplet": "CBCCCC",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001867421,
+    "NeuN density (# / um^3)": 0.0000476454,
+    "PV density (# / um^3)": 0.0000028944
+  },
+  "1065": {
+    "id": 1065,
+    "name": "Hindbrain",
+    "parent_structure_id": 343,
+    "acronym": "HBr",
+    "color_hex_triplet": "FF9A87",
+    "children": [771, 354],
+    "DAPI density (# / um^3)": 0.0001480208,
+    "NeuN density (# / um^3)": 0.0000690153,
+    "PV density (# / um^3)": 0.0000067633
+  },
+  "1084": {
+    "id": 1084,
+    "name": "Area 27",
+    "parent_structure_id": 315,
+    "acronym": "BA27",
+    "color_hex_triplet": "73B757",
+    "children": [10841, 10842, 10843, 10844, 10845],
+    "DAPI density (# / um^3)": 0.0002369178,
+    "NeuN density (# / um^3)": 0.0001689104,
+    "PV density (# / um^3)": 0.0000101766
+  },
+  "1089": {
+    "id": 1089,
+    "name": "Hippocampal formation",
+    "parent_structure_id": 567,
+    "acronym": "HiF",
+    "color_hex_triplet": "7ECF4C",
+    "children": [1929, 1939, 1949, 1959, 1969, 1979],
+    "DAPI density (# / um^3)": 0.0001371696,
+    "NeuN density (# / um^3)": 0.0000767202,
+    "PV density (# / um^3)": 0.0000036343
+  },
+  "1097": {
+    "id": 1097,
+    "name": "Hypothalamus",
+    "parent_structure_id": 1129,
+    "acronym": "Hy",
+    "color_hex_triplet": "E64339",
+    "children": [4775],
+    "DAPI density (# / um^3)": 0.000190027,
+    "NeuN density (# / um^3)": 0.000103144,
+    "PV density (# / um^3)": 0.0000044643
+  },
+  "1129": {
+    "id": 1129,
+    "name": "Interbrain",
+    "parent_structure_id": 343,
+    "acronym": "IBr",
+    "color_hex_triplet": "FE7180",
+    "children": [549, 1097],
+    "DAPI density (# / um^3)": 0.0001743599,
+    "NeuN density (# / um^3)": 0.0000816827,
+    "PV density (# / um^3)": 0.0000044747
+  },
+  "1841": {
+    "id": 1841,
+    "name": "Area 8, Layer1",
+    "parent_structure_id": 184,
+    "acronym": "BA8L1",
+    "color_hex_triplet": "61C561",
+    "children": [],
+    "DAPI density (# / um^3)": 0.000122916,
+    "NeuN density (# / um^3)": 0.0000655457,
+    "PV density (# / um^3)": 0.0000025379
+  },
+  "1842": {
+    "id": 1842,
+    "name": "Area 8, Layer2/3",
+    "parent_structure_id": 184,
+    "acronym": "BA8L2/3",
+    "color_hex_triplet": "61C561",
+    "children": [],
+    "DAPI density (# / um^3)": 0.000181363,
+    "NeuN density (# / um^3)": 0.0001591125,
+    "PV density (# / um^3)": 0.0000071381
+  },
+  "1843": {
+    "id": 1843,
+    "name": "Area 8, Layer4",
+    "parent_structure_id": 184,
+    "acronym": "BA8L4",
+    "color_hex_triplet": "61C561",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002056877,
+    "NeuN density (# / um^3)": 0.0001750344,
+    "PV density (# / um^3)": 0.0000101151
+  },
+  "1844": {
+    "id": 1844,
+    "name": "Area 8, Layer5",
+    "parent_structure_id": 184,
+    "acronym": "BA8L5",
+    "color_hex_triplet": "61C561",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001891073,
+    "NeuN density (# / um^3)": 0.0001588209,
+    "PV density (# / um^3)": 0.0000106767
+  },
+  "1845": {
+    "id": 1845,
+    "name": "Area 8, Layer6",
+    "parent_structure_id": 184,
+    "acronym": "BA8L6",
+    "color_hex_triplet": "61C561",
+    "children": [],
+    "DAPI density (# / um^3)": 0.000194037,
+    "NeuN density (# / um^3)": 0.0001645869,
+    "PV density (# / um^3)": 0.0000063288
+  },
+  "1929": {
+    "id": 1929,
+    "name": "Entorhinal area",
+    "parent_structure_id": 1089,
+    "acronym": "Ent",
+    "color_hex_triplet": "2FB924",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001342996,
+    "NeuN density (# / um^3)": 0.000094643,
+    "PV density (# / um^3)": 0.0000050536
+  },
+  "1939": {
+    "id": 1939,
+    "name": "CA fields",
+    "parent_structure_id": 1089,
+    "acronym": "CAs",
+    "color_hex_triplet": "7ECF4A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001294434,
+    "NeuN density (# / um^3)": 0.0000564858,
+    "PV density (# / um^3)": 0.0000026949
+  },
+  "1949": {
+    "id": 1949,
+    "name": "Dentate Gyrus",
+    "parent_structure_id": 1089,
+    "acronym": "DG",
+    "color_hex_triplet": "7ED04C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001473762,
+    "NeuN density (# / um^3)": 0.0000721771,
+    "PV density (# / um^3)": 0.0000025318
+  },
+  "1959": {
+    "id": 1959,
+    "name": "Subiculum",
+    "parent_structure_id": 1089,
+    "acronym": "S",
+    "color_hex_triplet": "4FC144",
+    "children": [],
+    "DAPI density (# / um^3)": 0.000131119,
+    "NeuN density (# / um^3)": 0.0000618148,
+    "PV density (# / um^3)": 0.0000026892
+  },
+  "1969": {
+    "id": 1969,
+    "name": "Presubiculum",
+    "parent_structure_id": 1089,
+    "acronym": "PrS",
+    "color_hex_triplet": "59B946",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001808854,
+    "NeuN density (# / um^3)": 0.0001196686,
+    "PV density (# / um^3)": 0.0000047752
+  },
+  "1979": {
+    "id": 1979,
+    "name": "Indusium Griseum",
+    "parent_structure_id": 1089,
+    "acronym": "IG",
+    "color_hex_triplet": "5358FC",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001479488,
+    "NeuN density (# / um^3)": 0.0000476492,
+    "PV density (# / um^3)": 0.0000038084
+  },
+  "2541": {
+    "id": 2541,
+    "name": "Area 03, Layer1",
+    "parent_structure_id": 254,
+    "acronym": "BA30L1",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002007375,
+    "NeuN density (# / um^3)": 0.0001478108,
+    "PV density (# / um^3)": 0.0000104797
+  },
+  "2542": {
+    "id": 2542,
+    "name": "Area 03, Layer2/3",
+    "parent_structure_id": 254,
+    "acronym": "BA30L2/3",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002419921,
+    "NeuN density (# / um^3)": 0.0002020415,
+    "PV density (# / um^3)": 0.0000164623
+  },
+  "2543": {
+    "id": 2543,
+    "name": "Area 03, Layer4",
+    "parent_structure_id": 254,
+    "acronym": "BA30L4",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002528494,
+    "NeuN density (# / um^3)": 0.0002166745,
+    "PV density (# / um^3)": 0.0000171652
+  },
+  "2544": {
+    "id": 2544,
+    "name": "Area 03, Layer5",
+    "parent_structure_id": 254,
+    "acronym": "BA30L5",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002453604,
+    "NeuN density (# / um^3)": 0.0002046384,
+    "PV density (# / um^3)": 0.0000135921
+  },
+  "2545": {
+    "id": 2545,
+    "name": "Area 03, Layer6",
+    "parent_structure_id": 254,
+    "acronym": "BA30L6",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002367925,
+    "NeuN density (# / um^3)": 0.0001463864,
+    "PV density (# / um^3)": 0.0000053761
+  },
+  "3111": {
+    "id": 3111,
+    "name": "Remaining region",
+    "parent_structure_id": 688,
+    "acronym": "R",
+    "color_hex_triplet": "39B54A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001573551,
+    "NeuN density (# / um^3)": 0.0001116358,
+    "PV density (# / um^3)": 0.000005531
+  },
+  "3221": {
+    "id": 3221,
+    "name": "Area 1-3, Layer1",
+    "parent_structure_id": 322,
+    "acronym": "BA1-3L1",
+    "color_hex_triplet": "3B7A63",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001294013,
+    "NeuN density (# / um^3)": 0.0000746878,
+    "PV density (# / um^3)": 0.0000029714
+  },
+  "3222": {
+    "id": 3222,
+    "name": "Area 1-3, Layer2/3",
+    "parent_structure_id": 322,
+    "acronym": "BA1-3L2/3",
+    "color_hex_triplet": "3B7A63",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001900666,
+    "NeuN density (# / um^3)": 0.0001572647,
+    "PV density (# / um^3)": 0.0000097035
+  },
+  "3223": {
+    "id": 3223,
+    "name": "Area 1-3, Layer4",
+    "parent_structure_id": 322,
+    "acronym": "BA1-3L4",
+    "color_hex_triplet": "3B7A63",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002131656,
+    "NeuN density (# / um^3)": 0.0001757697,
+    "PV density (# / um^3)": 0.0000135534
+  },
+  "3224": {
+    "id": 3224,
+    "name": "Area 1-3, Layer5",
+    "parent_structure_id": 322,
+    "acronym": "BA1-3L5",
+    "color_hex_triplet": "3B7A63",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002016914,
+    "NeuN density (# / um^3)": 0.000164804,
+    "PV density (# / um^3)": 0.0000119398
+  },
+  "3225": {
+    "id": 3225,
+    "name": "Area 1-3, Layer6",
+    "parent_structure_id": 322,
+    "acronym": "BA1-3L6",
+    "color_hex_triplet": "3B7A63",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001876356,
+    "NeuN density (# / um^3)": 0.0001462932,
+    "PV density (# / um^3)": 0.0000064629
+  },
+  "3781": {
+    "id": 3781,
+    "name": "Area 5, Layer1",
+    "parent_structure_id": 378,
+    "acronym": "BA5L1",
+    "color_hex_triplet": "3D7E66",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001178901,
+    "NeuN density (# / um^3)": 0.000062159,
+    "PV density (# / um^3)": 0.0000036717
+  },
+  "3782": {
+    "id": 3782,
+    "name": "Area 5, Layer2/3",
+    "parent_structure_id": 378,
+    "acronym": "BA5L2/3",
+    "color_hex_triplet": "3D7E66",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001989788,
+    "NeuN density (# / um^3)": 0.0001544395,
+    "PV density (# / um^3)": 0.0000117357
+  },
+  "3783": {
+    "id": 3783,
+    "name": "Area 5, Layer4",
+    "parent_structure_id": 378,
+    "acronym": "BA5L4",
+    "color_hex_triplet": "3D7E66",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002341844,
+    "NeuN density (# / um^3)": 0.0001904592,
+    "PV density (# / um^3)": 0.0000166689
+  },
+  "3784": {
+    "id": 3784,
+    "name": "Area 5, Layer5",
+    "parent_structure_id": 378,
+    "acronym": "BA5L5",
+    "color_hex_triplet": "3D7E66",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002300825,
+    "NeuN density (# / um^3)": 0.0001936776,
+    "PV density (# / um^3)": 0.0000153183
+  },
+  "3785": {
+    "id": 3785,
+    "name": "Area 5, Layer6",
+    "parent_structure_id": 378,
+    "acronym": "BA5L6",
+    "color_hex_triplet": "3D7E66",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002103069,
+    "NeuN density (# / um^3)": 0.0001697673,
+    "PV density (# / um^3)": 0.0000080505
+  },
+  "3851": {
+    "id": 3851,
+    "name": "Area 17, Layer1",
+    "parent_structure_id": 385,
+    "acronym": "BA17L1",
+    "color_hex_triplet": "3C838A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001619239,
+    "NeuN density (# / um^3)": 0.000106613,
+    "PV density (# / um^3)": 0.0000055604
+  },
+  "3852": {
+    "id": 3852,
+    "name": "Area 17, Layer2/3",
+    "parent_structure_id": 385,
+    "acronym": "BA17L2/3",
+    "color_hex_triplet": "3C838A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002299151,
+    "NeuN density (# / um^3)": 0.0001896423,
+    "PV density (# / um^3)": 0.0000118369
+  },
+  "3853": {
+    "id": 3853,
+    "name": "Area 17, Layer4",
+    "parent_structure_id": 385,
+    "acronym": "BA17L4",
+    "color_hex_triplet": "3C838A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002686598,
+    "NeuN density (# / um^3)": 0.0002316272,
+    "PV density (# / um^3)": 0.0000155421
+  },
+  "3854": {
+    "id": 3854,
+    "name": "Area 17, Layer5",
+    "parent_structure_id": 385,
+    "acronym": "BA17L5",
+    "color_hex_triplet": "3C838A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.000261035,
+    "NeuN density (# / um^3)": 0.0002206185,
+    "PV density (# / um^3)": 0.0000141996
+  },
+  "3855": {
+    "id": 3855,
+    "name": "Area 17, Layer6",
+    "parent_structure_id": 385,
+    "acronym": "BA17L6",
+    "color_hex_triplet": "3C838A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002458467,
+    "NeuN density (# / um^3)": 0.0001831515,
+    "PV density (# / um^3)": 0.000010332
+  },
+  "4773": {
+    "id": 4773,
+    "name": "Pars Reticulata",
+    "parent_structure_id": 313,
+    "acronym": "SNR",
+    "color_hex_triplet": "FF65FF",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001335108,
+    "NeuN density (# / um^3)": 0.0000574652,
+    "PV density (# / um^3)": 0.0000072933
+  },
+  "4774": {
+    "id": 4774,
+    "name": "Pars Compacta",
+    "parent_structure_id": 313,
+    "acronym": "SNC",
+    "color_hex_triplet": "FF65FF",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001516436,
+    "NeuN density (# / um^3)": 0.0000781449,
+    "PV density (# / um^3)": 0.0000075753
+  },
+  "4775": {
+    "id": 4775,
+    "name": "Subthalamic Nucleus",
+    "parent_structure_id": 1097,
+    "acronym": "STh",
+    "color_hex_triplet": "E64339",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001951879,
+    "NeuN density (# / um^3)": 0.0000950057,
+    "PV density (# / um^3)": 0.0000070748
+  },
+  "4776": {
+    "id": 4776,
+    "name": "Medial Globus Pallidus",
+    "parent_structure_id": 803,
+    "acronym": "MGP",
+    "color_hex_triplet": "8599CC",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001594867,
+    "NeuN density (# / um^3)": 0.0000479369,
+    "PV density (# / um^3)": 0.00000648
+  },
+  "4777": {
+    "id": 4777,
+    "name": "Lateral Globus Pallidus",
+    "parent_structure_id": 803,
+    "acronym": "LPG",
+    "color_hex_triplet": "8599CC",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001618126,
+    "NeuN density (# / um^3)": 0.0000476309,
+    "PV density (# / um^3)": 0.0000080472
+  },
+  "4778": {
+    "id": 4778,
+    "name": "Putamen",
+    "parent_structure_id": 477,
+    "acronym": "Pu",
+    "color_hex_triplet": "98D6F9",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001841739,
+    "NeuN density (# / um^3)": 0.0001448448,
+    "PV density (# / um^3)": 0.0000040367
+  },
+  "4779": {
+    "id": 4779,
+    "name": "Caudate Nucleus",
+    "parent_structure_id": 477,
+    "acronym": "Cd",
+    "color_hex_triplet": "98D6F9",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002002524,
+    "NeuN density (# / um^3)": 0.0001595071,
+    "PV density (# / um^3)": 0.000004656
+  },
+  "6691": {
+    "id": 6691,
+    "name": "Area 18, Layer1",
+    "parent_structure_id": 669,
+    "acronym": "BA18L1",
+    "color_hex_triplet": "3C838A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001403766,
+    "NeuN density (# / um^3)": 0.0000926567,
+    "PV density (# / um^3)": 0.0000044315
+  },
+  "6692": {
+    "id": 6692,
+    "name": "Area 18, Layer2/3",
+    "parent_structure_id": 669,
+    "acronym": "BA18L2/3",
+    "color_hex_triplet": "3C838A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002096635,
+    "NeuN density (# / um^3)": 0.0001677618,
+    "PV density (# / um^3)": 0.0000104164
+  },
+  "6693": {
+    "id": 6693,
+    "name": "Area 18, Layer4",
+    "parent_structure_id": 669,
+    "acronym": "BA18L4",
+    "color_hex_triplet": "3C838A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002475748,
+    "NeuN density (# / um^3)": 0.0002129988,
+    "PV density (# / um^3)": 0.0000147784
+  },
+  "6694": {
+    "id": 6694,
+    "name": "Area 18, Layer5",
+    "parent_structure_id": 669,
+    "acronym": "BA18L5",
+    "color_hex_triplet": "3C838A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002424291,
+    "NeuN density (# / um^3)": 0.0002071386,
+    "PV density (# / um^3)": 0.0000131491
+  },
+  "6695": {
+    "id": 6695,
+    "name": "Area 18, Layer6",
+    "parent_structure_id": 669,
+    "acronym": "BA18L6",
+    "color_hex_triplet": "3C838A",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002230316,
+    "NeuN density (# / um^3)": 0.0001549888,
+    "PV density (# / um^3)": 0.0000070709
+  },
+  "8361": {
+    "id": 8361,
+    "name": "Area 20, Layer1",
+    "parent_structure_id": 836,
+    "acronym": "BA20L1",
+    "color_hex_triplet": "52ADB1",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001392151,
+    "NeuN density (# / um^3)": 0.0001128398,
+    "PV density (# / um^3)": 0.0000046565
+  },
+  "8362": {
+    "id": 8362,
+    "name": "Area 20, Layer2/3",
+    "parent_structure_id": 836,
+    "acronym": "BA20L2/3",
+    "color_hex_triplet": "52ADB1",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001622802,
+    "NeuN density (# / um^3)": 0.0001388498,
+    "PV density (# / um^3)": 0.0000070612
+  },
+  "8363": {
+    "id": 8363,
+    "name": "Area 20, Layer4",
+    "parent_structure_id": 836,
+    "acronym": "BA20L4",
+    "color_hex_triplet": "52ADB1",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001716298,
+    "NeuN density (# / um^3)": 0.0001378149,
+    "PV density (# / um^3)": 0.000008213
+  },
+  "8364": {
+    "id": 8364,
+    "name": "Area 20, Layer5",
+    "parent_structure_id": 836,
+    "acronym": "BA20L5",
+    "color_hex_triplet": "52ADB1",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001795245,
+    "NeuN density (# / um^3)": 0.0001176791,
+    "PV density (# / um^3)": 0.0000066417
+  },
+  "8365": {
+    "id": 8365,
+    "name": "Area 20, Layer6",
+    "parent_structure_id": 836,
+    "acronym": "BA20L6",
+    "color_hex_triplet": "52ADB1",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001721208,
+    "NeuN density (# / um^3)": 0.0000891953,
+    "PV density (# / um^3)": 0.0000051542
+  },
+  "8941": {
+    "id": 8941,
+    "name": "Area 26-29, Layer1",
+    "parent_structure_id": 894,
+    "acronym": "BA26-29L1",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001769652,
+    "NeuN density (# / um^3)": 0.0001003971,
+    "PV density (# / um^3)": 0.0000059058
+  },
+  "8942": {
+    "id": 8942,
+    "name": "Area 26-29, Layer2/3",
+    "parent_structure_id": 894,
+    "acronym": "BA26-29L2/3",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002260311,
+    "NeuN density (# / um^3)": 0.0001890993,
+    "PV density (# / um^3)": 0.0000140517
+  },
+  "8943": {
+    "id": 8943,
+    "name": "Area 26-29, Layer4",
+    "parent_structure_id": 894,
+    "acronym": "BA26-29L4",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002295639,
+    "NeuN density (# / um^3)": 0.000188447,
+    "PV density (# / um^3)": 0.0000157719
+  },
+  "8944": {
+    "id": 8944,
+    "name": "Area 26-29, Layer5",
+    "parent_structure_id": 894,
+    "acronym": "BA26-29L5",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002322216,
+    "NeuN density (# / um^3)": 0.000187524,
+    "PV density (# / um^3)": 0.0000153181
+  },
+  "8945": {
+    "id": 8945,
+    "name": "Area 26-29, Layer6",
+    "parent_structure_id": 894,
+    "acronym": "BA26-29L6",
+    "color_hex_triplet": "4FA498",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002325701,
+    "NeuN density (# / um^3)": 0.0001702018,
+    "PV density (# / um^3)": 0.0000110068
+  },
+  "8951": {
+    "id": 8951,
+    "name": "Area 21, Layer1",
+    "parent_structure_id": 895,
+    "acronym": "BA21L1",
+    "color_hex_triplet": "52ADB1",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001321595,
+    "NeuN density (# / um^3)": 0.00008911,
+    "PV density (# / um^3)": 0.0000030519
+  },
+  "8952": {
+    "id": 8952,
+    "name": "Area 21, Layer2/3",
+    "parent_structure_id": 895,
+    "acronym": "BA21L2/3",
+    "color_hex_triplet": "52ADB1",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001816195,
+    "NeuN density (# / um^3)": 0.0001533505,
+    "PV density (# / um^3)": 0.0000080319
+  },
+  "8953": {
+    "id": 8953,
+    "name": "Area 21, Layer4",
+    "parent_structure_id": 895,
+    "acronym": "BA21L4",
+    "color_hex_triplet": "52ADB1",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002079904,
+    "NeuN density (# / um^3)": 0.000179655,
+    "PV density (# / um^3)": 0.0000109479
+  },
+  "8954": {
+    "id": 8954,
+    "name": "Area 21, Layer5",
+    "parent_structure_id": 895,
+    "acronym": "BA21L5",
+    "color_hex_triplet": "52ADB1",
+    "children": [],
+    "DAPI density (# / um^3)": 0.000211754,
+    "NeuN density (# / um^3)": 0.000179678,
+    "PV density (# / um^3)": 0.0000108665
+  },
+  "8955": {
+    "id": 8955,
+    "name": "Area 21, Layer6",
+    "parent_structure_id": 895,
+    "acronym": "BA21L6",
+    "color_hex_triplet": "52ADB1",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001997156,
+    "NeuN density (# / um^3)": 0.0001482648,
+    "PV density (# / um^3)": 0.0000064139
+  },
+  "9091": {
+    "id": 9091,
+    "name": "Area 28, Layer1",
+    "parent_structure_id": 909,
+    "acronym": "BA28L1",
+    "color_hex_triplet": "5FB541",
+    "children": [],
+    "DAPI density (# / um^3)": 0.000119603,
+    "NeuN density (# / um^3)": 0.0000731398,
+    "PV density (# / um^3)": 0.0000038614
+  },
+  "9092": {
+    "id": 9092,
+    "name": "Area 28, Layer2/3",
+    "parent_structure_id": 909,
+    "acronym": "BA28L2/3",
+    "color_hex_triplet": "5FB541",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001659437,
+    "NeuN density (# / um^3)": 0.0001289051,
+    "PV density (# / um^3)": 0.0000058057
+  },
+  "9093": {
+    "id": 9093,
+    "name": "Area 28, Layer4",
+    "parent_structure_id": 909,
+    "acronym": "BA28L4",
+    "color_hex_triplet": "5FB541",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001808444,
+    "NeuN density (# / um^3)": 0.0001480055,
+    "PV density (# / um^3)": 0.0000073534
+  },
+  "9094": {
+    "id": 9094,
+    "name": "Area 28, Layer5",
+    "parent_structure_id": 909,
+    "acronym": "BA28L5",
+    "color_hex_triplet": "5FB541",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001996084,
+    "NeuN density (# / um^3)": 0.0001721853,
+    "PV density (# / um^3)": 0.0000072221
+  },
+  "9095": {
+    "id": 9095,
+    "name": "Area 28, Layer6",
+    "parent_structure_id": 909,
+    "acronym": "BA28L6",
+    "color_hex_triplet": "5FB541",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002025229,
+    "NeuN density (# / um^3)": 0.0001428522,
+    "PV density (# / um^3)": 0.0000053439
+  },
+  "9101": {
+    "id": 9101,
+    "name": "lateral ventricle",
+    "parent_structure_id": 73,
+    "acronym": "LV",
+    "color_hex_triplet": "046F12",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001955094,
+    "NeuN density (# / um^3)": 0.0000654937,
+    "PV density (# / um^3)": 0.0000034751
+  },
+  "9102": {
+    "id": 9102,
+    "name": "third ventricle",
+    "parent_structure_id": 73,
+    "acronym": "3V",
+    "color_hex_triplet": "97FEE8",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001381612,
+    "NeuN density (# / um^3)": 0.000033684,
+    "PV density (# / um^3)": 0.0000024944
+  },
+  "9103": {
+    "id": 9103,
+    "name": "fourth ventricle",
+    "parent_structure_id": 73,
+    "acronym": "4V",
+    "color_hex_triplet": "FD79AB",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001135786,
+    "NeuN density (# / um^3)": 0.0000409496,
+    "PV density (# / um^3)": 0.0000057447
+  },
+  "9721": {
+    "id": 9721,
+    "name": "Area 25, Layer1",
+    "parent_structure_id": 972,
+    "acronym": "BA25L1",
+    "color_hex_triplet": "5DA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001301459,
+    "NeuN density (# / um^3)": 0.0000644329,
+    "PV density (# / um^3)": 0.0000029957
+  },
+  "9722": {
+    "id": 9722,
+    "name": "Area 25, Layer2/3",
+    "parent_structure_id": 972,
+    "acronym": "BA25L2/3",
+    "color_hex_triplet": "5DA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001633024,
+    "NeuN density (# / um^3)": 0.0001364396,
+    "PV density (# / um^3)": 0.0000051323
+  },
+  "9723": {
+    "id": 9723,
+    "name": "Area 25, Layer4",
+    "parent_structure_id": 972,
+    "acronym": "BA25L4",
+    "color_hex_triplet": "5DA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001621565,
+    "NeuN density (# / um^3)": 0.0001281084,
+    "PV density (# / um^3)": 0.000004564
+  },
+  "9724": {
+    "id": 9724,
+    "name": "Area 25, Layer5",
+    "parent_structure_id": 972,
+    "acronym": "BA25L5",
+    "color_hex_triplet": "5DA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001982191,
+    "NeuN density (# / um^3)": 0.0001274705,
+    "PV density (# / um^3)": 0.0000054652
+  },
+  "9725": {
+    "id": 9725,
+    "name": "Area 25, Layer6",
+    "parent_structure_id": 972,
+    "acronym": "BA25L6",
+    "color_hex_triplet": "5DA46C",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002368535,
+    "NeuN density (# / um^3)": 0.0000955956,
+    "PV density (# / um^3)": 0.0000037622
+  },
+  "9851": {
+    "id": 9851,
+    "name": "Area 4, Layer1",
+    "parent_structure_id": 985,
+    "acronym": "BA4L1",
+    "color_hex_triplet": "4C9B60",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001309755,
+    "NeuN density (# / um^3)": 0.0000576599,
+    "PV density (# / um^3)": 0.0000025945
+  },
+  "9852": {
+    "id": 9852,
+    "name": "Area 4, Layer2/3",
+    "parent_structure_id": 985,
+    "acronym": "BA4L2/3",
+    "color_hex_triplet": "4C9B60",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002064189,
+    "NeuN density (# / um^3)": 0.0001595775,
+    "PV density (# / um^3)": 0.0000093882
+  },
+  "9853": {
+    "id": 9853,
+    "name": "Area 4, Layer4",
+    "parent_structure_id": 985,
+    "acronym": "BA4L4",
+    "color_hex_triplet": "4C9B60",
+    "children": [],
+    "DAPI density (# / um^3)": 0.000224951,
+    "NeuN density (# / um^3)": 0.0001783069,
+    "PV density (# / um^3)": 0.0000124925
+  },
+  "9854": {
+    "id": 9854,
+    "name": "Area 4, Layer5",
+    "parent_structure_id": 985,
+    "acronym": "BA4L5",
+    "color_hex_triplet": "4C9B60",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002011121,
+    "NeuN density (# / um^3)": 0.0001549718,
+    "PV density (# / um^3)": 0.0000117661
+  },
+  "9855": {
+    "id": 9855,
+    "name": "Area 4, Layer6",
+    "parent_structure_id": 985,
+    "acronym": "BA4L6",
+    "color_hex_triplet": "4C9B60",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001899943,
+    "NeuN density (# / um^3)": 0.0001504222,
+    "PV density (# / um^3)": 0.0000062545
+  },
+  "9931": {
+    "id": 9931,
+    "name": "Area 6, Layer1",
+    "parent_structure_id": 993,
+    "acronym": "BA6L1",
+    "color_hex_triplet": "468E58",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001228952,
+    "NeuN density (# / um^3)": 0.0000625344,
+    "PV density (# / um^3)": 0.0000024283
+  },
+  "9932": {
+    "id": 9932,
+    "name": "Area 6, Layer2/3",
+    "parent_structure_id": 993,
+    "acronym": "BA6L2/3",
+    "color_hex_triplet": "468E58",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001835105,
+    "NeuN density (# / um^3)": 0.0001498225,
+    "PV density (# / um^3)": 0.0000071819
+  },
+  "9933": {
+    "id": 9933,
+    "name": "Area 6, Layer4",
+    "parent_structure_id": 993,
+    "acronym": "BA6L4",
+    "color_hex_triplet": "468E58",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002047381,
+    "NeuN density (# / um^3)": 0.0001662465,
+    "PV density (# / um^3)": 0.0000091859
+  },
+  "9934": {
+    "id": 9934,
+    "name": "Area 6, Layer5",
+    "parent_structure_id": 993,
+    "acronym": "BA6L5",
+    "color_hex_triplet": "468E58",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001891901,
+    "NeuN density (# / um^3)": 0.0001510423,
+    "PV density (# / um^3)": 0.0000099058
+  },
+  "9935": {
+    "id": 9935,
+    "name": "Area 6, Layer6",
+    "parent_structure_id": 993,
+    "acronym": "BA6L6",
+    "color_hex_triplet": "468E58",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0001930318,
+    "NeuN density (# / um^3)": 0.0001582155,
+    "PV density (# / um^3)": 0.000005375
+  },
+  "10841": {
+    "id": 10841,
+    "name": "Area 27, Layer1",
+    "parent_structure_id": 1084,
+    "acronym": "BA27L1",
+    "color_hex_triplet": "73B757",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002125339,
+    "NeuN density (# / um^3)": 0.0001476194,
+    "PV density (# / um^3)": 0.0000078616
+  },
+  "10842": {
+    "id": 10842,
+    "name": "Area 27, Layer2/3",
+    "parent_structure_id": 1084,
+    "acronym": "BA27L2/3",
+    "color_hex_triplet": "73B757",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002452768,
+    "NeuN density (# / um^3)": 0.0002034336,
+    "PV density (# / um^3)": 0.0000129172
+  },
+  "10843": {
+    "id": 10843,
+    "name": "Area 27, Layer4",
+    "parent_structure_id": 1084,
+    "acronym": "BA27L4",
+    "color_hex_triplet": "73B757",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002498309,
+    "NeuN density (# / um^3)": 0.0002012417,
+    "PV density (# / um^3)": 0.0000137944
+  },
+  "10844": {
+    "id": 10844,
+    "name": "Area 27, Layer5",
+    "parent_structure_id": 1084,
+    "acronym": "BA27L5",
+    "color_hex_triplet": "73B757",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002429032,
+    "NeuN density (# / um^3)": 0.0001575157,
+    "PV density (# / um^3)": 0.0000097328
+  },
+  "10845": {
+    "id": 10845,
+    "name": "Area 27, Layer6",
+    "parent_structure_id": 1084,
+    "acronym": "BA27L6",
+    "color_hex_triplet": "73B757",
+    "children": [],
+    "DAPI density (# / um^3)": 0.0002318596,
+    "NeuN density (# / um^3)": 0.0001280398,
+    "PV density (# / um^3)": 0.0000062743
+  }
 }
