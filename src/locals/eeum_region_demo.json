@@ -1483,83 +1483,83 @@
                                                     ]
                                                 },
                                                 {
-                                                    "region_id": 254,
-                                                    "atlas_id": 746,
-                                                    "ontology_id": 1,
-                                                    "acronym": "BA30",
-                                                    "label": "Area 03",
-                                                    "color_hex_triplet": "4FA498",
-                                                    "graph_order": 15,
-                                                    "st_level": "null",
-                                                    "hemisphere_id": 3,
-                                                    "parent_id": 315,
-                                                    "children": [
-                                                        {
-                                                            "region_id": 2541,
-                                                            "atlas_id": 746,
-                                                            "ontology_id": 1,
-                                                            "acronym": "BA30L1",
-                                                            "label": "Area 03, Layer1",
-                                                            "color_hex_triplet": "4FA498",
-                                                            "graph_order": 15,
-                                                            "st_level": "null",
-                                                            "hemisphere_id": 3,
-                                                            "parent_id": 254,
-                                                            "children": []
-                                                        },
-                                                        {
-                                                            "region_id": 2542,
-                                                            "atlas_id": 746,
-                                                            "ontology_id": 1,
-                                                            "acronym": "BA30L2/3",
-                                                            "label": "Area 03, Layer2/3",
-                                                            "color_hex_triplet": "4FA498",
-                                                            "graph_order": 15,
-                                                            "st_level": "null",
-                                                            "hemisphere_id": 3,
-                                                            "parent_id": 254,
-                                                            "children": []
-                                                        },
-                                                        {
-                                                            "region_id": 2543,
-                                                            "atlas_id": 746,
-                                                            "ontology_id": 1,
-                                                            "acronym": "BA30L4",
-                                                            "label": "Area 03, Layer4",
-                                                            "color_hex_triplet": "4FA498",
-                                                            "graph_order": 15,
-                                                            "st_level": "null",
-                                                            "hemisphere_id": 3,
-                                                            "parent_id": 254,
-                                                            "children": []
-                                                        },
-                                                        {
-                                                            "region_id": 2544,
-                                                            "atlas_id": 746,
-                                                            "ontology_id": 1,
-                                                            "acronym": "BA30L5",
-                                                            "label": "Area 03, Layer5",
-                                                            "color_hex_triplet": "4FA498",
-                                                            "graph_order": 15,
-                                                            "st_level": "null",
-                                                            "hemisphere_id": 3,
-                                                            "parent_id": 254,
-                                                            "children": []
-                                                        },
-                                                        {
-                                                            "region_id": 2545,
-                                                            "atlas_id": 746,
-                                                            "ontology_id": 1,
-                                                            "acronym": "BA30L6",
-                                                            "label": "Area 03, Layer6",
-                                                            "color_hex_triplet": "4FA498",
-                                                            "graph_order": 15,
-                                                            "st_level": "null",
-                                                            "hemisphere_id": 3,
-                                                            "parent_id": 254,
-                                                            "children": []
-                                                        }
-                                                    ]
+                                                  "region_id": 254,
+                                                  "atlas_id": 746,
+                                                  "ontology_id": 1,
+                                                  "acronym": "BA30",
+                                                  "label": "Area 30",
+                                                  "color_hex_triplet": "4FA498",
+                                                  "graph_order": 15,
+                                                  "st_level": "null",
+                                                  "hemisphere_id": 3,
+                                                  "parent_id": 315,
+                                                  "children": [
+                                                    {
+                                                      "region_id": 2541,
+                                                      "atlas_id": 746,
+                                                      "ontology_id": 1,
+                                                      "acronym": "BA30L1",
+                                                      "label": "Area 30, Layer1",
+                                                      "color_hex_triplet": "4FA498",
+                                                      "graph_order": 15,
+                                                      "st_level": "null",
+                                                      "hemisphere_id": 3,
+                                                      "parent_id": 254,
+                                                      "children": []
+                                                    },
+                                                    {
+                                                      "region_id": 2542,
+                                                      "atlas_id": 746,
+                                                      "ontology_id": 1,
+                                                      "acronym": "BA30L2/3",
+                                                      "label": "Area 30, Layer2/3",
+                                                      "color_hex_triplet": "4FA498",
+                                                      "graph_order": 15,
+                                                      "st_level": "null",
+                                                      "hemisphere_id": 3,
+                                                      "parent_id": 254,
+                                                      "children": []
+                                                    },
+                                                    {
+                                                      "region_id": 2543,
+                                                      "atlas_id": 746,
+                                                      "ontology_id": 1,
+                                                      "acronym": "BA30L4",
+                                                      "label": "Area 30, Layer4",
+                                                      "color_hex_triplet": "4FA498",
+                                                      "graph_order": 15,
+                                                      "st_level": "null",
+                                                      "hemisphere_id": 3,
+                                                      "parent_id": 254,
+                                                      "children": []
+                                                    },
+                                                    {
+                                                      "region_id": 2544,
+                                                      "atlas_id": 746,
+                                                      "ontology_id": 1,
+                                                      "acronym": "BA30L5",
+                                                      "label": "Area 30, Layer5",
+                                                      "color_hex_triplet": "4FA498",
+                                                      "graph_order": 15,
+                                                      "st_level": "null",
+                                                      "hemisphere_id": 3,
+                                                      "parent_id": 254,
+                                                      "children": []
+                                                    },
+                                                    {
+                                                      "region_id": 2545,
+                                                      "atlas_id": 746,
+                                                      "ontology_id": 1,
+                                                      "acronym": "BA30L6",
+                                                      "label": "Area 30, Layer6",
+                                                      "color_hex_triplet": "4FA498",
+                                                      "graph_order": 15,
+                                                      "st_level": "null",
+                                                      "hemisphere_id": 3,
+                                                      "parent_id": 254,
+                                                      "children": []
+                                                    }
+                                                  ]
                                                 }
                                             ]
                                         },
@@ -3019,58 +3019,58 @@
                 "label": "Area 26-29, Layer6"
             },
             "254": {
-                "parent_id": 315,
-                "region_id": 254,
-                "atlas_id": 746,
-                "description": "",
-                "hemisphere_id": 3,
-                "acronym": "BA30",
-                "label": "Area 03"
+              "parent_id": 315,
+              "region_id": 254,
+              "atlas_id": 746,
+              "description": "",
+              "hemisphere_id": 3,
+              "acronym": "BA30",
+              "label": "Area 30"
             },
             "2541": {
-                "parent_id": 254,
-                "region_id": 2541,
-                "atlas_id": 746,
-                "description": "",
-                "hemisphere_id": 3,
-                "acronym": "BA30L1",
-                "label": "Area 03, Layer1"
+              "parent_id": 254,
+              "region_id": 2541,
+              "atlas_id": 746,
+              "description": "",
+              "hemisphere_id": 3,
+              "acronym": "BA30L1",
+              "label": "Area 30, Layer1"
             },
             "2542": {
-                "parent_id": 254,
-                "region_id": 2542,
-                "atlas_id": 746,
-                "description": "",
-                "hemisphere_id": 3,
-                "acronym": "BA30L2/3",
-                "label": "Area 03, Layer2/3"
+              "parent_id": 254,
+              "region_id": 2542,
+              "atlas_id": 746,
+              "description": "",
+              "hemisphere_id": 3,
+              "acronym": "BA30L2/3",
+              "label": "Area 30, Layer2/3"
             },
             "2543": {
-                "parent_id": 254,
-                "region_id": 2543,
-                "atlas_id": 746,
-                "description": "",
-                "hemisphere_id": 3,
-                "acronym": "BA30L4",
-                "label": "Area 03, Layer4"
+              "parent_id": 254,
+              "region_id": 2543,
+              "atlas_id": 746,
+              "description": "",
+              "hemisphere_id": 3,
+              "acronym": "BA30L4",
+              "label": "Area 30, Layer4"
             },
             "2544": {
-                "parent_id": 254,
-                "region_id": 2544,
-                "atlas_id": 746,
-                "description": "",
-                "hemisphere_id": 3,
-                "acronym": "BA30L5",
-                "label": "Area 03, Layer5"
+              "parent_id": 254,
+              "region_id": 2544,
+              "atlas_id": 746,
+              "description": "",
+              "hemisphere_id": 3,
+              "acronym": "BA30L5",
+              "label": "Area 30, Layer5"
             },
             "2545": {
-                "parent_id": 254,
-                "region_id": 2545,
-                "atlas_id": 746,
-                "description": "",
-                "hemisphere_id": 3,
-                "acronym": "BA30L6",
-                "label": "Area 03, Layer6"
+              "parent_id": 254,
+              "region_id": 2545,
+              "atlas_id": 746,
+              "description": "",
+              "hemisphere_id": 3,
+              "acronym": "BA30L6",
+              "label": "Area 30, Layer6"
             },
             "3111": {
                 "parent_id": 688,
