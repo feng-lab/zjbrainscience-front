@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { getAtlasRegionInfo, getAtlasRegionLinkInfo } from "@/api/atlas";
-import {eeum_region_desc} from '@/locals/eeum_region_desc';
+import { eeum_region_desc } from '@/locals/eeum_region_desc';
 
 const useAtlasStore = defineStore("atlas", () => {
 
@@ -9,6 +9,7 @@ const useAtlasStore = defineStore("atlas", () => {
   const focusConnectivity = ref();
 
   const getFocusRegion = async (id, atlasId) => {
+
     if (atlasId === 4) {
       focusRegion.value = id ? (eeum_region_desc[id]) : {};
     }
@@ -21,6 +22,7 @@ const useAtlasStore = defineStore("atlas", () => {
     focusConnectivity.value = id ? (await getAtlasRegionLinkInfo(atlasId, id)) : {};
   }
 
+  console.log('getFocusRegion--->', focusRegion)
   return {
     focusRegion,
     focusConnectivity,
