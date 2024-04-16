@@ -18,6 +18,7 @@ export default ({ command }) => {
     base: './',
     server: {
       host: "10.15.56.149",
+      port: 9527
       // proxy: {
       //   "/api": {
       //     target: "http://10.11.140.35:1919/"
