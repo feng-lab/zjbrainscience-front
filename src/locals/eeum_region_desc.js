@@ -144,7 +144,7 @@ export const eeum_region_desc = {
   },
   "254": {
     "id": 254,
-    "name": "Area 03",
+    "name": "Area 30",
     "parent_structure_id": 315,
     "acronym": "BA30",
     "color_hex_triplet": "4FA498",
@@ -829,7 +829,7 @@ export const eeum_region_desc = {
   },
   "2541": {
     "id": 2541,
-    "name": "Area 03, Layer1",
+    "name": "Area 30, Layer1",
     "parent_structure_id": 254,
     "acronym": "BA30L1",
     "color_hex_triplet": "4FA498",
@@ -840,7 +840,7 @@ export const eeum_region_desc = {
   },
   "2542": {
     "id": 2542,
-    "name": "Area 03, Layer2/3",
+    "name": "Area 30, Layer2/3",
     "parent_structure_id": 254,
     "acronym": "BA30L2/3",
     "color_hex_triplet": "4FA498",
@@ -851,7 +851,7 @@ export const eeum_region_desc = {
   },
   "2543": {
     "id": 2543,
-    "name": "Area 03, Layer4",
+    "name": "Area 30, Layer4",
     "parent_structure_id": 254,
     "acronym": "BA30L4",
     "color_hex_triplet": "4FA498",
@@ -862,7 +862,7 @@ export const eeum_region_desc = {
   },
   "2544": {
     "id": 2544,
-    "name": "Area 03, Layer5",
+    "name": "Area 30, Layer5",
     "parent_structure_id": 254,
     "acronym": "BA30L5",
     "color_hex_triplet": "4FA498",
@@ -873,7 +873,7 @@ export const eeum_region_desc = {
   },
   "2545": {
     "id": 2545,
-    "name": "Area 03, Layer6",
+    "name": "Area 30, Layer6",
     "parent_structure_id": 254,
     "acronym": "BA30L6",
     "color_hex_triplet": "4FA498",

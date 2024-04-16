@@ -19,6 +19,7 @@ declare module '@vue/runtime-core' {
     BsDragItem: typeof import('./src/components/BsDragItem.vue')['default']
     BsDropItem: typeof import('./src/components/BsDropItem.vue')['default']
     BsEegDisplay: typeof import('./src/components/BsEegDisplay.vue')['default']
+    BsElemurMap: typeof import('./src/components/bsAtlas/BsElemurMap.vue')['default']
     BsErrorPage: typeof import('./src/components/BsErrorPage.vue')['default']
     BsField: typeof import('./src/components/BsField.vue')['default']
     BsForm: typeof import('./src/components/form/BsForm.vue')['default']
@@ -129,6 +130,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
   }
   export interface ComponentCustomProperties {
+    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

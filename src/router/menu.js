@@ -111,7 +111,16 @@ const menus = [{
         level: 1001,//未设置
       }
     }]
-  },  
+  },
+  {
+    path: "eLemur-geojson",
+    name: "eLemur-geojson",
+    component: () => import("@/views/atlas/eeum/eLemur-geojson.vue"),
+    meta: {
+      icon: "Check",
+      level: 1
+    }
+  },
   {
     path: "eeum-Lemur",
     name: "eeum-Lemur",
@@ -153,7 +162,7 @@ const menus = [{
       icon: "Check",
       level: 1
     }
-  },{
+  }, {
     path: "eeum-eLemur-B1",
     name: "eeum-eLemur-B1",
     component: () => import("@/views/atlas/eeum/eeum-eLemur-B1.vue"),
@@ -161,7 +170,7 @@ const menus = [{
       icon: "Check",
       level: 1
     }
-  },{
+  }, {
     path: "eeum-eLemur-B2",
     name: "eeum-eLemur-B2",
     component: () => import("@/views/atlas/eeum/eeum-eLemur-B2.vue"),
