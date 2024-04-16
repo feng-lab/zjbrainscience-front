@@ -27,10 +27,10 @@ const myChartPV = ref(null)
 
 const option = reactive({
   title: {
-    // text: 'USA Population Estimates (2012)',
+    text: 'atlas',
     // subtext: 'Data from www.census.gov',
     // sublink: 'http://www.census.gov/popest/data/datasets.html',
-    left: 'right',
+    left: 'left',
   },
   tooltip: {
     trigger: 'item',
@@ -52,6 +52,10 @@ const option = reactive({
     {
       name: 'eLemur',
       type: 'map',
+      projection: {
+        project: (point) => point,
+        unproject: (point) => point,
+      },
       map: null,
       // selectedMode: 'single',
       // select: {
@@ -126,6 +130,7 @@ const mapChartInit = (mapJson, type, chart) => {
   option.series[0].data = seriesData
   if (type !== 'id') {
     const showType = `${type} density (# / um^3)`
+    option.title.text = showType
     // const valueArr = seriesData.map((one) => one.value)
     const valueArr = Object.values(eeum_region_desc).map((one) => one[showType])
     const maxData = Math.max(...valueArr)
@@ -158,7 +163,7 @@ const mapChartInit = (mapJson, type, chart) => {
     }
   }
   chart.showLoading('default', {
-    text: '加载中...',
+    text: 'loading...',
     color: '#24a36f',
     textColor: '#24a36f',
   })

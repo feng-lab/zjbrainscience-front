@@ -17,7 +17,7 @@ export default ({ command }) => {
     envDir: "./env",
     base: './',
     server: {
-      host: "10.15.56.149",
+      // host: "10.15.56.149",
       port: 9527
       // proxy: {
       //   "/api": {
