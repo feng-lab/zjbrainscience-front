@@ -44,7 +44,7 @@ import BsElemurMap from '@/components/bsAtlas/BsElemurMap.vue'
 const mapIdPage = ref(1)
 const mapIdTotal = ref(177)
 const mapIdCurrent = computed(() => {
-  let total = mapIdPage.value * 5
+  let total = mapIdPage.value * 10
   return total >= mapIdTotal.value ? mapIdTotal.value : total
 })
 const loading = ref(false)
