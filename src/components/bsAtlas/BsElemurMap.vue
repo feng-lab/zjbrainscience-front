@@ -184,7 +184,7 @@ const mapChartInit = (mapJson, type, chart) => {
         ],
       },
       precision: precision,
-      handleIcon: "none",
+      // handleIcon: "none",
       // text: ['High', 'Low'],
       // textStyle: {
       //   color: '#ffdddd',
