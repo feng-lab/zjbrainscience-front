@@ -4,13 +4,18 @@
       <el-switch
         v-model="isSingle"
         active-text="Single"
+        inactive-color="#fff"
         @change="switchChange"
       />
       <div>
-        High: <el-color-picker v-model="colorHigh" /> Midium:
+        High: <el-color-picker v-model="colorHigh" /> Medium:
         <el-color-picker v-model="colorMiddle" /> Low:
         <el-color-picker v-model="colorLow" />
-        <el-button type="primary" size="small" @click="colorChange"
+        <el-button
+          type="primary"
+          size="small"
+          @click="colorChange"
+          style="margin-left: 10px"
           >confirm</el-button
         >
       </div>
@@ -90,6 +95,7 @@ onUnmounted(async () => {})
 .bs-elemur-map-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   // position: relative;
 }
 .map-config-wrap {
@@ -98,6 +104,7 @@ onUnmounted(async () => {})
   display: flex;
   justify-content: space-between;
   padding: 0px 20px;
+  margin-bottom: 20px;
 }
 .loading {
   height: 50px;
@@ -105,5 +112,8 @@ onUnmounted(async () => {})
   color: #fff;
   text-align: center;
   font-size: 16px;
+}
+:deep(.el-switch__label) {
+  color: #fff;
 }
 </style>
