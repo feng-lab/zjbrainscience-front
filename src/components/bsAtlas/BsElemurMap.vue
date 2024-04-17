@@ -146,8 +146,7 @@ const mapChartInit = (mapJson, type, chart) => {
       option.series[0].name = 'PV/Neuron Ratio'
       const valueArr = Object.values(eeum_region_desc).map((one) => one['PV density (# / um^3)'] / one['NeuN density (# / um^3)'])
       maxData = Math.max(...valueArr)
-      minData = Math.min(...valueArr)
-      precision = 4
+      minData = 0.
     } else {
       const showType = `${type} density (# / um^3)`
       option.title.text = showType
@@ -243,8 +242,8 @@ onUnmounted(async () => {
 
 <style scoped lang="scss">
 .geo-map-wrap {
-  height: 100vh;
-    width: 80%;
+  height: 40vh;
+    width: 16%;
   // transform: rotate(180deg);
 }
 </style>
