@@ -3,6 +3,8 @@
   <div :id="`geo-map-${id}-DAPI`" class="geo-map-wrap"></div>
   <div :id="`geo-map-${id}-NeuN`" class="geo-map-wrap"></div>
   <div :id="`geo-map-${id}-PV`" class="geo-map-wrap"></div>
+  <div :id="`geo-map-${id}-NeuronCellRatio`" class="geo-map-wrap"></div>
+  <div :id="`geo-map-${id}-PVNeuronRatio`" class="geo-map-wrap"></div>
 </template>
 
 <script setup>
@@ -24,6 +26,8 @@ const myChartId = ref(null)
 const myChartDAPI = ref(null)
 const myChartNeuN = ref(null)
 const myChartPV = ref(null)
+const myChartNeuronCellRatio = ref(null)
+const myChartPVNeuronRatio = ref(null)
 
 const option = reactive({
   title: {
@@ -100,6 +104,8 @@ const mapChartInit = (mapJson, type, chart) => {
       DAPI: eeum_region_desc[id]['DAPI density (# / um^3)'],
       NeuN: eeum_region_desc[id]['NeuN density (# / um^3)'],
       PV: eeum_region_desc[id]['PV density (# / um^3)'],
+      NeuronCellRatio: eeum_region_desc[id]['NeuN density (# / um^3)'] / eeum_region_desc[id]['DAPI density (# / um^3)'],
+      PVNeuronRatio: eeum_region_desc[id]['PV density (# / um^3)'] / eeum_region_desc[id]['NeuN density (# / um^3)'],
     }
     return {
       name: one.properties.name,
@@ -129,13 +135,36 @@ const mapChartInit = (mapJson, type, chart) => {
   })
   option.series[0].data = seriesData
   if (type !== 'id') {
-    const showType = `${type} density (# / um^3)`
-    option.title.text = showType
-    // const valueArr = seriesData.map((one) => one.value)
-    const valueArr = Object.values(eeum_region_desc).map((one) => one[showType])
-    const maxData = Math.max(...valueArr)
-    const minData = Math.min(...valueArr)
-    option.series[0].name = 'eLemur - ' + showType
+    let maxData = 1.
+    let minData = 0.
+    let precision = 2
+    if (type === 'NeuronCellRatio') {
+      option.title.text = 'Neuron/Cell Ratio'
+      option.series[0].name = 'Neuron/Cell Ratio'
+    } else if (type === 'PVNeuronRatio') {
+      option.title.text = 'PV/Neuron Ratio'
+      option.series[0].name = 'PV/Neuron Ratio'
+      const valueArr = Object.values(eeum_region_desc).map((one) => one['PV density (# / um^3)'] / one['NeuN density (# / um^3)'])
+      maxData = Math.max(...valueArr)
+      minData = Math.min(...valueArr)
+      precision = 4
+    } else {
+      const showType = `${type} density (# / um^3)`
+      option.title.text = showType
+      // const valueArr = seriesData.map((one) => one.value)
+      const valueArr = Object.values(eeum_region_desc).map((one) => one[showType])
+      maxData = Math.max(...valueArr)
+      minData = Math.min(...valueArr)
+      option.series[0].name = showType
+      precision = 10
+    }
+    // const showType = `${type} density (# / um^3)`
+    // option.title.text = showType
+    // // const valueArr = seriesData.map((one) => one.value)
+    // const valueArr = Object.values(eeum_region_desc).map((one) => one[showType])
+    // const maxData = Math.max(...valueArr)
+    // const minData = Math.min(...valueArr)
+    // option.series[0].name = 'eLemur - ' + showType
     option.visualMap = {
       left: 'right',
       min: minData,
@@ -155,6 +184,7 @@ const mapChartInit = (mapJson, type, chart) => {
           '#a50026',
         ],
       },
+      precision: precision,
       text: ['High', 'Low'],
       textStyle: {
         color: '#ffdddd',
@@ -183,6 +213,8 @@ onMounted(async () => {
     { type: 'DAPI', chart: myChartDAPI.value },
     { type: 'NeuN', chart: myChartNeuN.value },
     { type: 'PV', chart: myChartPV.value },
+    { type: 'NeuronCellRatio', chart: myChartNeuronCellRatio.value },
+    { type: 'PVNeuronRatio', chart: myChartPVNeuronRatio.value },
   ]
   typeList.forEach((item) => {
     nextTick(() => {
@@ -197,18 +229,22 @@ onUnmounted(async () => {
     myChartDAPI.value.clear()
     myChartNeuN.value.clear()
     myChartDAPI.value.clear()
+    myChartNeuronCellRatio.value.clear()
+    myChartPVNeuronRatio.value.clear()
   })
   myChartId.value && myChartId.value.dispose()
   myChartDAPI.value && myChartDAPI.value.dispose()
   myChartNeuN.value && myChartNeuN.value.dispose()
   myChartPV.value && myChartPV.value.dispose()
+  myChartNeuronCellRatio.value && myChartNeuronCellRatio.value.dispose()
+  myChartPVNeuronRatio.value && myChartPVNeuronRatio.value.dispose()
 })
 </script>
 
 <style scoped lang="scss">
 .geo-map-wrap {
-  height: 40vh;
-  width: 25%;
+  height: 100vh;
+    width: 80%;
   // transform: rotate(180deg);
 }
 </style>
