@@ -250,7 +250,6 @@ const mapChartInit = (mapJson, type, chart) => {
       left: 'right',
       min: minData,
       max: maxData,
-      // precision: 10,
       inRange: {
         color: props.color,
         // color: [
