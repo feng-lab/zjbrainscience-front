@@ -1,8 +1,20 @@
 <template>
-  <div :id="`geo-map-${id}-id`" class="geo-map-wrap"></div>
-  <div :id="`geo-map-${id}-DAPI`" class="geo-map-wrap"></div>
-  <div :id="`geo-map-${id}-NeuN`" class="geo-map-wrap"></div>
-  <div :id="`geo-map-${id}-PV`" class="geo-map-wrap"></div>
+  <div
+    :id="`geo-map-${id}-id`"
+    :class="single ? 'geo-map-single-wrap' : 'geo-map-wrap'"
+  ></div>
+  <div
+    :id="`geo-map-${id}-DAPI`"
+    :class="single ? 'geo-map-single-wrap' : 'geo-map-wrap'"
+  ></div>
+  <div
+    :id="`geo-map-${id}-NeuN`"
+    :class="single ? 'geo-map-single-wrap' : 'geo-map-wrap'"
+  ></div>
+  <div
+    :id="`geo-map-${id}-PV`"
+    :class="single ? 'geo-map-single-wrap' : 'geo-map-wrap'"
+  ></div>
 </template>
 
 <script setup>
@@ -17,6 +29,14 @@ const props = defineProps({
   mtype: {
     type: String,
     default: 'id',
+  },
+  single: {
+    type: Boolean,
+    default: false,
+  },
+  color: {
+    type: Array,
+    default: () => ['#313695', '#ffffbf', '#a50026'],
   },
 })
 
@@ -48,6 +68,18 @@ const option = reactive({
   //     saveAsImage: {},
   //   },
   // },
+  // xAxis: {
+  //   show: true,
+  //   axisLine: {
+  //     show: true,
+  //   },
+  // },
+  // yAxis: {
+  //   show: true,
+  //   axisLine: {
+  //     show: true,
+  //   },
+  // },
   series: [
     {
       name: 'eLemur',
@@ -63,6 +95,9 @@ const option = reactive({
       //     areaColor: '#ffff00',
       //   },
       // },
+      // label: {
+      //   show: true,
+      // },
       roam: true,
       zoom: 1,
       emphasis: {
@@ -72,6 +107,56 @@ const option = reactive({
       },
       data: [],
     },
+    // {
+    //   name: '',
+    //   type: 'scatter',
+    //   coordinateSystem: 'cartesian2d',
+    //   roam: true,
+    //   data: [
+    //     { name: 1, value: [-1.0, 226.0] },
+    //     { name: 2, value: [-308.0, 240.0] },
+    //     { name: 3, value: [-15.0, 98.0] },
+    //   ],
+    // },
+    // {
+    //   name: '',
+    //   type: 'lines',
+    //   zlevel: 6,
+    //   coordinateSystem: 'cartesian2d',
+    //   roam: true,
+    //   lineStyle: {
+    //     type: 'solid',
+    //     width: 1,
+    //     opacity: 1,
+    //     curveness: 0,
+    //     orient: 'horizontal',
+    //     color: '#ff00ff',
+    //   },
+    //   show: true,
+    //   data: [
+    //     {
+    //       point: [1, 2],
+    //       coords: [
+    //         [-1.0, 226.0],
+    //         [-308.0, 240.0],
+    //       ],
+    //     },
+    //     {
+    //       point: [2, 3],
+    //       coords: [
+    //         [-308.0, 240.0],
+    //         [-15.0, 98.0],
+    //       ],
+    //     },
+    //     {
+    //       point: [3, 1],
+    //       coords: [
+    //         [-15.0, 98.0],
+    //         [-1.0, 226.0],
+    //       ],
+    //     },
+    //   ],
+    // },
   ],
 })
 
@@ -104,23 +189,6 @@ const mapChartInit = (mapJson, type, chart) => {
     return {
       name: one.properties.name,
       value: valueObj[type],
-      // tooltip: {
-      //   formatter: (params) => {
-      //     let str =
-      //       one.properties.name +
-      //       '<br />' +
-      //       'DAPI density (# / um^3)：' +
-      //       eeum_region_desc[id]['DAPI density (# / um^3)'] +
-      //       '<br />' +
-      //       'NeuN density (# / um^3)：' +
-      //       eeum_region_desc[id]['NeuN density (# / um^3)'] +
-      //       '<br />' +
-      //       'PV density (# / um^3)：' +
-      //       eeum_region_desc[id]['PV density (# / um^3)'] +
-      //       '<br />'
-      //     return str
-      //   },
-      // },
       itemStyle: {
         backgroundColor: '#fff',
         areaColor: '#' + eeum_region_desc[id].color_hex_triplet,
@@ -140,20 +208,22 @@ const mapChartInit = (mapJson, type, chart) => {
       left: 'right',
       min: minData,
       max: maxData,
+      precision: 10,
       inRange: {
-        color: [
-          '#313695',
-          '#4575b4',
-          '#74add1',
-          '#abd9e9',
-          '#e0f3f8',
-          '#ffffbf',
-          '#fee090',
-          '#fdae61',
-          '#f46d43',
-          '#d73027',
-          '#a50026',
-        ],
+        color: props.color,
+        // color: [
+        //   '#313695',
+        //   '#4575b4',
+        //   '#74add1',
+        //   '#abd9e9',
+        //   '#e0f3f8',
+        //   '#ffffbf',
+        //   '#fee090',
+        //   '#fdae61',
+        //   '#f46d43',
+        //   '#d73027',
+        //   '#a50026',
+        // ],
       },
       text: ['High', 'Low'],
       textStyle: {
@@ -209,6 +279,11 @@ onUnmounted(async () => {
 .geo-map-wrap {
   height: 40vh;
   width: 25%;
+  // transform: rotate(180deg);
+}
+.geo-map-single-wrap {
+  height: 100vh;
+  width: 100%;
   // transform: rotate(180deg);
 }
 </style>
