@@ -29,6 +29,8 @@
 import { ref, reactive, onMounted, nextTick, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
 import { eeum_region_desc } from '../../locals/eeum_region_desc.js'
+import { graphData, graphLinks } from '@/utils/common.js'
+
 const props = defineProps({
   id: {
     type: String,
@@ -90,6 +92,19 @@ const option = reactive({
   //     show: true,
   //   },
   // },
+  geo: {
+    name: 'eLemur-bg',
+    type: 'map',
+    projection: {
+      project: (point) => point,
+      unproject: (point) => point,
+    },
+    map: null,
+    roam: true,
+    zoom: 1,
+    animationDurationUpdate: 0,
+    show: false,
+  },
   series: [
     {
       name: 'eLemur',
@@ -110,6 +125,7 @@ const option = reactive({
       // },
       roam: true,
       zoom: 1,
+      animationDurationUpdate: 0,
       emphasis: {
         label: {
           show: true,
@@ -117,56 +133,39 @@ const option = reactive({
       },
       data: [],
     },
-    // {
-    //   name: '',
-    //   type: 'scatter',
-    //   coordinateSystem: 'cartesian2d',
-    //   roam: true,
-    //   data: [
-    //     { name: 1, value: [-1.0, 226.0] },
-    //     { name: 2, value: [-308.0, 240.0] },
-    //     { name: 3, value: [-15.0, 98.0] },
-    //   ],
-    // },
-    // {
-    //   name: '',
-    //   type: 'lines',
-    //   zlevel: 6,
-    //   coordinateSystem: 'cartesian2d',
-    //   roam: true,
-    //   lineStyle: {
-    //     type: 'solid',
-    //     width: 1,
-    //     opacity: 1,
-    //     curveness: 0,
-    //     orient: 'horizontal',
-    //     color: '#ff00ff',
-    //   },
-    //   show: true,
-    //   data: [
-    //     {
-    //       point: [1, 2],
-    //       coords: [
-    //         [-1.0, 226.0],
-    //         [-308.0, 240.0],
-    //       ],
-    //     },
-    //     {
-    //       point: [2, 3],
-    //       coords: [
-    //         [-308.0, 240.0],
-    //         [-15.0, 98.0],
-    //       ],
-    //     },
-    //     {
-    //       point: [3, 1],
-    //       coords: [
-    //         [-15.0, 98.0],
-    //         [-1.0, 226.0],
-    //       ],
-    //     },
-    //   ],
-    // },
+    {
+      type: 'graph',
+      zlevel: 1,
+      coordinateSystem: 'geo',
+      animationDurationUpdate: 0,
+      roam: true,
+      lineStyle: {
+        width: 1,
+        curveness: 0,
+      },
+      data: graphData.map((item, index) => {
+        let label = { color: '#ccc', offset: [-30, 0] }
+        if (index % 2 === 0) {
+          label.show = true
+        } else {
+          label.show = false
+        }
+        if (index > 13) {
+          label.rotate = 30
+        }
+
+        return {
+          ...item,
+          label: label,
+          itemStyle: {
+            color: '#b2b2b2',
+          },
+        }
+      }),
+      links: graphLinks,
+      symbolSize: 3,
+      // symbol: 'none',
+    },
   ],
 })
 
@@ -185,6 +184,7 @@ const mapChartInit = (mapJson, type, chart) => {
   const mid = `geo-map-${props.id}-${type}`
   const mapName = `elemur-${props.id}-${type}`
   option.series[0].map = mapName
+  option.geo.map = mapName
   const chartDom = document.getElementById(mid)
   echarts.registerMap(mapName, { geoJSON: mapJson })
   chart = echarts.init(chartDom)
@@ -212,6 +212,7 @@ const mapChartInit = (mapJson, type, chart) => {
     }
   })
   option.series[0].data = seriesData
+  // option.geo.data = seriesData
   if (type !== 'id') {
     let maxData = 1
     let minData = 0
@@ -281,6 +282,18 @@ const mapChartInit = (mapJson, type, chart) => {
     textColor: '#24a36f',
   })
   chart.setOption(option)
+  chart.on('georoam', async (params) => {
+    const chartOption = chart.getOption()
+    if (params.zoom !== null || params.zoom !== undefined) {
+      chartOption.geo[0].zoom = chartOption.series[0].zoom
+      chartOption.geo[0].center = chartOption.series[0].center
+      chartOption.geo[0].animationDurationUpdate = 0
+      chartOption.series[0].animationDurationUpdate = 0
+    } else {
+      chartOption.geo[0].center = chartOption.series[0].center
+    }
+    chart.setOption(chartOption)
+  })
   setTimeout(() => {
     chart.hideLoading()
   })
