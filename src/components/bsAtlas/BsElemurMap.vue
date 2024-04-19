@@ -135,7 +135,8 @@ const option = reactive({
     },
     {
       type: 'graph',
-      zlevel: 1,
+      zlevel: 0,
+      zoom: 1,
       coordinateSystem: 'geo',
       animationDurationUpdate: 0,
       roam: true,
@@ -144,14 +145,10 @@ const option = reactive({
         curveness: 0,
       },
       data: graphData.map((item, index) => {
-        let label = { color: '#ccc', offset: [-30, 0] }
-        if (index % 2 === 0) {
-          label.show = true
-        } else {
-          label.show = false
-        }
-        if (index > 13) {
-          label.rotate = 30
+        let label = {
+          color: '#ccc',
+          offset: index >= 30 ? [0, -10] : index === 0 ? [0, -10] : [30, 0],
+          show: index % 4 === 1 || index === 0,
         }
 
         return {
@@ -159,6 +156,9 @@ const option = reactive({
           label: label,
           itemStyle: {
             color: '#b2b2b2',
+          },
+          tooltip: {
+            valueFormatter: () => '',
           },
         }
       }),
@@ -284,13 +284,18 @@ const mapChartInit = (mapJson, type, chart) => {
   chart.setOption(option)
   chart.on('georoam', async (params) => {
     const chartOption = chart.getOption()
+    console.log('chartOption--->', chartOption)
     if (params.zoom !== null || params.zoom !== undefined) {
       chartOption.geo[0].zoom = chartOption.series[0].zoom
+      chartOption.series[1].zoom = chartOption.series[0].zoom
       chartOption.geo[0].center = chartOption.series[0].center
+      chartOption.series[1].center = chartOption.series[0].center
       chartOption.geo[0].animationDurationUpdate = 0
       chartOption.series[0].animationDurationUpdate = 0
+      chartOption.series[1].animationDurationUpdate = 0
     } else {
       chartOption.geo[0].center = chartOption.series[0].center
+      chartOption.series[1].center = chartOption.series[0].center
     }
     chart.setOption(chartOption)
   })
