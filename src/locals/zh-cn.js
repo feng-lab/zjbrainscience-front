@@ -131,6 +131,7 @@ export default {
     getUserInfoFail: "获取当前用户信息失败！"
   },
   menus: {
+    mainPage: "主页",
     management: "首页",
     experiments: "实验管理",
     newExperiment: "新增实验",
@@ -258,7 +259,7 @@ export default {
       pig: "猪",
       other: "其他"
     },
-  }, 
+  },
   equipment: {
     text: "设备",
     id: "设备ID",
@@ -313,7 +314,7 @@ export default {
       dataSize: "数据量",
       desc: "任务描述"
     },
-    card : {
+    card: {
       step: "任务流程",
       result: "执行结果"
     },
@@ -333,7 +334,7 @@ export default {
         title: "执行失败",
         subTitle: "当前任务执行失败!"
       },
-      "1" : {
+      "1": {
         title: "正在执行",
         subTitle: "当前任务正在执行，请稍等！"
       }
@@ -412,7 +413,7 @@ export default {
     type: {
       text: "互动消息",
       task_step_status: "任务状态通知"
-    }, 
+    },
     content: {
       task_step_status: "任务 {name}(ID: {id}) 的状态已更新为 {status}。",
     },
@@ -473,7 +474,7 @@ export default {
       taskList: "数据转换任务",
       subpage: "子页面",
       data: "图谱数据"
-    }, 
+    },
     subpage: {
       name: "存储目录",
       title: "子页面显示名称",
@@ -528,15 +529,15 @@ export default {
       data_publisher: "数据集发布机构/单位",
       data_update_year: "数据集更新年份",
       file_count: "文件数量",
-      file_total_size_gb:"数据集总量（GB）",
-      file_acquired_size_gb:"已获取数据集数量（GB）",
-      associated_diseases:"相关疾病",
-      organ:"器官",
-      cell_count:"细胞数",
-      data_type:"数据类型",
-      experiment_platform:"实验/测序平台",
-      fetch_url:"下载路径",
-      project:"项目"
+      file_total_size_gb: "数据集总量（GB）",
+      file_acquired_size_gb: "已获取数据集数量（GB）",
+      associated_diseases: "相关疾病",
+      organ: "器官",
+      cell_count: "细胞数",
+      data_type: "数据类型",
+      experiment_platform: "实验/测序平台",
+      fetch_url: "下载路径",
+      project: "项目"
     },
     tab: {
       paradigm: "实验范式",

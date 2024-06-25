@@ -1,62 +1,58 @@
 <template>
-  <el-scrollbar 
-    class="sidebar aside" 
+  <el-scrollbar
+    class="sidebar aside"
     :style="{
-        width: asideWidth,
+      width: asideWidth,
     }"
   >
     <bs-logo
       img-src="/logo.png"
-      :title="isCollapse ? '' : 'Brain Science'"
+      :title="isCollapse ? '' : '生科开放数据平台'"
     />
-    <bs-menu
-      :menus="authMenus"
-    />
+    <bs-menu :menus="authMenus" />
   </el-scrollbar>
 </template>
 <script setup>
-import BsLogo from "@/components/BsLogo.vue";
-import BsMenu from "@/components/menu/BsMenu.vue";
+import BsLogo from '@/components/BsLogo.vue'
+import BsMenu from '@/components/menu/BsMenu.vue'
 
-import { computed, ref } from "vue";
-import menus from "@/router/menu";
-import useGlobalStore from "@/stores/global";
-import useUserStore from "@/stores/user";
-import useMediaQuery from "@/stores/mediaQuery";
-import { storeToRefs } from "pinia";
+import { computed, ref } from 'vue'
+import menus from '@/router/menu'
+import useGlobalStore from '@/stores/global'
+import useUserStore from '@/stores/user'
+import useMediaQuery from '@/stores/mediaQuery'
+import { storeToRefs } from 'pinia'
 
-const globalStore = useGlobalStore();
-const userStore = useUserStore();
-const { isCollapse, asideWidth, showDrawer } = storeToRefs(globalStore);
-const { breakpoint } = storeToRefs(useMediaQuery());
+const globalStore = useGlobalStore()
+const userStore = useUserStore()
+const { isCollapse, asideWidth, showDrawer } = storeToRefs(globalStore)
+const { breakpoint } = storeToRefs(useMediaQuery())
 
-const { user } = storeToRefs(userStore);
+const { user } = storeToRefs(userStore)
 
-const authMenus = ref([]);
-
+const authMenus = ref([])
 
 const isShow = (menu) => {
-  const menuLevel = menu?.meta?.level ?? 0;
-  return menuLevel <= user.value.access_level; 
+  const menuLevel = menu?.meta?.level ?? 0
+  return menuLevel <= user.value.access_level
 }
 
 const filterMenus = (ms) => {
-  let res = [];
-  ms.forEach(menu => {
-    if(menu.children && isShow(menu)) {
+  let res = []
+  ms.forEach((menu) => {
+    if (menu.children && isShow(menu)) {
       res.push({
         ...menu,
-        children: filterMenus(menu.children)
+        children: filterMenus(menu.children),
       })
-    } else if(isShow(menu)) {
-      res.push(menu);
+    } else if (isShow(menu)) {
+      res.push(menu)
     }
   })
-  return res;
+  return res
 }
 
-authMenus.value = filterMenus(menus);
-
+authMenus.value = filterMenus(menus)
 </script>
 <style scoped lang="scss">
 .sidebar {

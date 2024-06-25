@@ -1,19 +1,19 @@
 <template>
   <div class="logo">
     <a @click="backToHome">
-      <img :src="imgSrc"/>
+      <img :src="imgSrc" />
       <h1>{{ title }}</h1>
     </a>
   </div>
 </template>
 <script setup>
-import { useUtils } from '@/compositions/useUtils';
+import { useUtils } from '@/compositions/useUtils'
 
 defineProps({
-  "imgSrc": String,
-  "title": String
-});
-const { backToHome } = useUtils();
+  imgSrc: String,
+  title: String,
+})
+const { backToHome } = useUtils()
 </script>
 <style scoped lang="scss">
 .logo {
@@ -39,7 +39,7 @@ const { backToHome } = useUtils();
       height: 32px;
       line-height: 32px;
       margin-left: 10px;
-      font-size: 1.5em;
+      font-size: 1.3em;
     }
   }
 }

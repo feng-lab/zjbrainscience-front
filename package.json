@@ -8,6 +8,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@antv/g6": "^4.8.24",
     "@element-plus/icons-vue": "^2.0.9",
     "@feng-lab/vue-neuroglancer": "^1.0.0",
     "admin-table-page": "^0.2.1",

@@ -18,7 +18,7 @@ const checkedAuth = (to, access_level) => {
 
 const checkBrowserSupport = () => {
   const supportBrowser = [
-    ["Chrome",  51],
+    ["Chrome", 51],
     ["Firefox", 46],
     ["Safari", 15]
   ]
@@ -26,12 +26,12 @@ const checkBrowserSupport = () => {
   const { userAgent } = navigator;
   let support = false;
 
-  for(let [browser, version] of supportBrowser) {
+  for (let [browser, version] of supportBrowser) {
     const reg = new RegExp(`${browser}\\/([\\d.]+)`);
     const cv = userAgent.match(reg);
-    if(!cv) continue;
+    if (!cv) continue;
     const currVersion = Number(cv[1].split('.')[0]);
-    if(currVersion >= version) {
+    if (currVersion >= version) {
       support = true;
       break;
     }
@@ -65,6 +65,14 @@ const routes = [
         props: true
       },
       {
+        path: "experiments/detail/:experiment_id/info",
+        name: "info",
+        component: () => import("@/views/experiments/detail/DetailDatasets.vue"),
+        meta: {
+          level: 1
+        }
+      },
+      {
         path: "experiments/detail/:experiment_id",
         name: "experiments-detail",
         meta: {
@@ -75,7 +83,7 @@ const routes = [
         children: [{
           path: "",
           name: "default",
-          redirect: {name: "file"}
+          redirect: { name: "file" }
         }, {
           path: "paradigm",
           name: "paradigm",
@@ -86,11 +94,13 @@ const routes = [
         }, {
           path: "file",
           name: "file",
-          component: () => import("@/views/experiments/detail/DetailFiles.vue"),
+          // component: () => import("@/views/experiments/detail/DetailFiles.vue"),
+          component: () => import("@/views/experiments/detail/DetailFileSets.vue"),
           meta: {
             level: 1
           }
-        }, {
+        },
+        {
           path: "subject",
           name: "subject",
           component: () => import("@/views/subject/SubjectList.vue"),
@@ -164,7 +174,7 @@ const routes = [
         meta: {
           level: 1
         }
-      }, 
+      },
       {
         path: "atlas/notSupport",
         name: "atlasNotSupport",
@@ -184,62 +194,62 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   // console.log('to:', to, '\nfrom:', from, '\nnext:', next)
-  if(!hasLogined()) {
-    if (to.name !== "login"){
+  if (!hasLogined()) {
+    if (to.name !== "login") {
       ElMessage.error(i18n.global.t("label.needLogin"));
       next({ path: '/login', query: { from: to.fullPath } })
     } else {
       next()
     }
- } else {
-    if(to.name === "login") {
-      next({path: to.query.from})
+  } else {
+    if (to.name === "login") {
+      next({ path: to.query.from })
     } else {
       const userStore = useUserStore();
-      const { user }  = storeToRefs(userStore);
+      const { user } = storeToRefs(userStore);
       const { getUserInfo } = userStore;
-      if(!user.value.username) {
+      if (!user.value.username) {
         await getUserInfo();
       }
 
       const level = to?.meta?.level ?? 0;
       // console.log(user.value.access_level)
 
-      if(to.path.startsWith("/atlas/")) {
+      if (to.path.startsWith("/atlas/")) {
         const { screenSizeComparison } = useMediaQuery();
         const screenSupport = screenSizeComparison('width', 'min', 1024);
-        if (to.name !== "atlasNotSupport"){
-          if(!screenSupport || !checkBrowserSupport()) {
-            next({path: '/atlas/notSupport', query: { from: to.fullPath }})
+        if (to.name !== "atlasNotSupport") {
+          if (!screenSupport || !checkBrowserSupport()) {
+            next({ path: '/atlas/notSupport', query: { from: to.fullPath } })
           } else {
-            if(level && level<= user.value.access_level) {
+            if (level && level <= user.value.access_level) {
               next()
             } else {
-              next({path: '/403'})
+              next({ path: '/403' })
             }
           }
         } else {
-          if(!screenSupport || !checkBrowserSupport()) {
+          if (!screenSupport || !checkBrowserSupport()) {
             next()
           } else {
-            next({path: to.query.from})
+            next({ path: to.query.from })
           }
         }
       } else {
-        if(level && level <= user.value.access_level) {
+        if (level && level <= user.value.access_level) {
           next()
         } else {
-          next({path: '/403'})
+          next({ path: '/403' })
         }
       }
     }
-  } 
+  }
 })
 
 router.onError((error, to, from) => {
   const errMsg = error.message.toLowerCase();
-  if(/dynamically imported/.test(errMsg) || /importing.*module.*failed/.test(errMsg) ) {
-    if(to?.fullPath) {
+  if (/dynamically imported/.test(errMsg) || /importing.*module.*failed/.test(errMsg)) {
+    if (to?.fullPath) {
       window.location.href = to.fullPath;
     } else {
       window.location.reload();
