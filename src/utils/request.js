@@ -13,9 +13,9 @@ const request = axios.create({
 });
 
 const codeObj = {
-  "1": { type: "error"},
-  "2": { type: "error", msg: i18n.global.t("httpErrorMsg.expire")},
-  "3": { type: "warning", msg: i18n.global.t("httpErrorMsg.relogin")},
+  "1": { type: "error" },
+  "2": { type: "error", msg: i18n.global.t("httpErrorMsg.expire") },
+  "3": { type: "warning", msg: i18n.global.t("httpErrorMsg.relogin") },
 }
 
 const errorHandle = {
@@ -24,15 +24,15 @@ const errorHandle = {
     let type = code === 4 ? "warning" : "error";
 
     ElMessage({
-      type, 
+      type,
       message
     });
     const { fullPath, name } = router.currentRoute.value;
-    if(name !== "login" && code !== 1) {
+    if (name !== "login" && code !== 1) {
       router.push({
         name: "login",
         query: {
-          from : fullPath
+          from: fullPath
         }
       })
     }
@@ -49,7 +49,7 @@ const errorHandle = {
 request.interceptors.request.use(config => {
   const { url } = config;
   config.headers["Content-Language"] = i18n.global.locale.value === "zhCn" ? "zh-CN" : "en-US";
-  if(url !== "/api/login") {
+  if (url !== "/api/login") {
     const access_token = jsCookie.get("access_token");
     const token_type = jsCookie.get("token_type");
     config.headers["Authorization"] = `${token_type} ${access_token}`;
@@ -59,22 +59,27 @@ request.interceptors.request.use(config => {
 
 request.interceptors.response.use(response => {
   const { url } = response.config;
-  if(url === "/api/login") {
+  if (url === "/api/login") {
     return Promise.resolve(response.data);
   } else {
-    const { code, message, data="" } = response.data;
-    if(code) {
+    const { code, message, data = "" } = response.data;
+    if (code) {
       //后端处理失败
       ElMessage.error(message);
       return Promise.reject(response);
     } else {
       //后端处理成功
-      return Promise.resolve(data);
+      console.log('type--->', response.data instanceof Blob)
+      if (response.data instanceof Blob) {
+        return Promise.resolve(response);
+      } else {
+        return Promise.resolve(data);
+      }
     }
   }
 }, error => {
   const { status, statusText, config, data } = error.response;
-  if(errorHandle[status]) {
+  if (errorHandle[status]) {
     errorHandle[status](data);
   } else {
     ElMessage.error(`${status}!\t ${config.url}, ${statusText}`)

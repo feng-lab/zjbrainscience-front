@@ -7,21 +7,26 @@ import THUMBNAIL_PDF from "@/assets/img/thumbnail/pdf.svg";
 import THUMBNAIL_SVG from "@/assets/img/thumbnail/pic.svg";
 import THUMBNAIL_XLS from "@/assets/img/thumbnail/xls.svg";
 import THUMBNAIL_RAR from "@/assets/img/thumbnail/zip.svg";
+import THUMBNAIL_PIC from "@/assets/img/thumbnail/pic.svg";
 import THUMBNAIL_UNKNOWN from "@/assets/img/thumbnail/unknown.svg";
 import THUMBNAIL_FOLDER from "@/assets/img/thumbnail/folder.jpg";
 
 const Thumbnail = {
   pdf: THUMBNAIL_PDF,
   docx: THUMBNAIL_DOCX,
+  doc: THUMBNAIL_DOCX,
   mp4: THUMBNAIL_MP4,
   zip: THUMBNAIL_RAR,
+  rar: THUMBNAIL_RAR,
   bdf: THUMBNAIL_BDF,
   edf: THUMBNAIL_EDF,
   svg: THUMBNAIL_SVG,
   dpt: THUMBNAIL_DPT,
   xls: THUMBNAIL_XLS,
+  xlsx: THUMBNAIL_XLS,
   unknown: THUMBNAIL_UNKNOWN,
-  folder: THUMBNAIL_FOLDER
+  folder: THUMBNAIL_FOLDER,
+  pic: THUMBNAIL_PIC
 };
 
 export default Thumbnail;

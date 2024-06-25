@@ -2,20 +2,20 @@
   <tr>
     <td class="m-r-8">
       <div class="cell-item">
-        <bs-icon-img :icon="icon" :icon-color="iconColor" class="m-r-4"/>
+        <bs-icon-img :icon="icon" :icon-color="iconColor" class="m-r-4" />
         {{ label }}
       </div>
     </td>
-    <td> <slot></slot> </td>
+    <td><slot></slot></td>
   </tr>
 </template>
 <script setup>
-import BsIconImg from "@/components/BsIconImg.vue";
+import BsIconImg from '@/components/BsIconImg.vue'
 
 defineProps({
   label: String,
   icon: String,
-  iconColor: String
+  iconColor: String,
 })
 </script>
 
@@ -25,7 +25,7 @@ defineProps({
   align-items: center;
   min-width: 100px;
 }
-td +td {
+td + td {
   padding-left: 8px;
 }
 </style>

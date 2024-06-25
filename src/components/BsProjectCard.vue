@@ -3,7 +3,13 @@
     <div class="project-card-header">
       <div class="between-flex">
         <span class="center-flex project-card-header--title">
-          <bs-icon-img :icon="icon" :icon-color="iconColor" :size="24" class="m-r-4"/>
+          <bs-icon-img
+            :icon="icon"
+            :icon-color="iconColor"
+            :size="24"
+            class="m-r-4"
+          />
+          <!-- <img :src="BsIconMonkey" alt="" /> -->
           <span class="m-r-8"> {{ title }} </span>
           <slot name="titletail"></slot>
         </span>
@@ -14,44 +20,41 @@
       </div>
     </div>
     <div class="project-card-content" :style="contentStyle">
-      <slot/>
+      <slot />
     </div>
     <div class="project-card-footer">
-      <template
-        v-for="btn in buttons"
-      >
-        <span 
+      <template v-for="btn in buttons">
+        <span
           :key="btn.text"
           @click="btn.onClick"
           v-if="!btn.hide"
           class="project-card-footer--action center-flex"
         >
-          <bs-icon-img :icon="btn.icon"/> 
+          <bs-icon-img :icon="btn.icon" />
           <span class="m-l-4">{{ btn.text }}</span>
         </span>
       </template>
     </div>
   </div>
 </template>
-<script setup> 
-import BsIconImg from "@/components/BsIconImg.vue";
+<script setup>
+import BsIconImg from '@/components/BsIconImg.vue'
 
 defineProps({
   icon: {
     type: [String, Object],
-    default: "Histogram"
+    default: 'Histogram',
   },
   iconColor: {
     type: String,
-    default: "#52c41a"
+    default: '#52c41a',
   },
   title: String,
   buttons: Array,
   description: String,
   contentStyle: Object,
-  descStyle: Object
+  descStyle: Object,
 })
-
 </script>
 <style lang="scss" scoped>
 .project-card {

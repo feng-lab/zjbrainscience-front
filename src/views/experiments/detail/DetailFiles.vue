@@ -1,36 +1,43 @@
 <template>
   <el-row class="m-b-16" :gutter="16">
     <el-col :lg="cardShow ? 8 : 24" :xs="24" class="m-b-16">
-      <el-card 
-        :header="cardShow ? $t('file.list'): ''"
-        :class="cardShow? 'text' : 'picture'"
+      <el-card
+        :header="cardShow ? $t('file.list') : ''"
+        :class="cardShow ? 'text' : 'picture'"
         :shadow="cardShow ? 'always' : 'never'"
-        :body-style="cardShow ? {} : {padding: 0}"
+        :body-style="cardShow ? {} : { padding: 0 }"
       >
         <el-scrollbar max-height="50vh" class="m-b-16">
           <el-upload
             ref="uploadRef"
             v-model:file-list="files"
             v-bind="options"
-            :style="{minHeight: files.length ? '50vh' : 0}"
+            :style="{ minHeight: files.length ? '50vh' : 0 }"
             :class="['bs-upload', cardShow ? 'text-upload' : 'picture']"
           >
-            <template #trigger> 
-              <el-button  
-                class="m-b-8 m-t-4" 
-                type="primary" 
-                icon="Upload" 
+            <template #trigger>
+              <el-button
+                class="m-b-8 m-t-4"
+                type="primary"
+                icon="Upload"
                 v-if="user.access_level > 10"
                 @mouseover="showUploadTitle = true"
                 @mouseout="showUploadTitle = false"
               >
-                {{ $t("button.bulkUpload")}}
+                {{ $t('button.bulkUpload') }}
               </el-button>
             </template>
 
-            <el-radio-group class="m-b-8 type-options right" v-model="query.file_type" @change="handleTypeChange" v-if="fileTypeList.length && fileTypeList.length < 4">
-              <el-radio-button size="small" label="">{{ $t("button.all") }}</el-radio-button>
-              <el-radio-button 
+            <el-radio-group
+              class="m-b-8 type-options right"
+              v-model="query.file_type"
+              @change="handleTypeChange"
+              v-if="fileTypeList.length && fileTypeList.length < 4"
+            >
+              <el-radio-button size="small" label="">{{
+                $t('button.all')
+              }}</el-radio-button>
+              <el-radio-button
                 v-for="type in fileTypeList"
                 :key="type"
                 :label="type"
@@ -42,10 +49,7 @@
 
             <span class="right" v-if="fileTypeList.length >= 4">
               <el-select v-model="query.file_type" clearable>
-                <el-option
-                  value=""
-                  :label="$t('file.allTypes')"
-                />
+                <el-option value="" :label="$t('file.allTypes')" />
                 <el-option
                   v-for="type in fileTypeList"
                   :key="type"
@@ -56,19 +60,18 @@
             </span>
 
             <div class="m-b-8" v-if="showUploadTitle">
-              <el-alert 
-                type="warning" 
-                show-icon 
-                :title="$t('file.uploadTooltip')" 
+              <el-alert
+                type="warning"
+                show-icon
+                :title="$t('file.uploadTooltip')"
                 :closable="false"
               />
             </div>
 
-            <template #file="{file}"> 
-              <div class="picture-item"> 
-
+            <template #file="{ file }">
+              <div class="picture-item">
                 <div class="picture-item--thumbnail m-b-8 m-r-8">
-                  <img :src="getThumbnail(file)"/>
+                  <img :src="getThumbnail(file)" />
                 </div>
 
                 <div>
@@ -77,17 +80,22 @@
 
                 <span class="picture-item--actions">
                   <span>
-                    <a :underline="false" :download="file.name" :href="getPreviewUrl(file.id)">
-                      <el-icon><Download/></el-icon>
+                    <a
+                      :underline="false"
+                      :download="file.name"
+                      :href="getPreviewUrl(file.id)"
+                    >
+                      <el-icon><Download /></el-icon>
                     </a>
                   </span>
-                  <span @click="handleDelete(file)"><el-icon><Delete /></el-icon></span>
+                  <span @click="handleDelete(file)"
+                    ><el-icon><Delete /></el-icon
+                  ></span>
                 </span>
               </div>
             </template>
           </el-upload>
         </el-scrollbar>
-
 
         <bs-load-more
           v-model="files"
@@ -96,226 +104,219 @@
           :limit="10"
           :height="50"
           :query="query"
-          @load-completed="() => unCompleted = false"
+          @load-completed="() => (unCompleted = false)"
         />
-
       </el-card>
     </el-col>
   </el-row>
-
-  
 </template>
 <script setup>
-import BsEegDisplay from "@/components/BsEegDisplay.vue";
-import BsEegView from "@/views/eeg/BsEegView.vue";
-import VueJsonPretty from "vue-json-pretty";
-import 'vue-json-pretty/lib/styles.css';
+import BsEegDisplay from '@/components/BsEegDisplay.vue'
+import BsEegView from '@/views/eeg/BsEegView.vue'
+import VueJsonPretty from 'vue-json-pretty'
+import 'vue-json-pretty/lib/styles.css'
 
-import { ref, inject, nextTick, onMounted, computed } from "vue";
-import jsCookie from "js-cookie";
-import Thumbnail from "@/utils/thumbnail";
+import { ref, inject, nextTick, onMounted, computed } from 'vue'
+import jsCookie from 'js-cookie'
+import Thumbnail from '@/utils/thumbnail'
 //import jszip from "jszip";
-import { useUtils } from "@/compositions/useUtils";
-import { useI18n } from "vue-i18n";
-import { useUpload } from "@/compositions/useUpload";
-import { ElMessage } from "element-plus";
-import { filesByPageApi, fileTypesApi } from "@/api/datasetFiles";
-import { eegDisplayApi } from "@/api/eeg";
-import { getFileData, getPreviewUrl } from "@/utils/common";
-import BsLoadMore from "@/components/BsLoadMore.vue";
-import useUserStore from "@/stores/user";
+import { useUtils } from '@/compositions/useUtils'
+import { useI18n } from 'vue-i18n'
+import { useUpload } from '@/compositions/useUpload'
+import { ElMessage } from 'element-plus'
+import { filesByPageApi, fileTypesApi } from '@/api/datasetFiles'
+import { eegDisplayApi } from '@/api/eeg'
+import { getFileData, getPreviewUrl } from '@/utils/common'
+import BsLoadMore from '@/components/BsLoadMore.vue'
+import useUserStore from '@/stores/user'
 
-
-const experiment_id = inject("exid");
-const uploadRef = ref();
-const { files, options } = useUpload(experiment_id);
-const { user } = useUserStore();
+const experiment_id = inject('exid')
+const uploadRef = ref()
+const { files, options } = useUpload(experiment_id)
+const { user } = useUserStore()
 //const accept = ref();
-const showFileSelect = ref(false);
-const forSelectFile = ref([]);
-const selectedFile = ref([]);
+const showFileSelect = ref(false)
+const forSelectFile = ref([])
+const selectedFile = ref([])
 //const fileType = ref("");
-const fileTypeList = ref([]);
-const i18n = useI18n();
-const previewImg = ref(false);
+const fileTypeList = ref([])
+const i18n = useI18n()
+const previewImg = ref(false)
 const previewImgFile = ref({
-  url: "",
-  name: ""
-});
+  url: '',
+  name: '',
+})
 
-
-const previewJson = ref(false);
+const previewJson = ref(false)
 const previewJsonFile = ref({
   data: {},
-  name: "",
-  id: ""
-});
+  name: '',
+  id: '',
+})
 
-const showUploadTitle = ref(false);
+const showUploadTitle = ref(false)
 
+let unCompleted = true
 
-let unCompleted = true;
+const loadMoreRef = ref()
 
-const loadMoreRef = ref();
+const scrollRef = ref()
 
-const scrollRef = ref();
-
-
-const checkAll = ref(false);
-const isIndeterminate = ref(false);
+const checkAll = ref(false)
+const isIndeterminate = ref(false)
 const handleCheckAllChange = (val) => {
-  selectedFile.value = val ? forSelectFile.value : [];
-  isIndeterminate.value = false;
+  selectedFile.value = val ? forSelectFile.value : []
+  isIndeterminate.value = false
 }
 
 const handleFileSelectChange = (value) => {
-  const checkedCnt = value.length;
-  const allFileCnt = forSelectFile.value.length;
-  checkAll.value = checkedCnt === allFileCnt;
-  isIndeterminate.value = checkedCnt > 0 && checkedCnt < allFileCnt;
+  const checkedCnt = value.length
+  const allFileCnt = forSelectFile.value.length
+  checkAll.value = checkedCnt === allFileCnt
+  isIndeterminate.value = checkedCnt > 0 && checkedCnt < allFileCnt
 }
 
-const viewFile = ref();
-const viewFileType = ref();
-const viewMp4 = ref();
+const viewFile = ref()
+const viewFileType = ref()
+const viewMp4 = ref()
 
 const query = ref({
   experiment_id,
-  file_type: ""
+  file_type: '',
 })
 
-let timer = null;
+let timer = null
 
-const cardShow = computed(() => viewFile.value || viewMp4.value);
+const cardShow = computed(() => viewFile.value || viewMp4.value)
 
 onMounted(() => {
-  getFileTypes();
+  getFileTypes()
 })
 
-
 const handleTypeChange = () => {
-  loadMoreRef.value.handleLoadMore();
+  loadMoreRef.value.handleLoadMore()
 }
 
 const getFileTypes = async () => {
-  fileTypeList.value = await fileTypesApi(experiment_id);
+  fileTypeList.value = await fileTypesApi(experiment_id)
   // fileTypeList.value = [
   //   "7z",
   //   "cnt"
   // ]
 }
 
-
 //const zipTool = new jszip();
 const handleClosePreview = (notSupport) => {
-  viewFile.value = null;
-  if(notSupport) {
-    ElMessage.error(i18n.t("file.notSupport"));
+  viewFile.value = null
+  if (notSupport) {
+    ElMessage.error(i18n.t('file.notSupport'))
   }
 }
 
 const getThumbnail = (file) => {
-  const { id, name, url } = file;
-  const extension = name.split(".").pop().toLowerCase();
-  if(["png", "jpeg", "gif", "jpg"].includes(extension)) {
-    return getPreviewUrl(id);
+  const { id, name, url } = file
+  const extension = name.split('.').pop().toLowerCase()
+  if (['png', 'jpeg', 'gif', 'jpg'].includes(extension)) {
+    return getPreviewUrl(id)
   }
-  return Thumbnail[extension] ?? Thumbnail["unknown"];
+  return Thumbnail[extension] ?? Thumbnail['unknown']
 }
 
 const handleDelete = async (file) => {
-  await uploadRef.value.handleRemove(file);
-  if(viewFile.value?.id === file.id) {
-    viewFile.value = null;
+  await uploadRef.value.handleRemove(file)
+  if (viewFile.value?.id === file.id) {
+    viewFile.value = null
   }
-  if(viewMp4.value?.id === file.id) {
-    viewMp4.value = null;
+  if (viewMp4.value?.id === file.id) {
+    viewMp4.value = null
   }
-  getFileTypes();
-  if(unCompleted && files.value.length <= 10) {
-    loadMoreRef.value.handleLoadMore(true, 1);
+  getFileTypes()
+  if (unCompleted && files.value.length <= 10) {
+    loadMoreRef.value.handleLoadMore(true, 1)
   }
 }
 
 const handleSuccess = (response, uploadFile) => {
-  uploadFile.id = response.data;
-  if(!timer) {
+  uploadFile.id = response.data
+  if (!timer) {
     timer = setTimeout(() => {
-      getFileTypes();
-      timer = null;
-    }, 500);
+      getFileTypes()
+      timer = null
+    }, 500)
   }
 }
-options["on-success"] = handleSuccess;
+options['on-success'] = handleSuccess
 
 const handleEEGFileView = (file) => {
   viewFile.value = file.id === viewFile.value?.id ? null : file
 }
 
 const viewFileOp = {
-  "mp4": (file) => {
-    viewMp4.value = file.id === viewMp4.value?.id ? null : {
-      ...file,
-      url: getPreviewUrl(file.id)
-    }
-    if(viewMp4.value && viewFile.value) {
+  mp4: (file) => {
+    viewMp4.value =
+      file.id === viewMp4.value?.id
+        ? null
+        : {
+            ...file,
+            url: getPreviewUrl(file.id),
+          }
+    if (viewMp4.value && viewFile.value) {
       nextTick(() => {
-        scrollRef.value.setScrollTop(600);
+        scrollRef.value.setScrollTop(600)
       })
     }
   },
-  "json": async (file) => {
-    let { id, name } = file;
-    if( id !== previewJsonFile.value.id) {
-      let jsonValue = await getFileData(id);
+  json: async (file) => {
+    let { id, name } = file
+    if (id !== previewJsonFile.value.id) {
+      let jsonValue = await getFileData(id)
       previewJsonFile.value = {
         data: JSON.parse(JSON.stringify(jsonValue)),
         name,
-        id
+        id,
       }
     }
-    previewJson.value = true;
+    previewJson.value = true
   },
-  "nev": handleEEGFileView,
-  "bdf": handleEEGFileView,
-  "edf": handleEEGFileView,
-  "png": (file) => {
-    const { id, name } = file;
-    previewImg.value = true;
+  nev: handleEEGFileView,
+  bdf: handleEEGFileView,
+  edf: handleEEGFileView,
+  png: (file) => {
+    const { id, name } = file
+    previewImg.value = true
     previewImgFile.value = {
       url: getPreviewUrl(id),
-      name
+      name,
     }
-  }
+  },
 }
 
-
 const handlePreview = (file) => {
-  let { name } = file;
-  let [ fileName, extension ] = name.split(".");
-  let [ fn, isNev ] = fileName.split(".");
-  viewFileType.value = (isNev ?? extension).toLowerCase();
-  let operation = viewFileOp[viewFileType.value];
-  if(operation) {
-    operation(file);
+  let { name } = file
+  let [fileName, extension] = name.split('.')
+  let [fn, isNev] = fileName.split('.')
+  viewFileType.value = (isNev ?? extension).toLowerCase()
+  let operation = viewFileOp[viewFileType.value]
+  if (operation) {
+    operation(file)
   } else {
-    ElMessage.error(i18n.t("file.notSupport"));
+    ElMessage.error(i18n.t('file.notSupport'))
   }
 }
 
 const initSelect = () => {
-  selectedFile.value = [];
-  forSelectFile.value = [];
-  checkAll.value = false;
-  isIndeterminate.value = false;
+  selectedFile.value = []
+  forSelectFile.value = []
+  checkAll.value = false
+  isIndeterminate.value = false
 }
 
 const handleConfirm = () => {
-  selectedFile.value.forEach(file => {
-    file.uid = Date.now();
-    uploadRef.value.handleStart(file);
+  selectedFile.value.forEach((file) => {
+    file.uid = Date.now()
+    uploadRef.value.handleStart(file)
   })
-  showFileSelect.value = false;
+  showFileSelect.value = false
 }
 
 // import request from "@/utils/request";
@@ -332,7 +333,6 @@ const handleConfirm = () => {
 //     }
 //   })
 // }
-
 </script>
 
 <style lang="scss" scoped>
@@ -357,10 +357,10 @@ const handleConfirm = () => {
   }
 
   :deep(.el-upload-list__item) {
-      overflow: hidden;
-      width: 124px;
-      height: 124px;
-      box-sizing: border-box;
+    overflow: hidden;
+    width: 124px;
+    height: 124px;
+    box-sizing: border-box;
   }
   .picture-item {
     height: 100%;
@@ -398,7 +398,7 @@ const handleConfirm = () => {
           color: #fff;
         }
         cursor: pointer;
-        &+span {
+        & + span {
           margin-left: 1rem;
         }
       }
@@ -416,7 +416,7 @@ const handleConfirm = () => {
     align-items: baseline;
     border: 1px solid var(--el-border-color-lighter);
     border-radius: 4px;
-    font-size: .8em;
+    font-size: 0.8em;
     padding: 8px 4px;
   }
   padding: 2px 4px;
@@ -426,7 +426,7 @@ const handleConfirm = () => {
     cursor: pointer;
   }
   &--percent {
-    width:  30%;
+    width: 30%;
     @media only screen and (max-width: 426px) {
       width: 100%;
     }
@@ -434,24 +434,24 @@ const handleConfirm = () => {
     .el-progress {
       top: -2px;
       right: 0;
-    :deep(.el-progress-bar) {
-      margin-right: 20px;
-      width: 80%;
-    }
-    :deep(.el-progress__text) {
-      top: -4px;
-      min-width: 0;
-      &:hover {
-        display: block;
+      :deep(.el-progress-bar) {
+        margin-right: 20px;
+        width: 80%;
       }
-    }
+      :deep(.el-progress__text) {
+        top: -4px;
+        min-width: 0;
+        &:hover {
+          display: block;
+        }
+      }
     }
   }
   &--actions {
     font-size: 0.8rem;
     span {
       cursor: pointer;
-      &+span {
+      & + span {
         margin-left: 0.5rem;
       }
     }
@@ -486,5 +486,4 @@ const handleConfirm = () => {
     align-items: baseline;
   }
 }
-
 </style>

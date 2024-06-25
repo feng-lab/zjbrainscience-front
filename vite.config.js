@@ -16,11 +16,11 @@ export default ({ command }) => {
   return defineConfig({
     envDir: "./env",
     server: {
-      host: "10.11.40.228",
+      host: "10.15.56.149",
       port: 8090,
       proxy: {
         "/api": {
-          target: "http://10.108.8.2:1919/"
+          target: "http://10.11.140.35:1919/"
         },
         // "/api": {
         //   target: "http://10.11.140.35/",
@@ -39,7 +39,7 @@ export default ({ command }) => {
     },
     plugins: [
       vue(),
-      ElementPlus({useSource: true}),
+      ElementPlus({ useSource: true }),
       AutoImport({
         resolvers: [ElementPlusResolver()],
       }),
@@ -63,7 +63,7 @@ export default ({ command }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "@/assets/css/theme.scss" as *;`, 
+          additionalData: `@use "@/assets/css/theme.scss" as *;`,
         },
       },
     },
