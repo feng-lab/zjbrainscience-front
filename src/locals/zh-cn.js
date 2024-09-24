@@ -131,11 +131,13 @@ export default {
     getUserInfoFail: "获取当前用户信息失败！"
   },
   menus: {
-    mainPage: "主页",
+    mainpage: "主页",
+    myqueue: "我的队列",
+    dataoverview: "数据概览",
     management: "首页",
-    experiments: "实验管理",
-    newExperiment: "新增实验",
-    experimentList: "实验列表",
+    experiments: "数据管理",
+    newExperiment: "新增数据",
+    experimentList: "数据列表",
     task: "任务管理",
     search: "信号检索",
     equipmentList: "设备列表",
@@ -157,7 +159,7 @@ export default {
     fly: "Fly",
     psoct: "Ps oct",
     visualize: "脑图谱",
-    workplace: "工作台"
+    workplace: "工作台",
   },
   loginInfoStorage: {
     title: "数据存储",
@@ -169,7 +171,7 @@ export default {
   },
   loginInfoAnalysis: {
     title: "数据分析",
-    desc: "快速便捷的脑电数据分析及可视化视图，帮助您快速了解实验数据的意义"
+    desc: "快速便捷的数据分析及可视化视图，帮助您快速了解实验数据的意义"
   },
   home: {
     charts: {

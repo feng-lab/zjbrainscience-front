@@ -68,8 +68,8 @@
     </div>
     <el-tabs v-model="activeType" class="tabs-wrap" @tab-click="handleClick">
       <el-tab-pane label="文件" name="file"><BsDatasetsFile /></el-tab-pane>
-      <el-tab-pane label="可视化" name="view">Config</el-tab-pane>
-      <el-tab-pane label="数据分析" name="data">Role</el-tab-pane>
+      <!-- <el-tab-pane label="可视化" name="view">Config</el-tab-pane>
+      <el-tab-pane label="数据分析" name="data">Role</el-tab-pane> -->
     </el-tabs>
   </div>
 </template>
@@ -118,7 +118,10 @@ const route = useRoute()
 const router = useRouter()
 
 const pageBack = () => {
-  router.back()
+  router.push({
+    path: '/experiments/list',
+    query: { page: route.query.page },
+  })
 }
 const handleChange = (val) => {
   showMore.value = !showMore.value

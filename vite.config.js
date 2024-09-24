@@ -16,8 +16,9 @@ export default ({ command }) => {
   return defineConfig({
     envDir: "./env",
     server: {
-      host: "10.15.56.149",
+      host: "0.0.0.0",
       port: 8090,
+      disableHostCheck: true,
       proxy: {
         "/api": {
           target: "http://10.11.140.35:1919/"

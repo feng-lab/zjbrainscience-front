@@ -51,7 +51,7 @@ const routes = [
   }, {
     path: '/',
     name: 'home',
-    redirect: "/experiments/list",
+    redirect: "/mainpage",
     component: HomeLayout,
     children: [
       ...menus,
@@ -157,6 +157,22 @@ const routes = [
         props: true,
         meta: {
           level: 1001
+        }
+      },
+      {
+        path: "patientinfo",
+        name: "patientinfo",
+        component: () => import("@/views/myqueue/PatientInfo.vue"),
+        meta: {
+          level: 100
+        }
+      },
+      {
+        path: "patientdetail",
+        name: "patientdetail",
+        component: () => import("@/views/myqueue/PatientDetail.vue"),
+        meta: {
+          level: 100
         }
       },
       {

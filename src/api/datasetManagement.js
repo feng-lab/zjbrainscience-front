@@ -104,13 +104,14 @@ export function downloadDatasetFileApi (dataset_id, path) {
  * @param { Object } params 
  * @returns 
  */
-export function getDatasetFilesApi (dataset_id, directory) {
+export function getDatasetFilesApi (dataset_id, directory, file_type) {
   return request({
     url: "/api/listDatasetFiles",
     method: "GET",
     params: {
       dataset_id,
-      directory
+      directory,
+      file_type
     }
   })
 }
@@ -187,6 +188,17 @@ export function getGroupDatasetSizeApi (search) {
     method: 'GET',
     params: {
       search
+    }
+  })
+}
+
+export function getDatasetFilesTypeApi (dataset_id, directory) {
+  return request({
+    url: `/api/getDatasetFilesType`,
+    method: 'GET',
+    params: {
+      dataset_id,
+      directory
     }
   })
 }

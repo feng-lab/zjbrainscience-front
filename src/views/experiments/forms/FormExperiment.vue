@@ -32,9 +32,9 @@
       <el-select v-model="exForm.data_type" placeholder="请选择数据类型">
         <el-option
           v-for="item in dataTypeOptions"
-          :key="item.name"
-          :label="item.name"
-          :value="item.name"
+          :key="item.data_type"
+          :label="item.data_type"
+          :value="item.data_type"
         />
       </el-select>
     </el-form-item>
@@ -117,9 +117,9 @@
       <el-select v-model="exForm.source" placeholder="请选择数据来源">
         <el-option
           v-for="item in sourceOptions"
-          :key="item.name"
-          :label="item.name"
-          :value="item.name"
+          :key="item.source"
+          :label="item.source"
+          :value="item.source"
         />
       </el-select>
     </el-form-item>
@@ -129,6 +129,42 @@
       prop="file_format"
     >
       <el-input v-model="exForm.file_format" clearable placeholder="请输入" />
+    </el-form-item>
+
+    <el-form-item label="计划数据集总量" prop="file_total_size_gb">
+      <el-input
+        class="numberrule"
+        type="number"
+        :min="0"
+        v-model="exForm.file_total_size_gb"
+        oninput=" if(value.length>1 && value[0] === '0' && value[1] !== '.') {value=value.slice(1)}"
+        clearable
+        :placeholder="$t('datasetManagement.placeholder.file_total_size_gb')"
+      >
+        <template #append>GB</template>
+      </el-input>
+    </el-form-item>
+
+    <el-form-item label="计划完成日期" prop="planed_finish_date">
+      <el-date-picker
+        clearable
+        :placeholder="$t('datasetManagement.placeholder.data_update_year')"
+        type="date"
+        style="width: 50%"
+        value-format="YYYY-MM-DD"
+        v-model="exForm.planed_finish_date"
+      />
+    </el-form-item>
+
+    <el-form-item label="开始下载日期" prop="download_started_date">
+      <el-date-picker
+        clearable
+        :placeholder="$t('datasetManagement.placeholder.data_update_year')"
+        type="date"
+        style="width: 50%"
+        value-format="YYYY-MM-DD"
+        v-model="exForm.download_started_date"
+      />
     </el-form-item>
 
     <el-form-item
@@ -185,22 +221,7 @@
       />
     </el-form-item>
 
-    <el-form-item
-      :label="$t('datasetManagement.detail.file_total_size_gb')"
-      prop="file_total_size_gb"
-    >
-      <el-input
-        class="numberrule"
-        type="number"
-        :min="0"
-        v-model="exForm.file_total_size_gb"
-        oninput=" if(value.length>1 && value[0] === '0' && value[1] !== '.') {value=value.slice(1)}"
-        clearable
-        :placeholder="$t('datasetManagement.placeholder.file_total_size_gb')"
-      />
-    </el-form-item>
-
-    <el-form-item
+    <!-- <el-form-item
       :label="$t('datasetManagement.detail.file_acquired_size_gb')"
       prop="file_acquired_size_gb"
     >
@@ -213,7 +234,7 @@
         clearable
         :placeholder="$t('datasetManagement.placeholder.file_total_size_gb')"
       />
-    </el-form-item>
+    </el-form-item> -->
 
     <!-- <el-form-item
       :label="$t('datasetManagement.detail.data_publisher')"
@@ -268,6 +289,10 @@ import {
   exDetailApi,
   getGroupDatasetSizeApi,
 } from '@/api/datasetManagement'
+import {
+  createDatasetOssApi,
+  getGroupDatasetSizeOssApi,
+} from '@/api/datasetOss'
 import { onBeforeRouteLeave, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useUserSearch } from '@/compositions/useUserSearch'
@@ -310,6 +335,8 @@ const exForm = ref({
   project: '',
   contactor: '',
   source: '',
+  planed_finish_date: '',
+  download_started_date: '',
 })
 
 const experimentFormRef = ref()
@@ -347,7 +374,6 @@ const {
 const router = useRouter()
 
 const type = computed(() => {
-  console.log('experiment form router', router.currentRoute)
   return router.currentRoute.value.path.split('/')[2]
 })
 
@@ -364,17 +390,20 @@ const rules = computed(() => ({
   // cell_count: [requireReg],
   source: [{ ...requireReg, trigger: 'change' }],
   file_format: [requireReg],
+  file_total_size_gb: [requireReg],
+  planed_finish_date: [requireReg],
+  download_started_date: [requireReg],
   // contactor: [requireReg],
   // file_count: [requireReg],
   // sample_count: [requireReg],
 }))
 
-const isSubmit = ref(true)
+const isEdit = ref(false)
 
 const doFormSubmit = async () => {
-  const remoteFunc = type.value === 'new' ? newExApi : updateExApi
+  const remoteFunc = type.value === 'new' ? createDatasetOssApi : updateExApi
   await remoteFunc(exForm.value)
-  isSubmit.value = true
+  isEdit.value = false
   ElMessage.success('提交成功')
   // const id = await remoteFunc(exForm.value);
   // const exId = id ?? props.experiment_id
@@ -387,12 +416,12 @@ const handleCancel = () => {
 }
 
 const handleReset = () => {
-  isSubmit.value = true
+  isEdit.value = false
 }
 
 const getGroupDatasetSize = async (type) => {
   try {
-    const data = await getGroupDatasetSizeApi(type)
+    const data = await getGroupDatasetSizeOssApi(type)
     return data || []
   } catch (err) {
     console.info(err)
@@ -408,9 +437,9 @@ onMounted(async () => {
       router.push('/experiments/list')
     }
   } else {
-    const isSubmit = JSON.parse(sessionStorage.getItem('isSubmit'))
+    const isEdit = JSON.parse(sessionStorage.getItem('isEdit'))
     const exform = JSON.parse(sessionStorage.getItem('exForm'))
-    if (!isSubmit && exform) {
+    if (isEdit && exform) {
       exForm.value = exform
     }
   }
@@ -425,7 +454,7 @@ onMounted(async () => {
 watch(
   () => exForm,
   async (newVal) => {
-    isSubmit.value = ![undefined, null].includes(props.experiment_id)
+    isEdit.value = true
   },
   {
     deep: true,
@@ -436,8 +465,8 @@ onBeforeRouteLeave((to, from) => {
   // if (type.value === 'edit') {
   //   experimentFormRef.value.reset()
   // }
-  sessionStorage.setItem('isSubmit', isSubmit.value)
-  if (!isSubmit.value) {
+  sessionStorage.setItem('isEdit', isEdit.value)
+  if (isEdit.value && !props.experiment_id) {
     sessionStorage.setItem('exForm', JSON.stringify(exForm.value))
   }
 })

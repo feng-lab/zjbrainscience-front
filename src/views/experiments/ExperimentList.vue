@@ -9,7 +9,7 @@
       v-model="exList"
     > -->
   <el-scrollbar
-    height="calc(100vh - 230px)"
+    height="calc(100vh - 180px)"
     v-loading="exLoading"
     element-loading-text="加载中..."
   >
@@ -38,7 +38,7 @@
         </el-form-item>
       </el-form>
     </el-row>
-    <el-row v-if="!isDataSave">
+    <el-row v-if="isDataSave">
       <el-alert
         :title="`提示：系统检测到一条数据未保存。`"
         type="info"
@@ -203,7 +203,7 @@ import BsRouteLink from '@/components/BsRouteLink.vue'
 import BsLoadMore from '@/components/BsLoadMore.vue'
 
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { allExByPageApi, deleteExApi } from '@/api/datasetManagement'
 import { useI18n } from 'vue-i18n'
 import { useUtils } from '@/compositions/useUtils'
@@ -214,6 +214,7 @@ import useAtlasStore from '@/stores/atlas'
 import { storeToRefs } from 'pinia'
 
 const router = useRouter()
+const route = useRoute()
 const i18n = useI18n()
 const { systemConfirm } = useUtils()
 const { speciesOptions } = storeToRefs(useAtlasStore())
@@ -232,7 +233,7 @@ const query = ref({
   experiment_platform: '',
   project: '',
   type: '',
-  user_id: user.id,
+  // user_id: user.id,
   data_update_year: '',
   offset: '',
   include_deleted: '',
@@ -242,7 +243,7 @@ const query = ref({
   development_stage: '',
 })
 const loadRef = ref()
-const isDataSave = ref(JSON.parse(sessionStorage.getItem('isSubmit')))
+const isDataSave = ref(JSON.parse(sessionStorage.getItem('isEdit')))
 
 const goEdit = () => {
   router.push(`/experiments/new`)
@@ -283,6 +284,7 @@ const getAllExByPage = async () => {
     console.log(err)
   }
 }
+if (route.query.page) currentPage.value = +route.query.page || 1
 getAllExByPage()
 
 const onQuery = () => {
@@ -299,7 +301,10 @@ const onReset = () => {
 
 const handleView = (id) => {
   // router.push(`/experiments/detail/${id}`)
-  router.push(`/experiments/detail/${id}/info`)
+  router.push({
+    path: `/experiments/detail/${id}/info`,
+    query: { page: currentPage.value },
+  })
 }
 
 const handleDelete = (id) => {
@@ -307,7 +312,6 @@ const handleDelete = (id) => {
     await deleteExApi(id)
     ElMessage.success(i18n.t('elmessage.deleteSuccess'))
     onQuery()
-    // await loadRef.value.handleLoadMore()
   })
 }
 const handleEdit = (id) => {
@@ -390,8 +394,6 @@ const getIconComponent = (type) => {
 </script>
 
 <style scoped lang="scss">
-$card-scroll-height: calc(100% - 198px);
-
 .list-empty-wrap {
   display: flex;
   justify-content: center;
@@ -429,11 +431,12 @@ $card-scroll-height: calc(100% - 198px);
   padding-right: 20px;
 }
 .pagination-wrap {
-  width: 100%;
+  width: calc(100% - 32px);
   position: absolute;
-  bottom: 15px;
+  bottom: -70px;
   right: 0px;
-  left: 0px;
+  left: 16px;
+  // margin: 0 20px;
   display: flex;
   justify-content: flex-end;
   background-color: #fff;

@@ -2,7 +2,7 @@
   "name": "zjbrainscience-front",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview --port 4173",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
@@ -11,10 +11,12 @@
     "@antv/g6": "^4.8.24",
     "@element-plus/icons-vue": "^2.0.9",
     "@feng-lab/vue-neuroglancer": "^1.0.0",
+    "@vue-office/docx": "^1.6.2",
     "admin-table-page": "^0.2.1",
     "aes-js": "^3.1.2",
     "axios": "^1.1.2",
     "base64-js": "^1.5.1",
+    "docx-preview": "^0.3.2",
     "echarts": "^5.4.0",
     "echarts-liquidfill": "^3.1.0",
     "element-plus": "^2.2.17",
@@ -26,10 +28,12 @@
     "pinia": "^2.0.23",
     "vue": "^3.2.38",
     "vue-clipboard3": "^2.0.0",
+    "vue-demi": "^0.14.8",
     "vue-echarts": "^6.2.3",
     "vue-i18n": "^9.3.0-beta.6",
     "vue-json-pretty": "^2.2.4",
-    "vue-router": "^4.1.5"
+    "vue-router": "^4.1.5",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",
