@@ -131,6 +131,9 @@ export default {
     getUserInfoFail: "Get current user info failed!"
   },
   menus: {
+    mainpage: "Home Page",
+    myqueue: "My Queue",
+    dataoverview: "Data Overview",
     management: "Home",
     experiments: "Experiments",
     newExperiment: "New Experiment",
@@ -168,7 +171,7 @@ export default {
   },
   loginInfoAnalysis: {
     title: "Data Analysis",
-    desc: "Fast and convenient EEG data analysis and display interface, explaining the meaning of the data in seconds"
+    desc: "Fast and convenient data analysis and display interface, explaining the meaning of the data in seconds"
   },
   home: {
     charts: {
@@ -176,7 +179,7 @@ export default {
       subject: "Subject Feature",
       server: "Usage Of Server",
       sick: "Kind Of Disease",
-      dataGrowth: "Growth Trend Of Experiments Data" 
+      dataGrowth: "Growth Trend Of Experiments Data"
     }
   },
   experiments: {
@@ -313,7 +316,7 @@ export default {
       dataSize: "DataSet Size",
       desc: "Description"
     },
-    card : {
+    card: {
       step: "Steps",
       result: "Result"
     },
@@ -332,7 +335,7 @@ export default {
         title: "Execution Failed!",
         subTitle: "The execution of this step failed!"
       },
-      "1" : {
+      "1": {
         title: "Executing!",
         subTitle: "This step has not been completed, please wait for a moment!"
       }
@@ -412,9 +415,9 @@ export default {
     type: {
       text: "Interactive Message",
       task_step_status: "Task Status Notification"
-    }, 
+    },
     content: {
-      task_step_status: "Task {name}(ID:{id})'s status has changed to {status}." 
+      task_step_status: "Task {name}(ID:{id})'s status has changed to {status}."
     },
     list: {
       type: "Type",
@@ -528,15 +531,15 @@ export default {
       data_publisher: "Dataset Publisher/Unit",
       data_update_year: "Year of Dataset Update",
       file_count: "Number of Files",
-      file_total_size_gb:"Dataset Size(GB)",
-      file_acquired_size_gb:"Size of Acquired Dataset(GB)",
-      associated_diseases:"Related Diseases",
-      organ:"Organ",
-      cell_count:"Number of Cells",
-      data_type:"Data Type",
-      experiment_platform:"Experiment/Sequencing Platform",
-      fetch_url:"Download Path",
-      project:"Project"
+      file_total_size_gb: "Dataset Size(GB)",
+      file_acquired_size_gb: "Size of Acquired Dataset(GB)",
+      associated_diseases: "Related Diseases",
+      organ: "Organ",
+      cell_count: "Number of Cells",
+      data_type: "Data Type",
+      experiment_platform: "Experiment/Sequencing Platform",
+      fetch_url: "Download Path",
+      project: "Project"
     },
     tab: {
       paradigm: "Paradigm",
