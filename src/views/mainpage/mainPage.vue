@@ -52,144 +52,144 @@ const graphData = {
   img: '../../../src/assets/img/species/tree/eukaryota.png',
   children: [
     {
-      id: 'Metazoa\n后生动物\n★★', // 后生动物
+      id: 'Metazoa\n后生动物', // 后生动物
       img: '../../../src/assets/img/species/tree/metazoa.png',
       children: [
         {
-          id: 'Drosophila melanogaster\n果蝇\n★★★', // 果蝇
+          id: 'Drosophila melanogaster\n果蝇', // 果蝇
           img: '../../../src/assets/img/species/tree/drosophilamelanogaster.png',
           children: [],
         },
         {
-          id: 'Chordata\n脊索动物类\n★★★', // 脊索动物类
+          id: 'Chordata\n脊索动物类', // 脊索动物类
           img: '../../../src/assets/img/species/tree/chordata.png',
           children: [
             {
-              id: 'Petromyzon marinus\n七鳃鳗\n★★★★', // 七鳃鳗
+              id: 'Petromyzon marinus\n七鳃鳗', // 七鳃鳗
               img: '../../../src/assets/img/species/tree/petromyzonmarinus.png',
               children: [],
             },
             {
-              id: 'Danio rerio\n斑马鱼\n★★★★', // 斑马鱼
+              id: 'Danio rerio\n斑马鱼', // 斑马鱼
               img: '../../../src/assets/img/species/tree/daniorerio.png',
               children: [],
             },
             {
-              id: 'Pelodiscus sinensis\n龟\n★★★★', // 龟
+              id: 'Pelodiscus sinensis\n龟', // 龟
               img: '../../../src/assets/img/species/tree/pelodiscussinensis.png',
               children: [],
             },
             {
-              id: 'Amphibia\n两栖类\n★★★★', // 两栖类
+              id: 'Amphibia\n两栖类', // 两栖类
               img: '../../../src/assets/img/species/tree/amphibia.png',
               children: [
                 {
-                  id: 'Paramesotriton chinensis\n蝾螈\n★★★★★',
+                  id: 'Paramesotriton chinensis\n蝾螈',
                   img: '../../../src/assets/img/species/tree/paramesotritonchinensis.png',
                   children: [],
                 }, // 蝾螈
                 {
-                  id: 'Xenopus tropicalis\n爪蟾\n★★★★★',
+                  id: 'Xenopus tropicalis\n爪蟾',
                   img: '../../../src/assets/img/species/tree/xenopustropicalis.png',
                   children: [],
                 }, // 爪蟾
               ],
             },
             {
-              id: 'Aves\n鸟类\n★★★★', // 鸟类
+              id: 'Aves\n鸟类', // 鸟类
               img: '../../../src/assets/img/species/tree/aves.png',
               children: [
                 // { id: 'Columba', children: [] }, // 鸽子
                 {
-                  id: 'Aplopelia bonaparte\n鸽子\n★★★★★',
+                  id: 'Aplopelia bonaparte\n鸽子',
                   img: '../../../src/assets/img/species/tree/aplopeliabonaparte.png',
                   children: [],
                 }, // 鸽子
                 {
-                  id: 'Taeniopygia guttata\n斑马雀\n★★★★★',
+                  id: 'Taeniopygia guttata\n斑马雀',
                   img: '../../../src/assets/img/species/tree/taeniopygiaguttata.png',
                   children: [],
                 }, // 斑马雀
                 {
-                  id: 'Gallus gallus\n鸡\n★★★★★',
+                  id: 'Gallus gallus\n鸡',
                   img: '../../../src/assets/img/species/tree/gallusgallus.png',
                   children: [],
                 }, // 鸡
               ],
             },
             {
-              id: 'Mammalia\n哺乳动物\n★★★★', // 哺乳动物
+              id: 'Mammalia\n哺乳动物', // 哺乳动物
               img: '../../../src/assets/img/species/tree/mammalia.png',
               children: [
                 {
-                  id: 'Sus scrofa\n猪\n★★★★★',
+                  id: 'Sus scrofa\n猪',
                   img: '../../../src/assets/img/species/tree/susscrofa.png',
                   children: [],
                 }, // 猪
                 {
-                  id: 'Muridae\n鼠科\n★★★★★', // 鼠科
+                  id: 'Muridae\n鼠科', // 鼠科
                   img: '../../../src/assets/img/species/tree/muridae.png',
                   children: [
                     {
-                      id: 'Mus musculus\n小鼠\n★★★★★★',
+                      id: 'Mus musculus\n小鼠',
                       img: '../../../src/assets/img/species/tree/musmusculus.png',
                       children: [],
                     }, // 小鼠
                     {
-                      id: 'Rattus norvegicus\n鼠\n★★★★★★',
+                      id: 'Rattus norvegicus\n鼠',
                       img: '../../../src/assets/img/species/tree/rattusnorvegicus.png',
                       children: [],
                     }, // 鼠
                   ],
                 },
                 {
-                  id: 'Primates\n灵长类\n★★★★★', // 灵长类
+                  id: 'Primates\n灵长类', // 灵长类
                   img: '../../../src/assets/img/species/tree/primates.png',
                   children: [
                     {
-                      id: 'Microcebus murinus\n狐猴\n★★★★★★',
+                      id: 'Microcebus murinus\n狐猴',
                       img: '../../../src/assets/img/species/tree/microcebusmurinus.png',
                       children: [],
                     }, // 狐猴
                     // { id: 'Callithrix jacchus(White-tufted-ear marmoset)', children: [] }, // 狨猴
                     {
-                      id: 'White-tufted-ear marmoset\n狨猴\n★★★★★★',
+                      id: 'White-tufted-ear marmoset\n狨猴',
                       img: '../../../src/assets/img/species/tree/whitetuftedearmarmoset.png',
                       children: [],
                     }, // 狨猴
                     {
-                      id: 'Hominidae\n人科\n★★★★★★', // 人科
+                      id: 'Hominidae\n人科', // 人科
                       img: '../../../src/assets/img/species/tree/hominidae.png',
                       children: [
                         {
-                          id: 'Homo sapiens\n人类\n★★★★★★★',
+                          id: 'Homo sapiens\n人类',
                           img: '../../../src/assets/img/species/tree/homosapiens.png',
                           children: [],
                         }, // 人类
                         {
-                          id: 'Pan troglodytes\n黑猩猩\n★★★★★★★',
+                          id: 'Pan troglodytes\n黑猩猩',
                           img: '../../../src/assets/img/species/tree/pantroglodytes.png',
                           children: [],
                         }, // 黑猩猩
                         // { id: 'Gorilla gorilla ', children: [] }, // 大猩猩
                         {
-                          id: 'Gorilla gorilla gorilla\n大猩猩\n★★★★★★★',
+                          id: 'Gorilla gorilla gorilla\n大猩猩',
                           img: '../../../src/assets/img/species/tree/gorillagorillagorilla.png',
                           children: [],
                         }, // 大猩猩
                       ],
                     },
                     {
-                      id: 'Macaca\n猕猴属\n★★★★★★', // 猕猴属
+                      id: 'Macaca\n猕猴属', // 猕猴属
                       img: '../../../src/assets/img/species/tree/macacamulatta.png',
                       children: [
                         {
-                          id: 'Macaca mulatta\n猕猴\n★★★★★★★',
+                          id: 'Macaca mulatta\n猕猴',
                           img: '../../../src/assets/img/species/tree/macacamulatta.png',
                           children: [],
                         }, // 猕猴
                         {
-                          id: 'Macaca fascicularis\n食蟹猴\n★★★★★★★',
+                          id: 'Macaca fascicularis\n食蟹猴',
                           img: '../../../src/assets/img/species/tree/macacafascicularis.png',
                           children: [],
                         }, // 食蟹猴
@@ -204,32 +204,32 @@ const graphData = {
       ],
     },
     {
-      id: 'Magnoliopsida\n双子叶植物纲\n★★', // 双子叶植物纲
+      id: 'Magnoliopsida\n双子叶植物纲', // 双子叶植物纲
       img: '../../../src/assets/img/species/tree/magnoliopsida.png',
       children: [
         {
-          id: 'Poaceae\n禾本科\n★★★', // 禾本科
+          id: 'Poaceae\n禾本科', // 禾本科
           img: '../../../src/assets/img/species/tree/poaceae.png',
           children: [
             {
-              id: 'Zea mays\n玉米\n★★★★',
+              id: 'Zea mays\n玉米',
               img: '../../../src/assets/img/species/tree/zeamays.png',
               children: [],
             }, // 玉米
             {
-              id: 'Oryza sativa\n水稻\n★★★★',
+              id: 'Oryza sativa\n水稻',
               img: '../../../src/assets/img/species/tree/oryzasativa.png',
               children: [],
             }, // 水稻
           ],
         },
         {
-          id: 'Glycine max\n大豆\n★★★',
+          id: 'Glycine max\n大豆',
           img: '../../../src/assets/img/species/tree/glycinemax.png',
           children: [],
         }, // 大豆
         {
-          id: 'Arabidopsis thaliana\n拟南芥\n★★★',
+          id: 'Arabidopsis thaliana\n拟南芥',
           img: '../../../src/assets/img/species/tree/arabidopsisthaliana.png',
           children: [],
         }, // 拟南芥
