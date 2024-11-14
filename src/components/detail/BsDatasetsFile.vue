@@ -1,7 +1,7 @@
 <template>
   <el-row style="height: 100%">
     <el-col :span="6" style="border-right: 2px solid #ebedf0; padding: 12px">
-      <el-scrollbar height="400px">
+      <el-scrollbar height="calc(100vh - 390px)">
         <!-- <p v-for="item in 20" :key="item" class="scrollbar-item">
           第一层级（{{ item }}）
         </p> -->
@@ -12,8 +12,10 @@
           :expand-on-click-node="true"
           highlight-current
           @current-change="currentNodeChange"
-          default-expand-all
+          :load="loadNode"
+          lazy
         >
+          <!-- default-expand-all -->
           <template #default="{ node, data }">
             <span class="custom-tree-node">
               <span>{{ node.label }}</span>
@@ -72,7 +74,12 @@
           />
         </el-select>
       </div>
-      <el-table :data="currentFileList" style="width: 100%">
+      <el-table
+        :data="currentFileList"
+        style="width: 100%; height: calc(100vh - 500px)"
+        v-loading="tbLoading"
+        element-loading-text="加载中..."
+      >
         <el-table-column prop="name" label="文件名称" />
         <el-table-column prop="size" label="文件大小">
           <template #default="scope">
@@ -101,7 +108,7 @@
         <el-table-column label="操作" width="150">
           <template #default="scope">
             <el-button
-              v-if="user.access_level >= 100"
+              v-if="user.access_level >= 100 && scope.row.type === 'file'"
               link
               type="primary"
               size="small"
@@ -142,16 +149,23 @@
   >
     <div class="content-wrap">
       <!-- <div class="mask"></div> -->
+      <!-- <img v-if="true" :src="newImgsrc" /> -->
       <!-- <div class="content"> -->
-      <el-image v-if="isImageType" :src="fileSrc" />
+      <el-image
+        v-if="isImageType"
+        :src="fileSrc"
+        :preview-src-list="[fileSrc]"
+        fit="cover"
+        title="点击可放大预览"
+      />
       <bs-office-viewer
         v-else-if="isDocxType || isExcelType"
-        :src="fileBlob"
+        :src="fileSrc"
         :fileType="isDocxType ? 'docx' : 'excel'"
       ></bs-office-viewer>
       <iframe
         v-else-if="isIframeType"
-        :src="fileReaderSrc + '#toolbar=0'"
+        :src="fileSrc + '#toolbar=0'"
         :type="fileType"
         width="100%"
         height="700"
@@ -170,13 +184,8 @@
 <script setup>
 import { ref, onMounted, nextTick, reactive, computed } from 'vue'
 import {
-  downloadDatasetFileApi,
-  getDatasetFilesApi,
-  getDatasetDirectoryTreeApi,
-  deleteDatasetFileApi,
-  getDatasetFilesTypeApi,
-} from '@/api/datasetManagement'
-import {
+  getDatasetDirectoryTreeOssApi,
+  getDatasetFilesTypeOssApi,
   listDatasetFilesOssApi,
   downloadDatasetFileOssApi,
 } from '@/api/datasetOss'
@@ -186,6 +195,8 @@ import jsCookie from 'js-cookie'
 import BsOfficeViewer from '@/components/BsOfficeViewer.vue'
 import moment from 'moment'
 import useUserStore from '@/stores/user'
+import Tiff from 'tiff.js'
+import axios from 'axios'
 
 const { user } = useUserStore()
 const access_token = jsCookie.get('access_token')
@@ -210,11 +221,8 @@ const selectNodeObj = reactive({
 const path = ref([])
 const fullpath = computed(() => path.value.join(''))
 const fileSrc = ref(null)
-const fileReaderSrc = ref(null)
-const fileBlob = ref(null)
 const fileType = ref(null)
 const dialogVisible = ref(false)
-const viewLoading = ref(false)
 const viewTypeList = [
   'json',
   'pdf',
@@ -231,6 +239,7 @@ const viewTypeList = [
   'bmp',
   'gif',
   'h5ad',
+  'tif',
 ]
 const isImageType = computed(() => {
   return /^image\//.test(fileType.value)
@@ -264,9 +273,11 @@ const pageSize = ref(20)
 const currentPage = ref(1)
 const currentFileList = ref([])
 const total = ref(0)
+const newImgsrc = ref(null)
+const tbLoading = ref(false)
 
 onMounted(() => {
-  getDatasetDirectoryTree()
+  // getDatasetDirectoryTree()
   // window.addEventListener('scroll', (e) => {
   //   return true
   // })
@@ -303,9 +314,10 @@ const formatTreeData = (data) => {
   return data
 }
 
+// 同步文件树，弃用
 const getDatasetDirectoryTree = async () => {
   try {
-    const res = await getDatasetDirectoryTreeApi(experiment_id)
+    const res = await getDatasetDirectoryTreeOssApi(experiment_id)
     const newTree = [
       {
         id: '/',
@@ -320,12 +332,47 @@ const getDatasetDirectoryTree = async () => {
       getDatasetFilesType()
     })
   } catch (err) {
-    console.log(err)
+    nextTick(() => {
+      setCurrentNodeDefault({ id: '/' })
+      getDatasetFilesType()
+    })
   }
 }
 
+const loadNode = async (node, resolve) => {
+  if (node.level === 0) {
+    resolve([
+      {
+        id: '/',
+        label: '根目录',
+        children: [],
+      },
+    ])
+    nextTick(() => {
+      setCurrentNodeDefault({ id: '/' })
+      getDatasetFilesType()
+    })
+    return
+  } else {
+    getTreeFullPath(node)
+    const res = await listDatasetFilesOssApi(experiment_id, fullpath.value, '')
+    let data = []
+    if (res.length !== 0) {
+      data = res[1]
+        .filter((one) => one.type === 'directory')
+        .map((item) => ({
+          id: item.name + '/',
+          label: item.name,
+        }))
+    }
+    resolve(data)
+  }
+}
+
+// 获取文件列表
 const getDatasetFiles = async () => {
   try {
+    tbLoading.value = true
     const res = await listDatasetFilesOssApi(
       experiment_id,
       fullpath.value,
@@ -344,14 +391,17 @@ const getDatasetFiles = async () => {
       fileList.value = []
       total.value = 0
     }
+    tbLoading.value = false
   } catch (err) {
     console.log(err)
+    tbLoading.value = false
   }
 }
 
+// 获取文件格式下拉菜单
 const getDatasetFilesType = async () => {
   try {
-    const res = await getDatasetFilesTypeApi(experiment_id, fullpath.value)
+    const res = await getDatasetFilesTypeOssApi(experiment_id, fullpath.value)
     typeOptions.value = res
       ? res.map((one) => ({ label: one, value: one }))
       : []
@@ -368,18 +418,23 @@ const selectChange = () => {
 const currentNodeChange = (data, node) => {
   selectNodeObj.data = data
   selectNodeObj.node = node
-  path.value = []
   getTreeFullPath(node)
   getDatasetFiles()
 }
 
 // 获取文件存放全路径
 const getTreeFullPath = (node) => {
+  path.value = []
+  formatTreeFullPath(node)
+}
+
+// 格式化文件存放全路径path数组
+const formatTreeFullPath = (node) => {
   if (node.data.id) {
     path.value.unshift(node.data.id)
   }
   if (node.parent && node.parent.data.id) {
-    getTreeFullPath(node.parent)
+    formatTreeFullPath(node.parent)
   }
 }
 
@@ -419,6 +474,7 @@ const getCurrentFileList = () => {
   currentFileList.value = fileList.value.slice(start, end)
 }
 
+// 文件下载
 const handleDownload = async (item) => {
   let path = fullpath.value + item.name
   const file = await downloadDatasetFileOssApi(experiment_id, path)
@@ -444,60 +500,65 @@ const getFileType = (row) => {
     : '--'
 }
 
+// tiff文件格式转换
+const formartTiffFile = (url) => {
+  // const url = '../../../src/assets/img/queue/nb.tiff'
+  return axios
+    .get(url, {
+      responseType: 'arraybuffer',
+    })
+    .then((response) => {
+      const tiff = new window.Tiff({ buffer: response.data })
+      const imgData = tiff.toDataURL()
+      return imgData
+    })
+}
+
 // 点击预览
 const handleView = async (item) => {
   fileType.value = null
-  fileBlob.value = null
   fileSrc.value = null
-  fileReaderSrc.value = null
   item.loading = true
-  if (getFileType(item) === 'h5ad') {
-    // fileType.value = 'image/svg'
-    // let umapName = item.name.slice(0, -5) + '_UMAP.svg'
-    // fileSrc.value =
-    //   'http://10.11.140.35:2000/202403_llm_data_collection/display_plate/Danio rerio/' +
-    //   umapName
-    fileType.value = 'application/h5ad'
-    let url = `http://${window.location.hostname}:3003?id=1`
-    fileReaderSrc.value = url
-  } else {
-    let path = fullpath.value + item.name
-    const file = await downloadDatasetFileOssApi(experiment_id, path)
-    fileType.value = file.data ? file.data.type : null
-    const blob = new Blob([file.data], {
-      type: file.headers['Content-Type'],
-    })
-    fileBlob.value = blob
-    fileSrc.value = window.URL.createObjectURL(blob)
-
-    const reader = new FileReader()
-    reader.readAsArrayBuffer(blob)
-    reader.onload = function () {
-      fileReaderSrc.value = window.URL.createObjectURL(
-        new Blob([reader.result], {
-          type: fileType.value,
-        })
-      )
+  let path = fullpath.value + item.name
+  try {
+    if (getFileType(item) === 'h5ad') {
+      fileType.value = 'application/h5ad'
+      let url = `http://${window.location.hostname}:3003?id=${experiment_id}&path=${path}`
+      fileSrc.value = url
+    } else {
+      const file = await downloadDatasetFileOssApi(experiment_id, path)
+      const blob = new Blob([file.data], {
+        type: file.headers['Content-Type'],
+      })
+      const url = window.URL.createObjectURL(blob)
+      if (getFileType(item) === 'tif') {
+        fileType.value = 'image/tif'
+        fileSrc.value = await formartTiffFile(url)
+      } else {
+        fileType.value = file.data ? file.data.type : null
+        if (isDocxType.value || isExcelType.value) {
+          fileSrc.value = blob
+        } else if (isImageType.value || isVideoType.value) {
+          fileSrc.value = url
+        } else {
+          const reader = new FileReader()
+          reader.readAsArrayBuffer(blob)
+          reader.onload = function () {
+            fileSrc.value = window.URL.createObjectURL(
+              new Blob([reader.result], {
+                type: fileType.value,
+              })
+            )
+          }
+        }
+      }
     }
+
+    item.loading = false
+    dialogVisible.value = true
+  } catch (e) {
+    item.loading = false
   }
-  item.loading = false
-  dialogVisible.value = true
-}
-
-const setIframeUserSelect = () => {
-  nextTick(() => {
-    // let html = iframe.querySelector('html')
-    let iframe = document.getElementById('iframeContent')
-    let iframeDoc = iframe.contentWindow.document || iframe.contentDocument
-    const body = iframeDoc.getElementsByTagName('body')
-    iframe.onselectstart = function () {
-      return false
-    }
-    iframe.oncontextmenu = function () {
-      return false
-    }
-    console.log('iframe---->', body)
-  })
 }
 </script>
 
@@ -530,6 +591,8 @@ const setIframeUserSelect = () => {
   // height: 100%;
   // max-height: 600px; /* 根据需要调整高度 */
   overflow-y: auto; /* 允许垂直滚动 */
+  // display: flex;
+  // justify-content: center;
   // .mask {
   //   position: absolute;
   //   top: 0;

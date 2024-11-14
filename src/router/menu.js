@@ -3,6 +3,15 @@ import BsIconQueue from "@/components/icons/BsIconQueue.vue";
 import { markRaw } from "vue";
 const menus = [
   {
+    path: "dataoverview",
+    name: "dataoverview",
+    component: () => import("@/views/dataoverview/index.vue"),
+    meta: {
+      icon: "HomeFilled",
+      level: 10
+    }
+  },
+  {
     path: "mainpage",
     name: "mainpage",
     component: () => import("@/views/mainpage/mainPage.vue"),
@@ -68,7 +77,7 @@ const menus = [
     component: () => import("@/views/myqueue/index.vue"),
     meta: {
       icon: markRaw(BsIconQueue),
-      level: 100
+      level: 10
     },
   },
   {

@@ -51,7 +51,7 @@ const routes = [
   }, {
     path: '/',
     name: 'home',
-    redirect: "/mainpage",
+    redirect: "/dataoverview",
     component: HomeLayout,
     children: [
       ...menus,
@@ -164,7 +164,7 @@ const routes = [
         name: "patientinfo",
         component: () => import("@/views/myqueue/PatientInfo.vue"),
         meta: {
-          level: 100
+          level: 10
         }
       },
       {
@@ -172,7 +172,7 @@ const routes = [
         name: "patientdetail",
         component: () => import("@/views/myqueue/PatientDetail.vue"),
         meta: {
-          level: 100
+          level: 10
         }
       },
       {

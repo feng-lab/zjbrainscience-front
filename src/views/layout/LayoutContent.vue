@@ -5,7 +5,7 @@
       show-icon
       v-if="!user.last_logout_time"
       class="m-b-8"
-      :closable="false"
+      :closable="true"
     >
       <template #title>
         <span class="m-b-8">{{ $t('elmessage.updatePassword') }}</span>
@@ -26,5 +26,13 @@ const { user } = useUserStore()
 .content {
   /* min-height: 100%; */
   padding: 0 8px;
+}
+:deep(.el-alert__content) {
+  width: 100%;
+}
+:deep(.el-alert__close-btn) {
+  position: absolute;
+  right: 0;
+  top: 3px;
 }
 </style>

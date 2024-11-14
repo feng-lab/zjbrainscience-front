@@ -1,8 +1,9 @@
 <template>
   <div class="login-page">
     <div class="login-page--header between-flex">
-      <!-- <span>BS database</span> -->
-      <span>生命科学开放数据平台</span>
+      <div>
+        <span>生命科学开放数据平台</span>
+      </div>
       <bs-lang-change />
     </div>
     <el-row class="login-page--content" align="middle" :gutter="24">
@@ -149,9 +150,13 @@ const submitLogin = async (formRef) => {
   margin: 0px auto;
   padding: 24px 16px;
   max-width: 1024px;
-  &--header span {
-    font-size: 32px;
-    font-weight: 700;
+  &--header div {
+    display: flex;
+    span {
+      font-size: 32px;
+      font-weight: 700;
+      margin-top: 20px;
+    }
   }
 
   &--content {
