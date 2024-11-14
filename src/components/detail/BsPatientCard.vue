@@ -8,17 +8,23 @@
         </div>
       </div>
     </template>
-    <div class="card-content" v-if="infoDetail && infoDetail.length">
-      <div
-        v-for="(item, index) in infoDetail"
-        :key="index"
-        :class="item.style ? 'item' + item.style : 'item'"
-      >
-        {{ item.label }}：{{ item.value || '--' }}
+    <el-scrollbar max-height="300px">
+      <div class="card-content" v-if="infoDetail && infoDetail.length">
+        <div
+          v-for="(item, index) in infoDetail"
+          :key="index"
+          :class="item.style ? 'item' + item.style : 'item'"
+        >
+          {{ item.label }}：{{
+            item.value ? item.value : item.value === 0 ? 0 : '--'
+          }}
+        </div>
       </div>
-    </div>
+    </el-scrollbar>
     <div class="slot-content" v-if="slot">
-      <slot> </slot>
+      <el-scrollbar max-height="300px">
+        <slot> </slot>
+      </el-scrollbar>
     </div>
     <el-empty v-if="!infoDetail && !slot" :description="description">
       <template #image>

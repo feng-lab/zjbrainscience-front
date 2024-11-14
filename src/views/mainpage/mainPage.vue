@@ -48,7 +48,7 @@ import { allExByPageApi } from '@/api/datasetManagement'
 
 const router = useRouter()
 const graphData = {
-  id: 'Eukaryota\n 真核生物 \n★', // 真核生物
+  id: 'Eukaryota\n真核生物\n★', // 真核生物
   img: '../../../src/assets/img/species/tree/eukaryota.png',
   children: [
     {
@@ -181,7 +181,7 @@ const graphData = {
                     },
                     {
                       id: 'Macaca\n猕猴属', // 猕猴属
-                      img: '../../../src/assets/img/species/tree/macacamulatta.png',
+                      img: '../../../src/assets/img/species/tree/macaca.png',
                       children: [
                         {
                           id: 'Macaca mulatta\n猕猴',
@@ -385,8 +385,8 @@ const drawGraph = () => {
       icon: {
         show: true,
         img: node.img || '',
-        width: 40,
-        height: 40,
+        width: 50,
+        height: 50,
       },
     }
   })

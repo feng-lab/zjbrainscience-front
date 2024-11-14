@@ -120,9 +120,9 @@ const router = useRouter()
 const pageBack = () => {
   router.push({
     path: '/experiments/list',
-    query: { page: route.query.page },
   })
 }
+
 const handleChange = (val) => {
   showMore.value = !showMore.value
 }

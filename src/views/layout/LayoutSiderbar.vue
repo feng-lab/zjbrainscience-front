@@ -6,7 +6,7 @@
     }"
   >
     <bs-logo
-      img-src="/logo.png"
+      img-src="/logo1.png"
       :title="isCollapse ? '' : '生科开放数据平台'"
     />
     <bs-menu :menus="authMenus" />

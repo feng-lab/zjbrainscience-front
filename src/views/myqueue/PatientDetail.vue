@@ -2,7 +2,7 @@
   <div class="patient-detail-container">
     <div class="patient-name">
       <div>
-        <span>患者名称</span>
+        <span>{{ patientName || '--' }}</span>
         <el-button type="primary" plain size="small" @click="goEdit"
           >编辑</el-button
         >
@@ -36,8 +36,8 @@
         </template>
         <template #default>
           <el-table :data="notesData" style="width: 100%" :show-header="false">
-            <el-table-column prop="date" label="日期" width="180" />
-            <el-table-column prop="content" label="备注内容" />
+            <el-table-column prop="gmt_modified" label="日期" width="180" />
+            <el-table-column prop="memo" label="备注内容" />
           </el-table>
         </template>
       </bs-patient-card>
@@ -46,11 +46,11 @@
         :slot="fileData.length"
         description="暂无文件"
       >
-        <template #btn>
+        <!-- <template #btn>
           <el-button type="primary" @click="dialogFormVisible = true"
             >上传文件</el-button
           >
-        </template>
+        </template> -->
         <template #default>
           <el-table :data="fileData" style="width: 100%" :show-header="false">
             <el-table-column prop="date" label="文件名称">
@@ -99,13 +99,19 @@
         <el-upload
           v-model:file-list="fileList"
           class="upload-demo"
-          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+          action="/api/uploadCohortPatientFile"
           multiple
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :before-remove="beforeRemove"
-          :limit="1"
+          :data="{
+            cohort_patient_id: editId,
+            directory: '/',
+          }"
+          :headers="{
+            Authorization: `${token_type} ${access_token}`,
+          }"
+          :on-success="handleSuccess"
+          :limit="99"
           :on-exceed="handleExceed"
+          :show-file-list="true"
         >
           <el-button type="primary" plain>选择文件</el-button>
         </el-upload>
@@ -116,8 +122,11 @@
           placeholder="请选择"
           style="width: 220px"
         >
-          <el-option label="数据集1" value="1" />
-          <el-option label="数据集2" value="2" />
+          <el-option
+            :label="item.description"
+            :value="item.id"
+            v-for="item in datasetsOptions"
+          />
         </el-select>
         <el-button type="primary" bg text @click="addDatasets"
           >新建数据集</el-button
@@ -149,97 +158,242 @@ import { View, Delete } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import BsPatientCard from '@/components/detail/BsPatientCard.vue'
 import { useRouter, useRoute } from 'vue-router'
+import {
+  getCohortPatientInfoApi,
+  getPatientFormDataInfoApi,
+  getPatientFormDataApi,
+  getPatientCTherapyDetailByPageApi,
+  getPatientCTherapyDetailInfoApi,
+  getPatientMemoByPageApi,
+  uploadCohortPatientFileApi,
+  listCohortPatientFilesApi,
+} from '@/api/patient.js'
+import { allExByPageApi } from '@/api/datasetManagement'
+import jsCookie from 'js-cookie'
+import {
+  diagnoseOptions,
+  fusionOptions,
+  mutationOptions,
+  chromosomeOptions,
+  chemotherapyOptions,
+  commonInfoInit,
+  visitInfoInit,
+  healInfoInit,
+  otherInfoInit,
+} from './dict.js'
 
+const access_token = jsCookie.get('access_token')
+const token_type = jsCookie.get('token_type')
 const router = useRouter()
-const commonInfo = ref([
-  { label: '性别', value: '女' },
-  { label: '出生日期', value: '1933-03-03' },
-  { label: '身份证', value: '3333333333333', style: '-width-100' },
-  { label: '联系电话', value: '12345678909', style: '-width-100' },
-  { label: '住址', value: '省/市/区 详细地址', style: '-width-100' },
-  { label: '医院', value: '医院名称12345...' },
-  { label: '医生', value: '张茅台' },
-  { label: '住院号', value: '12345678', style: '-width-100' },
-])
+const route = useRoute()
+const commonInfo = ref(commonInfoInit)
+const visitInfo = ref(visitInfoInit)
+const healInfo = ref(healInfoInit)
+const otherInfo = ref(otherInfoInit)
 
-const visitInfo = ref([
-  { label: '确诊时间', value: '1933-03-03' },
-  { label: '诊断', value: 'sAML' },
-  { label: '大分型', value: 'AML M5b' },
-  { label: '小分型', value: 'AML M5b' },
-  { label: 'WBC', value: '55 x10E9/L' },
-  { label: 'Hb', value: '132 g/L' },
-  { label: 'PLT', value: '52 x10e9/L' },
-  { label: '骨髓形态', value: '63%' },
-  { label: 'FCM', value: '77%' },
-  { label: '融合基因', value: '做了部分' },
-  { label: '基因突变', value: '未测' },
-  { label: '染色体', value: '未做' },
-])
-
-const healInfo = ref([
-  { label: 'C1治疗日期', value: '1933-03-03', style: '-width-100' },
-  { label: 'C1治疗方案', value: 'IA' },
-  { label: 'C1疗效', value: '3' },
-  { label: 'C2治疗日期', value: '1933-03-03', style: '-width-100' },
-  { label: 'C2治疗方案', value: 'IA' },
-  { label: 'C2疗效', value: '4' },
-  { label: '总疗程数', value: '12' },
-  { label: '末次化疗', value: '2023-12-12' },
-  { label: '末次化疗疾病状态', value: '3', style: '-width-100' },
-])
-
-const otherInfo = ref([
-  { label: '是否复发', value: '是', style: '-width-100' },
-  { label: 'CR1时间', value: '2023-12-12' },
-  { label: '第一次复发', value: '2023-12-12' },
-  { label: 'CR2时间', value: '2023-12-12' },
-  { label: '第二次复发', value: '2023-12-12' },
-  { label: 'CR3时间', value: '2023-12-12', style: '-width-100' },
-  { label: '是否骨髓移植', value: '是' },
-  { label: '移植时间', value: '2023-12-12' },
-  { label: '是否死亡', value: '是' },
-  { label: '死亡时间', value: '2023-12-12' },
-  { label: '末次随访日期', value: '2023-12-12', style: '-width-100' },
-])
-
-const notesData = ref([
-  {
-    date: '2016-05-03',
-    content: '这是备注内容',
-  },
-  {
-    date: '2016-05-03',
-    content:
-      '这是备注内容这是备注内容这是备注内容这是备注内容这是备注内容这是备注内容这是备注内容这是备注内容',
-  },
-])
+const notesData = ref([])
 
 const fileData = ref([
-  {
-    date: '2016-05-03',
-    name: '文件类型',
-    address: '这是文件名称hhhhhhhh',
-  },
+  // {
+  //   date: '2016-05-03',
+  //   name: '文件类型',
+  //   address: '这是文件名称hhhhhhhh',
+  // },
 ])
+const datasetsOptions = ref([])
 const dialogFormVisible = ref(false)
-const form = reactive({
-  name: '',
-  region: '',
-  date1: '',
-  date2: '',
-  delivery: false,
-  type: [],
-  resource: '',
-  desc: '',
-})
 const dialogImgVisible = ref(false)
 const dialogImageUrl = ref('')
+const editId = ref(null)
+const patientName = ref('')
+
+const dataFormat = (options, value) => {
+  let obj = options.find((item) => item.value === value) || {}
+  return obj['label'] || '--'
+}
+
+// 获取病人基本信息
+const getCohortPatientInfo = async () => {
+  try {
+    const data = await getCohortPatientInfoApi({
+      cohort_patient_id: editId.value,
+    })
+    patientName.value = data['patient_name']
+    commonInfo.value = commonInfo.value.map((one) => {
+      let value = data[one.key]
+      if (one.key === 'gender') {
+        value = value === 'male' ? '男' : '女'
+      }
+      return {
+        ...one,
+        value: value,
+      }
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+// 获取初诊信息
+const getPatientFormDataInfo = async () => {
+  try {
+    const data = await getPatientFormDataInfoApi({
+      patient_id: editId.value,
+    })
+    visitInfo.value = visitInfo.value.map((one) => {
+      let value = data[one.key]
+      switch (one.key) {
+        case 'diagnose':
+          value = dataFormat(diagnoseOptions, value)
+          break
+        case 'fusion':
+          value = dataFormat(fusionOptions, value)
+          break
+        case 'mutation':
+          value = dataFormat(mutationOptions, value)
+          break
+        case 'chromosome':
+          value = dataFormat(chromosomeOptions, value)
+          break
+        default:
+          value
+      }
+      return {
+        ...one,
+        value: value,
+      }
+    })
+    healInfo.value = healInfo.value.map((one) => {
+      return {
+        ...one,
+        value: data[one.key],
+      }
+    })
+    otherInfo.value = otherInfo.value.map((one) => {
+      let value = data[one.key]
+      if (['is_relapse', 'is_transplant', 'is_death'].includes(one.key)) {
+        value = value ? '是' : '否'
+      }
+      return {
+        ...one,
+        value: value,
+      }
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+// 获取疗程信息
+const getPatientCTherapyDetailByPage = async () => {
+  try {
+    const data = await getPatientCTherapyDetailByPageApi({
+      patient_id: editId.value,
+      offset: 0,
+      limit: 1000,
+      include_deleted: false,
+    })
+    let cData =
+      data.items.length &&
+      data.items
+        .sort((a, b) => a.c_index - b.c_index)
+        .map((one) => {
+          let arr = []
+          let index = one.c_index
+          let obj1 = {
+            label: `C${index}治疗日期`,
+            value: one.c_date,
+            key: 'c_date',
+          }
+          let obj2 = {
+            label: `C${index}治疗方案`,
+            value: one.c_detail,
+            key: 'c_detail',
+          }
+          let obj3 = {
+            label: `C${index}疗效`,
+            value: one.c_effects,
+            key: 'c_effects',
+          }
+          let obj4 = {
+            label: `C${index}MRD`,
+            value: one.c_mrd,
+            key: 'c_mrd',
+          }
+          arr.push(obj1)
+          arr.push(obj2)
+          arr.push(obj3)
+          arr.push(obj4)
+          return arr
+        })
+    healInfo.value = cData.flat().concat(healInfo.value)
+  } catch (err) {
+    console.log(err)
+    return false
+  }
+}
+
+// 获取备注信息
+const getPatientMemoByPage = async () => {
+  try {
+    const data = await getPatientMemoByPageApi({
+      patient_id: editId.value,
+      offset: 0,
+      limit: 1000,
+      include_deleted: false,
+    })
+    notesData.value = data.items || []
+  } catch (err) {
+    console.log(err)
+    return false
+  }
+}
+
+// 获取数据集列表
+const getAllExByPage = async () => {
+  try {
+    const res = await allExByPageApi({
+      offset: 0,
+      limit: 10000,
+    })
+    datasetsOptions.value = res.items || []
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+// 获取病人文件列表
+const listCohortPatientFiles = async () => {
+  try {
+    const data = await listCohortPatientFilesApi({
+      cohort_patient_id: editId.value,
+      directory: '/',
+      file_type: 1000,
+    })
+    fileData.value = data || []
+  } catch (err) {
+    console.log(err)
+    return false
+  }
+}
+
+const handleSuccess = (response, uploadFile) => {
+  ElMessage.success('上传成功')
+}
+
+onMounted(() => {
+  editId.value = route.query.id
+  getCohortPatientInfo()
+  getPatientFormDataInfo()
+  getPatientMemoByPage()
+  getAllExByPage()
+  getPatientCTherapyDetailByPage()
+})
 
 const addNotes = () => {
   router.push({
     path: '/patientinfo',
-    query: { id: 1, step: 2, is_therapy: '2' },
+    query: { id: 1, step: 2, is_therapy: true },
   })
 }
 
@@ -264,8 +418,7 @@ const delNotes = (index) => {
 }
 
 const previewNotes = (uploadFile) => {
-  dialogImageUrl.value =
-    'https://gips0.baidu.com/it/u=2939907571,3210231540&fm=3039&app=3039&f=JPEG?w=1024&h=1024'
+  dialogImageUrl.value = ''
   dialogImgVisible.value = true
 }
 
@@ -273,7 +426,8 @@ const addDatasets = () => {
   window.open('/experiments/new')
 }
 
-const refreshDatasets = () => {
+const refreshDatasets = async () => {
+  await getAllExByPage()
   ElMessage({
     type: 'success',
     message: '刷新成功',
@@ -281,10 +435,11 @@ const refreshDatasets = () => {
 }
 
 const goEdit = () => {
-  router.push('/patientinfo')
+  router.push({ path: '/patientinfo', query: { id: editId.value } })
 }
 const goBack = () => {
-  router.back()
+  const { page } = route.query
+  router.push({ path: 'myqueue', query: { page } })
 }
 </script>
 

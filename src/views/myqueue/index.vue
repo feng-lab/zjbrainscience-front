@@ -8,8 +8,15 @@
         v-model="searchName"
         style="width: 240px; height: 32px"
         placeholder="搜索患者名称"
-        :suffix-icon="Search"
-      />
+        clearable
+        @clear="searchPatient"
+      >
+        <template #suffix>
+          <el-icon style="cursor: pointer" @click="searchPatient"
+            ><Search
+          /></el-icon>
+        </template>
+      </el-input>
     </div>
     <el-table :data="tableData" style="width: 100%">
       <template #empty>
@@ -19,28 +26,32 @@
           </template>
         </el-empty>
       </template>
-      <el-table-column prop="name" label="患者名称">
+      <el-table-column prop="patient_name" label="患者名称">
         <template #default="scope">
           <div class="name">
             <div class="icon"></div>
-            {{ scope.row.name }}
+            {{ scope.row.patient_name }}
           </div>
         </template>
       </el-table-column>
       <el-table-column prop="hospital" label="医院"></el-table-column>
-      <el-table-column prop="sex" label="性别">
+      <el-table-column prop="gender" label="性别" width="100">
         <template #default="scope">
-          {{ scope.row.sex === 1 ? '男' : '女' }}
+          {{ scope.row.gender === 'male' ? '男' : '女' }}
         </template>
       </el-table-column>
       <el-table-column prop="age" label="出生日期（年龄)">
-        <template #default="scope">
-          {{ `${scope.row.born} (${scope.row.age})` }}
+        <template #default="{ row }">
+          {{
+            row.date_birth
+              ? `${row.date_birth} (${getAge(row.date_birth)})`
+              : '--'
+          }}
         </template>
       </el-table-column>
-      <el-table-column prop="addr" label="家庭住址">
+      <el-table-column prop="addr" label="家庭住址区县">
         <template #default="scope">
-          {{ scope.row.addr }}
+          {{ scope.row.family_address_city }}
         </template>
       </el-table-column>
       <el-table-column label="操作" width="250">
@@ -72,6 +83,8 @@
         :page-sizes="[20, 40, 50, 100]"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
       />
     </div>
   </div>
@@ -82,60 +95,114 @@ import { ref, onMounted, nextTick, reactive, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import {
+  getCohortPatientByPageApi,
+  deleteCohortPatientApi,
+} from '@/api/patient.js'
 
 const router = useRouter()
+const route = useRoute()
 const searchName = ref('')
 const tableData = ref([
-  {
-    name: '患者1',
-    hospital: '浙一',
-    sex: 1,
-    age: 70,
-    born: '1954-12-02',
-    addr: '杭州市萧山区',
-    id: 1,
-  },
-  {
-    name: '患者2',
-    hospital: '浙二',
-    sex: 2,
-    age: 65,
-    born: '1959-09-09',
-    addr: '浙江省宁波市镇海区',
-    id: 2,
-  },
+  // {
+  //   name: '患者1',
+  //   hospital: '浙一',
+  //   sex: 1,
+  //   age: 70,
+  //   born: '1954-12-02',
+  //   addr: '杭州市萧山区',
+  //   id: 1,
+  // },
 ])
 const pageSize = ref(20)
 const currentPage = ref(1)
 const total = ref(2)
 
+const getCohortPatientByPage = async () => {
+  try {
+    const params = {
+      domain_id: 1,
+      patient_name: searchName.value,
+      limit: pageSize.value,
+      offset: (currentPage.value - 1) * pageSize.value,
+      include_deleted: false,
+    }
+    const { items, total: totalNum } = await getCohortPatientByPageApi(params)
+    tableData.value = items || []
+    total.value = totalNum || 0
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const deleteCohortPatient = async (id) => {
+  try {
+    await deleteCohortPatientApi(id)
+    ElMessage.success('删除成功')
+    searchPatient()
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const handleSizeChange = (val) => {
+  pageSize.value = val
+  getCohortPatientByPage()
+}
+const handleCurrentChange = (val) => {
+  currentPage.value = val
+  getCohortPatientByPage()
+}
+
+const searchPatient = () => {
+  currentPage.value = 1
+  getCohortPatientByPage()
+}
+
+onMounted(() => {
+  const { page } = route.query
+  currentPage.value = +page || currentPage.value
+  getCohortPatientByPage(+page)
+})
+
+const getAge = (birth) => {
+  if (birth) {
+    let birthStr = new Date(birth).getTime()
+    let now = new Date().getTime()
+    let hours = (now - birthStr) / (3600 * 1000)
+    let year = Math.floor(hours / (24 * 365))
+    return year
+  } else {
+    return null
+  }
+}
+
 const addPatient = () => {
   router.push('patientinfo')
 }
+
 const handleEdit = (row) => {
-  router.push('patientinfo')
+  router.push({
+    path: 'patientinfo',
+    query: { id: row.id, page: currentPage.value },
+  })
 }
+
 const handleDetail = (row) => {
-  router.push('patientdetail')
+  router.push({
+    path: 'patientdetail',
+    query: { id: row.id, page: currentPage.value },
+  })
 }
+
 const handleDel = (row) => {
   ElMessageBox.confirm('删除后无法恢复，确定删除患者？', '提示', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
     type: 'warning',
+  }).then(() => {
+    deleteCohortPatient(row.id)
   })
-    .then(() => {
-      ElMessage({
-        type: 'success',
-        message: 'Delete completed',
-      })
-    })
-    .catch(() => {
-      ElMessage({
-        type: 'info',
-        message: 'Delete canceled',
-      })
-    })
 }
 </script>
 

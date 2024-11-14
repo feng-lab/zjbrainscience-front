@@ -15,6 +15,13 @@
   >
     <el-row style="margin-left: 10px">
       <el-form :inline="true" :model="query">
+        <el-form-item label="数据集简述:">
+          <el-input
+            v-model="query.description"
+            placeholder="请输入"
+            clearable
+          />
+        </el-form-item>
         <el-form-item label="物种:">
           <!-- <el-select v-model="query.species" placeholder="请选择" clearable>
             <el-option label="Zone one" value="shanghai" />
@@ -203,7 +210,12 @@ import BsRouteLink from '@/components/BsRouteLink.vue'
 import BsLoadMore from '@/components/BsLoadMore.vue'
 
 import { ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import {
+  useRouter,
+  useRoute,
+  onBeforeRouteLeave,
+  // onBeforeRouteEnter,
+} from 'vue-router'
 import { allExByPageApi, deleteExApi } from '@/api/datasetManagement'
 import { useI18n } from 'vue-i18n'
 import { useUtils } from '@/compositions/useUtils'
@@ -241,9 +253,11 @@ const query = ref({
   species: '',
   organ: '',
   development_stage: '',
+  description: '',
 })
 const loadRef = ref()
 const isDataSave = ref(JSON.parse(sessionStorage.getItem('isEdit')))
+const isFromViewDetail = ref(false)
 
 const goEdit = () => {
   router.push(`/experiments/new`)
@@ -284,8 +298,21 @@ const getAllExByPage = async () => {
     console.log(err)
   }
 }
-if (route.query.page) currentPage.value = +route.query.page || 1
+
+const curPage = +sessionStorage.getItem('curPage')
+if (curPage) currentPage.value = curPage || 1
 getAllExByPage()
+
+// onBeforeRouteEnter((to, from, next) => {
+//   console.log('beforeEnter--->')
+//   next()
+// })
+onBeforeRouteLeave((to, from, next) => {
+  if (!isFromViewDetail.value) {
+    sessionStorage.removeItem('curPage')
+  }
+  next()
+})
 
 const onQuery = () => {
   currentPage.value = 1
@@ -296,15 +323,16 @@ const onReset = () => {
   query.value.species = ''
   query.value.organ = ''
   query.value.development_stage = ''
+  query.value.description = ''
   onQuery()
 }
 
 const handleView = (id) => {
-  // router.push(`/experiments/detail/${id}`)
+  isFromViewDetail.value = true
   router.push({
     path: `/experiments/detail/${id}/info`,
-    query: { page: currentPage.value },
   })
+  sessionStorage.setItem('curPage', currentPage.value)
 }
 
 const handleDelete = (id) => {

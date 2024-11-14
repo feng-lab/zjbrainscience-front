@@ -215,3 +215,34 @@ export function deleteDatasetFileOssApi (dataset_id, path) {
     }
   })
 }
+
+/**
+ * 获取oss数据集文件树（仅包括文件夹）
+ * @param { Object } data 
+ * @returns 
+ */
+export function getDatasetDirectoryTreeOssApi (dataset_id) {
+  return request({
+    url: "/api/getDatasetDirectoryTreeOss",
+    method: "GET",
+    params: {
+      dataset_id,
+    }
+  })
+}
+
+/**
+ * 获取oss数据集文件类型
+ * @param { Object } data 
+ * @returns 
+ */
+export function getDatasetFilesTypeOssApi (dataset_id, directory) {
+  return request({
+    url: "/api/getDatasetFilesTypeOss",
+    method: "GET",
+    params: {
+      dataset_id,
+      directory
+    }
+  })
+}
