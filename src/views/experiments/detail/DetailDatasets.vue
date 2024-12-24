@@ -8,7 +8,7 @@
       </div>
       <div class="info-header">
         <div>
-          <span class="datasets-name">数据集名称</span>
+          <span class="datasets-name">{{ exForm['data_publisher'] }}</span>
           <el-button type="success" plain size="small" @click="goEdit"
             >编辑</el-button
           >
@@ -116,6 +116,7 @@ const baseInfoList = ref([
 const activeType = ref('file')
 const route = useRoute()
 const router = useRouter()
+const exForm = ref({})
 
 const pageBack = () => {
   router.push({
@@ -135,9 +136,10 @@ const goEdit = () => {
 }
 
 onMounted(async () => {
-  const exForm = await exDetailApi(route.params.experiment_id)
+  exForm.value = await exDetailApi(route.params.experiment_id)
+  console.log('exForm.value', exForm.value)
   baseInfoList.value.forEach((item) => {
-    item.value = exForm[item.key]
+    item.value = exForm.value[item.key]
   })
 })
 </script>

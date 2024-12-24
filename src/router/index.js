@@ -51,7 +51,7 @@ const routes = [
   }, {
     path: '/',
     name: 'home',
-    redirect: "/dataoverview",
+    redirect: "/mainpage",
     component: HomeLayout,
     children: [
       ...menus,

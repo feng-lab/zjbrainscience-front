@@ -10,7 +10,7 @@
             class="m-r-4"
           />
           <!-- <img :src="BsIconMonkey" alt="" /> -->
-          <span class="m-r-8"> {{ title }} </span>
+          <div class="m-r-8">{{ title }}</div>
           <slot name="titletail"></slot>
         </span>
         <slot name="extra"></slot>
@@ -65,6 +65,12 @@ defineProps({
       font-size: 24px;
       font-weight: 700;
       color: var(--el-text-color-regular);
+      .m-r-8 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        // max-width: calc(100% - 40px) !important;
+      }
     }
     &--desc {
       margin-left: 28px;
@@ -95,12 +101,6 @@ defineProps({
         color: var(--el-color-primary);
       }
     }
-  }
-  .m-r-8 {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
   }
 }
 </style>

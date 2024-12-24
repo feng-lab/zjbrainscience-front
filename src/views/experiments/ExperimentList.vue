@@ -15,19 +15,48 @@
   >
     <el-row style="margin-left: 10px">
       <el-form :inline="true" :model="query">
-        <el-form-item label="数据集简述:">
+        <el-form-item label="数据集名称:">
+          <el-select
+            v-model="query.data_publisher"
+            placeholder="请选择"
+            clearable
+            style="width: 192px"
+          >
+            <el-option
+              v-for="val in datapublisherOptions"
+              :key="val"
+              :label="val"
+              :value="val"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <!-- <el-form-item label="数据集简述:">
           <el-input
             v-model="query.description"
             placeholder="请输入"
             clearable
           />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="物种:">
-          <!-- <el-select v-model="query.species" placeholder="请选择" clearable>
-            <el-option label="Zone one" value="shanghai" />
-            <el-option label="Zone two" value="beijing" />
-          </el-select> -->
-          <el-input v-model="query.species" placeholder="请输入" clearable />
+          <el-select
+            v-model="query.species"
+            placeholder="请选择"
+            clearable
+            filterable
+            allow-create
+            @blur="speciesSelect"
+            style="width: 192px"
+          >
+            <el-option
+              v-for="val in speciesOptions"
+              :key="val.latin_name"
+              :label="`${val.latin_name}(${val.chinese_name})`"
+              :value="val.latin_name"
+            >
+            </el-option>
+          </el-select>
+          <!-- <el-input v-model="query.species" placeholder="请输入" clearable /> -->
         </el-form-item>
         <el-form-item label="器官:">
           <el-input v-model="query.organ" placeholder="请输入" clearable />
@@ -209,14 +238,19 @@ import { FolderOpened } from '@element-plus/icons-vue'
 import BsRouteLink from '@/components/BsRouteLink.vue'
 import BsLoadMore from '@/components/BsLoadMore.vue'
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import {
   useRouter,
   useRoute,
   onBeforeRouteLeave,
   // onBeforeRouteEnter,
 } from 'vue-router'
-import { allExByPageApi, deleteExApi } from '@/api/datasetManagement'
+import {
+  allExByPageApi,
+  deleteExApi,
+  getGroupDatasetSizeApi,
+} from '@/api/datasetManagement'
+import { getGroupDatasetSizeOssApi } from '@/api/datasetOss'
 import { useI18n } from 'vue-i18n'
 import { useUtils } from '@/compositions/useUtils'
 import { ElMessage } from 'element-plus'
@@ -258,6 +292,29 @@ const query = ref({
 const loadRef = ref()
 const isDataSave = ref(JSON.parse(sessionStorage.getItem('isEdit')))
 const isFromViewDetail = ref(false)
+const datapublisherOptions = ref([])
+
+const speciesSelect = (e) => {
+  let value = e.target.value
+  if (value) {
+    query.value.species = value
+  }
+}
+
+const getDataPublisher = async () => {
+  try {
+    const data = await getGroupDatasetSizeOssApi({
+      search: 'data_publisher',
+      category: '',
+      from_table: true,
+    })
+    datapublisherOptions.value = data.length
+      ? data.map((one) => one.data_publisher).filter((item) => item !== 'All')
+      : []
+  } catch (err) {
+    console.info(err)
+  }
+}
 
 const goEdit = () => {
   router.push(`/experiments/new`)
@@ -302,6 +359,9 @@ const getAllExByPage = async () => {
 const curPage = +sessionStorage.getItem('curPage')
 if (curPage) currentPage.value = curPage || 1
 getAllExByPage()
+onMounted(() => {
+  getDataPublisher()
+})
 
 // onBeforeRouteEnter((to, from, next) => {
 //   console.log('beforeEnter--->')
@@ -324,6 +384,7 @@ const onReset = () => {
   query.value.organ = ''
   query.value.development_stage = ''
   query.value.description = ''
+  query.value.data_publisher = ''
   onQuery()
 }
 
@@ -347,8 +408,15 @@ const handleEdit = (id) => {
 }
 
 const getTitleEllipsis = (title) => {
-  if (title.length > 20) {
-    title = title.slice(0, 14) + '...' + title.slice(-6)
+  const cnReg = new RegExp('[\\u4E00-\\u9FFF]+', 'g')
+  if (cnReg.test(title)) {
+    if (title.length > 15) {
+      title = title.slice(0, 15) + '...'
+    }
+  } else {
+    if (title.length > 20) {
+      title = title.slice(0, 20) + '...'
+    }
   }
   return title ? title : '--'
 }
