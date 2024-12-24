@@ -325,7 +325,6 @@ const exForm = ref({
   file_count: null,
   file_total_size_gb: null,
   file_acquired_size_gb: null,
-  file_format: '',
   associated_diseases: '',
   organ: '',
   cell_count: null,
@@ -443,11 +442,13 @@ onMounted(async () => {
       exForm.value = exform
     }
   }
-  getGroupDatasetSize('data_type').then((res) => {
-    dataTypeOptions.value = res || []
+  getGroupDatasetSize({ search: 'data_type' }).then((res) => {
+    dataTypeOptions.value = res
+      ? res.filter((item) => item.data_type !== 'All')
+      : []
   })
-  getGroupDatasetSize('source').then((res) => {
-    sourceOptions.value = res || []
+  getGroupDatasetSize({ search: 'source' }).then((res) => {
+    sourceOptions.value = res ? res.filter((item) => item.source !== 'All') : []
   })
 })
 

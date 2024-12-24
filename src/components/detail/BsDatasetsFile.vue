@@ -107,14 +107,14 @@
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button
+            <!-- <el-button
               v-if="user.access_level >= 100 && scope.row.type === 'file'"
               link
               type="primary"
               size="small"
               @click="handleDownload(scope.row)"
               >下载</el-button
-            >
+            > -->
             <el-button
               v-if="viewShow(scope.row) && user.access_level >= 10"
               :loading="scope.row.loading"
@@ -146,6 +146,7 @@
     width="60%"
     align-center
     destroy-on-close
+    style="max-height: 100%; overflow-y: scroll"
   >
     <div class="content-wrap">
       <!-- <div class="mask"></div> -->
@@ -228,6 +229,7 @@ const viewTypeList = [
   'pdf',
   'xlsx',
   'docx',
+  'csv',
   'txt',
   'mp4',
   'avi',
@@ -240,6 +242,7 @@ const viewTypeList = [
   'gif',
   'h5ad',
   'tif',
+  'tiff',
 ]
 const isImageType = computed(() => {
   return /^image\//.test(fileType.value)
@@ -262,10 +265,10 @@ const isDocxType = computed(() => {
   )
 })
 const isExcelType = computed(() => {
-  return (
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ===
-    fileType.value
-  )
+  return [
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'text/csv',
+  ].includes(fileType.value)
 })
 
 const typeOptions = ref([])
@@ -553,7 +556,6 @@ const handleView = async (item) => {
         }
       }
     }
-
     item.loading = false
     dialogVisible.value = true
   } catch (e) {

@@ -26,6 +26,9 @@ export default ({ command }) => {
           target: "http://10.11.140.35:1919/"
           // target: "http://biodata-platform.biodata.svc.cluster.local/"
         },
+        "/realms": {
+          target: "http://10.15.56.125:8080/"
+        },
         // "/api": {
         //   target: "http://10.11.140.35/",
         //   rewrite: (path) => path.replace(/^\/api1/, '/'), // 路径重写

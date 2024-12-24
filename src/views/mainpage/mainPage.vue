@@ -46,6 +46,11 @@ import G6 from '@antv/g6'
 import { useRouter } from 'vue-router'
 import { allExByPageApi } from '@/api/datasetManagement'
 
+onMounted(async () => {
+  getLastChildLists(graphData)
+  drawGraph()
+})
+
 const router = useRouter()
 const graphData = {
   id: 'Eukaryota\n真核生物\n★', // 真核生物
@@ -250,11 +255,6 @@ const datasetList = ref([
 const lastChildList = ref([])
 const showDatasets = ref(false)
 const loading = ref(false)
-
-onMounted(() => {
-  getLastChildLists(graphData)
-  drawGraph()
-})
 
 const getLastChildLists = (data) => {
   if (data.children && data.children.length) {

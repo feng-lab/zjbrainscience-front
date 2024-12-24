@@ -77,14 +77,11 @@ export function getAllDatasetSizeOssApi (from_table) {
  * @param { Object } data 
  * @returns 
  */
-export function getGroupDatasetSizeOssApi (search, from_table) {
+export function getGroupDatasetSizeOssApi (params) {
   return request({
     url: "/api/getGroupDatasetSizeOss",
     method: "GET",
-    params: {
-      search,
-      from_table
-    }
+    params
   })
 }
 

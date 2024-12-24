@@ -2,15 +2,15 @@ import BsIconBrain from "@/components/icons/BsIconBrain.vue";
 import BsIconQueue from "@/components/icons/BsIconQueue.vue";
 import { markRaw } from "vue";
 const menus = [
-  {
-    path: "dataoverview",
-    name: "dataoverview",
-    component: () => import("@/views/dataoverview/index.vue"),
-    meta: {
-      icon: "HomeFilled",
-      level: 10
-    }
-  },
+  // {
+  //   path: "dataoverview",
+  //   name: "dataoverview",
+  //   component: () => import("@/views/dataoverview/index.vue"),
+  //   meta: {
+  //     icon: "HomeFilled",
+  //     level: 10
+  //   }
+  // },
   {
     path: "mainpage",
     name: "mainpage",
@@ -71,15 +71,15 @@ const menus = [
       }
     }]
   },
-  {
-    path: "myqueue",
-    name: "myqueue",
-    component: () => import("@/views/myqueue/index.vue"),
-    meta: {
-      icon: markRaw(BsIconQueue),
-      level: 10
-    },
-  },
+  // {
+  //   path: "myqueue",
+  //   name: "myqueue",
+  //   component: () => import("@/views/myqueue/index.vue"),
+  //   meta: {
+  //     icon: markRaw(BsIconQueue),
+  //     level: 10
+  //   },
+  // },
   {
     path: "atlas",
     name: "atlas",
