@@ -245,12 +245,11 @@ import {
   onBeforeRouteLeave,
   // onBeforeRouteEnter,
 } from 'vue-router'
+import { allExByPageApi, deleteExApi } from '@/api/datasetManagement'
 import {
-  allExByPageApi,
-  deleteExApi,
-  getGroupDatasetSizeApi,
-} from '@/api/datasetManagement'
-import { getGroupDatasetSizeOssApi } from '@/api/datasetOss'
+  getGroupDatasetSizeOssApi,
+  // getDatasetSizeOssApi,
+} from '@/api/datasetOss'
 import { useI18n } from 'vue-i18n'
 import { useUtils } from '@/compositions/useUtils'
 import { ElMessage } from 'element-plus'
@@ -316,6 +315,18 @@ const getDataPublisher = async () => {
   }
 }
 
+// const getDatasetSizeOss = async () => {
+//   try {
+//     const data = await getDatasetSizeOssApi({
+//       dataset_id: 125,
+//       from_table: true,
+//     })
+//     console.log('data------->', data)
+//   } catch (err) {
+//     console.info(err)
+//   }
+// }
+
 const goEdit = () => {
   router.push(`/experiments/new`)
 }
@@ -361,6 +372,7 @@ if (curPage) currentPage.value = curPage || 1
 getAllExByPage()
 onMounted(() => {
   getDataPublisher()
+  // getDatasetSizeOss()
 })
 
 // onBeforeRouteEnter((to, from, next) => {

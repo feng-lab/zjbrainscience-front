@@ -223,10 +223,10 @@ router.beforeEach(async (to, from, next) => {
     } else {
       const userStore = useUserStore();
       const { user } = storeToRefs(userStore);
-      const { getUserInfo } = userStore;
-      if (!user.value.username) {
-        await getUserInfo();
-      }
+      // const { getUserInfo } = userStore;
+      // if (!user.value.username) {
+      //   await getUserInfo();
+      // }
 
       const level = to?.meta?.level ?? 0;
       // console.log(user.value.access_level)
