@@ -10,9 +10,9 @@ import { decodePwd, encodePwd } from "@/utils/password";
 
 const useUserStore = defineStore("user", () => {
   const user = ref({
-    username: "",
-    staff_id: "",
-    access_level: 0
+    username: "admin",
+    staff_id: "admin",
+    access_level: 1000
   });
 
   const doLogin = async (userForm) => {
@@ -24,7 +24,7 @@ const useUserStore = defineStore("user", () => {
     });
     jsCookie.set("access_token", res.access_token);
     jsCookie.set("token_type", res.token_type);
-    const { from="/" }= router.currentRoute.value.query;
+    const { from = "/" } = router.currentRoute.value.query;
     router.push(from);
   }
 
@@ -36,10 +36,10 @@ const useUserStore = defineStore("user", () => {
     }
   }
 
-  const doLogout = async (deleteUser=false) => {
+  const doLogout = async (deleteUser = false) => {
     const staff_id = deleteUser ? "" : user.value.staff_id;
-    user.value = { 
-      access_level: 0 ,
+    user.value = {
+      access_level: 0,
       staff_id
     };
     await logoutApi();

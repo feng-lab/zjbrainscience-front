@@ -18,14 +18,11 @@ export function createDatasetOssApi (data) {
  * @param { Object } data 
  * @returns 
  */
-export function getDatasetSizeOssApi (dataset_id, from_table) {
+export function getDatasetSizeOssApi (params) {
   return request({
     url: "/api/getDatasetSizeOss",
     method: "GET",
-    params: {
-      dataset_id,
-      from_table
-    }
+    params
   })
 }
 
