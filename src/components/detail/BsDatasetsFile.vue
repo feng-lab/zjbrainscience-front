@@ -534,7 +534,7 @@ const handleView = async (item) => {
         type: file.headers['Content-Type'],
       })
       const url = window.URL.createObjectURL(blob)
-      if (getFileType(item) === 'tif') {
+      if (['tif', 'tiff'].includes(getFileType(item))) {
         fileType.value = 'image/tif'
         fileSrc.value = await formartTiffFile(url)
       } else {
