@@ -1,63 +1,51 @@
-# image: busybox:latest
-
-# before_script:
-#   - echo "Before script section"
-#   - echo "For example you might run an update here or install a build dependency"
-#   - echo "Or perhaps you might print out some debugging details"
-
-# after_script:
-#   - echo "After script section"
-#   - echo "For example you might do some cleanup here"
-
-# build1:
-#   stage: build
-#   script:
-#     - echo "Do your build here"
-
-# test1:
-#   stage: test
-#   script:
-#     - echo "Do a test here"
-#     - echo "For example run a test suite"
-
-# test2:
-#   stage: test
-#   script:
-#     - echo "Do another parallel test here"
-#     - echo "For example run a lint test"
-
-# deploy1:
-#   stage: deploy
-#   script:
-#     - echo "Do your deploy here"
-#   environment: production
-
 stages:
-  - install
-  - test
   - build
-  - deploy
 
-# 安装依赖阶段
-install_dependencies:
-  stage: install
-  image: node:20 # 使用 Node.js 官方 Docker 镜像
-  script:
-    - echo "=======start install========"
-    - npm install # 安装项目依赖
-    - echo "=======end install========"
-  artifacts:
-    expire_in: 60 mins
-    paths:
-      - node_modules/ # 保留构建产物，以便在后续阶段使用
+image: docker:20.10.16
 
-# 构建应用阶段
-build_app:
+variables:
+  DOCKER_BUILDKIT: 1
+  DOCKER_TLS_CERTDIR: '/certs'
+  # DOCKERHUB_USERNAME: 'hamjohn'
+  ALIYUN_ACR_USERNAME: 'hanqiang@zjlab_life_science'
+  ALIYUN_ACR_IMAGES_REGISTRY: 'mixbio-images-registry-1-registry.cn-hangzhou.cr.aliyuncs.com'
+  DOCKER_REGISTRY_MIRROR: 'https://qdyhe98e.mirror.aliyuncs.com'
+  DOCKER_CLIENT_TIMEOUT: 300
+  DOCKER_TIMEOUT: 300
+
+services:
+  - docker:20.10.16-dind
+
+before_script:
+  - docker login -u $ALIYUN_ACR_USERNAME $ALIYUN_ACR_IMAGES_REGISTRY -p $ALIYUN_ACR_ACCESS_KEY
+
+build_and_push:
   stage: build
   script:
-    - echo "=======start build========"
-    - npm run build # 构建 Vue.js 项目
-    - echo "=======end build========"
-  artifacts:
-    paths:
-      - dist # 保留构建产物，以便在后续阶段使用
+    - docker build -t $ALIYUN_ACR_IMAGES_REGISTRY/ops/zjbrainscience-front:$CI_COMMIT_SHA .
+    - echo "======= build  success !!! ========"
+    - docker push $ALIYUN_ACR_IMAGES_REGISTRY/ops/zjbrainscience-front:$CI_COMMIT_SHA
+    - echo "======= push  success !!! ========"
+# # 安装依赖阶段
+# install_dependencies:
+#   stage: install
+#   image: node:20 # 使用 Node.js 官方 Docker 镜像
+#   script:
+#     - echo "=======start install========"
+#     - npm install # 安装项目依赖
+#     - echo "=======end install========"
+#   artifacts:
+#     expire_in: 60 mins
+#     paths:
+#       - node_modules/ # 保留构建产物，以便在后续阶段使用
+
+# # 构建应用阶段
+# build_app:
+#   stage: build
+#   script:
+#     - echo "=======start build========"
+#     - npm run build # 构建 Vue.js 项目
+#     - echo "=======end build========"
+#   artifacts:
+#     paths:
+#       - dist # 保留构建产物，以便在后续阶段使用

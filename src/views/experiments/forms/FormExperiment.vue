@@ -437,8 +437,8 @@ onMounted(async () => {
     }
   } else {
     const isEdit = JSON.parse(sessionStorage.getItem('isEdit'))
-    const exform = JSON.parse(sessionStorage.getItem('exForm'))
-    if (isEdit && exform) {
+    if (isEdit) {
+      const exform = JSON.parse(sessionStorage.getItem('exForm'))
       exForm.value = exform
     }
   }
@@ -452,24 +452,27 @@ onMounted(async () => {
   })
 })
 
-watch(
-  () => exForm,
-  async (newVal) => {
-    isEdit.value = true
-  },
-  {
-    deep: true,
-  }
-)
+// watch(
+//   () => exForm,
+//   async (newVal) => {
+//     console.log('new--->', newVal)
+//     isEdit.value = true
+//   },
+//   {
+//     deep: true,
+//   }
+// )
 
 onBeforeRouteLeave((to, from) => {
-  // if (type.value === 'edit') {
-  //   experimentFormRef.value.reset()
-  // }
-  sessionStorage.setItem('isEdit', isEdit.value)
-  if (isEdit.value && !props.experiment_id) {
+  let isEdit = false
+  if (
+    !props.experiment_id &&
+    Object.values(exForm.value).filter((item) => item || 0).length
+  ) {
+    isEdit = true
     sessionStorage.setItem('exForm', JSON.stringify(exForm.value))
   }
+  sessionStorage.setItem('isEdit', isEdit)
 })
 </script>
 

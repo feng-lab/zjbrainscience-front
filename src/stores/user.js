@@ -10,8 +10,8 @@ import { decodePwd, encodePwd } from "@/utils/password";
 
 const useUserStore = defineStore("user", () => {
   const user = ref({
-    username: "admin",
-    staff_id: "admin",
+    username: "root",
+    staff_id: "",
     access_level: 1000
   });
 
