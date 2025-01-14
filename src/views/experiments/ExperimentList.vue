@@ -80,6 +80,7 @@
         type="info"
         show-icon
         style="margin-bottom: 15px"
+        @close="closeAlert"
       >
         <el-link
           type="success"
@@ -329,6 +330,11 @@ const getDataPublisher = async () => {
 
 const goEdit = () => {
   router.push(`/experiments/new`)
+}
+
+const closeAlert = () => {
+  sessionStorage.setItem('isEdit', false)
+  sessionStorage.removeItem('exForm')
 }
 
 const getCnName = (name) => {
