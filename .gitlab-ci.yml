@@ -8,7 +8,6 @@ variables:
   DOCKER_BUILDKIT: 1
   DOCKER_TLS_CERTDIR: '/certs'
   IMAGE_VERSION: v1
-  # DOCKERHUB_USERNAME: 'hamjohn'
   ALIYUN_ACR_USERNAME: 'hanqiang@zjlab_life_science'
   ALIYUN_ACR_IMAGES_REGISTRY: 'mixbio-images-registry-1-registry.cn-hangzhou.cr.aliyuncs.com'
   # DOCKER_REGISTRY_MIRROR: 'https://qdyhe98e.mirror.aliyuncs.com'
@@ -21,21 +20,10 @@ services:
 
 before_script:
   - docker login -u $ALIYUN_ACR_USERNAME $ALIYUN_ACR_IMAGES_REGISTRY -p $ALIYUN_ACR_ACCESS_KEY
-  # - docker login -u $ALIYUN_ACR_USERNAME acr.aigene.org.cn -p $ALIYUN_ACR_ACCESS_KEY
-  # - echo 'Setting up Docker registry mirror'
-  # - echo '{"registry-mirrors":["https://qdyhe98e.mirror.aliyuncs.com"]}' | sudo tee /etc/docker/daemon.json
-  # - sudo systemctl restart docker
-  # - docker info
-  # - docker login -u --username=$ALIYUN_ACR_USERNAME $ALIYUN_ACR_IMAGES_REGISTRY -p $ALIYUN_ACR_ACCESS_KEY
-  # - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
 
 build_and_push:
   stage: build
   script:
-    # - docker build -t $DOCKERHUB_USERNAME/frontend:$CI_COMMIT_SHORT_SHA ./frontend
-    # - docker push $DOCKERHUB_USERNAME/frontend:$CI_COMMIT_SHORT_SHA
-    # - docker build -t $DOCKERHUB_USERNAME/backend:$CI_COMMIT_SHORT_SHA ./backend
-    # - docker push $DOCKERHUB_USERNAME/backend:$CI_COMMIT_SHORT_SHA
     - docker build -t $ALIYUN_ACR_IMAGES_REGISTRY/ops/zjbrainscience-front:$IMAGE_VERSION .
     - docker push $ALIYUN_ACR_IMAGES_REGISTRY/ops/zjbrainscience-front:$IMAGE_VERSION
 # deploy_beta:
