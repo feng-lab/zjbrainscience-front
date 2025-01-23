@@ -1,12 +1,15 @@
-FROM mixbio-images-registry-1-registry.cn-hangzhou.cr.aliyuncs.com/ops/node:16.16.0-alpine3.16
+FROM mixbio-images-registry-1-registry.cn-hangzhou.cr.aliyuncs.com/ops/nginx:alpine
 
-WORKDIR /zjbrainscience-front
+COPY dist/ /usr/share/nginx/html/
+# FROM mixbio-images-registry-1-registry.cn-hangzhou.cr.aliyuncs.com/ops/node:16.16.0-alpine3.16
 
-COPY . .
+# WORKDIR /zjbrainscience-front
 
-RUN npm install
+# COPY . .
+
+# RUN npm install
  
-CMD ["npm", "run", "dev"]
+# CMD ["npm", "run", "dev"]
 
 # FROM nginx:alpine
 
