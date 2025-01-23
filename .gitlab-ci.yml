@@ -10,8 +10,8 @@ variables:
   IMAGE_VERSION: v1
   ALIYUN_ACR_IMAGES_REGISTRY: 'mixbio-images-registry-1-registry.cn-hangzhou.cr.aliyuncs.com'
   # DOCKER_REGISTRY_MIRROR: 'https://qdyhe98e.mirror.aliyuncs.com'
-  DOCKER_CLIENT_TIMEOUT: 300
-  DOCKER_TIMEOUT: 300
+  # DOCKER_CLIENT_TIMEOUT: 300
+  # DOCKER_TIMEOUT: 300
 
 services:
   - docker:20.10.16-dind
