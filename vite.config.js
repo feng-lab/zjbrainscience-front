@@ -22,7 +22,8 @@ export default ({ command }) => {
       proxy: {
         "/api": {
           // target: "http://127.0.0.1:8000/"
-          target: "http://10.15.57.134:8000/"
+          // target: "http://10.15.57.134:8000/"
+          target: "data-summary.gateway.aigene.org.cn/"
           // target: "http://10.11.140.35:1919/"
           // target: "http://biodata-platform.biodata.svc.cluster.local/"
         },
