@@ -2,9 +2,7 @@
   <div class="index">
     <Suspense>
       <template #default>
-        <A
-          :url_="'https://eeum-brain.com/static/neuroglancer_data/eLemur-B2/base.json'"
-        />
+        <A :url_="'https://eeum-brain.com/static/neuroglancer_data/eLemur_B2/base.json'" />
       </template>
     </Suspense>
   </div>
